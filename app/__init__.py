@@ -33,7 +33,9 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
 #Initialize DB
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 Session(app)
 
-from app import routes
 app.register_blueprint(full_bp)
+
+from app import routes
