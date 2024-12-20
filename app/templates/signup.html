@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block child-content %}
+{% block child_content %}
 <div class="signup-container" id="signup-container">
 	<form method="POST" class="signup-form" id="signup-form">
 		<h2>Welcome to Quizzen</h2>
@@ -92,7 +92,7 @@
 		<p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
 	</div>
 </div>
-{% endblock child-content%}
+{% endblock child_content %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/signup-page.js') }}"></script>
