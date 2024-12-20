@@ -6,7 +6,7 @@ from flask_session import Session
 
 bcrypt = Bcrypt(app)
 
-@app.route('/quizzen')
+@app.route('/')
 def home():
     return render_template('index.html', title='Home')
 
@@ -37,7 +37,7 @@ def signup():
     return render_template('signup.html', title='Sign up')
 
 
-@app.route('/quizzen/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -52,7 +52,7 @@ def login():
         flash('Invalid credentials', 'danger')
     return render_template('login.html', title='Login')
 
-@app.route('/quizzen/logout')
+@app.route('/logout')
 def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')

@@ -13,6 +13,9 @@ app = Flask(__name__, static_folder='static',
              template_folder='templates'
             )
 app.config['SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', secrets.token_urlsafe(32))
+app.config['APPLICATION_ROOT'] = '/quizzen'
+app.url_map.strict_slashes = False
+
 
 # PostgreSQL Config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:3264@localhost/quizzen'
