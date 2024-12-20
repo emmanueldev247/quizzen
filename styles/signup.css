@@ -1,0 +1,249 @@
+body {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    background: url('../images/college-exam-bg.jpg') no-repeat center center fixed; 
+    background-size: cover; position: relative; 
+}
+
+body::after {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+form {
+    display: flex;
+}
+
+h4 {
+    color: #6d6d6d;;
+    margin-bottom: 1.5rem;
+}
+
+.signup-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 5rem;
+    padding: 3rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Prevent content overflow during animations */
+}
+
+.signup-form,
+.social-signup,
+.login-link { 
+    flex-direction: column;
+    position: relative;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; */
+}
+
+.signup-form.visible,
+.social-signup.visible,
+.login-link.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+}
+
+
+.signup-form h2 {
+    margin-bottom: .5rem;
+    color: #333;
+}
+
+.signup-form input {
+    font-size: 16px;
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.signup-form input:focus {
+    border: 2px solid #6a0dad75; 
+    box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
+    outline: none;
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    background: #6a0dad;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1.5rem;
+}
+
+.signup-form button:hover {
+    background: #a94dd0; 
+}
+
+.social-signup {
+    text-align: center;
+}
+
+.social-signup button {
+    font-size: 18px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 0.5rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.google-signup {
+    background-color: #db4437;
+}
+
+.google-signup:hover {
+    background-color: #a83427;;
+}
+
+.microsoft-signup {
+    background-color: #0078d4;
+}
+
+.microsoft-signup:hover {
+    background-color: #004b85;;
+}
+
+.facebook-signup {
+    background-color: #3b5998;
+}
+
+.facebook-signup:hover {
+    background-color: #213153;
+}
+
+.login-link {
+    margin-top: 3rem;
+    text-align: center;
+    color: #333;
+}
+
+.login-link a {
+    color: #6a0dad; 
+    text-decoration: none;
+}
+ 
+.login-link a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.error-message {
+	font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: red;
+    margin-bottom: 15px;
+    margin-top: -1rem;
+    display: none;
+}
+
+
+#role-container, 
+#gender-container {
+    display: block;
+    text-align: center;
+}
+
+#role-container h4,
+#gender-container h4 {
+	font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: #333;;
+    margin-bottom: .5rem;
+}
+
+
+.gender-option, .role-option {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    margin-bottom: 2rem;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Icons and text styling */
+.gender-option i, .role-option i {
+    font-size: 36px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.gender-option span, .role-option span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.gender-option:hover, .role-option:hover {
+    border-color: #9b59b6;
+    background-color: #f9f0ff; 
+    box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
+}
+
+.gender-option.selected, .role-option.selected {
+    border-color: #6a0dad;
+    background-color: #f0e6ff;
+    color: #6a0dad;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 40px; 
+}
+
+.password-field .toggle-password {
+    position: absolute;
+    top: 35%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #6d6d6d;
+}
