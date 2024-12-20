@@ -8,10 +8,10 @@ bcrypt = Bcrypt(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html', title='Welcome to Quizzen')
+    return render_template('index.html', title='Home')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -23,7 +23,7 @@ def register():
 
         if User.query.filter_by(email=email).first():
             flash('Email already registered', 'danger')
-            return redirect(url_for('register'))
+            return redirect(url_for('login'))
 
         new_user = User(username=username, email=email, first_name=first_name,
                         last_name=last_name, date_of_birth=date_of_birth, role=role)
@@ -34,7 +34,7 @@ def register():
 
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register')
+    return render_template('signup.html', title='Sign up')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -57,4 +57,3 @@ def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
     return redirect(url_for('home'))
-
