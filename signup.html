@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login | Quizzen</title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+
+	<!-- ****************Icons library************** -->
+	<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+	<!-- ****************local CSS************** -->
+	<link rel="stylesheet" type="text/css" href="styles/styles.css">
+	<link rel="stylesheet" type="text/css" href="styles/signup.css">
+</head>
+
+<body>
+	<header class="header scrolled sub-header" id="header">
+		<div class="logo-container">
+			<a href="index.html" class="logo-text">
+				<h1 class="logo-name sub-header">Quizzen</h1>
+				<p class="slogan sub-header">...Unleash your inner genius</p>
+			</a>
+		</div>
+
+		<input type="checkbox" id="check">
+		<label for="check" class="icons">
+			<i class='bx bx-menu' id="menu-icon"></i>
+			<i class='bx bx-x' id="close-icon"></i>
+		</label>
+		<nav class="tabs sub-header">
+			<ul>
+				<li id=""><a href="#">Enter Code</a></li>
+				<li id=""><a href="login.html" class="button-log-in">Log in</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="signup-container" id="signup-container">
+		<form method="POST" class="signup-form" id="signup-form">
+			<h2>Welcome to Quizzen</h2>
+			<h4>Create a free account in few steps</h4>
+			<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
+				autocomplete="email">
+			<div id="email-error" class="error-message" style="display: none;">Please enter your email address</div>
+			<button type="button" id="continue-button-email">Continue</button>
+
+			<div id="first-name-container" style="display: none;">
+				<input type="text" id="first_name" name="first_name" placeholder="First Name" aria-label="First Name"
+					required autocomplete="given-name">
+				<div id="first-name-error" class="error-message" style="display: none;">Please enter your first name
+				</div>
+				<input type="text" id="last_name" name="last_name" placeholder="Last Name" aria-label="Last Name"
+					required autocomplete="family-name">
+				<div id="last-name-error" class="error-message" style="display: none;">Please enter your last name</div>
+				<button type="button" id="continue-button-names">Continue</button>
+			</div>
+
+			<div id="gender-container" style="display: none;">
+				<h4>Select your gender</h4>
+				<div class="gender-option" data-gender="male">
+					<i class='bx bx-male'></i>
+					<span>Male</span>
+				</div>
+				<div class="gender-option" data-gender="female">
+					<i class='bx bx-female'></i>
+					<span>Female</span>
+				</div>
+				<input type="hidden" id="gender" name="gender" aria-label="Gender" required>
+				<div id="gender-error" class="error-message" style="display: none;">Please select your gender</div>
+				<button type="button" id="continue-button-gender">Continue</button>
+			</div>
+
+			<div id="role-container" style="display: none;">
+				<h4>I am</h4>
+				<h4><i>(Select what best describes you)</i></h4>
+				<div class="role-option" data-role="student">
+					<i class='bx bx-user'></i>
+					<span>a student</span>
+				</div>
+				<div class="role-option" data-role="teacher">
+					<i class='bx bxs-user'></i>
+					<span>a teacher</span>
+				</div>
+				<input type="hidden" id="role" name="role" aria-label="Role" required>
+				<div id="role-error" class="error-message" style="display: none;">Please select what best describes you
+				</div>
+				<button type="button" id="continue-button-role">Continue</button>
+			</div>
+
+			<div id="dob-container" style="display: none;">
+				<input type="date" id="dob" name="dob" placeholder="Date of Birth" aria-label="Date of Birth" required>
+				<div id="dob-error" class="error-message" style="display: none;">Please enter your date of birth</div>
+				<button type="button" id="continue-button-dob">Continue</button>
+			</div>
+
+			<div id="password-container" style="display: none;">
+				<div class="password-field">
+					<input type="password" id="password" name="password" placeholder="Password" aria-label="Password"
+						required>
+					<i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
+				</div>
+				<div id="password-error" class="error-message" style="display: none;">Password is required</div>
+				<div id="password-strength-error" class="error-message" style="display: none;">
+					Password must be at least 8 characters long and include letters, numbers, and a special character.
+				</div>
+				<input type="password" id="c_password" name="c_password" placeholder="Confirm Password"
+					aria-label="Confirm Password" required>
+				<div id="c_password-error" class="error-message" style="display: none;">Please confirm your password
+				</div>
+				<div id="c_password-error2" class="error-message" style="display: none;">Passwords do not match!</div>
+				<button type="submit" id="register-button">Register</button>
+			</div>
+		</form>
+		<div class="social-signup" id="social-signup">
+			<h4>or continue with</h4>
+			<button class="google-signup">
+				<i class='bx bxl-google'></i>
+			</button>
+			<button class="microsoft-signup">
+				<i class='bx bxl-microsoft'></i>
+			</button>
+			<button class="facebook-signup">
+				<i class='bx bxl-facebook'></i>
+			</button>
+		</div>
+		<div class="login-link" id="login-link">
+			<p>Already have an account? <a href="login.html">Log in</a></p>
+		</div>
+	</div>
+	<script src="scripts/signup-page.js"></script>
+</body>
+
+</html>
