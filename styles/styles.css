@@ -1,0 +1,443 @@
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Metamorphous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Titillium+Web:ital,wght@0,400;1,600&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Quattrocento Sans', 'Josefin Sans', 'Inter', 'Lucida Sans', Geneva, Verdana, sans-serif;
+	/* font-family: 'Titillium Web', Merienda, Tahoma, Arial, sans-serif; */
+}
+
+body {
+	min-height: 100vh;
+	width: 100%;
+	background-color: #FAFBFD;
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px;
+	background-color: #000000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: all 0.3s ease;
+	z-index: 1000;
+}
+
+.header.scrolled {
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7); /* Add shadow when scrolled */
+	padding: 5px;
+}
+
+.logo-container {
+	display: flex;
+	align-items: center;
+	padding: 2px 10px;
+	/* border: 2px solid red; */
+}
+
+
+.logo-text {
+	/* margin-top: -5px; */
+	text-decoration: none;
+	color: white;
+	text-align: right;
+}
+
+.logo-name {
+	margin: 0;
+	font-family: Metamorphous, cursive;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 40px;
+	transition: all 0.3s ease;
+}
+
+
+.header.scrolled .logo-name {
+	font-size: 35px;
+}
+
+
+.slogan {
+	margin: 0;
+	margin-top: 1px;
+	font-family: 'Quattrocento Sans','Josefin Sans', sans-serif;
+	font-size: 14px;
+	transition: font-size 0.3s ease;
+}
+
+.header.scrolled .slogan {
+	font-size: 12px;
+}
+
+.tabs {
+	display: flex;
+	align-items: center;
+}
+
+.tabs ul {
+	list-style: none;
+	margin-right: 2rem;
+}
+
+.tabs ul li {
+	display: inline-block;
+}
+
+.tabs ul li a {
+	color: white;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	margin: 0 .3rem;
+	border-radius: 5px;
+	padding: 0.7rem 1rem;
+	border: 2px solid #444;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.tabs ul li a:hover {
+	background-color: #555;
+}
+
+.tabs a.button-log-in {
+	background-color: #333;
+	border: 2px solid #444;
+}
+
+.tabs a.button-log-in:hover {
+	background-color: #555;
+}
+
+.tabs a.button-sign-up {
+	background-color: #6a0dad;
+	border: none;
+}
+
+.tabs a.button-sign-up:hover {
+	background-color: #a94dd0;
+}
+
+.tabs ul li.active a {
+	color: #6DBCF8;
+}
+
+.header.scrolled .tabs ul li a {
+	font-size: 14px;
+	padding: .6 rem .9rem;
+}
+
+input#check {
+	display: none;
+}
+
+
+
+/* STOP HERE!!!!!!!!!!!!!!!! */
+.icons {
+	position: absolute;
+	right: 5%;
+	font-size: 2.8rem;
+	color: white;
+	cursor: pointer;
+	display: none;
+	transition: all .3s ease;
+}
+
+
+/******** OUR FORM STYLE HERE ***********/
+.cover-conv {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	background-color: white;
+}
+
+.converter-container {
+	margin: auto;
+	margin-top: 200px;
+	margin-bottom: 150px;
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 7px;
+	max-width: 1000px;
+	box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.2);
+	justify-content: center;
+}
+
+.flex-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.flex-form p {
+	font-weight: 700;
+	color: #02226f;
+	font-size: 25px;
+	font-family: "Josefin Sans", sans-serif;
+}
+
+.flex-button {
+	align-self: flex-end;
+	margin-right: 10px;
+}
+
+.flex-input {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.form-group {
+	margin: 10px;
+	font-family: "Josefin Sans", sans-serif;
+	font-weight: 600;
+}
+
+.form-group input[type="number"],
+.form-group select {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+	margin-top: 7px;
+	width: 100%;
+	height: 50px;
+	font-family: "Josefin Sans", sans-serif;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-group input[type="number"]:hover,
+.form-group select:hover {
+	outline: 1px solid black;
+}
+
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+	outline: 1px solid #02226f;
+}
+
+.form-group select:focus,
+.form-group select:active {
+	background-color: #cce4ff;
+}
+
+
+.flex-button button {
+	margin-top: 20px;
+	width: 100%;
+	background-color: #02226f;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+
+.flex-button button:hover {
+	background-color: #134fa9;
+}
+
+
+
+/* Styling for success messages */
+.flash-message.success-message {
+	background-color: #d4edda; /* Light green background */
+	border-color: #c3e6cb; /* Light green border */
+	color: #155724; /* Dark green text */
+	padding: 10px; /* Padding around the message */
+	margin-bottom: 10px; /* Spacing between messages */
+	border: 1px solid transparent; /* Border around the message */
+	border-radius: 5px; /* Rounded corners */
+}
+
+/* Styling for error messages */
+.flash-message.error-messages  {
+	background-color: #f8d7da; /* Light red background */
+	border-color: #f5c6cb; /* Light red border */
+	color: #721c24; /* Dark red text */
+	padding: 10px; /* Padding around the message */
+	margin-bottom: 10px; /* Spacing between messages */
+	border: 1px solid transparent; /* Border around the message */
+	border-radius: 5px; /* Rounded corners */
+}
+
+
+#result {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+
+footer {
+	background-color: #000;
+	color: white;
+	height: 100px;
+	width: 100%;
+	bottom: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+
+}
+
+
+
+/* RESPONSIVENESS FOR SMALLER SCREENS */
+
+@media only screen and (max-width: 850px) {
+	.header,
+	.header.scrolled {
+		padding: 5px 10px;
+	}
+
+	.logo-container {
+		padding: 0;
+	}
+
+	.logo,
+	.header.scrolled .logo {
+		height: 48px;
+		width: 55px;
+		margin-right: 3px;
+	}
+
+	.logo-text {
+		font-weight: bold;
+	}
+
+	.logo-name,
+	.header.scrolled .logo-name {
+		font-size: 25px;
+	}
+
+	.slogan,
+	.header.scrolled .slogan {
+		font-size: 6px;
+	}
+
+	.tabs ul {
+		margin-right: 1rem;
+	}
+
+
+	.icons {
+		display: inline-flex;
+	}
+
+	.icons #close-icon {
+		display: none;
+	}
+
+	input#check:checked~.icons #menu-icon {
+		display: none;
+	}
+
+	input#check:checked~.icons #close-icon {
+		display: block;
+	}
+
+	.tabs {
+		position: absolute;
+		top: 100%;
+		height: 0;
+		left: 0;
+		width: 100%;
+		overflow: hidden;
+		background:#2c3e50;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		transition: all .3s ease;
+	}
+
+	#check:checked~.tabs {
+		height: 17rem;
+	}
+
+	.tabs ul {
+		margin: 0;
+	}
+
+	.tabs ul li {
+		text-align: center;
+		display: block;
+		font-size: 1.1rem;
+		margin: 1.5rem 0;
+		line-height: 2.5rem;
+	}
+
+	.tabs ul li a,
+	.header.scrolled .tabs ul li a {
+		margin-left: 0;
+	}
+
+	.cover-conv {
+		height: inherit;
+	}
+
+	.converter-container {
+		max-width: 90%;
+		margin: 100px auto 50px auto;
+		padding: 10px;
+	}
+
+	.flex-form p {
+		font-size: 16px;
+	}
+
+	.flex-button {
+		margin: auto auto;
+	}
+
+	.form-group {
+		margin: 5px;
+	}
+
+	.form-group label {
+		font-size: 12px;
+	}
+
+	.form-group input[type="number"],
+	.form-group select {
+		width: 100%;
+		padding: 8px;
+		margin-top: 5px;
+		height: 30px;
+		font-size: 10px;
+	}
+
+	.flex-button button {
+		margin-top: 10px;
+		padding: 10px 16px;
+		font-size: 12px;
+	}
+
+	#result {
+		font-size: 16px;
+		text-align: center;
+	}
+
+	footer {
+		height: 40px;
+		font-size: 12px;
+	}
+
+}
