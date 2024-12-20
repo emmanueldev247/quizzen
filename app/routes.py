@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, session, flash
+from flask import render_template, redirect, url_for, request, session, flash, Blueprint
 from app import app, db
 from app.models import User
 from flask_bcrypt import Bcrypt
@@ -6,11 +6,13 @@ from flask_session import Session
 
 bcrypt = Bcrypt(app)
 
-@app.route('/')
+full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
+
+@full_bp.route('/')
 def home():
     return render_template('index.html', title='Home')
 
-@app.route('/signup', methods=['GET', 'POST'])
+@full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
@@ -37,7 +39,7 @@ def signup():
     return render_template('signup.html', title='Sign up')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@full_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -52,7 +54,7 @@ def login():
         flash('Invalid credentials', 'danger')
     return render_template('login.html', title='Login')
 
-@app.route('/logout')
+@full_bp.route('/logout')
 def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')

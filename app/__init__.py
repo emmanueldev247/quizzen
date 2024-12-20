@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_session import Session
+from app.routes import full_bp
 
 app = Flask(__name__, static_folder='static',
              static_url_path='/quizzen/assets',
@@ -35,3 +36,4 @@ db = SQLAlchemy(app)
 Session(app)
 
 from app import routes
+app.register_blueprint(full_bp)
