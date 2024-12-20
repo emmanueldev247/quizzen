@@ -1,89 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login | Quizzen</title>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-
-	<!-- ****************Icons library************** -->
-	<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-	<!-- ****************local CSS************** -->
-	<link rel="stylesheet" type="text/css" href="styles/styles.css">
-	<link rel="stylesheet" type="text/css" href="styles/login.css">
-	<!-- <link rel="stylesheet" type="text/css" href="styles/sections.css"> -->
-</head>
-
-<body>
-	<header class="header scrolled sub-header" id="header">
-		<div class="logo-container">
-			<a href="index.html" class="logo-text">
-				<h1 class="logo-name sub-header">Quizzen</h1>
-				<p class="slogan sub-header">...Unleash your inner genius</p>
-			</a>
+{% extends "base.html" %}
+{% block child-content %}
+<div class="login-container" id="login-container">
+	<form method="POST" class="login-form" id="login-form">
+		<h2>Log in to Quizzen</h2>
+		<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
+			autocomplete="email">
+		<div class="password-field">
+			<input type="password" id="password" name="password" placeholder="Password" aria-label="Password" required>
+			<i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
 		</div>
 
-		<input type="checkbox" id="check">
-		<label for="check" class="icons">
-			<i class='bx bx-menu' id="menu-icon"></i>
-			<i class='bx bx-x' id="close-icon"></i>
-		</label>
-		<nav class="tabs sub-header">
-			<ul>
-				<li id=""><a href="#">Enter Code</a></li>
-				<li id=""><a href="signup.html" class="button-sign-up">Sign Up</a></li>
-			</ul>
-		</nav>
-	</header>
-	<div class="login-container" id="login-container">
-		<form class="login-form" id="login-form">
-			<h2>Log in to Quizzen</h2>
-			<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
-				autocomplete="email">
-			<div class="password-field">
-				<input type="password" id="password" name="password" placeholder="Password" aria-label="Password"
-					required>
-				<i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
-			</div>
+		<a href="javascript:void(0)" class="forgot-password" id="forgot-password">Forgot Password?</a>
+		<button type="submit">Login</button>
+	</form>
 
-			<a href="javascript:void(0)" class="forgot-password" id="forgot-password">Forgot Password?</a>
-			<button type="submit">Login</button>
-		</form>
-
-		<!-- Reset Password Form (Initially Hidden) -->
-		<form class="login-form" id="reset-password-form" style="display: none;">
-			<h2>Reset Password</h2>
-			<p>Please enter the email associated with your account</p>
-			<input type="email" id="email2" name="email" placeholder="Email" aria-label="Emmanuel Address" required
-				autocomplete="email">
-			<a href="javascript:void(0)" class="back-to-login" id="back-to-login">
-				<i class='bx bx-arrow-back'></i>
-				<span>Back to login</span>
-			</a>
-			<button type="submit">Get Reset Link</button>
-			<!-- A link has been sent to mailemmydee@gmail.com. For your safety, this link expires in 24 hours and can only be used once. -->
-		</form>
-		<div class="social-login" id="social-login">
-			<h4>or continue with</h4>
-			<button class="google-login">
-				<i class='bx bxl-google'></i>
-			</button>
-			<button class="microsoft-login">
-				<i class='bx bxl-microsoft'></i>
-			</button>
-			<button class="facebook-login">
-				<i class='bx bxl-facebook'></i>
-			</button>
-		</div>
-		<div class="signup-link" id="signup-link">
-			<p>Don't have an account? <a href="signup.html">Sign up</a></p>
-		</div>
+	<!-- Reset Password Form (Initially Hidden) -->
+	<form class="login-form" id="reset-password-form" style="display: none;">
+		<h2>Reset Password</h2>
+		<p>Please enter the email associated with your account</p>
+		<input type="email" id="email2" name="email" placeholder="Email" aria-label="Emmanuel Address" required
+			autocomplete="email">
+		<a href="javascript:void(0)" class="back-to-login" id="back-to-login">
+			<i class='bx bx-arrow-back'></i>
+			<span>Back to login</span>
+		</a>
+		<button type="submit">Get Reset Link</button>
+		<!-- A link has been sent to mailemmydee@gmail.com. For your safety, this link expires in 24 hours and can only be used once. -->
+	</form>
+	<div class="social-login" id="social-login">
+		<h4>or continue with</h4>
+		<button class="google-login">
+			<i class='bx bxl-google'></i>
+		</button>
+		<button class="microsoft-login">
+			<i class='bx bxl-microsoft'></i>
+		</button>
+		<button class="facebook-login">
+			<i class='bx bxl-facebook'></i>
+		</button>
 	</div>
-	<script src="scripts/login-reset-page.js"></script>
-</body>
+	<div class="signup-link" id="signup-link">
+		<p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+	</div>
+</div>
+{% endblock child-content%}
 
-</html>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login-reset-page.js') }}"></script>
+{% endblock scripts %}
