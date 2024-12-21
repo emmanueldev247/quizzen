@@ -33,7 +33,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 #Initialize DB
 db.init_app(app)
 bcrypt.init_app(app)
-Session.init_app(app)
+session.init_app(app)
 
 app.register_blueprint(full_bp)
 
