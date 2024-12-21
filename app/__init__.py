@@ -3,11 +3,10 @@ import redis
 import secrets
 from datetime import timedelta
 from flask import Flask
-from flask_bcrypt import Bcrypt
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_session import Session
 from app.routes import full_bp
+from app.extensions import db, bcrypt, session
+
 
 app = Flask(__name__, static_folder='static',
              static_url_path='/quizzen/assets',
@@ -32,9 +31,9 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
 #Initialize DB
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-Session(app)
+db.init_app(app)
+bcrypt.init_app(app)
+Session.init_app(app)
 
 app.register_blueprint(full_bp)
 

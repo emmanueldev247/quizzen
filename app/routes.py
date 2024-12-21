@@ -1,9 +1,6 @@
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint
-from app import db, bcrypt
+from app.extensions import db, bcrypt
 from app.models import User
-from flask_bcrypt import Bcrypt
-from flask_session import Session
-
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
