@@ -171,6 +171,6 @@
 
 {% block scripts %}
 	<script src="{{ url_for('static', filename='js/signup-page.js') }}"></script>
-	<script src="scripts/script.js"></script>
-	<script src="scripts/currencyList.js"></script>
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/currencyList.js') }}"></script>
 {% endblock scripts %}
