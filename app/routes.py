@@ -1,4 +1,7 @@
-from flask import render_template, redirect, url_for, request, session, flash, Blueprint
+from flask import ( 
+    Blueprint, flash, jsonify, 
+    redirect, render_template, request, 
+    session)
 from app.extensions import db, bcrypt
 from app.models import User
 from datetime import datetime
