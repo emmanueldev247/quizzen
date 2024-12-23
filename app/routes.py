@@ -13,13 +13,13 @@ def home():
 def signup():
     if request.method == 'POST':
         print("request.form: ",request.form)
-        email = request.form.get('email')
+        email = request.form.get('email').strip()
         password = request.form.get('password')
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        date_of_birth = request.form.get('dob')
-        role = request.form.get('role')
-        gender = request.form.get('gender')
+        first_name = request.form.get('first_name').strip()
+        last_name = request.form.get('last_name').strip()
+        date_of_birth = request.form.get('dob').strip()
+        role = request.form.get('role').strip()
+        gender = request.form.get('gender').strip()
 
         # if User.query.filter_by(email=email).first():
         #     flash('Email already registered', 'danger')
@@ -39,6 +39,7 @@ def signup():
             gender is: {gender}
             role is: {role}
             password is: {password}
+            date of birth: {date_of_birth}
         '''
         )
         flash('Registration successful! Please log in.', 'success')
