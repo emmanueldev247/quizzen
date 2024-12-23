@@ -51,7 +51,6 @@ class User(db.Model):
     profile_picture = db.Column(db.String(255))
     role = db.Column(Enum('user', 'admin', name='role_types', create_type=True), default='user')
     gender = db.Column(Enum('male', 'female', 'others', name='gender_types', create_type=True), default='others', nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
     quiz_history = db.relationship('QuizHistory', backref='quiz',
                                    cascade='all, delete-orphan', lazy=True)
 
