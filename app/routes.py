@@ -45,9 +45,9 @@ def signup():
             db.session.rollback()
             return jsonify({'success': False, 'message': 'Error saving user', 'error': str(e)}), 500
        
-    #     flash('Registration successful! Please log in.', 'success')
-    #     return redirect(url_for('full_bp.login'))
-    # return render_template('signup.html', title='Sign up')
+        # flash('Registration successful! Please log in.', 'success')
+        # return redirect(url_for('full_bp.login'))
+    return render_template('signup.html', title='Sign up')
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
