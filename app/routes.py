@@ -56,3 +56,27 @@ def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
     return redirect(url_for('home'))
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email
+
+class SignupForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    gender = StringField('Gender', validators=[DataRequired()])  # New gender field
+    submit = SubmitField('Sign Up')
+
+@full_bp.route('/signup2', methods=['GET', 'POST'])
+def signup2():
+    form = SignupForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    password=form.password.data,
+                    gender=form.gender.data)  # Capture the gender data
+        # db.session.add(user)
+        # db.session.commit()
+        return redirect(url_for('login'))  # Redirect after signup
+    return render_template('signup2.html', form=form)
