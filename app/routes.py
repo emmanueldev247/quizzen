@@ -46,6 +46,7 @@ def signup():
             return jsonify({'success': True, 'message': 'User registered successfully'}), 201
         except Exception as e:
             db.session.rollback()
+            print(f'error: {str(e)}')
             return jsonify({'success': False, 'message': 'Error saving user', 'error': str(e)}), 500
        
         # flash('Registration successful! Please log in.', 'success')
