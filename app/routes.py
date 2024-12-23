@@ -29,9 +29,17 @@ def signup():
                         gender=gender, role=role)
         new_user.set_password(password)
 
-        db.session.add(new_user)
-        db.session.commit()
-
+#        db.session.add(new_user)
+ #       db.session.commit()
+        print(f'''
+            email is: {email}
+            first name is: {first_name}
+            last name is: {last_name}
+            gender is: {gender}
+            role is: {role}
+            password is: {password}
+        '''
+        )
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('full_bp.login'))
     return render_template('signup.html', title='Sign up')
