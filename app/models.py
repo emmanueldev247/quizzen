@@ -54,7 +54,7 @@ class User(db.Model):
     quiz_history = db.relationship('QuizHistory', backref='user',
                                    cascade='all, delete-orphan', lazy=True)
 
-    def set_pasword(self, password):
+    def set_password(self, password):
         """
         Hashes and sets the user's password.
 
