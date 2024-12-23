@@ -12,22 +12,23 @@ def home():
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        date_of_birth = request.form['dob']
-        role = request.form['role']
-        gender = request.form['gender']
+        print("request.form: ",request.form)
+        email = request.form.get('email')
+        password = request.form.get('password')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        date_of_birth = request.form.get('dob')
+        role = request.form.get('role')
+        gender = request.form.get('gender')
 
         # if User.query.filter_by(email=email).first():
         #     flash('Email already registered', 'danger')
         #     return redirect(url_for('full_bp.signup'))
 
-        new_user = User(username=email, email=email, first_name=first_name,
-                        last_name=last_name, date_of_birth=date_of_birth, 
-                        gender=gender, role=role)
-        new_user.set_password(password)
+        #new_user = User(username=email, email=email, first_name=first_name,
+                        # last_name=last_name, date_of_birth=date_of_birth, 
+                        # gender=gender, role=role)
+        #new_user.set_password(password)
 
 #        db.session.add(new_user)
  #       db.session.commit()
