@@ -103,6 +103,11 @@ h4 {
     background: #a94dd0; 
 }
 
+.signup-form button:disabled {
+    background: #a94dd0; 
+    cursor: not-allowed;
+}
+
 .social-signup {
     text-align: center;
 }

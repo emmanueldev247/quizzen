@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block child_content %}
 	<div class="signup-container" id="signup-container">
-		<form method="POST" class="signup-form" id="signup-form" action="/quizzen/signup">
+		<form method="POST" class="signup-form" id="signup-form">
 			<h2>Welcome to Quizzen</h2>
 			<h4>Create a free account in few steps</h4>
 			<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
@@ -77,7 +77,7 @@
 				<div id="c_password-error" class="error-message" style="display: none;">Please confirm your password
 				</div>
 				<div id="c_password-error2" class="error-message" style="display: none;">Passwords do not match!</div>
-				<button type="submit" id="register-button">Register</button>
+				<button type="submit" id="submit-button">Submit</button>
 			</div>
 		</form>
 		<div class="social-signup" id="social-signup">

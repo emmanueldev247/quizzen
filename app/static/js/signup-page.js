@@ -26,7 +26,7 @@ const contBtnNames = document.getElementById("continue-button-names");
 const contBtnGender = document.getElementById("continue-button-gender");
 const contBtnRole = document.getElementById("continue-button-role");
 const contBtnDob = document.getElementById("continue-button-dob");
-const registerBtn = document.getElementById("register-button");
+const submitBtn = document.getElementById("submit-button");
 
 contBtnEmail.addEventListener("click", () => {
   const email = document.getElementById("email").value;
@@ -104,7 +104,7 @@ contBtnDob.addEventListener("click", () => {
   document.getElementById("password-container").style.display = "block";
 });
 
-registerBtn.addEventListener("click", (event) => {
+submitBtn.addEventListener("click", (event) => {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("c_password").value;
   const passwordError = document.getElementById("password-error");
@@ -158,12 +158,15 @@ registerBtn.addEventListener("click", (event) => {
 });
 
 document.getElementById("signup-form").addEventListener("submit", function(event) {
-  event.preventDefault();  // Prevent the default form submission behavior
+  event.preventDefault();  
 
-  // Get form data
-  let formData = new FormData(document.getElementById("signup-form"));
-  // formData.append("gender", document.getElementById("gender").value);  // Ensure gender is included
-
+  submitBtn.textContent = "Submitting..."
+  submitBtn.disabled = true;
+  
+  const formData = new FormData(this);
+  
+  console.log(`form data is: ${formData}`)
+  
   // Send POST request to backend
   fetch("/quizzen/signup", {
       method: "POST",
@@ -173,13 +176,21 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   .then(data => {
       if (data.success) {
           // Redirect or show success message
-          window.location.href = "/success";
+          window.location.href = "/quizzen/login";
       } else {
           // Show error message
           alert("Something went wrong!");
       }
   })
-  .catch(error => console.error("Error:", error));
+  .catch(error => {
+    console.error("Error:", error);
+    alert("Something went wrong!");
+  })
+  .finally(() => {
+    // Reset button text and re-enable it
+    submitBtn.textContent = "Submit";
+    submitBtn.disabled = false;
+  }); 
 });
 
 
