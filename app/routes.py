@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint
 from app.extensions import db, bcrypt
 from app.models import User
+from datetime import datetime
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -12,7 +13,6 @@ def home():
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        print("request.form: ",request.form)
         email = request.form.get('email').strip()
         password = request.form.get('password')
         first_name = request.form.get('first_name').strip()
@@ -21,30 +21,33 @@ def signup():
         role = request.form.get('role').strip()
         gender = request.form.get('gender').strip()
 
-        # if User.query.filter_by(email=email).first():
-        #     flash('Email already registered', 'danger')
-        #     return redirect(url_for('full_bp.signup'))
+        if User.query.filter_by(email=email).first():
+            flash('Email already registered', 'danger')
+            return jsonify({'success': False, 'message': 'Email already exists'}), 400
+            # return redirect(url_for('full_bp.signup'))
 
-        #new_user = User(username=email, email=email, first_name=first_name,
-                        # last_name=last_name, date_of_birth=date_of_birth, 
-                        # gender=gender, role=role)
-        #new_user.set_password(password)
+        try:
+            new_user = User(
+                username=email, 
+                email=email, 
+                first_name=first_name,
+                last_name=last_name, 
+                date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d'), 
+                gender=gender, 
+                role=role
+            )
+            new_user.set_password(password)
 
-#        db.session.add(new_user)
- #       db.session.commit()
-        print(f'''
-            email is: {email}
-            first name is: {first_name}
-            last name is: {last_name}
-            gender is: {gender}
-            role is: {role}
-            password is: {password}
-            date of birth: {date_of_birth}
-        '''
-        )
-        flash('Registration successful! Please log in.', 'success')
-        return redirect(url_for('full_bp.login'))
-    return render_template('signup.html', title='Sign up')
+            db.session.add(new_user)
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'User registered successfully'}), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Error saving user', 'error': str(e)}), 500
+       
+    #     flash('Registration successful! Please log in.', 'success')
+    #     return redirect(url_for('full_bp.login'))
+    # return render_template('signup.html', title='Sign up')
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
