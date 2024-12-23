@@ -218,7 +218,7 @@ class Category(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text, nullable=True)
     quizzes = db.relationship('Quiz',
-                              backref=db.backref('category',
+                              backref=db.backref('related_category',
                                                  passive_deletes=True),
                               lazy=True)
 
