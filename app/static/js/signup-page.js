@@ -92,7 +92,7 @@ contBtnRole.addEventListener("click", () => {
 });
 
 contBtnDob.addEventListener("click", () => {
-  const dob = document.getElementById("dob").value;
+  const dob = document.getElementById("date_of_birth").value;
   const dobError = document.getElementById("dob-error");
   dobError.style.display = "none";
 
