@@ -26,6 +26,7 @@ def signup():
 
         if User.query.filter_by(email=email).first():
             flash('Email already registered', 'danger')
+            print(f'user exist')
             return jsonify({'success': False, 'message': 'Email already exists'}), 400
             # return redirect(url_for('full_bp.signup'))
 
