@@ -17,7 +17,7 @@ def signup():
         password = request.form.get('password')
         first_name = request.form.get('first_name').strip()
         last_name = request.form.get('last_name').strip()
-        date_of_birth = request.form.get('dob').strip()
+        date_of_birth = request.form.get('date_of_birth').strip()
         role = request.form.get('role').strip()
         gender = request.form.get('gender').strip()
 
