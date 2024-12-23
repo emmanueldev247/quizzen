@@ -19,7 +19,7 @@ Modules Imported:
 - `flask_login.LoginManager`: To manage user authentication & session handling.
 - `app.routes.full_bp`: The main application blueprint for routing.
 - `app.extensions`: Custom application extensions for database (`db`),
-  password hashing (`bcrypt`), and session management (`session`).
+  password hashing (`bcrypt`), session management (`session`) and migration Object (`migrate`)
 
 Note:
 Sensitive values such as secret keys and database credentials are managed
@@ -32,7 +32,7 @@ import secrets
 from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
-from app.extensions import db, bcrypt, session
+from app.extensions import db, bcrypt, session, migrate
 from app import routes
 
 
@@ -69,5 +69,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 db.init_app(app)
 bcrypt.init_app(app)
 session.init_app(app)
+migrate.init_app(app, db)
 
 app.register_blueprint(routes.full_bp)
