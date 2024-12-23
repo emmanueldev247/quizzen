@@ -42,13 +42,13 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     profile_picture = db.Column(db.String(255))
-    role = db.Column(db.String(50), default='user')  # Role: user/admin
+    role = db.Column(Enum('user', 'admin', name='role_types'), default='user')
     gender = db.Column(db.String(10), nullable=False)
     quiz_history = db.relationship('QuizHistory', backref='quiz',
                                    cascade='all, delete-orphan', lazy=True)
@@ -60,6 +60,8 @@ class User(db.Model):
         Args:
             password (str): The plaintext password to be hashed.
         """
+        if not password:
+            raise ValueError("Password cannot be empty")
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
@@ -72,6 +74,8 @@ class User(db.Model):
         Returns:
             bool: True if the password matches, False otherwise.
         """
+        if not password:
+            return False
         return check_password_hash(self.password_hash, password)
 
 
@@ -95,18 +99,22 @@ class Quiz(db.Model):
           represented by the `questions` relationship.
     """
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255), nullable=False,
+                      default='No description provided')
     description = db.Column(db.Text, nullable=True)
     category = db.Column(db.String(100), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id',
+                                                      ondelete='SET NULL'),
+                            nullable=True)
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'),
                            nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
     public = db.Column(db.Boolean, default=True)  # Public or private quiz
     questions = db.relationship('Question',
                                 backref=db.backref('quiz',
                                                    passive_deletes=True),
-                                lazy=True)
+                                cascade='all, delete-orphan', lazy=True)
     quiz_history = db.relationship('QuizHistory',
                                    backref='quiz',
                                    cascade='all, delete-orphan', lazy=True)
@@ -131,7 +139,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quiz_id = db.Column(db.Integer,
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
-                        nullable=False)
+                        nullable=False, index=True)
     question_text = db.Column(db.String(512), nullable=False)
     """Store answer choices as a list in JSON format"""
     answer_choices = db.Column(db.JSON, nullable=False)
@@ -164,7 +172,8 @@ class QuizHistory(db.Model):
                         nullable=False)
     score = db.Column(db.Integer, nullable=False)  # Store the total score
     date_taken = db.Column(db.DateTime, default=datetime.utcnow)
-    answers = db.relationship('UserAnswer', backref='quiz_history', lazy=True)
+    answers = db.relationship('UserAnswer', backref='quiz_history', 
+                              cascade='all, delete-orphan', lazy=True)
 
 
 class UserAnswer(db.Model):
@@ -251,5 +260,5 @@ class Notification(db.Model):
                         db.ForeignKey('user.id', ondelete='CASCADE'),
                         nullable=False)
     message = db.Column(db.String(255), nullable=False)
-    is_read = db.Column(db.Boolean, default=False)
+    is_read = db.Column(db.Boolean, default=False, index=True)
     date_sent = db.Column(db.DateTime, default=datetime.utcnow)
