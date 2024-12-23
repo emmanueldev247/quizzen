@@ -51,7 +51,7 @@ class User(db.Model):
     profile_picture = db.Column(db.String(255))
     role = db.Column(Enum('user', 'admin', name='role_types', create_type=True), default='user')
     gender = db.Column(Enum('male', 'female', 'others', name='gender_types', create_type=True), default='others', nullable=False)
-    quiz_history = db.relationship('QuizHistory', backref='quiz',
+    quiz_history = db.relationship('QuizHistory', backref='user',
                                    cascade='all, delete-orphan', lazy=True)
 
     def set_pasword(self, password):
