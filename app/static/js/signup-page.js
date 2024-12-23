@@ -153,9 +153,35 @@ registerBtn.addEventListener("click", (event) => {
   cPasswordError2.style.display = "none";
   passwordStrengthError.style.display = "none";
 
-  event.preventDefault(); // Prevent form submission
-  alert("Passwords match. Bro Implement Login");
+  // event.preventDefault(); // Prevent form submission
+  // alert("Passwords match. Bro Implement Login");
 });
+
+document.getElementById("signup-form").addEventListener("submit", function(event) {
+  event.preventDefault();  // Prevent the default form submission behavior
+
+  // Get form data
+  let formData = new FormData(document.getElementById("signup-form"));
+  // formData.append("gender", document.getElementById("gender").value);  // Ensure gender is included
+
+  // Send POST request to backend
+  fetch("/signup", {
+      method: "POST",
+      body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          // Redirect or show success message
+          window.location.href = "/success";
+      } else {
+          // Show error message
+          alert("Something went wrong!");
+      }
+  })
+  .catch(error => console.error("Error:", error));
+});
+
 
 document.querySelectorAll(".toggle-password").forEach((icon) => {
   icon.addEventListener("click", function () {
