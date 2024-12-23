@@ -12,27 +12,28 @@ def home():
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         date_of_birth = request.form['date_of_birth']
         role = request.form['role']
+        gender = request.form['gender']
 
         if User.query.filter_by(email=email).first():
             flash('Email already registered', 'danger')
-            return redirect(url_for('login'))
+            return redirect(url_for('full_bp.signup'))
 
         new_user = User(username=username, email=email, first_name=first_name,
-                        last_name=last_name, date_of_birth=date_of_birth, role=role)
+                        last_name=last_name, date_of_birth=date_of_birth, 
+                        gender=gender, role=role)
         new_user.set_password(password)
 
         db.session.add(new_user)
         db.session.commit()
 
         flash('Registration successful! Please log in.', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('full_bp.login'))
     return render_template('signup.html', title='Sign up')
 
 
@@ -47,7 +48,7 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('full_bp.dashboard'))
         flash('Invalid credentials', 'danger')
     return render_template('login.html', title='Login')
 
@@ -55,28 +56,28 @@ def login():
 def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('full_bp.home'))
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, PasswordField, SubmitField
+# from wtforms.validators import DataRequired, Email
 
-class SignupForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    gender = StringField('Gender', validators=[DataRequired()])  # New gender field
-    submit = SubmitField('Sign Up')
+# class SignupForm(FlaskForm):
+#     username = StringField('Username', validators=[DataRequired()])
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     gender = StringField('Gender', validators=[DataRequired()])  # New gender field
+#     submit = SubmitField('Sign Up')
 
-@full_bp.route('/signup2', methods=['GET', 'POST'])
-def signup2():
-    form = SignupForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data,
-                    email=form.email.data,
-                    password=form.password.data,
-                    gender=form.gender.data)  # Capture the gender data
-        # db.session.add(user)
-        # db.session.commit()
-        return redirect(url_for('login'))  # Redirect after signup
-    return render_template('signup2.html', form=form)
+# @full_bp.route('/signup2', methods=['GET', 'POST'])
+# def signup2():
+#     form = SignupForm()
+#     if form.validate_on_submit():
+#         user = User(username=form.username.data,
+#                     email=form.email.data,
+#                     password=form.password.data,
+#                     gender=form.gender.data)  # Capture the gender data
+#         # db.session.add(user)
+#         # db.session.commit()
+#         return redirect(url_for('login'))  # Redirect after signup
+#     return render_template('signup2.html', form=form)
