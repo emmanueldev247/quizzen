@@ -165,7 +165,7 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   // formData.append("gender", document.getElementById("gender").value);  // Ensure gender is included
 
   // Send POST request to backend
-  fetch("/signup", {
+  fetch("/quizzen/signup", {
       method: "POST",
       body: formData
   })

@@ -16,15 +16,15 @@ def signup():
         password = request.form['password']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
-        date_of_birth = request.form['date_of_birth']
+        date_of_birth = request.form['dob']
         role = request.form['role']
         gender = request.form['gender']
 
-        if User.query.filter_by(email=email).first():
-            flash('Email already registered', 'danger')
-            return redirect(url_for('full_bp.signup'))
+        # if User.query.filter_by(email=email).first():
+        #     flash('Email already registered', 'danger')
+        #     return redirect(url_for('full_bp.signup'))
 
-        new_user = User(username=username, email=email, first_name=first_name,
+        new_user = User(username=email, email=email, first_name=first_name,
                         last_name=last_name, date_of_birth=date_of_birth, 
                         gender=gender, role=role)
         new_user.set_password(password)
