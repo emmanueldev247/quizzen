@@ -88,6 +88,7 @@ loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
   loginButton = document.getElementById("login-button");
+  submitBtn.textContent = "Loading";
   loginButton.disabled = true;
 
   const formData = new FormData(this);
@@ -118,7 +119,10 @@ loginForm.addEventListener("submit", function (event) {
       console.log(`Error: ${error}`);
     })
     .finally(() => {
-      loginButton.disabled = false;
+      setTimeout(() => {
+        loginButton.disabled = false;
+        submitBtn.textContent = "Log in";
+      }, 3000);
     });
 });
 
