@@ -69,7 +69,7 @@ def login():
         except Exception as e:
             return jsonify(
                 {'success': False, 'message': 'Form data not valid', 'error': str(e)}
-            ), 401
+            ), 400
 
         try:
             user = User.query.filter_by(email=email).first()
