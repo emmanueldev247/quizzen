@@ -98,7 +98,7 @@ loginForm.addEventListener("submit", function (event) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 404)
+        if (response.status === 401)
           showNotification("Invalid Credentials", "error");
         else
           showNotification(

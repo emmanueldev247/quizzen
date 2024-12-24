@@ -207,7 +207,6 @@ submitBtn.addEventListener("click", (event) => {
 signupForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  submitBtn.textContent = "Submitting...";
   submitBtn.disabled = true;
 
   const formData = new FormData(this);
