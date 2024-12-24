@@ -140,6 +140,41 @@ input#check {
 }
 
 
+/* Notification styles */
+.notification {
+    width: 60%;
+    max-width: 65%;
+    padding: 15px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    transition: all 0.3s ease;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.notification.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    background-color: #2f7c30;
+    color: white;
+}
+
+.notification.error {
+    background-color: #F44336;
+    color: white;
+}
 
 /* STOP HERE!!!!!!!!!!!!!!!! */
 .icons {
