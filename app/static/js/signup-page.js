@@ -41,7 +41,7 @@ document.querySelectorAll(".role-option").forEach((option) => {
   });
 });
 
-// show/hide password toggle 
+// show/hide password toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
   icon.addEventListener("click", function () {
     const passwordField = document.getElementById("password");
@@ -67,7 +67,6 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
   });
 });
 
-
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
 const contBtnNames = document.getElementById("continue-button-names");
@@ -84,7 +83,10 @@ contBtnEmail.addEventListener("click", () => {
     emailError.style.display = "block";
     return;
   }
-  emailError.style.display = contBtnEmail.style.display = "none";
+  emailError.style.display =
+    contBtnEmail.style.display =
+    socialSignup.style.display =
+      "none";
   document.getElementById("first-name-container").style.display = "block";
 });
 
@@ -259,8 +261,8 @@ document
 function showNotification(message, type) {
   const notification = document.getElementById("notification");
   notification.textContent = message;
-  notification.className = `notification ${type}`; 
-  
+  notification.className = `notification ${type}`;
+
   notification.classList.add("visible");
 
   // Hide the notification after 5 seconds
