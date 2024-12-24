@@ -207,6 +207,7 @@ submitBtn.addEventListener("click", (event) => {
 signupForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
+  submitBtn.textContent = "Registering...";
   submitBtn.disabled = true;
 
   const formData = new FormData(this);
@@ -249,6 +250,8 @@ signupForm.addEventListener("submit", function (event) {
       console.error("Error:", error);
     })
     .finally(() => {
+      // Reset button text and re-enable it
+      submitBtn.textContent = "Register";
       submitBtn.disabled = false;
     });
 });
