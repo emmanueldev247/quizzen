@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 loginForm.addEventListener("submit", function (event) {
-  event.preventDefault;
+  event.preventDefault();
 
   loginButton = document.getElementById("login-button");
   loginButton.disabled = true;
