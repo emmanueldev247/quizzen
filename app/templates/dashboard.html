@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block child_content %}
+
+    <h2>Welcome, {{ session['username'] }}</h2>
+    <p>This is your dashboard.</p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock child_content %}
