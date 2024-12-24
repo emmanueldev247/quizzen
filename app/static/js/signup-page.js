@@ -221,7 +221,7 @@ document
         if (!response.ok) {
           if (response.status === 400) {
             showNotification(
-              "Email already exists. Please try again.",
+              "An account already exists for this email. Please use the button above to log in or register another email",
               "error"
             );
           } else {
@@ -263,11 +263,11 @@ function showNotification(message, type) {
   
   // Show the notification
   notification.style.display = "block";
-  // notification.classList.add("visible");
+  notification.classList.add("visible");
 
   // Hide the notification after 5 seconds
   setTimeout(() => {
     notification.style.display = "none";
-    // notification.classList.remove("visible");
+    notification.classList.remove("visible");
   }, 5000); // 5 seconds
 }
