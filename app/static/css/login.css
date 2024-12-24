@@ -252,20 +252,20 @@ form {
 }
 
 .login-warning {
-    display: none; /* Hidden by default */
+    display: none;
     margin-bottom: 1rem;
     padding: 0.8rem;
     border: 1px solid #f5c6cb;
     background-color: #f8d7da;
     color: #721c24;
     border-radius: 5px;
-    font-size: 0.9rem;
-    display: flex;
+    font-size: 1rem;
+    font-weight: bold;
     align-items: center;
     gap: 0.5rem;
   }
   
   .login-warning .alert-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
   
