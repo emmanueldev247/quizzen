@@ -119,10 +119,8 @@ loginForm.addEventListener("submit", function (event) {
       console.log(`Error: ${error}`);
     })
     .finally(() => {
-      setTimeout(() => {
         loginButton.disabled = false;
         loginButton.textContent = "Log in";
-      }, 3000);
     });
 });
 
