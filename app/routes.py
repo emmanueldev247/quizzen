@@ -77,9 +77,8 @@ def login():
             if user and user.check_password(password):
                 session['user_id'] = user.id
                 session['username'] = user.username
-                flash('Login successful!', 'success')
-                return redirect(url_for('full_bp.dashboard'))
-            flash('Invalid credentials', 'danger')
+                return jsonify({"success": True, "message": "Login successful"}), 200
+            return jsonify({"success": False, "message": "Invalid Credentials"}), 401
         except Exception as e:
             return jsonify({'success': False, 'message': 'Server error', 'error': str(e)}), 500
   

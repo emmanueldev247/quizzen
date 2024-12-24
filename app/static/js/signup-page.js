@@ -249,8 +249,6 @@ signupForm.addEventListener("submit", function (event) {
       console.error("Error:", error);
     })
     .finally(() => {
-      // Reset button text and re-enable it
-      submitBtn.textContent = "Submit";
       submitBtn.disabled = false;
     });
 });
