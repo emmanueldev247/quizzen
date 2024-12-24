@@ -3,5 +3,5 @@
 
     <h2>Welcome, {{ session['username'] }}</h2>
     <p>This is your dashboard.</p>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('full_bp.logout') }}">Logout</a>
 {% endblock child_content %}
