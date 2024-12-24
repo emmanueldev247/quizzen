@@ -83,3 +83,51 @@ document.addEventListener("DOMContentLoaded", function () {
     showLoginForm();
   }, 200);
 });
+
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault;
+
+  loginButton = document.getElementById("login-button");
+  loginButton.disabled = true;
+
+  const formData = new FormData(this);
+
+  fetch("/quizzen/login", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 404)
+          showNotification("Invalid Credentials", "error");
+        else
+          showNotification(
+            "Something went wrong. Please try again later.",
+            "error"
+          );
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        window.location.href = "/quizzen/dashboard";
+      }
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`)
+    })
+    .finally(() => {
+      loginButton.disabled = false;
+    })
+});
+
+function showNotification(message, type){
+  const notification = document.getElementById('notification');
+  notification.textContent = message;
+  notification.className = `notification ${type}`;
+  notification.classList.add = 'visible';
+  setTimeout(() => {
+    notification.classList.remove = 'visible';
+  }, 5000)
+}
