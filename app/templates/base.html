@@ -46,12 +46,14 @@
 			</ul>
 		</nav>
 	</header>
-	<div id="notification" class="notification"></div>
+	<div id="notification" class="notification" aria-live="polite"></div>
 	{% block child_content %}
 	{% endblock child_content %}
 
+	<script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>	
 	{% block scripts %}
 	{% endblock scripts %}
+
 </body>
 
 </html>

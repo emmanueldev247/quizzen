@@ -1,3 +1,5 @@
+import { showNotification } from "./utils.js";
+
 // show/hide password icon toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
   icon.addEventListener("click", function () {
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 200);
 });
 
-loginForm.addEventListener("submit", function (event) {
+loginForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   loginButton = document.getElementById("login-button");
@@ -120,19 +122,14 @@ loginForm.addEventListener("submit", function (event) {
     })
     .catch((error) => {
       console.log(`Error: ${error}`);
+      if (error.message === "Failed to fetch")
+        showNotification(
+          "Network error. Please check your connection.",
+          "error"
+        );
     })
     .finally(() => {
       loginButton.disabled = false;
       loginButton.textContent = "Log in";
     });
 });
-
-function showNotification(message, type) {
-  const notification = document.getElementById("notification");
-  notification.textContent = message;
-  notification.className = `notification ${type}`;
-  notification.classList.add("visible");
-  setTimeout(() => {
-    notification.classList.remove("visible");
-  }, 5000);
-}

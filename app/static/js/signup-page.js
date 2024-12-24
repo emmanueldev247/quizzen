@@ -1,4 +1,5 @@
-// animated entry
+import { showNotification } from "./utils.js";
+
 // Get the elements
 const signupForm = document.getElementById("signup-form");
 const socialSignup = document.getElementById("social-signup");
@@ -255,16 +256,3 @@ signupForm.addEventListener("submit", function (event) {
       submitBtn.disabled = false;
     });
 });
-
-function showNotification(message, type) {
-  const notification = document.getElementById("notification");
-  notification.textContent = message;
-  notification.className = `notification ${type}`;
-
-  notification.classList.add("visible");
-
-  // Hide the notification after 5 seconds
-  setTimeout(() => {
-    notification.classList.remove("visible");
-  }, 5000);
-}
