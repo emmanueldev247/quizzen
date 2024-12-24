@@ -262,12 +262,12 @@ function showNotification(message, type) {
   notification.className = `notification ${type}`; 
   
   // Show the notification
-  notification.style.display = "block";
+  // notification.style.display = "block";
   notification.classList.add("visible");
 
   // Hide the notification after 5 seconds
   setTimeout(() => {
-    notification.style.display = "none";
+    // notification.style.display = "none";
     notification.classList.remove("visible");
   }, 5000); // 5 seconds
 }
