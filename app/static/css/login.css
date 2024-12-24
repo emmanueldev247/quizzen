@@ -132,7 +132,6 @@ form {
 }
 
 .login-form button:focus {
-    border: 2px solid #6a0dad;
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
 }
