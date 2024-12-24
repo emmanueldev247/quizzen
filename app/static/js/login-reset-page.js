@@ -104,7 +104,6 @@ loginForm.addEventListener("submit", function (event) {
       if (!response.ok) {
         if (response.status === 401) {
           warningCard.style.display = "flex";
-          showNotification("Invalid Credentials", "error");
         } else
           showNotification(
             "Something went wrong. Please try again later.",
