@@ -16,19 +16,27 @@ def home():
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form.get('email').strip()
-        password = request.form.get('password')
-        first_name = request.form.get('first_name').strip()
-        last_name = request.form.get('last_name').strip()
-        date_of_birth = request.form.get('date_of_birth').strip()
-        role = request.form.get('role').strip()
-        gender = request.form.get('gender').strip()
+        try:
+            email = request.form.get('email').strip()
+            password = request.form.get('password')
+            first_name = request.form.get('first_name').strip()
+            last_name = request.form.get('last_name').strip()
+            date_of_birth = request.form.get('date_of_birth').strip()
+            role = request.form.get('role').strip()
+            gender = request.form.get('gender').strip()
+        except Exception as e:
+            return jsonify(
+                {'success': False, 'message': 'Form data not valid', 'error': str(e)}
+            ), 401
 
-        if User.query.filter_by(email=email).first():
-            flash('Email already registered', 'danger')
-            print(f'user exist')
-            return jsonify({'success': False, 'message': 'Email already exists'}), 400
-            # return redirect(url_for('full_bp.signup'))
+        try:
+            if User.query.filter_by(email=email).first():
+                flash('Email already registered', 'danger')
+                print(f'user exist')
+                return jsonify({'success': False, 'message': 'Email already exists'}), 400
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Server error', 'error': str(e)}), 500
 
         try:
             new_user = User(
@@ -47,27 +55,33 @@ def signup():
             return jsonify({'success': True, 'message': 'User registered successfully'}), 201
         except Exception as e:
             db.session.rollback()
-            print(f'error: {str(e)}')
             return jsonify({'success': False, 'message': 'Error saving user', 'error': str(e)}), 500
        
-        # flash('Registration successful! Please log in.', 'success')
-        # return redirect(url_for('full_bp.login'))
     return render_template('signup.html', title='Sign up')
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        try: 
+            email = request.form.get('email').strip()
+            password = request.form.get('password')
+        except Exception as e:
+            return jsonify(
+                {'success': False, 'message': 'Form data not valid', 'error': str(e)}
+            ), 401
 
-        if user and user.check_password(password):
-            session['user_id'] = user.id
-            session['username'] = user.username
-            flash('Login successful!', 'success')
-            return redirect(url_for('full_bp.dashboard'))
-        flash('Invalid credentials', 'danger')
+        try:
+            user = User.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                session['user_id'] = user.id
+                session['username'] = user.username
+                flash('Login successful!', 'success')
+                return redirect(url_for('full_bp.dashboard'))
+            flash('Invalid credentials', 'danger')
+        except Exception as e:
+            return jsonify({'success': False, 'message': 'Server error', 'error': str(e)}), 500
+  
     return render_template('login.html', title='Login')
 
 @full_bp.route('/logout')
@@ -75,27 +89,3 @@ def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
     return redirect(url_for('full_bp.home'))
-
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, PasswordField, SubmitField
-# from wtforms.validators import DataRequired, Email
-
-# class SignupForm(FlaskForm):
-#     username = StringField('Username', validators=[DataRequired()])
-#     email = StringField('Email', validators=[DataRequired(), Email()])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     gender = StringField('Gender', validators=[DataRequired()])  # New gender field
-#     submit = SubmitField('Sign Up')
-
-# @full_bp.route('/signup2', methods=['GET', 'POST'])
-# def signup2():
-#     form = SignupForm()
-#     if form.validate_on_submit():
-#         user = User(username=form.username.data,
-#                     email=form.email.data,
-#                     password=form.password.data,
-#                     gender=form.gender.data)  # Capture the gender data
-#         # db.session.add(user)
-#         # db.session.commit()
-#         return redirect(url_for('login'))  # Redirect after signup
-#     return render_template('signup2.html', form=form)
