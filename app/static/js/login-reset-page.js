@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 200);
 });
 
-loginForm.addEventListener("submit", async function (event) {
+loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
   loginButton = document.getElementById("login-button");
@@ -94,8 +94,6 @@ loginForm.addEventListener("submit", async function (event) {
   loginButton.disabled = true;
 
   const warningCard = document.getElementById("login-warning");
-  //warningCard.style.display = "none";
-
   const formData = new FormData(this);
 
   fetch("/quizzen/login", {
@@ -131,5 +129,54 @@ loginForm.addEventListener("submit", async function (event) {
     .finally(() => {
       loginButton.disabled = false;
       loginButton.textContent = "Log in";
+    });
+});
+
+resetPasswordForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  resetPasswordButton = document.getElementById("reset-password-button");
+  resetPasswordButton.textContent = "Resetting password...";
+  resetPasswordButton.disabled = true;
+
+  const warningCard = document.getElementById("reset-password-warning");
+  const formData = new FormData(this);
+
+  fetch("/quizzen/reset_password", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 404) {
+          warningCard.style.display = "flex";
+        } else
+          showNotification(
+            "Something went wrong. Please try again later.",
+            "error"
+          );
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        showNotification(
+          "A link has been sent to your email. For your safety, this link expires in 30 minutes and can only be used once.",
+          "success"
+        );
+      }
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+      if (error.message === "Failed to fetch")
+        showNotification(
+          "Network error. Please check your connection.",
+          "error"
+        );
+    })
+    .finally(() => {
+      resetPasswordButton.disabled = false;
+      resetPasswordButton.textContent = "Reset password";
     });
 });

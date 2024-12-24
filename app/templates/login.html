@@ -20,12 +20,18 @@
 			</div>
 
 			<a href="javascript:void(0)" class="forgot-password" id="forgot-password">Forgot Password?</a>
-			<button type="submit" id="login-button" aria-label="Login to your account">Login</button>
+			<button type="submit" id="login-button" aria-label="Login to your account">Log in</button>
 		</form>
 
 		<!-- Reset Password Form (Initially Hidden) -->
 		<form class="login-form" id="reset-password-form" style="display: none;">
 			<h2>Reset Password</h2>
+			<div id="reset-password-warning" class="login-warning" style="display: none;" aria-live="polite">
+				<div class="alert-icon">
+					<i class="fa-solid fa-triangle-exclamation"></i>
+				</div>
+				<span>No account associated with email provided</span>
+			</div>
 			<p>Please enter the email associated with your account</p>
 			<input type="email" id="email2" name="email" placeholder="Email" aria-label="Emmanuel Address" required
 				autocomplete="email">
@@ -33,7 +39,7 @@
 				<i class='bx bx-arrow-back'></i>
 				<span>Back to login</span>
 			</a>
-			<button type="submit">Get Reset Link</button>
+			<button type="submit" id="reset-password-button" aria-label="Reset your password">Reset password</button>
 			<!-- A link has been sent to mailemmydee@gmail.com. For your safety, this link expires in 24 hours and can only be used once. -->
 		</form>
 		<div class="social-login" id="social-login">

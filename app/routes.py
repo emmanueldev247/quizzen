@@ -3,9 +3,12 @@ from flask import (
     redirect, render_template, request, 
     session, url_for
     )
-from app.extensions import db, bcrypt
+from flask_mail import Message
+from app import app
+from app.extensions import db, bcrypt, mail
 from app.models import User
 from datetime import datetime
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -84,6 +87,55 @@ def login():
   
     return render_template('login.html', title='Login')
 
+@full_bp.route('/reset_password', methods=['POST'])
+def reset_password():
+    try:
+        email = request.form.get('email').strip()
+    except Exception as e:
+        return jsonify(
+            {'success': False, 'message': 'Form data not valid', 'error': str(e)}
+        ), 400
+
+    try:
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({'success': False, "message": "Email not found"}), 404
+        s = Serializer(app.config['SECRET_KEY'], expires_in=1800)  
+        token = s.dumps({'user_id': user.id}).decode('utf-8')
+
+        reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
+
+        msg = Message('Password Reset Request', recipients=[email])
+        msg.body = f'Click the link to reset your password: {reset_link}'
+        mail.send(msg)
+        return jsonify({"message": "Password reset link sent to your email!"}), 200
+    except Exception as e:
+        return jsonify({"message": "Failed to send email. Please try again later."}), 500
+    
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_with_token(token):
+    try:
+        s = Serializer(app.config['SECRET_KEY'])
+        data = s.loads(token)
+    except BadSignature:
+        return jsonify({"message": "Invalid or expired token."}), 400
+    
+    user = User.query.get(data['user_id'])
+    if not user:
+        return jsonify({"message": "User not found."}), 404
+    
+    if request.method == 'POST':
+        new_password = request.form.get('password')
+        if not new_password:
+            return jsonify({"message": "Password cannot be empty."}), 400
+        
+        user.set_password(new_password)
+        db.session.commit()
+        return jsonify({"message": "Password successfully reset."}), 200
+
+    return jsonify({"message": "Use the POST method to reset your password."}), 405
+
+    
 @full_bp.route('/logout')
 def logout():
     session.pop('user_id', None)
