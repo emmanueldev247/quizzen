@@ -89,3 +89,7 @@ def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
     return redirect(url_for('full_bp.home'))
+
+@full_bp.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html', title='Dashboard')
