@@ -1,3 +1,24 @@
+// animated entry
+// Get the elements
+const signupForm = document.getElementById("signup-form");
+const socialSignup = document.getElementById("social-signup");
+const loginLink = document.getElementById("login-link");
+const signupContainer = document.getElementById("signup-container");
+
+// Show the login form
+function showSignupForm() {
+  signupForm.classList.add("visible");
+  socialSignup.classList.add("visible");
+  loginLink.classList.add("visible");
+}
+
+// Initialize by showing the signup form
+document.addEventListener("DOMContentLoaded", function () {
+  setTimeout(() => {
+    showSignupForm();
+  }, 200);
+});
+
 // Gender icon select
 document.querySelectorAll(".gender-option").forEach((option) => {
   option.addEventListener("click", function () {
@@ -19,6 +40,33 @@ document.querySelectorAll(".role-option").forEach((option) => {
     this.classList.add("selected");
   });
 });
+
+// show/hide password toggle 
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+  icon.addEventListener("click", function () {
+    const passwordField = document.getElementById("password");
+    const confirmPasswordField = document.getElementById("c_password");
+
+    // Check the current state of password visibility
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      confirmPasswordField.type = "text";
+
+      this.classList.remove("fa-eye");
+      this.classList.add("fa-eye-slash");
+      this.setAttribute("title", "Hide password");
+    } else {
+      // Set both password fields to 'password' (hide passwords)
+      passwordField.type = "password";
+      confirmPasswordField.type = "password";
+
+      this.classList.remove("fa-eye-slash");
+      this.classList.add("fa-eye");
+      this.setAttribute("title", "Show password");
+    }
+  });
+});
+
 
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
@@ -152,90 +200,74 @@ submitBtn.addEventListener("click", (event) => {
   cPasswordError.style.display = "none";
   cPasswordError2.style.display = "none";
   passwordStrengthError.style.display = "none";
-
-  // event.preventDefault(); // Prevent form submission
-  // alert("Passwords match. Bro Implement Login");
 });
 
-document.getElementById("signup-form").addEventListener("submit", function(event) {
-  event.preventDefault();  
+document
+  .getElementById("signup-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  submitBtn.textContent = "Submitting..."
-  submitBtn.disabled = true;
-  
-  const formData = new FormData(this);
-  
-  console.log(`form data is: ${formData}`)
-  
-  // Send POST request to backend
-  fetch("/quizzen/signup", {
+    submitBtn.textContent = "Submitting...";
+    submitBtn.disabled = true;
+
+    const formData = new FormData(this);
+
+    // Send POST request to backend
+    fetch("/quizzen/signup", {
       method: "POST",
-      body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.success) {
-          // Redirect or show success message
-          window.location.href = "/quizzen/login";
-      } else {
-          // Show error message
-          alert("Something went wrong!");
-      }
-  })
-  .catch(error => {
-    console.error("Error:", error);
-    alert("Something went wrong!");
-  })
-  .finally(() => {
-    // Reset button text and re-enable it
-    submitBtn.textContent = "Submit";
-    submitBtn.disabled = false;
-  }); 
-});
-
-
-document.querySelectorAll(".toggle-password").forEach((icon) => {
-  icon.addEventListener("click", function () {
-    const passwordField = document.getElementById("password");
-    const confirmPasswordField = document.getElementById("c_password");
-
-    // Check the current state of password visibility
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      confirmPasswordField.type = "text";
-
-      this.classList.remove("fa-eye");
-      this.classList.add("fa-eye-slash");
-      this.setAttribute("title", "Hide password");
-    } else {
-      // Set both password fields to 'password' (hide passwords)
-      passwordField.type = "password";
-      confirmPasswordField.type = "password";
-
-      this.classList.remove("fa-eye-slash");
-      this.classList.add("fa-eye");
-      this.setAttribute("title", "Show password");
-    }
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            showNotification(
+              "Email already exists. Please try again.",
+              "error"
+            );
+          } else {
+            showNotification(
+              "Something went wrong. Please try again later.",
+              "error"
+            );
+          }
+          throw new Error(`HTTP error! status: ${response.status}`); // Handle other errors
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          // show success notification
+          showNotification(
+            "Registration successful! You can log in now.",
+            "success"
+          );
+          setTimeout(() => {
+            window.location.href = "/quizzen/login";
+          }, 3000);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        // Reset button text and re-enable it
+        submitBtn.textContent = "Submit";
+        submitBtn.disabled = false;
+      });
   });
-});
 
-// animated entry
-// Get the elements
-const signupForm = document.getElementById("signup-form");
-const socialSignup = document.getElementById("social-signup");
-const loginLink = document.getElementById("login-link");
-const signupContainer = document.getElementById("signup-container");
+function showNotification(message, type) {
+  const notification = document.getElementById("notification");
+  notification.textContent = message;
+  notification.className = `notification ${type}`; 
+  
+  // Show the notification
+  notification.style.display = "block";
+  // notification.classList.add("visible");
 
-// Show the login form
-function showSignupForm() {
-  signupForm.classList.add("visible");
-  socialSignup.classList.add("visible");
-  loginLink.classList.add("visible");
-}
-
-// Initialize by showing the signup form
-document.addEventListener("DOMContentLoaded", function () {
+  // Hide the notification after 5 seconds
   setTimeout(() => {
-    showSignupForm();
-  }, 200);
-});
+    notification.style.display = "none";
+    // notification.classList.remove("visible");
+  }, 5000); // 5 seconds
+}

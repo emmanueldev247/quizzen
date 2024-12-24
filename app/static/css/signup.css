@@ -1,13 +1,14 @@
 body {
-    display: flex; 
-    justify-content: center; 
+    display: flex;
+    justify-content: center;
     align-items: center;
-    background: url('../images/college-exam-bg.jpg') no-repeat center center fixed; 
-    background-size: cover; position: relative; 
+    background: url('../images/college-exam-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
 }
 
 body::after {
-    content:'';
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -22,7 +23,8 @@ form {
 }
 
 h4 {
-    color: #6d6d6d;;
+    color: #6d6d6d;
+    ;
     margin-bottom: 1.5rem;
 }
 
@@ -36,12 +38,13 @@ h4 {
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    overflow: hidden; /* Prevent content overflow during animations */
+    overflow: hidden;
+    /* Prevent content overflow during animations */
 }
 
 .signup-form,
 .social-signup,
-.login-link { 
+.login-link {
     flex-direction: column;
     position: relative;
 
@@ -80,7 +83,7 @@ h4 {
 }
 
 .signup-form input:focus {
-    border: 2px solid #6a0dad75; 
+    border: 2px solid #6a0dad75;
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
 }
@@ -100,11 +103,11 @@ h4 {
 }
 
 .signup-form button:hover {
-    background: #a94dd0; 
+    background: #a94dd0;
 }
 
 .signup-form button:disabled {
-    background: #a94dd0; 
+    background: #a94dd0;
     cursor: not-allowed;
 }
 
@@ -134,7 +137,8 @@ h4 {
 }
 
 .google-signup:hover {
-    background-color: #a83427;;
+    background-color: #a83427;
+    ;
 }
 
 .microsoft-signup {
@@ -142,7 +146,8 @@ h4 {
 }
 
 .microsoft-signup:hover {
-    background-color: #004b85;;
+    background-color: #004b85;
+    ;
 }
 
 .facebook-signup {
@@ -160,17 +165,17 @@ h4 {
 }
 
 .login-link a {
-    color: #6a0dad; 
+    color: #6a0dad;
     text-decoration: none;
 }
- 
+
 .login-link a:hover {
     text-decoration: underline;
     font-weight: bold;
 }
 
 .error-message {
-	font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
     color: red;
     margin-bottom: 15px;
     margin-top: -1rem;
@@ -178,7 +183,7 @@ h4 {
 }
 
 
-#role-container, 
+#role-container,
 #gender-container {
     display: block;
     text-align: center;
@@ -186,13 +191,15 @@ h4 {
 
 #role-container h4,
 #gender-container h4 {
-	font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
-    color: #333;;
+    font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: #333;
+    ;
     margin-bottom: .5rem;
 }
 
 
-.gender-option, .role-option {
+.gender-option,
+.role-option {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -210,25 +217,29 @@ h4 {
 }
 
 /* Icons and text styling */
-.gender-option i, .role-option i {
+.gender-option i,
+.role-option i {
     font-size: 36px;
     margin-bottom: 5px;
     color: #555;
 }
 
-.gender-option span, .role-option span {
+.gender-option span,
+.role-option span {
     font-size: 14px;
     font-weight: bold;
     color: #333;
 }
 
-.gender-option:hover, .role-option:hover {
+.gender-option:hover,
+.role-option:hover {
     border-color: #9b59b6;
-    background-color: #f9f0ff; 
+    background-color: #f9f0ff;
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
 }
 
-.gender-option.selected, .role-option.selected {
+.gender-option.selected,
+.role-option.selected {
     border-color: #6a0dad;
     background-color: #f0e6ff;
     color: #6a0dad;
@@ -240,7 +251,7 @@ h4 {
 
 .password-field input {
     width: 100%;
-    padding-right: 40px; 
+    padding-right: 40px;
 }
 
 .password-field .toggle-password {
@@ -252,3 +263,47 @@ h4 {
     font-size: 1.2rem;
     color: #6d6d6d;
 }
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    display: none;
+    z-index: 9999;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #F44336;
+    color: white;
+}
+
+/* .signup-form,
+.social-signup,
+.login-link {
+    flex-direction: column;
+    position: relative;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+}
+
+.signup-form.visible,
+.social-signup.visible,
+.login-link.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+} */
