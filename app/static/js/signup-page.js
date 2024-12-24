@@ -204,59 +204,57 @@ submitBtn.addEventListener("click", (event) => {
   passwordStrengthError.style.display = "none";
 });
 
-document
-  .getElementById("signup-form")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+signupForm.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    submitBtn.textContent = "Submitting...";
-    submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+  submitBtn.disabled = true;
 
-    const formData = new FormData(this);
+  const formData = new FormData(this);
 
-    // Send POST request to backend
-    fetch("/quizzen/signup", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 400) {
-            showNotification(
-              "An account already exists for this email. Please use the button above to log in or register another email",
-              "error"
-            );
-          } else {
-            showNotification(
-              "Something went wrong. Please try again later.",
-              "error"
-            );
-          }
-          throw new Error(`HTTP error! status: ${response.status}`); // Handle other errors
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          // show success notification
+  // Send POST request to backend
+  fetch("/quizzen/signup", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400) {
           showNotification(
-            "Registration successful! You can now log in.",
-            "success"
+            "An account already exists for this email. Please use the button above to log in or register another email",
+            "error"
           );
-          setTimeout(() => {
-            window.location.href = "/quizzen/login";
-          }, 3000);
+        } else {
+          showNotification(
+            "Something went wrong. Please try again later.",
+            "error"
+          );
         }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        // Reset button text and re-enable it
-        submitBtn.textContent = "Submit";
-        submitBtn.disabled = false;
-      });
-  });
+        throw new Error(`HTTP error! status: ${response.status}`); // Handle other errors
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        // show success notification
+        showNotification(
+          "Registration successful! You can now log in.",
+          "success"
+        );
+        setTimeout(() => {
+          window.location.href = "/quizzen/login";
+        }, 3000);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(() => {
+      // Reset button text and re-enable it
+      submitBtn.textContent = "Submit";
+      submitBtn.disabled = false;
+    });
+});
 
 function showNotification(message, type) {
   const notification = document.getElementById("notification");
@@ -268,5 +266,5 @@ function showNotification(message, type) {
   // Hide the notification after 5 seconds
   setTimeout(() => {
     notification.classList.remove("visible");
-  }, 5000); // 5 seconds
+  }, 5000);
 }
