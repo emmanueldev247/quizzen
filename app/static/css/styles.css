@@ -31,7 +31,8 @@ body {
 }
 
 .header.scrolled {
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7); /* Add shadow when scrolled */
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+	/* Add shadow when scrolled */
 	padding: 5px;
 }
 
@@ -68,7 +69,7 @@ body {
 .slogan {
 	margin: 0;
 	margin-top: 1px;
-	font-family: 'Quattrocento Sans','Josefin Sans', sans-serif;
+	font-family: 'Quattrocento Sans', 'Josefin Sans', sans-serif;
 	font-size: 14px;
 	transition: font-size 0.3s ease;
 }
@@ -142,38 +143,38 @@ input#check {
 
 /* Notification styles */
 .notification {
-    width: 60%;
-    max-width: 65%;
-    padding: 15px;
-    text-align: left;
-    font-size: 16px;
-    font-weight: bold;
-    position: fixed;
-    top: 80px;
-    right: 0;
-    transition: all 0.3s ease;
-    word-wrap: break-word;
-    box-sizing: border-box;
-    z-index: 9999;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateX(100%);
+	width: 60%;
+	max-width: 65%;
+	padding: 15px;
+	text-align: left;
+	font-size: 16px;
+	font-weight: bold;
+	position: fixed;
+	top: 80px;
+	right: 0;
+	transition: all 0.3s ease;
+	word-wrap: break-word;
+	box-sizing: border-box;
+	z-index: 9999;
+	visibility: hidden;
+	opacity: 0;
+	transform: translateX(100%);
 }
 
 .notification.visible {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(0);
+	visibility: visible;
+	opacity: 1;
+	transform: translateX(0);
 }
 
 .notification.success {
-    background-color: #2f7c30;
-    color: white;
+	background-color: #2f7c30;
+	color: white;
 }
 
 .notification.error {
-    background-color: #F44336;
-    color: white;
+	background-color: #F44336;
+	color: white;
 }
 
 /* STOP HERE!!!!!!!!!!!!!!!! */
@@ -294,24 +295,38 @@ input#check {
 
 /* Styling for success messages */
 .flash-message.success-message {
-	background-color: #d4edda; /* Light green background */
-	border-color: #c3e6cb; /* Light green border */
-	color: #155724; /* Dark green text */
-	padding: 10px; /* Padding around the message */
-	margin-bottom: 10px; /* Spacing between messages */
-	border: 1px solid transparent; /* Border around the message */
-	border-radius: 5px; /* Rounded corners */
+	background-color: #d4edda;
+	/* Light green background */
+	border-color: #c3e6cb;
+	/* Light green border */
+	color: #155724;
+	/* Dark green text */
+	padding: 10px;
+	/* Padding around the message */
+	margin-bottom: 10px;
+	/* Spacing between messages */
+	border: 1px solid transparent;
+	/* Border around the message */
+	border-radius: 5px;
+	/* Rounded corners */
 }
 
 /* Styling for error messages */
-.flash-message.error-messages  {
-	background-color: #f8d7da; /* Light red background */
-	border-color: #f5c6cb; /* Light red border */
-	color: #721c24; /* Dark red text */
-	padding: 10px; /* Padding around the message */
-	margin-bottom: 10px; /* Spacing between messages */
-	border: 1px solid transparent; /* Border around the message */
-	border-radius: 5px; /* Rounded corners */
+.flash-message.error-messages {
+	background-color: #f8d7da;
+	/* Light red background */
+	border-color: #f5c6cb;
+	/* Light red border */
+	color: #721c24;
+	/* Dark red text */
+	padding: 10px;
+	/* Padding around the message */
+	margin-bottom: 10px;
+	/* Spacing between messages */
+	border: 1px solid transparent;
+	/* Border around the message */
+	border-radius: 5px;
+	/* Rounded corners */
 }
 
 
@@ -338,6 +353,7 @@ footer {
 /* RESPONSIVENESS FOR SMALLER SCREENS */
 
 @media only screen and (max-width: 850px) {
+
 	.header,
 	.header.scrolled {
 		padding: 5px 10px;
@@ -396,7 +412,7 @@ footer {
 		left: 0;
 		width: 100%;
 		overflow: hidden;
-		background:#2c3e50;
+		background: #2c3e50;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

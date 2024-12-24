@@ -4,13 +4,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title> {{ title }} | Quizzen</title>
-    {% else %}
-    <title>Quizzen</title>
-    {% endif %}
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+	{% if title %}
+	<title> {{ title }} | Quizzen</title>
+	{% else %}
+	<title>Quizzen</title>
+	{% endif %}
+	<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
 	<!-- ****************Icons library************** -->
 	<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
@@ -41,19 +41,19 @@
 		<nav class="tabs sub-header">
 			<ul>
 				<li id=""><a href="#">Enter Code</a></li>
-            {% if title == 'Sign up' %}
-                <li id=""><a href="{{ url_for('full_bp.login') }}" class="button-log-in">Log In</a></li>
-            {% elif title == 'Login' %}
-                <li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
-            {% else %}
-                <li id=""><a href="{{ url_for('full_bp.login') }}" class="button-log-in">Log In</a></li>
-                <li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
-            {% endif %}
+				{% if title == 'Sign up' %}
+				<li id=""><a href="{{ url_for('full_bp.login') }}" class="button-log-in">Log In</a></li>
+				{% elif title == 'Login' %}
+				<li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
+				{% else %}
+				<li id=""><a href="{{ url_for('full_bp.login') }}" class="button-log-in">Log In</a></li>
+				<li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
+				{% endif %}
 			</ul>
 		</nav>
 	</header>
-    {% block child_content %}
-    {% endblock child_content %}
+	{% block child_content %}
+	{% endblock child_content %}
 
 	{% block scripts %}
 	{% endblock scripts %}
