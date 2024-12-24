@@ -1,54 +1,57 @@
 {% extends "base.html" %}
+{% block nav_content %}
+		<li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
+{% endblock nav_content %}
 {% block child_content %}
-<div class="login-container" id="login-container">
-	<form method="POST" class="login-form" id="login-form">
-		<h2>Log in to Quizzen</h2>
-		<div id="login-warning" class="login-warning" style="display: none;">
-			<div class="alert-icon">
-				<i class="fa-solid fa-triangle-exclamation"></i>
+	<div class="login-container" id="login-container">
+		<form method="POST" class="login-form" id="login-form">
+			<h2>Log in to Quizzen</h2>
+			<div id="login-warning" class="login-warning" style="display: none;">
+				<div class="alert-icon">
+					<i class="fa-solid fa-triangle-exclamation"></i>
+				</div>
+				<span>Invalid username or password.</span>
 			</div>
-			<span>Invalid username or password.</span>
-		</div>
-		<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
-			autocomplete="email">
-		<div class="password-field">
-			<input type="password" id="password" name="password" placeholder="Password" aria-label="Password" required>
-			<i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
-		</div>
+			<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
+				autocomplete="email">
+			<div class="password-field">
+				<input type="password" id="password" name="password" placeholder="Password" aria-label="Password" required>
+				<i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
+			</div>
 
-		<a href="javascript:void(0)" class="forgot-password" id="forgot-password">Forgot Password?</a>
-		<button type="submit" id="login-button">Login</button>
-	</form>
+			<a href="javascript:void(0)" class="forgot-password" id="forgot-password">Forgot Password?</a>
+			<button type="submit" id="login-button">Login</button>
+		</form>
 
-	<!-- Reset Password Form (Initially Hidden) -->
-	<form class="login-form" id="reset-password-form" style="display: none;">
-		<h2>Reset Password</h2>
-		<p>Please enter the email associated with your account</p>
-		<input type="email" id="email2" name="email" placeholder="Email" aria-label="Emmanuel Address" required
-			autocomplete="email">
-		<a href="javascript:void(0)" class="back-to-login" id="back-to-login">
-			<i class='bx bx-arrow-back'></i>
-			<span>Back to login</span>
-		</a>
-		<button type="submit">Get Reset Link</button>
-		<!-- A link has been sent to mailemmydee@gmail.com. For your safety, this link expires in 24 hours and can only be used once. -->
-	</form>
-	<div class="social-login" id="social-login">
-		<h4>or continue with</h4>
-		<button class="google-login">
-			<i class='bx bxl-google'></i>
-		</button>
-		<button class="microsoft-login">
-			<i class='bx bxl-microsoft'></i>
-		</button>
-		<button class="facebook-login">
-			<i class='bx bxl-facebook'></i>
-		</button>
+		<!-- Reset Password Form (Initially Hidden) -->
+		<form class="login-form" id="reset-password-form" style="display: none;">
+			<h2>Reset Password</h2>
+			<p>Please enter the email associated with your account</p>
+			<input type="email" id="email2" name="email" placeholder="Email" aria-label="Emmanuel Address" required
+				autocomplete="email">
+			<a href="javascript:void(0)" class="back-to-login" id="back-to-login">
+				<i class='bx bx-arrow-back'></i>
+				<span>Back to login</span>
+			</a>
+			<button type="submit">Get Reset Link</button>
+			<!-- A link has been sent to mailemmydee@gmail.com. For your safety, this link expires in 24 hours and can only be used once. -->
+		</form>
+		<div class="social-login" id="social-login">
+			<h4>or continue with</h4>
+			<button class="google-login">
+				<i class='bx bxl-google'></i>
+			</button>
+			<button class="microsoft-login">
+				<i class='bx bxl-microsoft'></i>
+			</button>
+			<button class="facebook-login">
+				<i class='bx bxl-facebook'></i>
+			</button>
+		</div>
+		<div class="signup-link" id="signup-link">
+			<p>Don't have an account? <a href="{{ url_for('full_bp.signup') }}">Sign up</a></p>
+		</div>
 	</div>
-	<div class="signup-link" id="signup-link">
-		<p>Don't have an account? <a href="{{ url_for('full_bp.signup') }}">Sign up</a></p>
-	</div>
-</div>
 {% endblock child_content %}
 
 {% block scripts %}
