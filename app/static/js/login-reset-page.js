@@ -88,8 +88,11 @@ loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
   loginButton = document.getElementById("login-button");
-  loginButton.textContent = "Loading";
+  loginButton.textContent = "Logging in...";
   loginButton.disabled = true;
+
+  const warningCard = document.getElementById("login-warning");
+  warningCard.style.display = "none";
 
   const formData = new FormData(this);
 
@@ -99,9 +102,14 @@ loginForm.addEventListener("submit", function (event) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 401)
+        if (response.status === 401) {
+          warningCard.innerHTML = `
+          <div class="alert-icon">⚠️</div>
+          <span>Invalid username or password.</span>
+        `;
+          warningCard.style.display = "flex";
           showNotification("Invalid Credentials", "error");
-        else
+        } else
           showNotification(
             "Something went wrong. Please try again later.",
             "error"
@@ -119,8 +127,8 @@ loginForm.addEventListener("submit", function (event) {
       console.log(`Error: ${error}`);
     })
     .finally(() => {
-        loginButton.disabled = false;
-        loginButton.textContent = "Log in";
+      loginButton.disabled = false;
+      loginButton.textContent = "Log in";
     });
 });
 
