@@ -3,7 +3,14 @@
 <div class="login-container" id="login-container">
 	<form method="POST" class="login-form" id="login-form">
 		<h2>Log in to Quizzen</h2>
-		<div id="login-warning" class="login-warning" style="display: none;"></div>
+		<div id="login-warning" class="login-warning" style="display: none;">
+			<i class="fa-solid fa-triangle-exclamation" style="color: #FFD43B;"></i>
+			<div class="alert-icon">
+				⚠️
+				<i class="fa-solid fa-triangle-exclamation" style="color: #FFD43B;"></i>
+			</div>
+			<span>Invalid username or password.</span>
+		</div>
 		<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
 			autocomplete="email">
 		<div class="password-field">
