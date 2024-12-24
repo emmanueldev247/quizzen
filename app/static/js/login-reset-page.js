@@ -115,19 +115,19 @@ loginForm.addEventListener("submit", function (event) {
       }
     })
     .catch((error) => {
-      console.log(`Error: ${error}`)
+      console.log(`Error: ${error}`);
     })
     .finally(() => {
       loginButton.disabled = false;
-    })
+    });
 });
 
-function showNotification(message, type){
-  const notification = document.getElementById('notification');
+function showNotification(message, type) {
+  const notification = document.getElementById("notification");
   notification.textContent = message;
   notification.className = `notification ${type}`;
-  notification.classList.add = 'visible';
+  notification.classList.add = "visible";
   setTimeout(() => {
-    notification.classList.remove = 'visible';
-  }, 5000)
+    notification.classList.remove = "visible";
+  }, 5000);
 }
