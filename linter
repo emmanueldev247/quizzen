@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+pycodestyle.exe *.py app/*.py app/utils/*.py -v
