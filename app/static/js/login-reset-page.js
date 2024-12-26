@@ -1,4 +1,4 @@
-import { showNotification } from "./utils.js";
+const { showNotification } = require("./utils.js");
 
 // show/hide password icon toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
