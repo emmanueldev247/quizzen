@@ -1,14 +1,13 @@
-from flask import ( 
-    Blueprint, flash, jsonify, 
-    redirect, render_template, request, 
+from flask import (
+    Blueprint, flash, jsonify,
+    redirect, render_template, request,
     session, url_for
     )
 from flask_mail import Message
-from app import app
 from app.extensions import db, bcrypt, mail
 from app.models import User
 from datetime import datetime
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature
+from itsdangerous import TimedSerializer as Serializer, BadSignature
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -44,12 +43,12 @@ def signup():
 
         try:
             new_user = User(
-                username=email, 
-                email=email, 
+                username=email,
+                email=email,
                 first_name=first_name,
-                last_name=last_name, 
-                date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d'), 
-                gender=gender, 
+                last_name=last_name,
+                date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d'),
+                gender=gender,
                 role=role
             )
             new_user.set_password(password)
@@ -60,14 +59,14 @@ def signup():
         except Exception as e:
             db.session.rollback()
             return jsonify({'success': False, 'message': 'Error saving user', 'error': str(e)}), 500
-       
+
     return render_template('signup.html', title='Sign up')
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        try: 
+        try:
             email = request.form.get('email').strip()
             password = request.form.get('password')
         except Exception as e:
@@ -84,7 +83,7 @@ def login():
             return jsonify({"success": False, "message": "Invalid Credentials"}), 401
         except Exception as e:
             return jsonify({'success': False, 'message': 'Server error', 'error': str(e)}), 500
-  
+
     return render_template('login.html', title='Login')
 
 @full_bp.route('/reset_password', methods=['POST'])
@@ -100,7 +99,7 @@ def reset_password():
         user = User.query.filter_by(email=email).first()
         if not user:
             return jsonify({'success': False, "message": "Email not found"}), 404
-        s = Serializer(app.config['SECRET_KEY'], expires_in=1800)  
+        s = Serializer(app.config['SECRET_KEY'], expires_in=1800)
         token = s.dumps({'user_id': user.id}).decode('utf-8')
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
@@ -111,31 +110,31 @@ def reset_password():
         return jsonify({"message": "Password reset link sent to your email!"}), 200
     except Exception as e:
         return jsonify({"message": "Failed to send email. Please try again later."}), 500
-    
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+
+@full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
     try:
         s = Serializer(app.config['SECRET_KEY'])
         data = s.loads(token)
     except BadSignature:
         return jsonify({"message": "Invalid or expired token."}), 400
-    
+
     user = User.query.get(data['user_id'])
     if not user:
         return jsonify({"message": "User not found."}), 404
-    
+
     if request.method == 'POST':
         new_password = request.form.get('password')
         if not new_password:
             return jsonify({"message": "Password cannot be empty."}), 400
-        
+
         user.set_password(new_password)
         db.session.commit()
         return jsonify({"message": "Password successfully reset."}), 200
 
     return jsonify({"message": "Use the POST method to reset your password."}), 405
 
-    
+
 @full_bp.route('/logout')
 def logout():
     session.pop('user_id', None)
