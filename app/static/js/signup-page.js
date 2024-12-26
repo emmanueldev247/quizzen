@@ -1,4 +1,4 @@
-const { showNotification } = require("./utils.js");
+import { showNotification } from "./utils.js";
 
 // Get the elements
 const signupForm = document.getElementById("signup-form");
