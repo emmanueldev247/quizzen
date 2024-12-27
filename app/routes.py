@@ -100,10 +100,10 @@ def reset_password():
         if not user:
             return jsonify({'success': False, "message": "Email not found"}), 404
         s = Serializer(current_app.config['SECRET_KEY'])
-        print(f"Config is: {current_app.config['SECRET_KEY']}")
         token = s.dumps({'user_id': user.id})
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
+        print(f'reset link: {reset_link}')
 
         msg = Message('Password Reset Request', recipients=[email])
         msg.body = f'Click the link to reset your password: {reset_link}'

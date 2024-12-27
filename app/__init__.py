@@ -71,7 +71,8 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False 
 app.config['MAIL_USERNAME'] = 'quizzen-support@emmanueldev247.tech'
 app.config['MAIL_PASSWORD'] = 'F)ifRaj5'
-app.config['MAIL_DEFAULT_SENDER'] = 'noreply-quizzen@emmanueldev247.tech'
+app.config['MAIL_DEFAULT_SENDER'] = 'quizzen-support@emmanueldev247.tech'
+# app.config['MAIL_DEFAULT_SENDER'] = 'noreply-quizzen@emmanueldev247.tech'
 
 # Initialize DB
 db.init_app(app)
