@@ -144,8 +144,11 @@ resetPasswordForm.addEventListener("submit", function (event) {
   resetPasswordButton.disabled = true;
 
   const warningCard = document.getElementById("reset-password-warning");
+  const successCard = document.getElementById("reset-password-success");
   const formData = new FormData(this);
-  warningCard.style.display = "none";
+  warningCard.style.display = successCard.style.display = "none";
+
+  
 
   fetch("/quizzen/reset_password", {
     method: "POST",
@@ -166,6 +169,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
+        successCard.style.display = "flex";
         showNotification(
           "A link has been sent to your email. For your safety, this link expires in 30 minutes and can only be used once.",
           "success"

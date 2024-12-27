@@ -263,9 +263,26 @@ form {
     font-weight: bold;
     align-items: center;
     gap: 0.5rem;
-  }
-  
-  .login-warning .alert-icon {
+}
+
+.login-warning .alert-icon {
     font-size: 1.5rem;
-  }
-  
+}
+
+.reset-success {
+    display: none;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border: 1px solid #abe0b7;
+    background-color: #b2dbbb;
+    color: #155724;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reset-success .alert-icon {
+    font-size: 1.5rem;
+}
