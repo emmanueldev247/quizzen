@@ -139,7 +139,7 @@ loginForm.addEventListener("submit", function (event) {
 resetPasswordForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  resetPasswordButton = document.getElementById("reset-password-button");
+  const resetPasswordButton = document.getElementById("reset-password-button");
   resetPasswordButton.textContent = "Resetting password...";
   resetPasswordButton.disabled = true;
 
