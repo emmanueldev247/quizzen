@@ -115,6 +115,10 @@ loginForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
+        showNotification(
+          "Login successful",
+          "success"
+        );
         window.location.href = "/quizzen/dashboard";
       }
     })
