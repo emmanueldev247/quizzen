@@ -7,7 +7,7 @@ from flask_mail import Message
 from app.extensions import db, bcrypt, mail
 from app.models import User
 from datetime import datetime
-from itsdangerous import TimedSerializer as Serializer, BadSignature
+from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -99,7 +99,8 @@ def reset_password():
         user = User.query.filter_by(email=email).first()
         if not user:
             return jsonify({'success': False, "message": "Email not found"}), 404
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=1800)
+        s = Serializer(current_app.config['SECRET_KEY'])
+        print(f"Config is: {current_app.config['SECRET_KEY']}")
         token = s.dumps({'user_id': user.id}).decode('utf-8')
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
@@ -114,8 +115,8 @@ def reset_password():
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
     try:
-        s = Serializer(app.config['SECRET_KEY'])
-        data = s.loads(token)
+        s = Serializer(current_app.config['SECRET_KEY'])
+        data = s.loads(token, max_age=1800)
     except BadSignature:
         return jsonify({"message": "Invalid or expired token."}), 400
 
