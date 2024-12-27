@@ -145,6 +145,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
 
   const warningCard = document.getElementById("reset-password-warning");
   const formData = new FormData(this);
+  warningCard.style.display = "none";
 
   fetch("/quizzen/reset_password", {
     method: "POST",

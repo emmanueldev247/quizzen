@@ -109,7 +109,7 @@ def reset_password():
         mail.send(msg)
         return jsonify({"message": "Password reset link sent to your email!"}), 200
     except Exception as e:
-        return jsonify({"message": "Failed to send email. Please try again later."}), 500
+        return jsonify({"message": "Failed to send email. Please try again later.", "error": str(e)}), 500
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
