@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  loginButton = document.getElementById("login-button");
+  const loginButton = document.getElementById("login-button");
   loginButton.textContent = "Logging in...";
   loginButton.disabled = true;
 
