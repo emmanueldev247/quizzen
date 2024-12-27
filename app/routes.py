@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, jsonify,
+    Blueprint, current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
     )
@@ -99,7 +99,7 @@ def reset_password():
         user = User.query.filter_by(email=email).first()
         if not user:
             return jsonify({'success': False, "message": "Email not found"}), 404
-        s = Serializer(app.config['SECRET_KEY'], expires_in=1800)
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=1800)
         token = s.dumps({'user_id': user.id}).decode('utf-8')
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
