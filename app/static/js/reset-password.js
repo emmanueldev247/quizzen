@@ -81,7 +81,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
   const formData = new FormData(this);
 
   // Send POST request to backend
-  fetch(`/reset_password/${token}`, {
+  fetch(`/quizzen/reset_password/${token}`, {
     method: "POST",
     body: formData,
   })
