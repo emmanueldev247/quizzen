@@ -93,6 +93,7 @@ loginForm.addEventListener("submit", function (event) {
 
   const loginButton = document.getElementById("login-button");
   const warningCard = document.getElementById("login-warning");
+  const loginWarningSpan = document.querySelector("#login-warning span");
 
   loginButton.textContent = "Logging in...";
   loginButton.disabled = true;
@@ -106,6 +107,7 @@ loginForm.addEventListener("submit", function (event) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
+          loginWarningSpan.innerHTML = `Invalid username or password.`;
           warningCard.style.display = "flex";
         } else
           showNotification(
@@ -164,10 +166,8 @@ resetPasswordForm.addEventListener("submit", function (event) {
       if (!response.ok) {
         if (response.status === 404) {
           resetWarningSpan.innerHTML = `No account associated with 
-          <span style="font-weight: 900; color: #d9534f;">${formData.get(
-            "email"
-          )}</span>.<br>
-          Please register to create an account.`;
+          <span style="color: #d9534f;">${formData.get("email")}</span> .
+          <br> Please register to create an account.`;
           warningCard.style.display = "flex";
         } else
           showNotification(
@@ -180,9 +180,9 @@ resetPasswordForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
-        resetSuccessSpan.textContent = `A link has been sent to your ${formData.get(
-          "email"
-        )}. For your safety, this link expires in 30 minutes and can only be used once.`;
+        resetSuccessSpan.innerHTML = `A link has been sent to 
+        <span style="color: #378249;">${formData.get("email")}</span> .
+        <br> For your safety, this link expires in 30 minutes and can only be used once.`;
         successCard.style.display = "flex";
         showNotification("Please check your inbox or spam folder", "success");
       }
