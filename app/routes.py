@@ -8,9 +8,28 @@ from app.extensions import db, bcrypt, mail
 from app.models import User, UsedToken
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature
+from functools import wraps
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
+
+def auth_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"message": "Authentication token is missing.", "success": False}), 401
+        try:
+            s = Serializer(current_app.config['SECRET_KEY'])
+            data = s.loads(token)
+            current_user = User.query.get(data['user_id'])
+            if not current_user:
+                return jsonify({"message": "Invalid token.", "success": False}), 401
+        except BadSignature:
+            return jsonify({"message": "Invalid or expired token.", "success": False}), 401
+
+        return f(current_user, *args, **kwargs)
+    return decorated
 
 @full_bp.route('/')
 def home():
@@ -171,7 +190,7 @@ def reset_with_token(token):
 
         used_token = UsedToken(token=token)
         db.session.add(used_token)
-        
+
         db.session.commit()
         return jsonify({"success": True, "message": "Password successfully reset."}), 200
 
@@ -184,5 +203,6 @@ def logout():
     return redirect(url_for('full_bp.home'))
 
 @full_bp.route('/dashboard')
+@auth_required
 def dashboard():
     return render_template('dashboard.html', title='Dashboard')
