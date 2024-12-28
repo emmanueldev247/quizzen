@@ -65,7 +65,6 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    print(f'Signup link here: {url_for('full_bp.signup')}')
     if request.method == 'POST':
         try:
             email = request.form.get('email').strip()
@@ -104,7 +103,7 @@ def reset_password():
         token = s.dumps({'user_id': user.id})
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
-
+        print(f"reset: {reset_link}")
         msg = Message('Password Reset Request', recipients=[email])
         msg.body = f"""
             Hello,
@@ -120,7 +119,7 @@ def reset_password():
         """
         msg.html = f"""
             <html>
-                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; font-size: 16px">
                     <h2 style="text-align: center; color: #444;">Password Reset Request</h2>
                     <p>Hello,</p>
                     <p>We received a request to reset your password for your Quizzen account. If you made this request, click the button below to reset your password:</p>
@@ -131,7 +130,7 @@ def reset_password():
                                 padding: 10px 20px; 
                                 text-decoration: none; 
                                 border-radius: 5px; 
-                                font-size: 16px;">
+                                font-size: 18px;">
                             Reset Your Password
                         </a>
                     </div>
