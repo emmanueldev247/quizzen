@@ -16,32 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 togglePasswordVisibility("#new-password", "#c_password");
 
-// show/hide password toggle
-document.querySelectorAll(".toggle-password").forEach((icon) => {
-  icon.addEventListener("click", function () {
-    const passwordField = document.getElementById("password");
-    const confirmPasswordField = document.getElementById("c_password");
-
-    // Check the current state of password visibility
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      confirmPasswordField.type = "text";
-
-      this.classList.remove("fa-eye");
-      this.classList.add("fa-eye-slash");
-      this.setAttribute("title", "Hide password");
-    } else {
-      // Set both password fields to 'password' (hide passwords)
-      passwordField.type = "password";
-      confirmPasswordField.type = "password";
-
-      this.classList.remove("fa-eye-slash");
-      this.classList.add("fa-eye");
-      this.setAttribute("title", "Show password");
-    }
-  });
-});
-
 submitBtn.addEventListener("click", (event) => {
   const password = document.getElementById("new-password").value;
   const confirmPassword = document.getElementById("c_password").value;

@@ -7,29 +7,7 @@ import {
 } from "./utils.js";
 
 togglePasswordVisibility("#password");
-// // show/hide password icon toggle
-// document.querySelectorAll(".toggle-password").forEach((icon) => {
-//   icon.addEventListener("click", function () {
-//     const passwordField = document.getElementById("password");
 
-//     // Check the current state of password visibility
-//     if (passwordField.type === "password") {
-//       passwordField.type = "text";
-
-//       this.classList.remove("fa-eye");
-//       this.classList.add("fa-eye-slash");
-//       this.setAttribute("title", "Hide password");
-//     } else {
-//       passwordField.type = "password";
-
-//       this.classList.remove("fa-eye-slash");
-//       this.classList.add("fa-eye");
-//       this.setAttribute("title", "Show password");
-//     }
-//   });
-// });
-
-// animated entry
 // Get the elements
 const loginForm = document.getElementById("login-form");
 const resetPasswordForm = document.getElementById("reset-password-form");
