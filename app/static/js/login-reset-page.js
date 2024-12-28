@@ -3,29 +3,31 @@ import {
   animateElements,
   showElements,
   hideElements,
+  togglePasswordVisibility,
 } from "./utils.js";
 
-// show/hide password icon toggle
-document.querySelectorAll(".toggle-password").forEach((icon) => {
-  icon.addEventListener("click", function () {
-    const passwordField = document.getElementById("password");
+togglePasswordVisibility("#password");
+// // show/hide password icon toggle
+// document.querySelectorAll(".toggle-password").forEach((icon) => {
+//   icon.addEventListener("click", function () {
+//     const passwordField = document.getElementById("password");
 
-    // Check the current state of password visibility
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
+//     // Check the current state of password visibility
+//     if (passwordField.type === "password") {
+//       passwordField.type = "text";
 
-      this.classList.remove("fa-eye");
-      this.classList.add("fa-eye-slash");
-      this.setAttribute("title", "Hide password");
-    } else {
-      passwordField.type = "password";
+//       this.classList.remove("fa-eye");
+//       this.classList.add("fa-eye-slash");
+//       this.setAttribute("title", "Hide password");
+//     } else {
+//       passwordField.type = "password";
 
-      this.classList.remove("fa-eye-slash");
-      this.classList.add("fa-eye");
-      this.setAttribute("title", "Show password");
-    }
-  });
-});
+//       this.classList.remove("fa-eye-slash");
+//       this.classList.add("fa-eye");
+//       this.setAttribute("title", "Show password");
+//     }
+//   });
+// });
 
 // animated entry
 // Get the elements
@@ -47,20 +49,12 @@ const loginFormElements = Array.from(
 function showLoginForm() {
   hideElements(resetPasswordForm);
   showElements(loginForm, socialLogin, signupLink);
-  // loginForm.classList.add("visible");
-  // resetPasswordForm.classList.remove("visible");
-  // socialLogin.classList.add("visible");
-  // signupLink.classList.add("visible");
 }
 
 // Function to show the reset password form
 function showResetPasswordForm() {
   hideElements(loginForm, socialLogin, signupLink);
   showElements(resetPasswordForm);
-  // loginForm.classList.remove("visible");
-  // resetPasswordForm.classList.add("visible");
-  // socialLogin.classList.remove("visible");
-  // signupLink.classList.remove("visible");
 }
 
 // Event listeners for toggling views

@@ -29,3 +29,39 @@ export function hideElements(...elements) {
     element.classList.remove("visible")
   })
 }
+
+
+// Function to toggle password visibility
+export function togglePasswordVisibility(passwordSelector, confirmPasswordSelector = null) {
+  document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", function () {
+      const passwordField = document.querySelector(passwordSelector);
+      const confirmPasswordField = confirmPasswordSelector ? document.querySelector(confirmPasswordSelector) : null;
+
+      // Check the current state of password visibility
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        
+        // If confirmPasswordSelector is provided, show the confirm password field too
+        if (confirmPasswordField) {
+          confirmPasswordField.type = "text";
+        }
+
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+        this.setAttribute("title", "Hide password");
+      } else {
+        // Set both password fields to 'password' (hide passwords)
+        passwordField.type = "password";
+        
+        if (confirmPasswordField) {
+          confirmPasswordField.type = "password";
+        }
+
+        this.classList.remove("fa-eye-slash");
+        this.classList.add("fa-eye");
+        this.setAttribute("title", "Show password");
+      }
+    });
+  });
+}

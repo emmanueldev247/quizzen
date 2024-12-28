@@ -1,4 +1,8 @@
-import { showNotification, showElements } from "./utils.js";
+import {
+  showNotification,
+  showElements,
+  togglePasswordVisibility,
+} from "./utils.js";
 
 // Get the elements
 const resetPasswordForm = document.getElementById("reset-password-form");
@@ -9,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
     showElements(resetPasswordForm);
   }, 200);
 });
+
+togglePasswordVisibility("#password", "new-password");
 
 // show/hide password toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
@@ -37,7 +43,7 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
 });
 
 submitBtn.addEventListener("click", (event) => {
-  const password = document.getElementById("password").value;
+  const password = document.getElementById("new-password").value;
   const confirmPassword = document.getElementById("c_password").value;
   const passwordError = document.getElementById("password-error");
   const cPasswordError = document.getElementById("c_password-error");

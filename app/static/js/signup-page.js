@@ -1,17 +1,13 @@
-import { showNotification, showElements } from "./utils.js";
+import {
+  showNotification,
+  showElements,
+  togglePasswordVisibility,
+} from "./utils.js";
 
 // Get the elements
 const signupForm = document.getElementById("signup-form");
 const socialSignup = document.getElementById("social-signup");
 const loginLink = document.getElementById("login-link");
-// const signupContainer = document.getElementById("signup-container");
-
-// Show the login form
-// function showSignupForm() {
-//   signupForm.classList.add("visible");
-//   socialSignup.classList.add("visible");
-//   loginLink.classList.add("visible");
-// }
 
 // Initialize by showing the signup form
 document.addEventListener("DOMContentLoaded", function () {
@@ -19,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     showElements(signupForm, socialSignup, loginLink);
   }, 200);
 });
+
+togglePasswordVisibility("#password", "#c_password");
 
 // Gender icon select
 document.querySelectorAll(".gender-option").forEach((option) => {
@@ -42,31 +40,30 @@ document.querySelectorAll(".role-option").forEach((option) => {
   });
 });
 
-// show/hide password toggle
-document.querySelectorAll(".toggle-password").forEach((icon) => {
-  icon.addEventListener("click", function () {
-    const passwordField = document.getElementById("password");
-    const confirmPasswordField = document.getElementById("c_password");
+// document.querySelectorAll(".toggle-password").forEach((icon) => {
+//   icon.addEventListener("click", function () {
+//     const passwordField = document.getElementById("password");
+//     const confirmPasswordField = document.getElementById("c_password");
 
-    // Check the current state of password visibility
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      confirmPasswordField.type = "text";
+//     // Check the current state of password visibility
+//     if (passwordField.type === "password") {
+//       passwordField.type = "text";
+//       confirmPasswordField.type = "text";
 
-      this.classList.remove("fa-eye");
-      this.classList.add("fa-eye-slash");
-      this.setAttribute("title", "Hide password");
-    } else {
-      // Set both password fields to 'password' (hide passwords)
-      passwordField.type = "password";
-      confirmPasswordField.type = "password";
+//       this.classList.remove("fa-eye");
+//       this.classList.add("fa-eye-slash");
+//       this.setAttribute("title", "Hide password");
+//     } else {
+//       // Set both password fields to 'password' (hide passwords)
+//       passwordField.type = "password";
+//       confirmPasswordField.type = "password";
 
-      this.classList.remove("fa-eye-slash");
-      this.classList.add("fa-eye");
-      this.setAttribute("title", "Show password");
-    }
-  });
-});
+//       this.classList.remove("fa-eye-slash");
+//       this.classList.add("fa-eye");
+//       this.setAttribute("title", "Show password");
+//     }
+//   });
+// });
 
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
@@ -169,10 +166,8 @@ submitBtn.addEventListener("click", (event) => {
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\])[A-Za-z\d !@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\]{8,}$/;
 
   // Reset error displays
-  passwordError.style.display = "none";
-  cPasswordError.style.display = "none";
-  cPasswordError2.style.display = "none";
-  passwordStrengthError.style.display = "none";
+  passwordError.style.display = passwordStrengthError.style.display = "none";
+  cPasswordError2.style.display = cPasswordError.style.display = "none";
 
   if (!password) {
     passwordError.style.display = "block";
@@ -183,7 +178,7 @@ submitBtn.addEventListener("click", (event) => {
   // Check password strength
   if (!passwordStrengthRegex.test(password)) {
     passwordStrengthError.style.display = "block";
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     return;
   }
 
@@ -199,10 +194,8 @@ submitBtn.addEventListener("click", (event) => {
     return;
   }
 
-  passwordError.style.display = "none";
-  cPasswordError.style.display = "none";
-  cPasswordError2.style.display = "none";
-  passwordStrengthError.style.display = "none";
+  passwordError.style.display = passwordStrengthError.style.display = "none";
+  cPasswordError2.style.display = cPasswordError.style.display = "none";
 });
 
 signupForm.addEventListener("submit", function (event) {
@@ -231,13 +224,12 @@ signupForm.addEventListener("submit", function (event) {
             "error"
           );
         }
-        throw new Error(`HTTP error! status: ${response.status}`); // Handle other errors
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
       if (data.success) {
-        // show success notification
         showNotification(
           "Registration successful! You can now log in.",
           "success"
@@ -256,7 +248,6 @@ signupForm.addEventListener("submit", function (event) {
         );
     })
     .finally(() => {
-      // Reset button text and re-enable it
       submitBtn.textContent = "Register";
       submitBtn.disabled = false;
     });
