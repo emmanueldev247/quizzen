@@ -89,12 +89,15 @@ document.addEventListener("DOMContentLoaded", function () {
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
+  const formData = new FormData(this);
+
   const loginButton = document.getElementById("login-button");
+  const warningCard = document.getElementById("login-warning");
+
   loginButton.textContent = "Logging in...";
   loginButton.disabled = true;
-
-  const warningCard = document.getElementById("login-warning");
-  const formData = new FormData(this);
+  
+  warningCard.style.display = "none";
 
   fetch("/quizzen/login", {
     method: "POST",
