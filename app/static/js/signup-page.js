@@ -1,22 +1,22 @@
-import { showNotification } from "./utils.js";
+import { showNotification, showElements } from "./utils.js";
 
 // Get the elements
 const signupForm = document.getElementById("signup-form");
 const socialSignup = document.getElementById("social-signup");
 const loginLink = document.getElementById("login-link");
-const signupContainer = document.getElementById("signup-container");
+// const signupContainer = document.getElementById("signup-container");
 
 // Show the login form
-function showSignupForm() {
-  signupForm.classList.add("visible");
-  socialSignup.classList.add("visible");
-  loginLink.classList.add("visible");
-}
+// function showSignupForm() {
+//   signupForm.classList.add("visible");
+//   socialSignup.classList.add("visible");
+//   loginLink.classList.add("visible");
+// }
 
 // Initialize by showing the signup form
 document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
-    showSignupForm();
+    showElements(signupForm, socialSignup, loginLink);
   }, 200);
 });
 
@@ -249,6 +249,11 @@ signupForm.addEventListener("submit", function (event) {
     })
     .catch((error) => {
       console.error("Error:", error);
+      if (error.message === "Failed to fetch")
+        showNotification(
+          "Network error. Please check your connection.",
+          "error"
+        );
     })
     .finally(() => {
       // Reset button text and re-enable it

@@ -1,4 +1,9 @@
-import { showNotification } from "./utils.js";
+import {
+  showNotification,
+  animateElements,
+  showElements,
+  hideElements,
+} from "./utils.js";
 
 // show/hide password icon toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
@@ -38,29 +43,24 @@ const loginFormElements = Array.from(
   loginForm.querySelectorAll("h2, input, button, a")
 );
 
-// Function to animate elements
-function animateElements(elements) {
-  elements.forEach((el, index) => {
-    el.classList.remove("animate-slide-in", `animate-delay-${index + 1}`); // Reset animation classes
-    void el.offsetWidth; // Trigger reflow to restart animation
-    el.classList.add("animate-slide-in", `animate-delay-${index + 1}`);
-  });
-}
-
 // Function to show the login form
 function showLoginForm() {
-  loginForm.classList.add("visible");
-  resetPasswordForm.classList.remove("visible");
-  socialLogin.classList.add("visible");
-  signupLink.classList.add("visible");
+  hideElements(resetPasswordForm);
+  showElements(loginForm, socialLogin, signupLink);
+  // loginForm.classList.add("visible");
+  // resetPasswordForm.classList.remove("visible");
+  // socialLogin.classList.add("visible");
+  // signupLink.classList.add("visible");
 }
 
 // Function to show the reset password form
 function showResetPasswordForm() {
-  loginForm.classList.remove("visible");
-  resetPasswordForm.classList.add("visible");
-  socialLogin.classList.remove("visible");
-  signupLink.classList.remove("visible");
+  hideElements(loginForm, socialLogin, signupLink);
+  showElements(resetPasswordForm);
+  // loginForm.classList.remove("visible");
+  // resetPasswordForm.classList.add("visible");
+  // socialLogin.classList.remove("visible");
+  // signupLink.classList.remove("visible");
 }
 
 // Event listeners for toggling views
