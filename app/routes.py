@@ -103,7 +103,6 @@ def reset_password():
         token = s.dumps({'user_id': user.id})
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True, _scheme='https')
-        print(f"reset: {reset_link}")
         msg = Message('Password Reset Request', recipients=[email])
         msg.body = f"""
             Hello,
@@ -130,7 +129,7 @@ def reset_password():
                                 padding: 10px 20px; 
                                 text-decoration: none; 
                                 border-radius: 5px; 
-                                font-size: 18px;">
+                                font-size: 16px;">
                             Reset Your Password
                         </a>
                     </div>
@@ -166,8 +165,7 @@ def reset_with_token(token):
         db.session.commit()
         return jsonify({"message": "Password successfully reset."}), 200
 
-    return jsonify({"message": "Use the POST method to reset your password."}), 405
-
+    return render_template('reset_password.html', title="Reset Password", token=token)
 
 @full_bp.route('/logout')
 def logout():

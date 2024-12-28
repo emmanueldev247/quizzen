@@ -26,7 +26,8 @@ form {
     display: flex;
 }
 
-.login-container {
+.login-container,
+.reset-password-container {
     position: relative;
     z-index: 2;
     width: 100%;
