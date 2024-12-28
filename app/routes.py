@@ -157,7 +157,7 @@ def reset_with_token(token):
         return jsonify({"message": "User not found."}), 404
 
     if request.method == 'POST':
-        new_password = request.form.get('password')
+        new_password = request.json.get('password')
         if not new_password:
             return jsonify({"message": "Password cannot be empty."}), 400
 

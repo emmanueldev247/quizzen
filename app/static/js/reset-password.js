@@ -73,17 +73,17 @@ submitBtn.addEventListener("click", (event) => {
 resetPasswordForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
+  const newPassword = document.getElementById("new-password").value;
   const token = window.location.pathname.split("/").pop();
 
   submitBtn.textContent = "Resetting password...";
   submitBtn.disabled = true;
 
-  const formData = new FormData(this);
-
   // Send POST request to backend
   fetch(`/quizzen/reset_password/${token}`, {
     method: "POST",
-    body: formData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password: newPassword }),
   })
     .then((response) => {
       if (!response.ok) {
