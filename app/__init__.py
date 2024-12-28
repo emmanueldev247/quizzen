@@ -47,7 +47,6 @@ app.config['SECRET_KEY'] = os.getenv(
                                     )
 """app.config['SERVER_NAME'] = 'emmanueldev247.tech'"""
 app.config['APPLICATION_ROOT'] = '/quizzen'
-app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 uri = 'postgresql://admin:3264@localhost/quizzen'
 # PostgreSQL Config

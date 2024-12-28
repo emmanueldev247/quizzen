@@ -119,7 +119,7 @@ def reset_password():
         """
         msg.html = f"""
             <html>
-                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; font-size: 16px">
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; font-size: 14px">
                     <h2 style="text-align: center; color: #444;">Password Reset Request</h2>
                     <p>Hello,</p>
                     <p>We received a request to reset your password for your Quizzen account. If you made this request, click the button below to reset your password:</p>
