@@ -65,6 +65,7 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    print(f'Signup link here: {url_for('full_bp.signup')}')
     if request.method == 'POST':
         try:
             email = request.form.get('email').strip()
