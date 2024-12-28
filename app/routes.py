@@ -103,10 +103,42 @@ def reset_password():
         token = s.dumps({'user_id': user.id})
 
         reset_link = url_for('full_bp.reset_with_token', token=token, _external=True)
-        print(f'reset link: {reset_link}')
 
         msg = Message('Password Reset Request', recipients=[email])
-        msg.body = f'Click the link to reset your password: {reset_link}'
+        msg.body = f"""
+            Hello,
+
+            We received a request to reset your password for your Quizzen account. If you made this request, click the link below to reset your password:
+
+            {reset_link}
+
+            If you did not request a password reset, please ignore this email or contact support if you have any concerns.
+
+            Thank you,
+            The Quizzen Team
+        """
+        msg.html = f"""
+            <html>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="text-align: center; color: #444;">Password Reset Request</h2>
+                    <p>Hello,</p>
+                    <p>We received a request to reset your password for your Quizzen account. If you made this request, click the button below to reset your password:</p>
+                    <div style="text-align: center; margin: 20px;">
+                        <a href="{reset_link}" 
+                        style="background-color: #6a0dad; 
+                                color: white; 
+                                padding: 10px 20px; 
+                                text-decoration: none; 
+                                border-radius: 5px; 
+                                font-size: 16px;">
+                            Reset Your Password
+                        </a>
+                    </div>
+                    <p>If you did not request a password reset, please ignore this email or contact support if you have any concerns.</p>
+                    <p>Thank you,<br>The Quizzen Team</p>
+                </body>
+            </html>
+        """
         mail.send(msg)
         return jsonify({"success": True, "message": "Password reset link sent to your email!"}), 200
     except Exception as e:
