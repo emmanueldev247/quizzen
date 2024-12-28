@@ -150,20 +150,20 @@ def reset_with_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         data = s.loads(token, max_age=1800)
     except BadSignature:
-        return jsonify({"message": "Invalid or expired token."}), 400
+        return jsonify({"success": False, "message": "Invalid or expired token."}), 400
 
     user = User.query.get(data['user_id'])
     if not user:
-        return jsonify({"message": "User not found."}), 404
+        return jsonify({"success": False, "message": "User not found."}), 404
 
     if request.method == 'POST':
         new_password = request.json.get('password')
         if not new_password:
-            return jsonify({"message": "Password cannot be empty."}), 400
+            return jsonify({"success": False, "message": "Password cannot be empty."}), 400
 
         user.set_password(new_password)
         db.session.commit()
-        return jsonify({"message": "Password successfully reset."}), 200
+        return jsonify({"success": True, "message": "Password successfully reset."}), 200
 
     return render_template('reset_password.html', title="Reset Password", token=token)
 
