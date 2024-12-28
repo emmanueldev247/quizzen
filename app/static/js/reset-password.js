@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 200);
 });
 
-togglePasswordVisibility("#password", "new-password");
+togglePasswordVisibility("#new-password", "#c_password");
 
 // show/hide password toggle
 document.querySelectorAll(".toggle-password").forEach((icon) => {
