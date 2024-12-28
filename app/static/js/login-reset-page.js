@@ -167,7 +167,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
         if (response.status === 404) {
           resetWarningSpan.innerHTML = `No account associated with 
           <span style="color: #d9534f;">${formData.get("email")}</span> .
-          <br> Please register to create an account.`;
+          <br>Please register to create an account.`;
           warningCard.style.display = "flex";
         } else
           showNotification(
@@ -181,8 +181,8 @@ resetPasswordForm.addEventListener("submit", function (event) {
     .then((data) => {
       if (data.success) {
         resetSuccessSpan.innerHTML = `A link has been sent to 
-        <span style="color: #378249;">${formData.get("email")}</span> .
-        <br> For your safety, this link expires in 30 minutes and can only be used once.`;
+        <span style="color: #009724;">${formData.get("email")}</span> .
+        <br>For your safety, this link expires in 30 minutes and can only be used once.`;
         successCard.style.display = "flex";
         showNotification("Please check your inbox or spam folder", "success");
       }
