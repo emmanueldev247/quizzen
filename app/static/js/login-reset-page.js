@@ -96,7 +96,7 @@ loginForm.addEventListener("submit", function (event) {
 
   loginButton.textContent = "Logging in...";
   loginButton.disabled = true;
-  
+
   warningCard.style.display = "none";
 
   fetch("/quizzen/login", {
@@ -163,9 +163,11 @@ resetPasswordForm.addEventListener("submit", function (event) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 404) {
-          resetWarningSpan.textContent = `No account associated with ${formData.get(
+          resetWarningSpan.innerHTML = `No account associated with 
+          <span style="font-weight: 900; color: #d9534f;">${formData.get(
             "email"
-          )}. Please register to create an account.`;
+          )}</span>.<br>
+          Please register to create an account.`;
           warningCard.style.display = "flex";
         } else
           showNotification(
