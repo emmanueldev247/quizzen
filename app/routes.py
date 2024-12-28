@@ -5,7 +5,7 @@ from flask import (
     )
 from flask_mail import Message
 from app.extensions import db, bcrypt, mail
-from app.models import User
+from app.models import User, UsedToken
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature
 
@@ -141,7 +141,6 @@ def reset_password():
         mail.send(msg)
         return jsonify({"success": True, "message": "Password reset link sent to your email!"}), 200
     except Exception as e:
-        print(str(e))
         return jsonify({"success": False, "message": "Failed to send email. Please try again later.", "error": str(e)}), 500
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -151,6 +150,12 @@ def reset_with_token(token):
         data = s.loads(token, max_age=1800)
     except BadSignature:
         return jsonify({"success": False, "message": "Invalid or expired token."}), 400
+
+    try:
+        if UsedToken.query.filter_by(token=token).first():
+            return jsonify({"success": False, "message": "Token has already been used."}), 400
+    except Exception as e:
+        return jsonify({"success": False, "message": "Failed to check Token. Please try again later.", "error": str(e)}), 500
 
     user = User.query.get(data['user_id'])
     if not user:
@@ -162,6 +167,11 @@ def reset_with_token(token):
             return jsonify({"success": False, "message": "Password cannot be empty."}), 400
 
         user.set_password(new_password)
+        db.session.add(user)
+
+        used_token = UsedToken(token=token)
+        db.session.add(used_token)
+        
         db.session.commit()
         return jsonify({"success": True, "message": "Password successfully reset."}), 200
 

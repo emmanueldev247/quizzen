@@ -172,7 +172,7 @@ class QuizHistory(db.Model):
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
                         nullable=False)
     score = db.Column(db.Integer, nullable=False)  # Store the total score
-    date_taken = db.Column(db.DateTime, default=datetime.utcnow)
+    date_taken = db.Column(db.DateTime, server_default=db.func.now())
     answers = db.relationship('UserAnswer', backref='quiz_history', 
                               cascade='all, delete-orphan', lazy=True)
 
@@ -262,4 +262,9 @@ class Notification(db.Model):
                         nullable=False)
     message = db.Column(db.String(255), nullable=False)
     is_read = db.Column(db.Boolean, default=False, index=True)
-    date_sent = db.Column(db.DateTime, default=datetime.utcnow)
+    date_sent = db.Column(db.DateTime, server_default=db.func.now())
+
+class UsedToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(256), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
