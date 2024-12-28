@@ -115,10 +115,7 @@ loginForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
-        showNotification(
-          "Login successful",
-          "success"
-        );
+        showNotification("Login successful", "success");
         window.location.href = "/quizzen/dashboard";
       }
     })
@@ -139,16 +136,22 @@ loginForm.addEventListener("submit", function (event) {
 resetPasswordForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
+  const formData = new FormData(this);
+
   const resetPasswordButton = document.getElementById("reset-password-button");
+  const warningCard = document.getElementById("reset-password-warning");
+  const successCard = document.getElementById("reset-password-success");
+  const resetWarningSpan = document.querySelector(
+    "#reset-password-warning span"
+  );
+  const resetSuccessSpan = document.querySelector(
+    "#reset-password-success span"
+  );
+
   resetPasswordButton.textContent = "Resetting password...";
   resetPasswordButton.disabled = true;
 
-  const warningCard = document.getElementById("reset-password-warning");
-  const successCard = document.getElementById("reset-password-success");
-  const formData = new FormData(this);
   warningCard.style.display = successCard.style.display = "none";
-
-  
 
   fetch("/quizzen/reset_password", {
     method: "POST",
@@ -157,6 +160,9 @@ resetPasswordForm.addEventListener("submit", function (event) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 404) {
+          resetWarningSpan.textContent = `No account associated with ${formData.get(
+            "email"
+          )}. Please register to create an account.`;
           warningCard.style.display = "flex";
         } else
           showNotification(
@@ -169,11 +175,11 @@ resetPasswordForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
+        resetSuccessSpan.textContent = `A link has been sent to your ${formData.get(
+          "email"
+        )}. For your safety, this link expires in 30 minutes and can only be used once.`;
         successCard.style.display = "flex";
-        showNotification(
-          "A link has been sent to your email. For your safety, this link expires in 30 minutes and can only be used once.",
-          "success"
-        );
+        showNotification("Please check your inbox or spam folder", "success");
       }
     })
     .catch((error) => {
