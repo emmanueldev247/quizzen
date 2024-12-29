@@ -183,7 +183,7 @@ def reset_with_token(token):
                                     title="Error",
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
-                                        "Please return to the login page and select \"Forgot Password\" to request a new reset link."
+                                        "Please return to the login page and select \"<b>Forgot Password</b>\" to request a new reset link."
                                   ), 404
 
     try:
