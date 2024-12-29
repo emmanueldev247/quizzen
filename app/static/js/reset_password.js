@@ -95,7 +95,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
           );
         } else {
           showNotification(
-            "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later",
             "error"
           );
         }
@@ -118,7 +118,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
       console.error("Error:", error);
       if (error.message === "Failed to fetch")
         showNotification(
-          "Network error. Please check your connection.",
+          "Network error. Please check your connection",
           "error"
         );
     })

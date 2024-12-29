@@ -43,17 +43,28 @@ def home():
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        limiter.limit("5 per minute")(lambda: None)()
         try:
-            email = request.form.get('email').strip()
-            password = request.form.get('password')
-            first_name = request.form.get('first_name').strip()
-            last_name = request.form.get('last_name').strip()
-            date_of_birth = request.form.get('date_of_birth').strip()
-            role = request.form.get('role').strip()
-            gender = request.form.get('gender').strip()
+            if request.is_json:
+                data = request.get_json()
+            else:  
+                data = request.form
+
+            email = data.get('email', '').strip()
+            password = data.get('password', '')
+            first_name = data.get('first_name', '').strip()
+            last_name = data.get('last_name', '').strip()
+            date_of_birth = data.get('date_of_birth', '').strip()
+            role = data.get('role', '').strip()
+            gender = data.get('gender', '').strip()
         except Exception as e:
             return jsonify(
                 {'success': False, 'message': 'Form data not valid', 'error': str(e)}
+            ), 401
+
+        if not all([email, password, first_name, last_name, date_of_birth, role, gender]):
+            return jsonify(
+                {'success': False, 'message': 'Form data not valid'}
             ), 401
 
         try:
@@ -86,7 +97,6 @@ def signup():
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
-# @limiter.limit("5 per minute") 
 def login():
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()

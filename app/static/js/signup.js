@@ -166,14 +166,14 @@ submitBtn.addEventListener("click", (event) => {
   }
 
   if (!confirmPassword) {
-    cPasswordError.textContent = 'Please confirm your password';
+    cPasswordError.textContent = "Please confirm your password";
     cPasswordError.style.display = "block";
     event.preventDefault();
     return;
   }
 
   if (password !== confirmPassword) {
-    cPasswordError2.textContent = 'Passwords do not match!';
+    cPasswordError2.textContent = "Passwords do not match!";
     cPasswordError2.style.display = "block";
     event.preventDefault();
     return;
@@ -203,9 +203,14 @@ signupForm.addEventListener("submit", function (event) {
             "An account already exists for this email. Please use the button above to log in or register another email",
             "error"
           );
+        } else if (response.status === 429) {
+          showNotification(
+            "You have made too many requests in a short period. Please try again later",
+            "error"
+          );
         } else {
           showNotification(
-            "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later",
             "error"
           );
         }
@@ -216,7 +221,7 @@ signupForm.addEventListener("submit", function (event) {
     .then((data) => {
       if (data.success) {
         showNotification(
-          "Registration successful! You can now log in.",
+          "Registration successful! You can now log in",
           "success"
         );
         setTimeout(() => {
@@ -228,7 +233,7 @@ signupForm.addEventListener("submit", function (event) {
       console.error("Error:", error);
       if (error.message === "Failed to fetch")
         showNotification(
-          "Network error. Please check your connection.",
+          "Network error. Please check your connection",
           "error"
         );
     })

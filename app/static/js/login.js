@@ -79,11 +79,14 @@ loginForm.addEventListener("submit", function (event) {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 401) {
-          loginWarningSpan.innerHTML = `Invalid username or password.`;
+          loginWarningSpan.innerHTML = `Invalid username or password`;
+          warningCard.style.display = "flex";
+        } else if (response.status === 429) {
+          loginWarningSpan.innerHTML = `You have made too many requests in a short period. Please try again later`;
           warningCard.style.display = "flex";
         } else
           showNotification(
-            "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later",
             "error"
           );
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -100,7 +103,7 @@ loginForm.addEventListener("submit", function (event) {
       console.log(`Error: ${error}`);
       if (error.message === "Failed to fetch")
         showNotification(
-          "Network error. Please check your connection.",
+          "Network error. Please check your connection",
           "error"
         );
     })
@@ -141,9 +144,14 @@ resetPasswordForm.addEventListener("submit", function (event) {
           <span style="color: #d9534f;">${formData.get("email")}</span> .
           <br>Please register to create an account.`;
           warningCard.style.display = "flex";
+        } else if (response.status === 429) {
+          showNotification(
+            "You have made too many requests in a short period. Please try again later",
+            "error"
+          );
         } else
           showNotification(
-            "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later",
             "error"
           );
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -163,7 +171,7 @@ resetPasswordForm.addEventListener("submit", function (event) {
       console.log(`Error: ${error}`);
       if (error.message === "Failed to fetch")
         showNotification(
-          "Network error. Please check your connection.",
+          "Network error. Please check your connection",
           "error"
         );
     })
