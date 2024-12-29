@@ -5,7 +5,7 @@ from flask import (
     )
 from flask_mail import Message
 from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask_limiter.errors import RateLimitExceeded
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature, SignatureExpired
 from functools import wraps
@@ -38,13 +38,21 @@ def auth_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
-@full_bp.errorhandler(429)
+@full_bp.errorhandler(RateLimitExceeded)
 def ratelimit_exceeded(e):
-    return jsonify(error="Too many requests, please try again later."), 429
+    logger.warning(
+        f"Rate limit exceeded for {request.remote_addr} on route {request.path}. "
+        f"Details: {e.description}"
+        f"lastly: {e}"
+    )
+    return jsonify({
+        "error": "Too many requests, please try again later.",
+        "success": False
+    }), 429
 
 @full_bp.after_request
 def log_response_info(response):
-    logger.info(f'"{request.method} {request.path}" -> {response.status_code} - -')
+    logger.info(f'"{request.method} {request.path}" {response.status_code}')
     return response
 
 @full_bp.route('/')

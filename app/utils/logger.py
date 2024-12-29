@@ -47,7 +47,7 @@ def setup_logger():
         console_handler.setLevel(logging.INFO)
 
         formatter = RequestFormatter(
-            '%(asctime)s - %(name)s - %(levelname)s - [%(client_ip)s] %(message)s'
+            '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [%(client_ip)s] %(message)s'
         )
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)
