@@ -66,8 +66,8 @@ def test():
 
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
-    logger.info(f"Signup attempt")
     if request.method == 'POST':
+        logger.info(f"Signup attempt")
         limiter.limit("5 per minute")(lambda: None)()
         try:
             if request.is_json:
@@ -129,8 +129,8 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    logger.info(f"Login attempt")
     if request.method == 'POST':
+        logger.info(f"Login attempt")
         limiter.limit("5 per minute")(lambda: None)()
         try:
             if request.is_json:
@@ -226,7 +226,6 @@ def reset_password():
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
-    logger.info(f"Reset with token attempt")
     try:
         s = Serializer(current_app.config['SECRET_KEY'])
         data = s.loads(token, max_age=1800)
@@ -291,6 +290,8 @@ def reset_with_token(token):
                                 ), 404
 
     if request.method == 'POST':
+        logger.info(f"Reset with token attempt")
+        limiter.limit("5 per minute")(lambda: None)()
         new_password = request.json.get('password')
         if not new_password:
             logger.error(f"Password cannot be empty")
