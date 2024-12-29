@@ -47,7 +47,6 @@ submitBtn.addEventListener("click", (event) => {
     return;
   }
 
-  // Check password strength
   if (!passwordStrengthRegex.test(password)) {
     passwordStrengthError.style.display = "block";
     event.preventDefault();
@@ -101,11 +100,13 @@ resetPasswordForm.addEventListener("submit", function (event) {
     })
     .then((data) => {
       if (data.success) {
-        // show success notification
-        showNotification("Password successfully reset..", "success");
+        showNotification(
+          "Password successfully reset. You can now login",
+          "success"
+        );
         setTimeout(() => {
           window.location.href = "/quizzen/login";
-        }, 3000);
+        }, 2500);
       }
     })
     .catch((error) => {
@@ -117,7 +118,6 @@ resetPasswordForm.addEventListener("submit", function (event) {
         );
     })
     .finally(() => {
-      // Reset button text and re-enable it
       submitBtn.textContent = "Reset Password";
       submitBtn.disabled = false;
     });
