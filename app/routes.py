@@ -98,7 +98,10 @@ def login():
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
         try:
-            data = request.get_json() or request.form
+            if request.is_json:
+                data = request.get_json()
+            else:  
+                data = request.form
 
             email = data.get('email', '').strip()
             password = data.get('password', '')
