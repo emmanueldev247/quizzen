@@ -45,6 +45,7 @@ def test():
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
     if x_forwarded_for:
         print(f'X_f_f:{x_forwarded_for}')
+        print(request)
         print(f"Remote addr: {request.remote_addr}")
         print(f"X f addr: {request.proxy_add_x_forwarded_for}")
         return jsonify(
