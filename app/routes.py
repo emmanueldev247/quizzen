@@ -169,7 +169,7 @@ def reset_with_token(token):
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "Expired token."}), 400
         else:
-            return render_template('reset_password_error', 
+            return render_template('reset_password_error.html', 
                                     message_h1="Link Expired",
                                     message_p='Your password reset link has expired. To reset your password,\
                                         please return to the login page and select "Forgot Password" to request a new reset link.'
@@ -178,46 +178,46 @@ def reset_with_token(token):
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "Invalid token."}), 400
         else:
-            return render_template('reset_password_error', 
+            return render_template('reset_password_error.html', 
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used.\
                                         Please return to the login page and select \"Forgot Password\" to request a new reset link."
                                   ), 404
-            # return render_template('reset_password_error', title="Error" ), 404
+            # return render_template('reset_password_error.html', title="Error" ), 404
 
     try:
         if UsedToken.query.filter_by(token=token).first():
             if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
                 return jsonify({"success": False, "message": "Token has already been used."}), 400
             else:
-                return render_template('reset_password_error', 
+                return render_template('reset_password_error.html', 
                                         message_h1="Invalid Link",
                                         message_p="We're sorry, but the link you clicked is invalid or has already been used.\
                                             Please return to the login page and select \"Forgot Password\" to request a new reset link."
                                     ), 404
-                # return render_template('reset_password_error', title="Error" ), 404
+                # return render_template('reset_password_error.html', title="Error" ), 404
     except Exception as e:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "Failed to check Token. Please try again later.", "error": str(e)}), 500
         else:
-            return render_template('reset_password_error', 
+            return render_template('reset_password_error.html', 
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used.\
                                         Please return to the login page and select \"Forgot Password\" to request a new reset link."
                                 ), 404
-            # return render_template('reset_password_error', title="Error" ), 404
+            # return render_template('reset_password_error.html', title="Error" ), 404
 
     user = User.query.get(data['user_id'])
     if not user:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "User not found."}), 404
         else:
-            return render_template('reset_password_error', 
+            return render_template('reset_password_error.html', 
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used.\
                                         Please return to the login page and select \"Forgot Password\" to request a new reset link."
                                 ), 404
-            # return render_template('reset_password_error', title="Error" ), 404
+            # return render_template('reset_password_error.html', title="Error" ), 404
 
     if request.method == 'POST':
         new_password = request.json.get('password')
