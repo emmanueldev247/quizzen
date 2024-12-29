@@ -42,20 +42,17 @@ def home():
 
 @full_bp.route('/test')
 def test():
+    print(request.headers)
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
     if x_forwarded_for:
-        print(f'X_f_f:{x_forwarded_for}')
-        print(request.headers)
-        print(f"Remote addr: {request.remote_addr}")
-        print(f"X f addr: {request.proxy_add_x_forwarded_for}")
         return jsonify(
-                {'success': True, 'data': x_forwarded_for}
-            ), 200
+                {'success': True, 'x_forwarded_for': x_forwarded_for}
+        ), 200
     else:
-        print(f"Remote addr: {request.remote_addr}")
+        x_real_ip = request.headers.get("X-Real-Ip", "")
         return jsonify(
-                {'success': True, 'data': request.remote_addr}
-            ), 200
+                {'success': True, 'x_real_ip': x_real_ip}
+        ), 200
 
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
