@@ -8,7 +8,7 @@ const loginButton = document.getElementById("back-to-login");
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     showElements(errorContainer);
-  }, 200);
+  }, 2000);
 });
 
 loginButton.addEventListener("click", () => window.location.href = "/quizzen/login");
