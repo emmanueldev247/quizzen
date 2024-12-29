@@ -25,7 +25,7 @@ class RequestFormatter(logging.Formatter):
                 record.client_ip = 'N/A'
         except Exception as e:
             record.client_ip = f'Error: {str(e)}'
-    return super().format(record)
+        return super().format(record)
 
 def setup_logger():
     """Set up logging for the application."""
