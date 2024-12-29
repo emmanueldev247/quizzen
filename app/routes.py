@@ -173,7 +173,7 @@ def reset_with_token(token):
                                     title="Error",
                                     message_h1="Link Expired",
                                     message_p="Your password reset link has expired. To reset your password, "\
-                                        "please return to the login page and select \"Forgot Password\" to request a new reset link."
+                                        "please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
                                   ), 404
     except BadSignature:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
@@ -183,7 +183,7 @@ def reset_with_token(token):
                                     title="Error",
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
-                                        "Please return to the login page and select \"<b>Forgot Password</b>\" to request a new reset link."
+                                        "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
                                   ), 404
 
     try:
@@ -195,7 +195,7 @@ def reset_with_token(token):
                                         title="Error", 
                                         message_h1="Invalid Link",
                                         message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
-                                            "Please return to the login page and select \"Forgot Password\" to request a new reset link."
+                                            "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
                                     ), 404
     except Exception as e:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
@@ -205,7 +205,7 @@ def reset_with_token(token):
                                     title="Error",
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
-                                        "Please return to the login page and select \"Forgot Password\" to request a new reset link."
+                                        "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
                                 ), 404
 
     user = User.query.get(data['user_id'])
@@ -217,7 +217,7 @@ def reset_with_token(token):
                                     title="Error",
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
-                                        "Please return to the login page and select \"Forgot Password\" to request a new reset link."
+                                        "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
                                 ), 404
 
     if request.method == 'POST':
