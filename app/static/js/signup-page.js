@@ -40,31 +40,6 @@ document.querySelectorAll(".role-option").forEach((option) => {
   });
 });
 
-// document.querySelectorAll(".toggle-password").forEach((icon) => {
-//   icon.addEventListener("click", function () {
-//     const passwordField = document.getElementById("password");
-//     const confirmPasswordField = document.getElementById("c_password");
-
-//     // Check the current state of password visibility
-//     if (passwordField.type === "password") {
-//       passwordField.type = "text";
-//       confirmPasswordField.type = "text";
-
-//       this.classList.remove("fa-eye");
-//       this.classList.add("fa-eye-slash");
-//       this.setAttribute("title", "Hide password");
-//     } else {
-//       // Set both password fields to 'password' (hide passwords)
-//       passwordField.type = "password";
-//       confirmPasswordField.type = "password";
-
-//       this.classList.remove("fa-eye-slash");
-//       this.classList.add("fa-eye");
-//       this.setAttribute("title", "Show password");
-//     }
-//   });
-// });
-
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
 const contBtnNames = document.getElementById("continue-button-names");
@@ -78,6 +53,7 @@ contBtnEmail.addEventListener("click", () => {
   const emailError = document.getElementById("email-error");
 
   if (!email) {
+    email.textContent = "Please enter your email address";
     emailError.style.display = "block";
     return;
   }
@@ -96,11 +72,13 @@ contBtnNames.addEventListener("click", () => {
   firstNameError.style.display = lastNameError.style.display = "none";
 
   if (!firstName) {
+    firstNameError.textContent = "Please enter your first name";
     firstNameError.style.display = "block";
     return;
   }
 
   if (!lastName) {
+    lastNameError.textContent = "Please enter your last name";
     lastNameError.style.display = "block";
     return;
   }
@@ -117,6 +95,7 @@ contBtnGender.addEventListener("click", () => {
   genderError.style.display = "none";
 
   if (!gender) {
+    genderError.textContent = "Please select your gender";
     genderError.style.display = "block";
     return;
   }
@@ -131,6 +110,7 @@ contBtnRole.addEventListener("click", () => {
   roleError.style.display = "none";
 
   if (!role) {
+    roleError.textContent = "Please select what best describes you";
     roleError.style.display = "block";
     return;
   }
@@ -145,6 +125,7 @@ contBtnDob.addEventListener("click", () => {
   dobError.style.display = "none";
 
   if (!dob) {
+    dobError.textContent = "Please enter your date of birth";
     dobError.style.display = "block";
     return;
   }
@@ -170,25 +151,29 @@ submitBtn.addEventListener("click", (event) => {
   cPasswordError2.style.display = cPasswordError.style.display = "none";
 
   if (!password) {
+    passwordError.textContent = "Password is required";
     passwordError.style.display = "block";
     event.preventDefault();
     return;
   }
 
-  // Check password strength
   if (!passwordStrengthRegex.test(password)) {
+    passwordStrengthError.textContent =
+      "Password must be at least 8 characters long and include letters, numbers, and a special character";
     passwordStrengthError.style.display = "block";
     event.preventDefault();
     return;
   }
 
   if (!confirmPassword) {
+    cPasswordError.textContent = 'Please confirm your password';
     cPasswordError.style.display = "block";
     event.preventDefault();
     return;
   }
 
   if (password !== confirmPassword) {
+    cPasswordError2.textContent = 'Passwords do not match!';
     cPasswordError2.style.display = "block";
     event.preventDefault();
     return;
