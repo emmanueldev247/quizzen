@@ -34,7 +34,6 @@ from flask import Flask
 from flask_login import LoginManager
 from app import routes
 from app.extensions import db, bcrypt, session, migrate, mail, limiter
-# from app.utils.logger import setup_logger
 
 
 app = Flask(__name__, static_folder='static',
@@ -49,8 +48,8 @@ app.config['SECRET_KEY'] = os.getenv(
 """app.config['SERVER_NAME'] = 'emmanueldev247.tech'"""
 app.config['APPLICATION_ROOT'] = '/quizzen'
 
-uri = 'postgresql://admin:3264@localhost/quizzen'
 # PostgreSQL Config
+# uri = 'postgresql://admin:3264@localhost/quizzen'
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -66,6 +65,7 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(
                                                )
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
+# mail Config
 app.config['MAIL_SERVER'] = 'us2.smtp.mailhostbox.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -82,9 +82,8 @@ migrate.init_app(app, db)
 mail.init_app(app)
 limiter.init_app(app)
 
-# logger = setup_logger()
 
-routes.logger.info("------------ Quizzen app initialized ------------")
+routes.logger.info("----- Quizzen app initialized -----")
 
 app.register_blueprint(routes.full_bp)
 
