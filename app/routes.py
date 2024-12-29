@@ -93,12 +93,15 @@ def signup():
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute") 
 def login():
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
         try:
-            email = request.form.get('email').strip()
-            password = request.form.get('password')
+            data = request.get_json() or request.form
+
+            email = data.get('email', '').strip()
+            password = data.get('password', '')
         except Exception as e:
             return jsonify(
                 {'success': False, 'message': 'Form data not valid', 'error': str(e)}
