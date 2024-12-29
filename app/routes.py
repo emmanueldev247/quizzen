@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, current_app, flash, jsonify,
+    Blueprint, current_app, jsonify,
     redirect, render_template, request,
     session, url_for
     )
@@ -53,8 +53,6 @@ def signup():
 
         try:
             if User.query.filter_by(email=email).first():
-                flash('Email already registered', 'danger')
-                print(f'user exist')
                 return jsonify({'success': False, 'message': 'Email already exists'}), 400
         except Exception as e:
             db.session.rollback()
@@ -199,7 +197,6 @@ def reset_with_token(token):
 @full_bp.route('/logout')
 def logout():
     session.pop('user_id', None)
-    flash('Logged out successfully', 'success')
     return redirect(url_for('full_bp.home'))
 
 @full_bp.route('/dashboard')
