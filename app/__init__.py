@@ -49,7 +49,7 @@ app.config['SECRET_KEY'] = os.getenv(
 app.config['APPLICATION_ROOT'] = '/quizzen'
 
 # PostgreSQL Config
-# uri = 'postgresql://admin:3264@localhost/quizzen'
+uri = 'postgresql://admin:3264@localhost/quizzen'
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
