@@ -40,6 +40,22 @@ def ratelimit_exceeded(e):
 def home():
     return render_template('index.html', title='Home')
 
+@full_bp.route('/test')
+def test():
+    x_forwarded_for = request.headers.get("X-Forwarded-For", "")
+    if x_forwarded_for:
+        print(f'X_f_f:{x_forwarded_for}')
+        print("Remote addr: {request.remote_addr}")
+        print("X f addr: {request.roxy_add_x_forwarded_for}")
+        return jsonify(
+                {'success': True, 'data': x_forwarded_for}
+            ), 200
+    else:
+        print("Remote addr: {request.remote_addr}")
+        return jsonify(
+                {'success': True, 'data': request.remote_addr}
+            ), 200
+
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
