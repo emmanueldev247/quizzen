@@ -5,3 +5,4 @@ venv/
 *.db
 *.sw*
 test.*
+logs/
