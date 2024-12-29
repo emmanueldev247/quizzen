@@ -82,8 +82,10 @@ loginForm.addEventListener("submit", function (event) {
           loginWarningSpan.innerHTML = `Invalid username or password`;
           warningCard.style.display = "flex";
         } else if (response.status === 429) {
-          loginWarningSpan.innerHTML = `You have made too many requests in a short period. Please try again later`;
-          warningCard.style.display = "flex";
+          showNotification(
+            "You have made too many requests in a short period. Please try again later",
+            "error"
+          );
         } else
           showNotification(
             "Something went wrong. Please try again later",
