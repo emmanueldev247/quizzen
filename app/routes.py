@@ -6,7 +6,7 @@ from flask import (
 from flask_mail import Message
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from app.extensions import db, bcrypt, mail
+from app.extensions import db, bcrypt, mail, limiter
 from app.models import User, UsedToken
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature, SignatureExpired
@@ -29,13 +29,6 @@ def auth_required(f):
 
         return f(current_user, *args, **kwargs)
     return decorated
-
-
-limiter = Limiter(
-    get_remote_address,
-    app=current_app,
-    default_limits=["200 per day", "50 per hour"]
-)
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
 

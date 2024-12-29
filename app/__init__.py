@@ -32,7 +32,7 @@ import secrets
 from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
-from app.extensions import db, bcrypt, session, migrate, mail
+from app.extensions import db, bcrypt, session, migrate, mail, limiter
 from app import routes
 
 
@@ -80,5 +80,6 @@ bcrypt.init_app(app)
 session.init_app(app)
 migrate.init_app(app, db)
 mail.init_app(app)
+limiter.init_app(app)
 
 app.register_blueprint(routes.full_bp)
