@@ -52,7 +52,7 @@ backToLoginLink.addEventListener("click", () => {
 });
 
 // Initialize by showing the login form
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     showLoginForm();
   }, 200);

@@ -5,7 +5,7 @@ const errorContainer = document.getElementById("error-container");
 const loginButton = document.getElementById("back-to-login");
 
 // Initialize by showing the signup form
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     showElements(errorContainer);
   }, 200);

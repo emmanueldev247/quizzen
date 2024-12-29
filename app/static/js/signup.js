@@ -10,7 +10,7 @@ const socialSignup = document.getElementById("social-signup");
 const loginLink = document.getElementById("login-link");
 
 // Initialize by showing the signup form
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     showElements(signupForm, socialSignup, loginLink);
   }, 200);

@@ -8,7 +8,7 @@ import {
 const resetPasswordForm = document.getElementById("reset-password-form");
 const submitBtn = document.getElementById("submit-button");
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     showElements(resetPasswordForm);
   }, 200);
