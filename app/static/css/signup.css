@@ -24,7 +24,6 @@ form {
 
 h4 {
     color: #6d6d6d;
-    ;
     margin-bottom: 1.5rem;
 }
 
@@ -47,7 +46,6 @@ h4 {
 .login-link {
     flex-direction: column;
     position: relative;
-
     visibility: hidden;
     opacity: 0;
     transform: translateX(100%);
@@ -110,6 +108,7 @@ h4 {
 .signup-form button:focus {
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
+    background: #a94dd0;
 }
 
 .social-signup {
@@ -139,7 +138,6 @@ h4 {
 
 .google-signup:hover {
     background-color: #a83427;
-    ;
 }
 
 .microsoft-signup {
@@ -148,7 +146,6 @@ h4 {
 
 .microsoft-signup:hover {
     background-color: #004b85;
-    ;
 }
 
 .facebook-signup {
@@ -194,7 +191,6 @@ h4 {
 #gender-container h4 {
     font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
     color: #333;
-    ;
     margin-bottom: .5rem;
 }
 
