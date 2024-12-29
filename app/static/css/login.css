@@ -190,6 +190,14 @@ form {
     font-weight: bold;
 }
 
+.error-message {
+    font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: red;
+    margin-bottom: 15px;
+    margin-top: -1rem;
+    display: none;
+}
+
 #reset-password-form p {
     margin-bottom: .5rem;
 }
