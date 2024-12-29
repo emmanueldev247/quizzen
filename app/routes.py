@@ -42,7 +42,6 @@ def home():
 
 @full_bp.route('/test')
 def test():
-    print(request.headers)
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
     if x_forwarded_for:
         return jsonify(
