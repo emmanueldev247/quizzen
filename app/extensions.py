@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_session import Session
 from flask_migrate import Migrate
 from flask_mail import Mail
-from flask import Flask
+from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
