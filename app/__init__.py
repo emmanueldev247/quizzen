@@ -84,6 +84,8 @@ limiter.init_app(app)
 
 logger = setup_logger()
 
+# with app.app_context():
+logger.info("------------ Quizzen app initialized ------------")
+
 app.register_blueprint(routes.full_bp)
 
-logger.info("------------ Quizzen app initialized ------------")
