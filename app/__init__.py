@@ -34,7 +34,7 @@ from flask import Flask
 from flask_login import LoginManager
 from app import routes
 from app.extensions import db, bcrypt, session, migrate, mail, limiter
-from app.utils.logger import setup_logger
+# from app.utils.logger import setup_logger
 
 
 app = Flask(__name__, static_folder='static',
@@ -82,10 +82,9 @@ migrate.init_app(app, db)
 mail.init_app(app)
 limiter.init_app(app)
 
-logger = setup_logger()
+# logger = setup_logger()
 
-# with app.app_context():
-logger.info("------------ Quizzen app initialized ------------")
+routes.logger.info("------------ Quizzen app initialized ------------")
 
 app.register_blueprint(routes.full_bp)
 
