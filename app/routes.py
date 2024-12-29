@@ -86,7 +86,7 @@ def signup():
 
 
 @full_bp.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5 per minute") 
+# @limiter.limit("5 per minute") 
 def login():
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
