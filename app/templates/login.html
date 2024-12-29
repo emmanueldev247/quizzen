@@ -1,7 +1,13 @@
 {% extends "base.html" %}
+
+{% block styles_content %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock styles_content %}
+
 {% block nav_content %}
 		<li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
 {% endblock nav_content %}
+
 {% block child_content %}
 	<div class="login-container" id="login-container">
 		<form method="POST" class="login-form" id="login-form">
