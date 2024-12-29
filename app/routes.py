@@ -12,20 +12,6 @@ from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature, SignatureExpired
 from functools import wraps
 
-limiter = Limiter(
-    get_remote_address,
-    app=current_app,
-    default_limits=["200 per day", "50 per hour"]
-)
-
-full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
-
-
-@current_app.errorhandler(429)
-def ratelimit_exceeded(e):
-    return jsonify(error="Too many requests, please try again later."), 429
-
-
 def auth_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -43,6 +29,19 @@ def auth_required(f):
 
         return f(current_user, *args, **kwargs)
     return decorated
+
+
+limiter = Limiter(
+    get_remote_address,
+    app=current_app,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
+
+@full_bp.errorhandler(429)
+def ratelimit_exceeded(e):
+    return jsonify(error="Too many requests, please try again later."), 429
 
 @full_bp.route('/')
 def home():
