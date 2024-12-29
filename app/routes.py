@@ -19,7 +19,7 @@ logger = setup_logger()
 def auth_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        logger.info(f"Auth Attempt from IP: {request.remote_addr}")
+        logger.info(f"Auth Attempt")
         token = request.headers.get('Authorization')
         if not token:
             logger.error(f"Auth token missing")
@@ -44,7 +44,7 @@ def ratelimit_exceeded(e):
 
 @full_bp.after_request
 def log_response_info(response):
-    logger.info(f"Request Path: {request.path}, Method: {request.method}, Status Code: {response.status_code}")
+    logger.info(f'"{request.method} {request.path}" -> {response.status_code} - -')
     return response
 
 @full_bp.route('/')
@@ -66,7 +66,7 @@ def test():
 
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
-    logger.info(f"Signup attempt from IP: {request.remote_addr}")
+    logger.info(f"Signup attempt")
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
         try:
@@ -129,7 +129,7 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    logger.info(f"Login attempt from IP: {request.remote_addr}")
+    logger.info(f"Login attempt")
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
         try:
@@ -164,7 +164,7 @@ def login():
 @full_bp.route('/reset_password', methods=['POST'])
 @limiter.limit("5 per hour")
 def reset_password():
-    logger.info(f"Password reset attempt from IP: {request.remote_addr}")
+    logger.info(f"Password reset attempt")
     try:
         email = request.form.get('email').strip()
     except Exception as e:
@@ -226,7 +226,7 @@ def reset_password():
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
-    logger.info(f"Reset with token attempt from IP: {request.remote_addr}")
+    logger.info(f"Reset with token attempt")
     try:
         s = Serializer(current_app.config['SECRET_KEY'])
         data = s.loads(token, max_age=1800)
