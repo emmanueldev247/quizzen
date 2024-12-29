@@ -86,8 +86,13 @@ resetPasswordForm.addEventListener("submit", function (event) {
   })
     .then((response) => {
       if (!response.ok) {
-        if (response.status === 400) {
+        if (response.status === 422) {
           showNotification("Password cannot be empty", "error");
+        } else if (response.status === 400) {
+          showNotification(
+            "Invalid Link, please request a new reset link",
+            "error"
+          );
         } else {
           showNotification(
             "Something went wrong. Please try again later.",

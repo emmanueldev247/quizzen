@@ -4,14 +4,27 @@ from flask import (
     session, url_for
     )
 from flask_mail import Message
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from app.extensions import db, bcrypt, mail
 from app.models import User, UsedToken
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature, SignatureExpired
 from functools import wraps
 
+limiter = Limiter(
+    get_remote_address,
+    app=current_app,
+    default_limits=["200 per day", "50 per hour"]
+)
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
+
+
+@current_app.errorhandler(429)
+def ratelimit_exceeded(e):
+    return jsonify(error="Too many requests, please try again later."), 429
+
 
 def auth_required(f):
     @wraps(f)
@@ -83,6 +96,7 @@ def signup():
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        limiter.limit("5 per minute")(lambda: None)()
         try:
             email = request.form.get('email').strip()
             password = request.form.get('password')
@@ -104,6 +118,7 @@ def login():
     return render_template('login.html', title='Login')
 
 @full_bp.route('/reset_password', methods=['POST'])
+@limiter.limit("5 per hour")
 def reset_password():
     try:
         email = request.form.get('email').strip()
@@ -174,7 +189,7 @@ def reset_with_token(token):
                                     message_h1="Link Expired",
                                     message_p="Your password reset link has expired. To reset your password, "\
                                         "please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
-                                  ), 404
+                                  ), 400
     except BadSignature:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "Invalid token."}), 400
@@ -184,7 +199,7 @@ def reset_with_token(token):
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
                                         "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
-                                  ), 404
+                                  ), 400
 
     try:
         if UsedToken.query.filter_by(token=token).first():
@@ -196,7 +211,7 @@ def reset_with_token(token):
                                         message_h1="Invalid Link",
                                         message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
                                             "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
-                                    ), 404
+                                    ), 400
     except Exception as e:
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "Failed to check Token. Please try again later.", "error": str(e)}), 500
@@ -206,7 +221,7 @@ def reset_with_token(token):
                                     message_h1="Invalid Link",
                                     message_p="We're sorry, but the link you clicked is invalid or has already been used. "\
                                         "Please return to the login page and select \"<b>Forgot Password?</b>\" to request a new reset link."
-                                ), 404
+                                ), 500
 
     user = User.query.get(data['user_id'])
     if not user:
@@ -223,7 +238,7 @@ def reset_with_token(token):
     if request.method == 'POST':
         new_password = request.json.get('password')
         if not new_password:
-            return jsonify({"success": False, "message": "Password cannot be empty."}), 400
+            return jsonify({"success": False, "message": "Password cannot be empty."}), 422
 
         user.set_password(new_password)
         db.session.add(user)
