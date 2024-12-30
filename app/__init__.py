@@ -26,10 +26,7 @@ Sensitive values such as secret keys and database credentials are managed
 through environment variables for security.
 """
 
-# import os
-# import redis
-# import secrets
-# from datetime import timedelta
+import os
 from flask import Flask
 from flask_login import LoginManager
 from app.extensions import db, bcrypt, session, migrate, mail, limiter
