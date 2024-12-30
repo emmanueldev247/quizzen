@@ -43,7 +43,7 @@ def create_app(config_name=None):
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])
  
-    # Initialize estensions
+    # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
     session.init_app(app)
