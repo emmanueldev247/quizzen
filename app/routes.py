@@ -26,34 +26,22 @@ def auth_required(f):
     def decorated(*args, **kwargs):
         logger.info(f"Auth Attempt")
         if 'user_id' not in session:
-            logger.error(f"Auth token missing")
+            logger.error(f"Session token missing")
             return jsonify({
                 "success": False,
                 "message": "Authentication token is missing.",
             }), 401
-        print(f"Session: {session}")
-        cookies = request.headers.get('Cookie', '')
-        print(f"Cookie: {cookies}")
-        cookies = request.headers.get('session', '')
-        print(f"Cookie: {cookies}")
-        
+                
         try:
-            s = Serializer(current_app.config['SECRET_KEY'])
-            data = s.loads(token)
-            current_user = User.query.get(data['user_id'])
+            user_id = session['user_id']
+            current_user = User.query.get(user_id)
+
             if not current_user:
-                logger.error(f"Invalid Token")
+                logger.error("Invalid Token")
                 return jsonify({
                     "success": False,
-                    "message": "Invalid token.",
+                    "message": "Invalid session"
                 }), 401
-        except BadSignature as e:
-            logger.error(f"Invalid Token")
-            return jsonify({
-                "success": False,
-                "message": "Invalid or expired token."
-            }), 401
-
         return f(current_user, *args, **kwargs)
     return decorated
 
