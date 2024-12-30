@@ -34,29 +34,34 @@ def get_client_ip():
             else:
                 return 'N/A'
         except Exception as e:
-            logger.error(f"Error retrieving client IP: {e}")
             return 'N/A'
     else:
         return 'N/A'
 
-class RedactingFormatter(logging.Formatter):
-    """Formatter to redact sensitive user information."""
-    def format(self, record):
+class CustomLogFilter(logging.Filter):
+    def filter(self, record):
+        # Add the client_ip attribute to the record
+        record.client_ip = get_client_ip()
+
+        # Add user_id to the log record, or use a default value if not set
         if not hasattr(record, 'user_id'):
             record.user_id = 'N/A'
 
-        record.client_ip = get_client_ip()
+        return True
+
+class RedactingFormatter(logging.Formatter):
+    """Formatter to redact sensitive user information."""
+    def filter(self, record):    
         # Redact email in the message
-        record.msg = redact_email(record.msg)
+        if isinstance(record.msg, str):
+            record.msg = redact_email(record.msg)
+
         return super().format(record)
         
 
 class RequestFormatter(logging.Formatter):
     """Custom log formatter to include client IP."""
     def format(self, record):
-        if not hasattr(record, 'user_id'):
-            record.user_id = 'N/A'
-
         record.client_ip = get_client_ip()
         return super().format(record)
 
@@ -67,6 +72,7 @@ class JSONFormatter(logging.Formatter):
             "timestamp": self.formatTime(record, self.datefmt),
             "level": record.levelname,
             "client_ip": getattr(record, "client_ip", "N/A"),
+            "user_id": getattr(record, "user_id", "N/A"),
             "message": record.getMessage(),
             "file": record.pathname,
             "module": record.module,
@@ -80,11 +86,12 @@ def setup_logger():
     """Set up logging for the application."""
     logger = logging.getLogger('quizzen_app')
 
-    if len(logger.handlers) > 0:
+    if logger.hasHandlers(): #len(logger.handlers) > 0:
         return logger
 
-    # if not logger.hasHandlers():
     logger.setLevel(logging.DEBUG)
+    logger.addFilter(CustomLogFilter())
+
 
         # ---- 1. Rotating File Logger for JSON ---- #
     json_file = os.path.join(log_dir, 'structured_logs.json')
@@ -99,7 +106,7 @@ def setup_logger():
     user_file_handler = RotatingFileHandler(user_log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
     user_file_handler.setLevel(logging.INFO)
     user_file_handler.setFormatter(RedactingFormatter(
-        '%(asctime)s - %(levelname)s - [USER ID: %(user_id)s] %(message)s',
+        '%(asctime)s -  %(name)s - %(levelname)s --> [USER ID: %(user_id)s] %(message)s',
         datefmt="%Y-%m-%d %H:%M:%S"
     ))
 
@@ -107,7 +114,7 @@ def setup_logger():
     console_handler = logging.StreamHandler()
     # console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(ColoredFormatter(
-        "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [%(client_ip)s] %(message)s",
+        "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [IP: %(client_ip)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         log_colors={
             "DEBUG": "cyan",
@@ -116,16 +123,16 @@ def setup_logger():
             "ERROR": "red",
             "CRITICAL": "bold_red",
         }
-    ))
+    ))  
 
     # ---- 4. File Logger for General app ---- #
     log_file = os.path.join(log_dir, 'app.log')   
     file_handler = RotatingFileHandler(log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
     # file_handler.setLevel(logging.DEBUG)   
-    formatter = RequestFormatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [%(client_ip)s] %(message)s'
-    )
-    
+    file_handler.setFormatter(RequestFormatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [IP: %(client_ip)s] %(message)s'
+    ))
+
     logger.addHandler(json_file_handler)
     logger.addHandler(user_file_handler)
     logger.addHandler(console_handler)
