@@ -48,7 +48,7 @@ class ProductionConfig(Config):
 
 # Dictionary to map environments
 config = {
-    'development': DevelopmentConfig,
+    'development': ProductionConfig,
     'production': ProductionConfig,
-    'default': DevelopmentConfig
+    'default': ProductionConfig
 }
