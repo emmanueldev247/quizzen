@@ -19,7 +19,8 @@ Modules Imported:
 - `flask_login.LoginManager`: To manage user authentication & session handling.
 - `app.routes.full_bp`: The main application blueprint for routing.
 - `app.extensions`: Custom application extensions for database (`db`),
-  password hashing (`bcrypt`), session management (`session`) and migration Object (`migrate`)
+  password hashing (`bcrypt`), session management (`session`),
+  migration Object (`migrate`), mail Object (`mail`), rate limiter (`limiter`)
 
 Note:
 Sensitive values such as secret keys and database credentials are managed
@@ -33,6 +34,7 @@ from app.extensions import db, bcrypt, session, migrate, mail, limiter
 from app.routes import full_bp, logger
 from config import config
 
+
 def create_app(config_name=None):
     """Factory function to create and configure the Flask application."""
     app = Flask(__name__, static_folder='static',
@@ -42,7 +44,7 @@ def create_app(config_name=None):
 
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])
- 
+
     # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)

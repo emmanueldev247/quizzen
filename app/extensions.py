@@ -9,6 +9,7 @@ from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
+
 def get_ip_from_proxy():
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
     if x_forwarded_for:
@@ -17,6 +18,7 @@ def get_ip_from_proxy():
     if x_real_ip:
         return x_real_ip.split(",")[0].strip()
     return request.remote_addr
+
 
 # Initialize extensions
 db = SQLAlchemy()

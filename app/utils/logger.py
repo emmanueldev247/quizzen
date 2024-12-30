@@ -12,13 +12,16 @@ log_dir = os.path.join(os.getcwd(), 'logs')
 if not os.path.exists(log_dir):
     os.makedirs(log_dir, exist_ok=True)
 
+
 def redact_email(message):
     """Redact emails in log messages by keeping first 3 letters and domain."""
     return re.sub(
-        r'\b([A-Za-z0-9._%+-]{3})[A-Za-z0-9._%+-]*@([A-Za-z0-9.-]+\.[A-Za-z]{2,})\b',
+        r'\b([A-Za-z0-9._%+-]{3})[A-Za-z0-9._%+-]*@'
+        r'([A-Za-z0-9.-]+\.[A-Za-z]{2,})\b',
         r'\1***@\2',
-        message
+        message,
     )
+
 
 def get_client_ip():
     if has_request_context():
@@ -38,32 +41,32 @@ def get_client_ip():
     else:
         return 'N/A'
 
+
 class CustomLogFilter(logging.Filter):
     def filter(self, record):
-        # Add the client_ip attribute to the record
         record.client_ip = get_client_ip()
 
         # Add user_id to the log record, or use a default value if not set
         if not hasattr(record, 'user_id'):
             record.user_id = 'N/A'
-
         return True
+
 
 class RedactingFormatter(logging.Formatter):
     """Formatter to redact sensitive user information."""
-    def filter(self, record):    
+    def filter(self, record):
         # Redact email in the message
         if isinstance(record.msg, str):
             record.msg = redact_email(record.msg)
-
         return super().format(record)
-        
+
 
 class RequestFormatter(logging.Formatter):
     """Custom log formatter to include client IP."""
     def format(self, record):
         record.client_ip = get_client_ip()
         return super().format(record)
+
 
 class JSONFormatter(logging.Formatter):
     """Custom JSON log formatter for detailed logs."""
@@ -86,16 +89,17 @@ def setup_logger():
     """Set up logging for the application."""
     logger = logging.getLogger('quizzen_app')
 
-    if logger.hasHandlers(): #len(logger.handlers) > 0:
+    if logger.hasHandlers():
         return logger
 
     logger.setLevel(logging.DEBUG)
     logger.addFilter(CustomLogFilter())
 
-
-        # ---- 1. Rotating File Logger for JSON ---- #
+    # ---- 1. Rotating File Logger for JSON ---- #
     json_file = os.path.join(log_dir, 'structured_logs.json')
-    json_file_handler = RotatingFileHandler(json_file, maxBytes=5 * 1024 * 1024, backupCount=3)
+    json_file_handler = RotatingFileHandler(
+        json_file, maxBytes=5 * 1024 * 1024, backupCount=3
+    )
     json_file_handler.setLevel(logging.INFO)
     json_file_handler.setFormatter(JSONFormatter(
         datefmt="%Y-%m-%d %H:%M:%S"
@@ -103,18 +107,21 @@ def setup_logger():
 
     # ---- 2. File Logger for Redacted User Details ---- #
     user_log_file = os.path.join(log_dir, 'user_logs.log')
-    user_file_handler = RotatingFileHandler(user_log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
+    user_file_handler = RotatingFileHandler(
+        user_log_file, maxBytes=5 * 1024 * 1024, backupCount=3
+    )
     user_file_handler.setLevel(logging.INFO)
     user_file_handler.setFormatter(RedactingFormatter(
-        '%(asctime)s -  %(name)s - %(levelname)s --> [USER ID: %(user_id)s] %(message)s',
+        "%(asctime)s -  %(name)s - %(levelname)s -->"
+        " [USER ID: %(user_id)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"
     ))
 
     # ---- 3. Color-Coded Console Logger ---- #
     console_handler = logging.StreamHandler()
-    # console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(ColoredFormatter(
-        "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [IP: %(client_ip)s] %(message)s",
+        "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - "
+        "%(filename)s:%(lineno)d --> [IP: %(client_ip)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         log_colors={
             "DEBUG": "cyan",
@@ -123,19 +130,21 @@ def setup_logger():
             "ERROR": "red",
             "CRITICAL": "bold_red",
         }
-    ))  
+    ))
 
     # ---- 4. File Logger for General app ---- #
-    log_file = os.path.join(log_dir, 'app.log')   
-    file_handler = RotatingFileHandler(log_file, maxBytes=5 * 1024 * 1024, backupCount=3)
-    # file_handler.setLevel(logging.DEBUG)   
+    log_file = os.path.join(log_dir, 'app.log')
+    file_handler = RotatingFileHandler(
+        log_file, maxBytes=5 * 1024 * 1024, backupCount=3
+    )
     file_handler.setFormatter(RequestFormatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d --> [IP: %(client_ip)s] %(message)s'
+        "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d"
+        " --> [IP: %(client_ip)s] %(message)s"
     ))
 
     logger.addHandler(json_file_handler)
     logger.addHandler(user_file_handler)
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
-        
+
     return logger

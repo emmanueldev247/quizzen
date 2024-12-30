@@ -49,8 +49,12 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     profile_picture = db.Column(db.String(255))
-    role = db.Column(Enum('user', 'admin', name='role_types', create_type=True), default='user')
-    gender = db.Column(Enum('male', 'female', 'others', name='gender_types', create_type=True), default='others', nullable=False)
+    role = db.Column(Enum('user', 'admin',
+                          name='role_types', create_type=True),
+                     default='user')
+    gender = db.Column(Enum('male', 'female', 'others',
+                            name='gender_types', create_type=True),
+                       default='others', nullable=False)
     quiz_history = db.relationship('QuizHistory', backref='user',
                                    cascade='all, delete-orphan', lazy=True)
 
@@ -173,7 +177,7 @@ class QuizHistory(db.Model):
                         nullable=False)
     score = db.Column(db.Integer, nullable=False)  # Store the total score
     date_taken = db.Column(db.DateTime, server_default=db.func.now())
-    answers = db.relationship('UserAnswer', backref='quiz_history', 
+    answers = db.relationship('UserAnswer', backref='quiz_history',
                               cascade='all, delete-orphan', lazy=True)
 
 
@@ -263,6 +267,7 @@ class Notification(db.Model):
     message = db.Column(db.String(255), nullable=False)
     is_read = db.Column(db.Boolean, default=False, index=True)
     date_sent = db.Column(db.DateTime, server_default=db.func.now())
+
 
 class UsedToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
