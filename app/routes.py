@@ -289,7 +289,7 @@ def reset_with_token(token):
         data = s.loads(token, max_age=1800)
     except SignatureExpired:
         logger.error(f"Token Expired")
-        if request.accept_mimetypes['application/json'] >=
+        if request.accept_mimetypes['application/json'] >= \
         request.accept_mimetypes['text/html']:
             return jsonify({
                 "success": False,
@@ -307,7 +307,7 @@ def reset_with_token(token):
             ), 400
     except BadSignature:
         logger.error(f"Invalid Token")
-        if request.accept_mimetypes['application/json'] >=
+        if request.accept_mimetypes['application/json'] >= \
         request.accept_mimetypes['text/html']:
             return jsonify({
                 "success": False,
@@ -327,7 +327,7 @@ def reset_with_token(token):
     try:
         if UsedToken.query.filter_by(token=token).first():
             logger.error(f"Token has been used")
-            if request.accept_mimetypes['application/json'] >=
+            if request.accept_mimetypes['application/json'] >= \
             request.accept_mimetypes['text/html']:
                 return jsonify({
                     "success": False,
@@ -346,7 +346,7 @@ def reset_with_token(token):
                 ), 400
     except Exception as e:
         logger.error(f"Error during reset password with token: {e}")
-        if request.accept_mimetypes['application/json'] >=
+        if request.accept_mimetypes['application/json'] >= \
         request.accept_mimetypes['text/html']:
             return jsonify({
                 "success": False,
@@ -367,7 +367,7 @@ def reset_with_token(token):
     user = User.query.get(data['user_id'])
     if not user:
         logger.error(f"User '{user.id}' not found")
-        if request.accept_mimetypes['application/json'] >=
+        if request.accept_mimetypes['application/json'] >= \
         request.accept_mimetypes['text/html']:
             return jsonify({
                 "success": False,
