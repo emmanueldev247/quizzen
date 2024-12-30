@@ -1,7 +1,46 @@
 {% extends "base.html" %}
-{% block child_content %}
+{% block styles_content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock styles_content %}
 
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <p>This is your dashboard.</p>
-    <a href="{{ url_for('full_bp.logout') }}">Logout</a>
+{% block nav_content %}
+<!-- 4L indent -->
+{% endblock nav_content %}
+
+{% block child_content %}
+    <h1>Welcome, {{ user.username }}</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <section id="dashboard">
+        <div class="section">
+            <h2>Your Quizzes</h2>
+            <ul>
+                {% for quiz in user.quizzes %}
+                <li>
+                    <strong>{{ quiz.title }}</strong> - Score: {{ quiz.score }} / {{ quiz.max_score }}
+                    <a href="{{ url_for('view_quiz', quiz_id=quiz.id) }}">View Details</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Leaderboard</h2>
+            <ul>
+                {% for entry in leaderboard %}
+                <li>{{ entry.username }} - {{ entry.score }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Notifications</h2>
+            <ul>
+                {% for notification in notifications %}
+                <li>{{ notification.content }} - {{ notification.date_posted }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
 {% endblock child_content %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock scripts %}

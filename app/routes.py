@@ -10,7 +10,7 @@ from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer as Serializer, BadSignature, SignatureExpired
 from functools import wraps
 from app.extensions import db, bcrypt, mail, limiter
-from app.models import User, UsedToken
+from app.models import User, UsedToken, QuizHistory, Leaderboard, Notification
 from app.utils.logger import setup_logger
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -41,9 +41,8 @@ def auth_required(f):
 @full_bp.errorhandler(RateLimitExceeded)
 def ratelimit_exceeded(e):
     logger.warning(
-        f"Rate limit exceeded for {request.remote_addr} on route {request.path}. "
+        f"Rate limit exceeded on route {request.path}. "
         f"Details: {e.description}"
-        f"lastly: {e}"
     )
     return jsonify({
         "error": "Too many requests, please try again later.",
@@ -325,4 +324,20 @@ def logout():
 @full_bp.route('/dashboard')
 @auth_required
 def dashboard():
-    return render_template('dashboard.html', title='Dashboard')
+    user = User.query.get(current_user.id)
+    if not user:
+        return redirect(url_for('login'))
+
+    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
+    leaderboard = Leaderboard.query.order_by(Leaderboard.score.desc()).limit(10).all()
+    notifications = Notification.query.filter_by(user_id=user.id).order_by(Notification.date_posted.desc()).all()
+
+    
+    return render_template(
+        'dashboard.html', 
+        title='Dashboard',
+        user=user,
+        quizzes=quizzes,
+        leaderboard=leaderboard,
+        notifications=notifications
+    )
