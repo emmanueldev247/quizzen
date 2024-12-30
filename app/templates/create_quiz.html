@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create_quiz.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Create a New Quiz</h1>
+        <a href="{{ url_for('full_bp.dashboard') }}">Back to Dashboard</a>
+    </header>
+    
+    <section id="create-quiz">
+        <form action="/create_quiz" method="POST">
+            <div class="form-group">
+                <label for="title">Quiz Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Quiz Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category">
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (in minutes):</label>
+                <input type="number" id="duration" name="duration" required>
+            </div>
+            <button type="submit">Create Quiz</button>
+        </form>
+    </section>
+    
+    <script src="{{ url_for('static', filename='js/create_quiz.js') }}"></script>
+</body>
+</html>
