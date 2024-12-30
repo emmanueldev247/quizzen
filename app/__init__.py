@@ -56,7 +56,7 @@ def create_app(config_name=None):
 
     app.register_blueprint(full_bp)
 
-    print(app.url_map)
+    # print(app.url_map)
     logger.info("----- Quizzen app initialized -----")
 
     return app
