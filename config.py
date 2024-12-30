@@ -13,12 +13,16 @@ class Config:
     APPLICATION_ROOT = '/quizzen'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', '')
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)
+    
     
     # Redis Configuration
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)
     SESSION_TYPE = 'redis'
     SESSION_PERMANENT = True
     SESSION_USE_SIGNER = True
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True, 
+    SESSION_COOKIE_SAMESITE='Strict'
     SESSION_KEY_PREFIX = 'quizzen_'
     SESSION_REDIS = redis.StrictRedis(
         host=os.getenv('REDIS_HOST', 'localhost'),
