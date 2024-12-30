@@ -27,7 +27,7 @@ def auth_required(f):
         logger.info(f"Auth Attempt")
         if 'user_id' not in session:
             logger.error(f"Session token missing")
-            flash("You need to log in first.", "error") 
+            flash("log in", "error") 
             return redirect(url_for('full_bp.login'))
                 
         try:
@@ -36,12 +36,12 @@ def auth_required(f):
 
             if not current_user:
                 logger.error("Invalid Token")
-                flash("You need to log in first.", "error") 
+                flash("log in", "error") 
                 return redirect(url_for('full_bp.login'))
 
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
-            flash("You need to log in first.", "error") 
+            flash("log in", "error") 
             return redirect(url_for('full_bp.login'))
 
         return f(current_user, *args, **kwargs)

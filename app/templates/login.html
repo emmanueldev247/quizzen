@@ -77,16 +77,17 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 	{% if messages %}
 		{% for category, message in messages %}
-			<script type="module">
-				import { showNotification } from '/quizzen/assets/js/utils.js';
+			{% if message == "log in" %}
+				<script type="module">
+					import { showNotification } from '/quizzen/assets/js/utils.js';
+					document.addEventListener('DOMContentLoaded', () => {
+						const flashMessage = "You need to log in first";
+						const flashCategory = "error";
 
-				document.addEventListener('DOMContentLoaded', () => {
-					const flashMessage = {{ message | tojson }};
-					const flashCategory = {{ category | tojson }};
-
-					showNotification(flashMessage, flashCategory);
-				});
-			</script>
+						showNotification(flashMessage, flashCategory);
+					});
+				</script>
+			{% endif %}
 		{% endfor %}				
 	{% endif %}
 {% endwith %}
