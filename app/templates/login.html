@@ -17,15 +17,15 @@
 						<div class="alert alert-{{ category }}">
 							{{ message }}
 						</div>
+						<script>
+							const flashMessage = "{{ message | escapejs }}";
+							const flashCategory = "{{ category | escapejs }}";
+
+							showNotification(flashMessage, flashCategory);
+						</script>
 					{% endfor %}
 				</div>
 				
-				<script>
-					const flashMessage = "{{ message[0][1] | escapejs }}";
-					const flashCategory = "{{ message[0][0] | escapejs }}";
-
-					showNotification(flashMessage, flashCategory);
-				</script>
 			{% endif %}
 		{% endwith %}
 		<form method="POST" class="login-form" id="login-form">
