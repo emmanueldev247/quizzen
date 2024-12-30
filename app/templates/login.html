@@ -18,8 +18,8 @@
 							{{ message }}
 						</div>
 						<script>
-							const flashMessage = "{{ message | escapejs }}";
-							const flashCategory = "{{ category | escapejs }}";
+							const flashMessage = "{{ message | tojson }}";
+							const flashCategory = "{{ category | tojson }}";
 
 							showNotification(flashMessage, flashCategory);
 						</script>
