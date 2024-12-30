@@ -18,10 +18,12 @@
 							{{ message }}
 						</div>
 						<script>
-							const flashMessage = {{ message | tojson }};
-							const flashCategory = {{ category | tojson }};
+							document.addEventListener('DOMContentLoaded', () => {
+								const flashMessage = {{ message | tojson }};
+								const flashCategory = {{ category | tojson }};
 
-							showNotification(flashMessage, flashCategory);
+								showNotification(flashMessage, flashCategory);
+							});
 						</script>
 					{% endfor %}
 				</div>
