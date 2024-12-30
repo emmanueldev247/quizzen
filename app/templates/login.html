@@ -78,7 +78,7 @@
 	{% if messages %}
 		{% for category, message in messages %}
 			<script type="module">
-				// import { showNotification } from '/quizzen/assets/js/utils.js';
+				import { showNotification } from '/quizzen/assets/js/utils.js';
 
 				document.addEventListener('DOMContentLoaded', () => {
 					const flashMessage = {{ message | tojson }};
