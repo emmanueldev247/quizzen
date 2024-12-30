@@ -424,7 +424,7 @@ def logout():
 
 @full_bp.route('/dashboard')
 @auth_required
-def dashboard():
+def dashboard(current_user):
     user = User.query.get(current_user.id)
     if not user:
         return redirect(url_for('full_bp.login'))
