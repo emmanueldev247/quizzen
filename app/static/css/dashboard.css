@@ -1,6 +1,7 @@
 .dashboard-container{
     min-height: 100vh;
-    margin-top: 40px;
+    padding: 20px;
+    margin-top: 60px;
 }
 
 .section {
@@ -9,6 +10,8 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #fff;
+    min-height: 50vh;
+    background-color: lightblue;
 }
 
 .section h2 {
