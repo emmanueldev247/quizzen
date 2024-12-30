@@ -38,6 +38,18 @@
                 {% endfor %}
             </ul>
         </div>
+        <div class="section">
+            <h2>Quiz History</h2>
+            <ul>
+                {% for quiz in quizzes %}
+                <li>
+                    <strong>{{ quiz.quiz.title }}</strong> - Score: {{ quiz.score }} / {{ quiz.quiz.max_score }}
+                    <a href="{{ url_for('view_quiz_history', quiz_history_id=quiz.id) }}">View Details</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
     </section>
 {% endblock child_content %}
 
