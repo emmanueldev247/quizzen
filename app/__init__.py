@@ -26,64 +26,36 @@ Sensitive values such as secret keys and database credentials are managed
 through environment variables for security.
 """
 
-import os
-import redis
-import secrets
-from datetime import timedelta
+# import os
+# import redis
+# import secrets
+# from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
-from app import routes
 from app.extensions import db, bcrypt, session, migrate, mail, limiter
+from app.routes import full_bp, logger
+from config import config
 
+def create_app(config_name=None):
+    """Factory function to create and configure the Flask application."""
+    app = Flask(__name__, static_folder='static',
+                static_url_path='/quizzen/assets',
+                template_folder='templates')
+    app.url_map.strict_slashes = False
 
-app = Flask(__name__, static_folder='static',
-            static_url_path='/quizzen/assets',
-            template_folder='templates'
-            )
-app.url_map.strict_slashes = False
-app.config['SECRET_KEY'] = os.getenv(
-                                    'JWT_SECRET_KEY',
-                                    secrets.token_urlsafe(32)
-                                    )
-"""app.config['SERVER_NAME'] = 'emmanueldev247.tech'"""
-app.config['APPLICATION_ROOT'] = '/quizzen'
+    config_name = config_name or os.getenv('FLASK_ENV', 'default')
+    app.config.from_object(config[config_name])
+ 
+    # Initialize estensions
+    db.init_app(app)
+    bcrypt.init_app(app)
+    session.init_app(app)
+    migrate.init_app(app, db)
+    mail.init_app(app)
+    limiter.init_app(app)
 
-# PostgreSQL Config
-uri = 'postgresql://admin:3264@localhost/quizzen'
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.register_blueprint(full_bp)
 
-# Redis Configuration for Sessions
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_PERMANENT'] = True
-app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_KEY_PREFIX'] = 'quizzen_'
-app.config['SESSION_REDIS'] = redis.StrictRedis(
-                                                host='localhost',
-                                                port=6379,
-                                                db=0
-                                               )
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
+    logger.info("----- Quizzen app initialized -----")
 
-# mail Config
-app.config['MAIL_SERVER'] = 'us2.smtp.mailhostbox.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False 
-app.config['MAIL_USERNAME'] = 'quizzen-support@emmanueldev247.tech'
-app.config['MAIL_PASSWORD'] = 'F)ifRaj5'
-app.config['MAIL_DEFAULT_SENDER'] = 'quizzen-support@emmanueldev247.tech'
-
-# Initialize DB
-db.init_app(app)
-bcrypt.init_app(app)
-session.init_app(app)
-migrate.init_app(app, db)
-mail.init_app(app)
-limiter.init_app(app)
-
-
-routes.logger.info("----- Quizzen app initialized -----")
-
-app.register_blueprint(routes.full_bp)
-
+    return app
