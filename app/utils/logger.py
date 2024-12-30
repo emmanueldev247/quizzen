@@ -42,8 +42,10 @@ def get_client_ip():
 class RedactingFormatter(logging.Formatter):
     """Formatter to redact sensitive user information."""
     def format(self, record):
+        if not hasattr(record, 'user_id'):
+            record.user_id = 'N/A'
+
         # Redact email in the message
-        getattr(record, 'user_id', 'N/A')
         record.msg = redact_email(record.msg)
         return super().format(record)
         
@@ -51,6 +53,9 @@ class RedactingFormatter(logging.Formatter):
 class RequestFormatter(logging.Formatter):
     """Custom log formatter to include client IP."""
     def format(self, record):
+        if not hasattr(record, 'user_id'):
+            record.user_id = 'N/A'
+            
         record.client_ip = get_client_ip()
         return super().format(record)
 
