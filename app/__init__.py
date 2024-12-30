@@ -33,6 +33,7 @@ from flask_login import LoginManager
 from app.extensions import db, bcrypt, session, migrate, mail, limiter
 from app.routes import full_bp, logger
 from config import config
+from app import routes_dashboard
 
 
 def create_app(config_name=None):
@@ -55,6 +56,7 @@ def create_app(config_name=None):
 
     app.register_blueprint(full_bp)
 
+    print(app.url_map)
     logger.info("----- Quizzen app initialized -----")
 
     return app
