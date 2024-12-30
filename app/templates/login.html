@@ -10,6 +10,24 @@
 
 {% block child_content %}
 	<div class="login-container" id="login-container">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<div id="flash-message-container">
+					{% for category, message in messages %}
+						<div class="alert alert-{{ category }}">
+							{{ message }}
+						</div>
+					{% endfor %}
+				</div>
+				
+				<script>
+					const flashMessage = "{{ message[0][1] | escapejs }}";
+					const flashCategory = "{{ message[0][0] | escapejs }}";
+
+					showNotification(flashMessage, flashCategory);
+				</script>
+			{% endif %}
+		{% endwith %}
 		<form method="POST" class="login-form" id="login-form">
 			<h2>Log in to Quizzen</h2>
 			<div id="login-warning" class="login-warning" style="display: none;" aria-live="polite">

@@ -27,10 +27,8 @@ def auth_required(f):
         logger.info(f"Auth Attempt")
         if 'user_id' not in session:
             logger.error(f"Session token missing")
-            return jsonify({
-                "success": False,
-                "message": "Authentication token is missing.",
-            }), 401
+            flash("You need to log in first.", "error") 
+            return redirect(url_for('full_bp.login'))
                 
         try:
             user_id = session['user_id']
@@ -38,17 +36,14 @@ def auth_required(f):
 
             if not current_user:
                 logger.error("Invalid Token")
-                return jsonify({
-                    "success": False,
-                    "message": "Invalid session"
-                }), 401
+                flash("You need to log in first.", "error") 
+                return redirect(url_for('full_bp.login'))
+
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
-            return jsonify({
-                "success": False,
-                "message": "Invalid session",
-                "error": str(e)
-            }), 401
+            flash("You need to log in first.", "error") 
+            return redirect(url_for('full_bp.login'))
+
         return f(current_user, *args, **kwargs)
     return decorated
 
