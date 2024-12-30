@@ -3,7 +3,7 @@ from app.models import User, UsedToken, QuizHistory, Leaderboard, Notification
 from app.utils.logger import setup_logger
 from datetime import datetime
 from flask import (
-    Blueprint, current_app, jsonify,
+    Blueprint, current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
     )
