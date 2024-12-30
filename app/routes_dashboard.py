@@ -7,6 +7,11 @@ from app.models import User, QuizHistory, Leaderboard, Notification
 from app.routes import (
     auth_required, full_bp
 )
+from flask import (
+    current_app, flash, jsonify,
+    redirect, render_template, request,
+    session, url_for
+)
 
 
 @full_bp.route('/dashboard')
