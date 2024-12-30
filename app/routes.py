@@ -1,14 +1,22 @@
-from app.extensions import db, bcrypt, mail, limiter
-from app.models import User, UsedToken, QuizHistory, Leaderboard, Notification
+"""
+    Defined routes:
+      - '/' -> home
+      - '/signup' -> signup
+      - '/login' -> login
+      - '/reset_password' -> reset_password
+      - '/reset_password/<token>' -> reset_password_with_token
+      - '/logout' -> logout
+"""
+from app.extensions import db, mail, limiter
+from app.models import User, UsedToken
 from app.utils.logger import setup_logger
 from datetime import datetime
 from flask import (
     Blueprint, current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
-    )
+)
 from flask_mail import Message
-from flask_limiter import Limiter
 from flask_limiter.errors import RateLimitExceeded
 from functools import wraps
 from itsdangerous import (
@@ -22,26 +30,28 @@ logger = setup_logger()
 
 
 def auth_required(f):
+    """Auth required function"""
     @wraps(f)
     def decorated(*args, **kwargs):
+        """Auth required decorator"""
         logger.info(f"Auth Attempt")
         if 'user_id' not in session:
             logger.error(f"Session token missing")
-            flash("log in", "error") 
+            flash("log in", "error")
             return redirect(url_for('full_bp.login'))
-                
+
         try:
             user_id = session['user_id']
             current_user = User.query.get(user_id)
 
             if not current_user:
                 logger.error("Invalid Token")
-                flash("log in", "error") 
+                flash("log in", "error")
                 return redirect(url_for('full_bp.login'))
 
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
-            flash("log in", "error") 
+            flash("log in", "error")
             return redirect(url_for('full_bp.login'))
 
         return f(current_user, *args, **kwargs)
@@ -50,6 +60,7 @@ def auth_required(f):
 
 @full_bp.errorhandler(RateLimitExceeded)
 def ratelimit_exceeded(e):
+    """Rate limit handler"""
     logger.warning(
         f"Rate limit exceeded on route {request.path}. "
         f"Details: {e.description}"
@@ -62,33 +73,20 @@ def ratelimit_exceeded(e):
 
 @full_bp.after_request
 def log_response_info(response):
+    """Middle ware for after request"""
     logger.info(f'"{request.method} {request.path}" {response.status_code}')
     return response
 
 
 @full_bp.route('/')
 def home():
+    """Home route"""
     return render_template('index.html', title='Home')
-
-
-@full_bp.route('/test')
-def test():
-    x_forwarded_for = request.headers.get("X-Forwarded-For", "")
-    if x_forwarded_for:
-        return jsonify({
-            "success": True,
-            "x_forwarded_for": x_forwarded_for
-        }), 200
-    else:
-        x_real_ip = request.headers.get("X-Real-Ip", "")
-        return jsonify({
-            "success": True,
-            "x_real_ip": x_real_ip
-        }), 200
 
 
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """Signup  route"""
     logger.debug(f"{request.method} - Signup attempt")
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
@@ -170,6 +168,7 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """Login route"""
     logger.debug(f"{request.method} - Login attempt")
     if request.method == 'POST':
         limiter.limit("5 per minute")(lambda: None)()
@@ -218,6 +217,7 @@ def login():
 @full_bp.route('/reset_password', methods=['POST'])
 @limiter.limit("5 per hour")
 def reset_password():
+    """reset password route"""
     logger.debug(f"Password reset attempt")
     try:
         email = request.form.get('email').strip()
@@ -279,14 +279,17 @@ def reset_password():
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
+    """reset password with token route"""
     logger.debug(f"{request.method} - Password reset with token attempt")
     try:
         s = Serializer(current_app.config['SECRET_KEY'])
         data = s.loads(token, max_age=1800)
     except SignatureExpired:
         logger.error(f"Token Expired")
-        if request.accept_mimetypes['application/json'] >= \
-        request.accept_mimetypes['text/html']:
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
             return jsonify({
                 "success": False,
                 "message": "Expired token."
@@ -303,8 +306,10 @@ def reset_with_token(token):
             ), 400
     except BadSignature:
         logger.error(f"Invalid Token")
-        if request.accept_mimetypes['application/json'] >= \
-        request.accept_mimetypes['text/html']:
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
             return jsonify({
                 "success": False,
                 "message": "Invalid token."
@@ -323,8 +328,10 @@ def reset_with_token(token):
     try:
         if UsedToken.query.filter_by(token=token).first():
             logger.error(f"Token has been used")
-            if request.accept_mimetypes['application/json'] >= \
-            request.accept_mimetypes['text/html']:
+            if (
+                request.accept_mimetypes['application/json'] >=
+                request.accept_mimetypes['text/html']
+            ):
                 return jsonify({
                     "success": False,
                     "message": "Token has already been used."
@@ -342,8 +349,10 @@ def reset_with_token(token):
                 ), 400
     except Exception as e:
         logger.error(f"Error during reset password with token: {e}")
-        if request.accept_mimetypes['application/json'] >= \
-        request.accept_mimetypes['text/html']:
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
             return jsonify({
                 "success": False,
                 "message": "Failed to check Token. Please try again later.",
@@ -363,8 +372,10 @@ def reset_with_token(token):
     user = User.query.get(data['user_id'])
     if not user:
         logger.error(f"User '{user.id}' not found")
-        if request.accept_mimetypes['application/json'] >= \
-        request.accept_mimetypes['text/html']:
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
             return jsonify({
                 "success": False,
                 "message": "User not found."
@@ -408,6 +419,7 @@ def reset_with_token(token):
 
 @full_bp.route('/logout')
 def logout():
+    """Logout route"""
     user_id = session.get('user_id')
     if user_id:
         logger.info(f"User '{user_id}' has logged out")
@@ -415,30 +427,3 @@ def logout():
     response = redirect(url_for('full_bp.home'))
     response.set_cookie('session', '', expires=0)
     return response
-
-
-@full_bp.route('/dashboard')
-@auth_required
-def dashboard(current_user):
-    user = User.query.get(current_user.id)
-    if not user:
-        return redirect(url_for('full_bp.login'))
-
-    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
-    leaderboard = Leaderboard.query.order_by(
-        Leaderboard.score.desc()
-    ).limit(10).all()
-    notifications = Notification.query.filter_by(
-        user_id=user.id
-    ).order_by(
-        Notification.date_sent.desc()
-    ).all()
-
-    return render_template(
-        'dashboard.html',
-        title='Dashboard',
-        user=user,
-        quizzes=quizzes,
-        leaderboard=leaderboard,
-        notifications=notifications
-    )
