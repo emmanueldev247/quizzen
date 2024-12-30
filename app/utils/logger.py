@@ -45,6 +45,7 @@ class RedactingFormatter(logging.Formatter):
         if not hasattr(record, 'user_id'):
             record.user_id = 'N/A'
 
+        record.client_ip = get_client_ip()
         # Redact email in the message
         record.msg = redact_email(record.msg)
         return super().format(record)
@@ -55,7 +56,7 @@ class RequestFormatter(logging.Formatter):
     def format(self, record):
         if not hasattr(record, 'user_id'):
             record.user_id = 'N/A'
-            
+
         record.client_ip = get_client_ip()
         return super().format(record)
 
