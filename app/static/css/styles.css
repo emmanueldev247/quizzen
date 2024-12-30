@@ -118,12 +118,14 @@ body {
 	background-color: #555;
 }
 
-.tabs a.button-sign-up {
+.tabs a.button-sign-up,
+.tabs a.button-log-out {
 	background-color: #6a0dad;
 	border: none;
 }
 
-.tabs a.button-sign-up:hover {
+.tabs a.button-sign-up:hover,
+.tabs a.button-log-out:hover {
 	background-color: #a94dd0;
 }
 
@@ -133,7 +135,7 @@ body {
 
 .header.scrolled .tabs ul li a {
 	font-size: 14px;
-	padding: .6 rem .9rem;
+	padding: .6rem .9rem;
 }
 
 input#check {
