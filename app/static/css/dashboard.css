@@ -1,17 +1,6 @@
 .dashboard-container{
     min-height: 100vh;
-}
-
-.section {
     margin-top: 40px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f8f9fa;
 }
 
 .section {
