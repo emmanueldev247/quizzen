@@ -436,7 +436,7 @@ def dashboard(current_user):
     notifications = Notification.query.filter_by(
         user_id=user.id
     ).order_by(
-        Notification.date_posted.desc()
+        Notification.date_sent.desc()
     ).all()
 
     return render_template(
