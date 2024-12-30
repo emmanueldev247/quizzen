@@ -20,8 +20,7 @@ def auth_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         logger.info(f"Auth Attempt")
-        token = request.headers.get('Authorization')
-        if not token:
+        if 'user_id' not in session:
             logger.error(f"Auth token missing")
             return jsonify({"message": "Authentication token is missing.", "success": False}), 401
         try:
@@ -318,15 +317,20 @@ def reset_with_token(token):
 
 @full_bp.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    return redirect(url_for('full_bp.home'))
+    user_id = session.get('user_id')
+    if user_id:
+        logger.info(f"User '{user_id}' has logged out")
+    session.clear()
+    response = redirect(url_for('full_bp.home'))
+    response.set_cookie('session', '', expires=0)
+    return response
 
 @full_bp.route('/dashboard')
 @auth_required
 def dashboard():
     user = User.query.get(current_user.id)
     if not user:
-        return redirect(url_for('login'))
+        return redirect(url_for('full_bp.login'))
 
     quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
     leaderboard = Leaderboard.query.order_by(Leaderboard.score.desc()).limit(10).all()
