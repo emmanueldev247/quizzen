@@ -32,7 +32,11 @@ def auth_required(f):
                 "message": "Authentication token is missing.",
             }), 401
         print(f"Session: {session}")
-        print(request.headers)
+        cookies = request.headers.get('Cookie', '')
+        print(f"Cookie: {cookies}")
+        cookies = request.headers.get('session', '')
+        print(f"Cookie: {cookies}")
+        
         try:
             s = Serializer(current_app.config['SECRET_KEY'])
             data = s.loads(token)
