@@ -17,7 +17,9 @@
 						<div class="alert alert-{{ category }}">
 							{{ message }}
 						</div>
-						<script>
+						<script type="module">
+							import { showNotification } from '/quizzen/assets/js/utils.js';
+							
 							document.addEventListener('DOMContentLoaded', () => {
 								const flashMessage = {{ message | tojson }};
 								const flashCategory = {{ category | tojson }};
