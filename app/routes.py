@@ -259,7 +259,7 @@ def reset_password():
         """
 
         # READ TEMPLATE
-        with open("password_reset_email.html", "r") as file:
+        with open("app/password_reset_email.html", "r") as file:
             template = file.read()
         msg.html = template.format(reset_link=reset_link)
         mail.send(msg)
