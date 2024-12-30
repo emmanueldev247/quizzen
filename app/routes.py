@@ -73,8 +73,8 @@ def test():
 
 @full_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
+    logger.debug(f"{request.method} - Signup attempt")
     if request.method == 'POST':
-        logger.info(f"Signup attempt")
         limiter.limit("5 per minute")(lambda: None)()
         try:
             if request.is_json:
@@ -103,7 +103,7 @@ def signup():
 
         try:
             if User.query.filter_by(email=email).first():
-                logger.error(f"Email already exists")
+                logger.error(f"Email '{email}' already exists")
                 return jsonify({'success': False, 'message': 'Email already exists'}), 400
         except Exception as e:
             logger.error(f"Error during signup: {e}")
@@ -124,7 +124,7 @@ def signup():
 
             db.session.add(new_user)
             db.session.commit()
-            logger.info(f"User registered successfully")
+            logger.info(f"User '{new_user.id}' registered successfully")
             return jsonify({'success': True, 'message': 'User registered successfully'}), 201
         except Exception as e:
             logger.error(f"Error during signup: {e}")
@@ -136,8 +136,8 @@ def signup():
 
 @full_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        logger.info(f"Login attempt")
+    logger.debug(f"{request.method} - Login attempt")
+    if request.method == 'POST':  
         limiter.limit("5 per minute")(lambda: None)()
         try:
             if request.is_json:
@@ -158,12 +158,12 @@ def login():
             if user and user.check_password(password):
                 session['user_id'] = user.id
                 session['username'] = user.username
-                logger.info(f"Login successful")
+                logger.info(f"User {user.id} logged in successfully")
                 return jsonify({"success": True, "message": "Login successful"}), 200
-            logger.error(f"Login failed")
+            logger.warning(f"Failed login attempt for email: {email}")
             return jsonify({"success": False, "message": "Invalid Credentials"}), 401
         except Exception as e:
-            logger.error(f"Error during signup: {e}")
+            logger.error(f"Error during login: {e}")
             return jsonify({'success': False, 'message': 'Server error', 'error': str(e)}), 500
 
     return render_template('login.html', title='Login')
@@ -171,7 +171,7 @@ def login():
 @full_bp.route('/reset_password', methods=['POST'])
 @limiter.limit("5 per hour")
 def reset_password():
-    logger.info(f"Password reset attempt")
+    logger.debug(f"Password reset attempt")
     try:
         email = request.form.get('email').strip()
     except Exception as e:
@@ -183,7 +183,7 @@ def reset_password():
     try:
         user = User.query.filter_by(email=email).first()
         if not user:
-            logger.error(f"Email not found")
+            logger.error(f"Email '{email}' not found")
             return jsonify({'success': False, "message": "Email not found"}), 404
         s = Serializer(current_app.config['SECRET_KEY'])
         token = s.dumps({'user_id': user.id})
@@ -225,7 +225,7 @@ def reset_password():
             </html>
         """
         mail.send(msg)
-        logger.info(f"Link sent to mail")
+        logger.info(f"Link sent to mail '{mail}'")
         return jsonify({"success": True, "message": "Password reset link sent to your email!"}), 200
     except Exception as e:
         logger.error(f"Error during password reset: {e}")
@@ -233,6 +233,7 @@ def reset_password():
 
 @full_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
+    logger.debug(f"{request.method} - Password reset with token attempt")
     try:
         s = Serializer(current_app.config['SECRET_KEY'])
         data = s.loads(token, max_age=1800)
@@ -285,7 +286,7 @@ def reset_with_token(token):
 
     user = User.query.get(data['user_id'])
     if not user:
-        logger.error(f"User not found")
+        logger.error(f"User '{user.id}' not found")
         if request.accept_mimetypes['application/json'] >= request.accept_mimetypes['text/html']:
             return jsonify({"success": False, "message": "User not found."}), 404
         else:
@@ -297,7 +298,6 @@ def reset_with_token(token):
                                 ), 404
 
     if request.method == 'POST':
-        logger.info(f"Reset with token attempt")
         limiter.limit("5 per minute")(lambda: None)()
         new_password = request.json.get('password')
         if not new_password:
@@ -311,7 +311,7 @@ def reset_with_token(token):
         db.session.add(used_token)
 
         db.session.commit()
-        logger.info(f"Password reset successfully")
+        logger.info(f"Password for user '{user.id}' reset successfully")
         return jsonify({"success": True, "message": "Password successfully reset."}), 200
 
     return render_template('reset_password.html', title="Reset Password")
