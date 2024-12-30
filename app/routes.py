@@ -42,7 +42,7 @@ def auth_required(f):
                     "success": False,
                     "message": "Invalid session"
                 }), 401
-        except Exceptionas e:
+        except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
             return jsonify({
                 "success": False,
