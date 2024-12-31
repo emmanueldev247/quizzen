@@ -145,7 +145,11 @@ def signup():
                 gender=gender,
                 role=role
             )
-            new_user.set_password(password)
+            if password:
+                new_user.set_password(password)
+                new_user.has_password = True
+            else:
+                new_user.has_password = False
 
             db.session.add(new_user)
             db.session.commit()
@@ -190,19 +194,34 @@ def login():
 
         try:
             user = User.query.filter_by(email=email).first()
-            if user and user.check_password(password):
-                session['user_id'] = user.id
-                session['username'] = user.username
-                logger.info(f"User {user.id} logged in successfully")
+            if user:
+                if user.has_password:
+                    if user.check_password(password):
+                        session['user_id'] = user.id
+                        session['username'] = user.username
+                        logger.info(f"User {user.id} logged in successfully")
+                        return jsonify({
+                            "success": True,
+                            "message": "Login successful"
+                        }), 200
+                    logger.warning(f"Failed login attempt for email: {email}")
+                    return jsonify({
+                        "success": False,
+                        "message": "Invalid Credentials"
+                    }), 401
+                else:
+                    logger.warning(f"User with email {email} is an OAuth user.")
+                    return jsonify({
+                        "success": False,
+                        "message": "Please use OAuth to log in."
+                    }), 400
+            else:
+                logger.warning(f"User not found for email: {email}")
                 return jsonify({
-                    "success": True,
-                    "message": "Login successful"
-                }), 200
-            logger.warning(f"Failed login attempt for email: {email}")
-            return jsonify({
-                "success": False,
-                "message": "Invalid Credentials"
-            }), 401
+                    "success": False,
+                    "message": "Invalid Credentials"
+                }), 401
+
         except Exception as e:
             logger.error(f"Error during login: {e}")
             return jsonify({
