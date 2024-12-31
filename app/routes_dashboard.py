@@ -8,7 +8,7 @@ from app.models import (
     QuizHistory, User
 )
 from app.routes import (
-    auth_required, full_bp
+    auth_required, full_bp, logger
 )
 from flask import (
     current_app, flash, jsonify,
