@@ -43,7 +43,7 @@ class User(db.Model):
     """
 
     id = db.Column(db.String(16), primary_key=True, 
-                    default=lamba: str(ulid.new()).lower()[:16])
+                    default=lambda: str(ulid.new()).lower()[:16])
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=True)
@@ -107,7 +107,7 @@ class Quiz(db.Model):
           represented by the `questions` relationship.
     """
     id = db.Column(db.String(16), primary_key=True, 
-                    default=lamba: str(ulid.new()).lower()[:16])
+                    default=lambda: str(ulid.new()).lower()[:16])
     title = db.Column(db.String(255), nullable=False,
                       default='No description provided')
     description = db.Column(db.Text, nullable=True)
@@ -173,7 +173,7 @@ class QuizHistory(db.Model):
           individual answers for this quiz history.
     """
     id = db.Column(db.String(16), primary_key=True, 
-                    default=lamba: str(ulid.new()).lower()[:16])
+                    default=lambda: str(ulid.new()).lower()[:16])
     user_id = db.Column(db.String(16),
                         db.ForeignKey('user.id', ondelete='CASCADE'),
                         nullable=False, index=True)
@@ -244,7 +244,7 @@ class Leaderboard(db.Model):
         rank (int): User's rank based on their score in the quiz.
     """
     id = db.Column(db.String(16), primary_key=True, 
-                    default=lamba: str(ulid.new()).lower()[:16])
+                    default=lambda: str(ulid.new()).lower()[:16])
     user_id = db.Column(db.String(16),
                         db.ForeignKey('user.id', ondelete='CASCADE'),
                         nullable=False, index=True)
