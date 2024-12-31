@@ -29,5 +29,3 @@ with app.app_context():
     db.session.commit()
 
 print("Categories added successfully!")
-
-print("Categories added successfully!")
