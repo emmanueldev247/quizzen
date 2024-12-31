@@ -13,6 +13,7 @@ Imports:
         Functions from werkzeug.security for password hashing and validation.
 """
 
+import ulid
 from app.extensions import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -41,10 +42,12 @@ class User(db.Model):
                                   password against the hashed password.
     """
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    id = db.Column(db.String(16), primary_key=True, 
+                    default=lamba: str(ulid.new()).lower()[:16])
+    username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
-    password_hash = db.Column(db.String(255), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=True)
+    has_password = db.Column(db.Boolean, default=False, nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
@@ -103,19 +106,20 @@ class Quiz(db.Model):
         - A quiz can have multiple questions,
           represented by the `questions` relationship.
     """
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(16), primary_key=True, 
+                    default=lamba: str(ulid.new()).lower()[:16])
     title = db.Column(db.String(255), nullable=False,
                       default='No description provided')
     description = db.Column(db.Text, nullable=True)
     category = db.Column(db.String(100), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id',
                                                       ondelete='SET NULL'),
-                            nullable=True)
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'),
-                           nullable=False)
+                            nullable=True, index=True)
+    created_by = db.Column(db.String(16), db.ForeignKey('user.id'),
+                           nullable=False, index=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
-    public = db.Column(db.Boolean, default=True)  # Public or private quiz
+    public = db.Column(db.Boolean, default=False)  # Public or private quiz
     questions = db.relationship('Question',
                                 backref=db.backref('quiz',
                                                    passive_deletes=True),
@@ -142,7 +146,7 @@ class Question(db.Model):
           represented by the `quiz_id` foreign key.
     """
     id = db.Column(db.Integer, primary_key=True)
-    quiz_id = db.Column(db.Integer,
+    quiz_id = db.Column(db.String(16),
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
                         nullable=False, index=True)
     question_text = db.Column(db.String(512), nullable=False)
@@ -168,13 +172,14 @@ class QuizHistory(db.Model):
         - Links to the `UserAnswer` model to store
           individual answers for this quiz history.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,
+    id = db.Column(db.String(16), primary_key=True, 
+                    default=lamba: str(ulid.new()).lower()[:16])
+    user_id = db.Column(db.String(16),
                         db.ForeignKey('user.id', ondelete='CASCADE'),
-                        nullable=False)
-    quiz_id = db.Column(db.Integer,
+                        nullable=False, index=True)
+    quiz_id = db.Column(db.String(16),
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
-                        nullable=False)
+                        nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)  # Store the total score
     date_taken = db.Column(db.DateTime, server_default=db.func.now())
     answers = db.relationship('UserAnswer', backref='quiz_history',
@@ -193,13 +198,13 @@ class UserAnswer(db.Model):
         is_correct (bool): Indicates whether the user's answer was correct.
     """
     id = db.Column(db.Integer, primary_key=True)
-    quiz_history_id = db.Column(db.Integer,
+    quiz_history_id = db.Column(db.String(16),
                                 db.ForeignKey('quiz_history.id',
                                               ondelete='CASCADE'),
-                                nullable=False)
+                                nullable=False, index=True)
     question_id = db.Column(db.Integer,
                             db.ForeignKey('question.id', ondelete='CASCADE'),
-                            nullable=False)
+                            nullable=False, index=True)
     user_answer = db.Column(db.String(100), nullable=False)
     is_correct = db.Column(db.Boolean, nullable=False)
 
@@ -238,13 +243,14 @@ class Leaderboard(db.Model):
         score (int): User's score for the quiz.
         rank (int): User's rank based on their score in the quiz.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,
+    id = db.Column(db.String(16), primary_key=True, 
+                    default=lamba: str(ulid.new()).lower()[:16])
+    user_id = db.Column(db.String(16),
                         db.ForeignKey('user.id', ondelete='CASCADE'),
-                        nullable=False)
-    quiz_id = db.Column(db.Integer,
+                        nullable=False, index=True)
+    quiz_id = db.Column(db.String(16),
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
-                        nullable=False)
+                        nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)
     rank = db.Column(db.Integer, nullable=False)  # Rank based on score
 
@@ -261,9 +267,9 @@ class Notification(db.Model):
         date_sent (datetime): Timestamp of when the notification was sent.
     """
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,
+    user_id = db.Column(db.String(16),
                         db.ForeignKey('user.id', ondelete='CASCADE'),
-                        nullable=False)
+                        nullable=False, index=True)
     message = db.Column(db.String(255), nullable=False)
     is_read = db.Column(db.Boolean, default=False, index=True)
     date_sent = db.Column(db.DateTime, server_default=db.func.now())
