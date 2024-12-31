@@ -111,7 +111,7 @@ class Quiz(db.Model):
     title = db.Column(db.String(255), nullable=False,
                       default='No description provided')
     description = db.Column(db.Text, nullable=True)
-    category = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(100), nullable=True, default=None)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id',
                                                       ondelete='SET NULL'),
                             nullable=True, index=True)
