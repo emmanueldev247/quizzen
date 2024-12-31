@@ -19,13 +19,17 @@ categories = [
     "Health and Fitness",
     "Business and Economics",
     "Languages",
-    "Travel and Adventure"
+    "Travel and Adventure",
+    "Others"
 ]
 
 with app.app_context():
     for category_name in categories:
-        category = Category(name=category_name)
-        db.session.add(category)
+        existing_category = Category.query.filter_by(name=category_name).first()
+        if not existing_category:
+            category = Category(name=category_name)
+            db.session.add(category)
+            
     db.session.commit()
 
 print("Categories added successfully!")
