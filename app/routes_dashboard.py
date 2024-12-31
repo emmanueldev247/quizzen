@@ -5,7 +5,7 @@
 from app.extensions import db
 from app.models import (
     Category, Leaderboard, Notification,
-    QuizHistory, User 
+    QuizHistory, User
 )
 from app.routes import (
     auth_required, full_bp
@@ -43,6 +43,7 @@ def dashboard(current_user):
         leaderboard=leaderboard,
         notifications=notifications
     )
+
 
 @full_bp.route('/create_quiz', methods=['GET', 'POST'])
 @auth_required
