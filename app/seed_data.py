@@ -1,5 +1,7 @@
-from app import db
+from app import create_app, db
 from app.models import Category
+
+app = create_app()
 
 # List of categories
 categories = [
@@ -20,12 +22,12 @@ categories = [
     "Travel and Adventure"
 ]
 
-# Add categories to the database
-for category_name in categories:
-    category = Category(name=category_name)
-    db.session.add(category)
+with app.app_context():
+    for category_name in categories:
+        category = Category(name=category_name)
+        db.session.add(category)
+    db.session.commit()
 
-# Commit changes
-db.session.commit()
+print("Categories added successfully!")
 
 print("Categories added successfully!")
