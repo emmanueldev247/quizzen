@@ -7,6 +7,7 @@
       - '/reset_password/<token>' -> reset_password_with_token
       - '/logout' -> logout
 """
+import unicodedata
 from app.extensions import db, mail, limiter
 from app.models import User, UsedToken
 from app.utils.logger import setup_logger
@@ -96,7 +97,10 @@ def signup():
             else:
                 data = request.form
 
-            email = data.get('email', '').strip()
+            email = unicodedata.normalize(
+                'NFKC', data.get('email', '').strip().lower()
+            )
+
             password = data.get('password', '')
             first_name = data.get('first_name', '').strip()
             last_name = data.get('last_name', '').strip()
@@ -137,7 +141,6 @@ def signup():
 
         try:
             new_user = User(
-                username=email,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
@@ -239,7 +242,14 @@ def reset_password():
     """reset password route"""
     logger.debug(f"Password reset attempt")
     try:
-        email = request.form.get('email').strip()
+        if request.is_json:
+                data = request.get_json()
+            else:
+                data = request.form
+        email = unicodedata.normalize(
+                'NFKC', data.get('email', '').strip().lower()
+        )
+
     except Exception as e:
         logger.error(f"Error during password reset: {e}")
         return jsonify({
@@ -278,7 +288,7 @@ def reset_password():
         """
 
         # READ TEMPLATE
-        with open("app/password_reset_email.html", "r") as file:
+        with open("app/templates/password_reset_email.html", "r") as file:
             template = file.read()
         msg.html = template.format(reset_link=reset_link)
         mail.send(msg)
