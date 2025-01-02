@@ -139,7 +139,7 @@ def edit_question(current_user, quiz_id, question_id):
 
             question_text = data.get('question', '').split()
             question_type = data.get('questionType', '').split()
-            is_multiple_response = data.get('multipleResponse', '').split()
+            is_multiple_response = data.get('multipleResponse', 'False')
             options = data['options']
             points = int(data['points'])
 
