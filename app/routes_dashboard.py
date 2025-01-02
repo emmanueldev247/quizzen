@@ -119,7 +119,6 @@ def create_quiz(current_user):
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
-    print(f'{request.method} - {request.get_json()}')
     quiz = Quiz.query.get_or_404(quiz_id)
     question = Question.query.get_or_404(question_id)
 
@@ -130,6 +129,7 @@ def edit_question(current_user, quiz_id, question_id):
         return redirect(url_for('full_bp.dashboard'))
 
     if request.method == 'POST':
+        print(f'{request.method} - {request.get_json()}')
         
         try:
             data = request.get_json()
