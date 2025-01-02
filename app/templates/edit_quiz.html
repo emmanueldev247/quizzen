@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create_quiz.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Edit Quiz: {{ quiz.title }}</h1>
+        <a href="{{ url_for('full_bp.dashboard') }}">Back to Dashboard</a>
+    </header>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="question">Add Question</label>
+            <input type="text" id="question" name="question" class="form-control" required>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Add Question</button>
+    </form>
+    
+    <!-- List existing questions -->
+    <h3>Existing Questions</h3>
+    <ul>
+        {% for question in quiz.questions %}
+        <li>
+            <strong>{{ question.question_text }}</strong>
+            <span>({{ question.question_type.replace('_', ' ').capitalize() }})</span>
+            {% if question.answer_choices %}
+            <ul>
+                {% for option in question.answer_choices %}
+                <li>{{ option }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <p><strong>Correct Answer:</strong> {{ question.correct_answer }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <script src="{{ url_for('static', filename='js/create_quiz.js') }}"></script>
+</body>
+</html>

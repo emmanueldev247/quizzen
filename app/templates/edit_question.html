@@ -1,0 +1,70 @@
+<div class="container-fluid fullscreen-container">
+    <h2>Edit Question for Quiz: {{ quiz.title }}</h2>
+
+    <form method="POST">
+        <!-- Question Type -->
+        <div class="form-group">
+            <label for="question_type">Question Type</label>
+            <select id="question_type" name="question_type" class="form-control">
+                <option value="multiple_choice" {% if question.question_type == "multiple_choice" %}selected{% endif %}>Multiple Choice</option>
+                <option value="true_false" {% if question.question_type == "true_false" %}selected{% endif %}>True/False</option>
+                <option value="short_answer" {% if question.question_type == "short_answer" %}selected{% endif %}>Short Answer</option>
+            </select>
+        </div>
+        
+        <!-- Question Text -->
+        <div class="form-group">
+            <label for="question_text">Question</label>
+            <textarea id="question_text" name="question_text" class="form-control" placeholder="Enter question" required>{{ question.question_text }}</textarea>
+        </div>
+
+
+        <!-- Multiple Response Toggle -->
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="multiple_response" name="multiple_response" {% if question.is_multiple_response %}checked{% endif %}>
+                Allow Multiple Responses
+            </label>
+        </div>
+
+        <!-- Options -->
+        <div class="form-group">
+            <label>Options</label>
+            <div id="options-container">
+                {% for choice in question.answer_choices %}
+                <div class="option-item">
+                    <input type="text" name="answer_choices" value="{{ choice.text }}" class="form-control mb-2" required>
+                    <input type="{{ 'checkbox' if question.is_multiple_response else 'radio' }}" name="correct_answers" value="{{ choice.text }}" {% if choice.is_correct %}checked{% endif %}>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-option" class="btn btn-secondary btn-sm">Add Option</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Question</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('question_type').addEventListener('change', function () {
+        const type = this.value;
+        document.getElementById('multiple_response').disabled = type !== 'multiple_choice';
+    });
+
+    document.getElementById('add-option').addEventListener('click', function () {
+        const container = document.getElementById('options-container');
+        const optionCount = container.children.length + 1;
+        const optionDiv = document.createElement('div');
+        optionDiv.classList.add('option-item');
+        optionDiv.innerHTML = `
+            <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Option ${optionCount}" required>
+            <input type="radio" name="correct_answers" value="">
+        `;
+        container.appendChild(optionDiv);
+    });
+
+    document.getElementById('multiple_response').addEventListener('change', function () {
+        const inputs = document.querySelectorAll('[name="correct_answers"]');
+        inputs.forEach(input => input.type = this.checked ? 'checkbox' : 'radio');
+    });
+</script>
