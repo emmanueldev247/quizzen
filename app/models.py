@@ -21,26 +21,7 @@ from sqlalchemy.types import Enum
 
 
 class User(db.Model):
-    """
-    Represents a user in the system.
-
-    Attributes:
-        id (int): Primary key for the user.
-        username (str): Unique username chosen by the user.
-        email (str): Unique email address of the user.
-        password_hash (str): Hashed password for authentication.
-        first_name (str): First name of the user.
-        last_name (str): Last name of the user.
-        date_of_birth (date): Date of birth of the user.
-        profile_picture (str): URL or file path of the user's profile picture.
-        role (str): Role of the user
-        quiz_history (list): List of quiz history associated with the user.
-
-    Methods:
-        set_password(password): Hashes and sets the user's password.
-        check_password(password): Verifies the provided
-                                  password against the hashed password.
-    """
+    """User Model"""
 
     id = db.Column(db.String(16), primary_key=True, 
                     default=lambda: str(ulid.new()).lower()[:16])
@@ -60,7 +41,7 @@ class User(db.Model):
                        default='others', nullable=False)
     quiz_history = db.relationship('QuizHistory', backref='user',
                                    cascade='all, delete-orphan', lazy=True)
-    quizzes = db.relationship('Quiz', back_populates='quizzes', lazy=True)
+    quizzes = db.relationship('Quiz', back_populates='user', lazy=True)
 
     def set_password(self, password):
         """
@@ -89,24 +70,7 @@ class User(db.Model):
 
 
 class Quiz(db.Model):
-    """
-    Represents a quiz in the Quizzen application.
-
-    Attributes:
-        id (int): Primary key for the quiz.
-        title (str): Title of the quiz.
-        description (str): Description providing details about the quiz.
-        category (str): Category or topic of the quiz.
-        created_by (int): Foreign key linking the quiz to the creator.
-        created_at (datetime): Timestamp of when the quiz was created.
-        duration (int): Time limit for the quiz in minutes.
-        public (bool): Indicates whether the quiz is public or private.
-        questions (list): List of questions associated with the quiz.
-
-    Relationships:
-        - A quiz can have multiple questions,
-          represented by the `questions` relationship.
-    """
+    """Quiz Model"""
     id = db.Column(db.String(16), primary_key=True, 
                     default=lambda: str(ulid.new()).lower()[:16])
     title = db.Column(db.String(255), nullable=False,
