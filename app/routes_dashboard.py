@@ -5,7 +5,7 @@
 from app.extensions import db
 from app.models import (
     Category, Leaderboard, Notification,
-    QuizHistory, User
+    Quiz, QuizHistory, User
 )
 from app.routes import (
     auth_required, full_bp, logger
