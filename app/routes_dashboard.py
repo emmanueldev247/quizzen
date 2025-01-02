@@ -119,7 +119,7 @@ def create_quiz(current_user):
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
-    print(f'{request.method} - {request}')
+    print(f'{request.method} - {request.get_json()}')
     quiz = Quiz.query.get_or_404(quiz_id)
     question = Question.query.get_or_404(question_id)
 
@@ -130,34 +130,45 @@ def edit_question(current_user, quiz_id, question_id):
         return redirect(url_for('full_bp.dashboard'))
 
     if request.method == 'POST':
-        data = request.get_json()
-
-        question_text = data.get('question')
-        question_type = data.get('question_type')
-        multiple_response = data.get('multipleResponse')
-        options = data['options']
-        points = int(data['points'])
-
-        question.question_text = question_text
-        question.question_type = question_type
-        question.is_multiple_response = multiple_response
-        question.points = points
-
-
-        for option in options:
-            answer_choice = AnswerChoice(
-                text=option['text'],
-                is_correct=option['isCorrect'],
-                question_id=question.id
-            )
-            db.session.add(answer_choice)
-
-        db.session.commit()
         
-        quiz.calculate_max_score()
-        db.session.commit()
+        try:
+            data = request.get_json()
+
+            question_text = data.get('question')
+            question_type = data.get('question_type')
+            multiple_response = data.get('multipleResponse')
+            options = data['options']
+            points = int(data['points'])
+
+            question.question_text = question_text
+            question.question_type = question_type
+            question.is_multiple_response = multiple_response
+            question.points = points
+
+
+
+            for option in options:
+                answer_choice = AnswerChoice(
+                    text=option['text'],
+                    is_correct=option['isCorrect'],
+                    question_id=question.id
+                )
+                db.session.add(answer_choice)
+
+            db.session.commit()
+            
+            quiz.calculate_max_score()
+            db.session.commit()
         
-        return redirect(url_for('full_bp.edit_quiz', quiz_id=quiz_id))
+        
+            return redirect(url_for('full_bp.edit_quiz', quiz_id=quiz_id))
+        except Exception as e:
+            logger.error(f"Error editing question: {str(e)}")
+            return jsonify({
+                "success": False,
+                "message": "Error editing question",
+                "error": str(e)
+            })
 
     return render_template('edit_question.html', quiz=quiz, question=question)
 
