@@ -115,7 +115,7 @@ def create_quiz(current_user):
 
 
 
-@full_bp.route('/quiz/<quiz_id>/question/<int:question_id>/edit', methods=['GET', 'POST'])
+@full_bp.route('/quiz/<quiz_id>/question/<question_id>/edit', methods=['GET', 'POST'])
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
