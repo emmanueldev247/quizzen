@@ -60,6 +60,7 @@ class User(db.Model):
                        default='others', nullable=False)
     quiz_history = db.relationship('QuizHistory', backref='user',
                                    cascade='all, delete-orphan', lazy=True)
+    quizzes = db.relationship('Quiz', back_populates='quizzes', lazy=True)
 
     def set_password(self, password):
         """
