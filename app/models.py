@@ -109,8 +109,9 @@ class Quiz(db.Model):
     id = db.Column(db.String(16), primary_key=True, 
                     default=lambda: str(ulid.new()).lower()[:16])
     title = db.Column(db.String(255), nullable=False,
-                      default='No description provided')
-    description = db.Column(db.Text, nullable=True)
+                      default='Untitled Quiz')
+    description = db.Column(db.Text, nullable=True, 
+                        default='No description provided')
     category = db.Column(db.String(100), nullable=True, default=None)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id',
                                                       ondelete='SET NULL'),
@@ -118,8 +119,10 @@ class Quiz(db.Model):
     created_by = db.Column(db.String(16), db.ForeignKey('user.id'),
                            nullable=False, index=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
+    max_score = db.Column(db.Integer, default=0)
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
     public = db.Column(db.Boolean, default=False)  # Public or private quiz
+    user = db.relationship('User', back_populates='quizzes')
     questions = db.relationship('Question',
                                 backref=db.backref('quiz',
                                                    passive_deletes=True),
@@ -128,32 +131,48 @@ class Quiz(db.Model):
                                    backref='quiz',
                                    cascade='all, delete-orphan', lazy=True)
 
+    def __repr__(self):
+        return f'<Quiz {self.id} - {self.title}>'
+    
+    def calculate_max_score(self):
+        """Calculate the max_score by summing points of all related questions."""
+        self.max_score = sum(question.points for question in self.questions)
 
 class Question(db.Model):
-    """
-    Represents a question in a quiz.
-
-    Attributes:
-        id (int): Primary key for the question.
-        quiz_id (int): Foreign key linking the question to its parent quiz.
-        question_text (str): The text of the question.
-        answer_choices (JSON): A list of answer options in JSON format.
-        correct_answer (str): The correct answer for the question.
-        question_type (str): Type of the question, e.g., 'multiple_choice'
-
-    Relationships:
-        - A question belongs to a single quiz,
-          represented by the `quiz_id` foreign key.
-    """
+    """Question Model"""
     id = db.Column(db.Integer, primary_key=True)
     quiz_id = db.Column(db.String(16),
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
                         nullable=False, index=True)
     question_text = db.Column(db.String(512), nullable=False)
-    """Store answer choices as a list in JSON format"""
-    answer_choices = db.Column(db.JSON, nullable=False)
-    correct_answer = db.Column(db.String(100), nullable=False)
-    question_type = db.Column(db.String(50), default='multiple_choice')
+    is_multiple_response = db.Column(db.Boolean, default=False, nullable=False)
+    question_type = db.Column(ENUM('multiple_choice', 'short_answer',
+                                    name="question_type", create_type=True),
+                              default='multiple_choice', nullable=False)
+    points = db.Column(db.Integer, nullable=False, default=1)
+    
+    # Relationships
+    quiz = db.relationship('Quiz', back_populates='questions')
+    answer_choices = db.relationship('AnswerChoice', 
+        back_populates='question', cascade='all, delete-orphan'
+    )
+
+    def __repr__(self):
+        return f'<Question {self.id} - {self.question_text}>'
+
+
+class AnswerChoice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), ondelete='CASCADE', 
+    nullable=False)
+    text = db.Column(db.String(255), nullable=False)
+    is_correct = db.Column(db.Boolean, nullable=False, default=False)
+
+    # Relationships
+    question = db.relationship('Question', back_populates='answer_choices')
+
+    def __repr__(self):
+        return f'<AnswerChoice {self.id} - {self.text}>'
 
 
 class QuizHistory(db.Model):
