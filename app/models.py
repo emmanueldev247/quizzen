@@ -44,7 +44,7 @@ class User(db.Model):
 
     id = db.Column(db.String(16), primary_key=True, 
                     default=lambda: str(ulid.new()).lower()[:16])
-    username = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    username = db.Column(db.String(80), unique=True, nullable=True, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=True)
     has_password = db.Column(db.Boolean, default=False, nullable=False)
