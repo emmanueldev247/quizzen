@@ -4,8 +4,8 @@
 """
 from app.extensions import db
 from app.models import (
-    Category, Leaderboard, Notification,
-    Quiz, QuizHistory, User
+    AnswerChoice, Category, Leaderboard, Notification,
+    Question, Quiz, QuizHistory, User
 )
 from app.routes import (
     auth_required, full_bp, logger
