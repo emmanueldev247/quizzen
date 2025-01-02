@@ -119,6 +119,7 @@ def create_quiz(current_user):
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
+    print(f'{request.method} - {request}')
     quiz = Quiz.query.get_or_404(quiz_id)
     question = Question.query.get_or_404(question_id)
 
