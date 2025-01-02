@@ -137,8 +137,8 @@ def edit_question(current_user, quiz_id, question_id):
             else:
                 data = request.form
 
-            question_text = data.get('question', '').split()
-            question_type = data.get('questionType', '').split()
+            question_text = data.get('question', '').strip()
+            question_type = data.get('questionType', '').strip()
             is_multiple_response = data.get('multipleResponse', 'False')
             options = data['options']
             points = int(data['points'])
@@ -162,8 +162,6 @@ def edit_question(current_user, quiz_id, question_id):
             question.question_type = question_type
             question.is_multiple_response = is_multiple_response
             question.points = points
-
-
 
             for option in options:
                 answer_choice = AnswerChoice(
