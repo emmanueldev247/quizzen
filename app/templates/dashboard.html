@@ -17,7 +17,7 @@
                     {% for quiz in user.quizzes %}
                     <li>
                         <strong>{{ quiz.title }}</strong> - Score: {{ quiz.max_score }} / {{ quiz.max_score }}
-                        <!-- <a href="{{ url_for('full_b.edit_quiz', quiz_id=quiz.id) }}">View Details</a> -->
+                        <!-- <a href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a> -->
                     </li>
                     {% endfor %}
                 </ul>
