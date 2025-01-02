@@ -116,8 +116,8 @@ class Question(db.Model):
                               default='multiple_choice', nullable=False)
     points = db.Column(db.Integer, nullable=False, default=1)
     
-    # Relationships
-    quiz = db.relationship('Quiz', back_populates='questions')
+    # # Relationships
+    # quiz = db.relationship('Quiz', back_populates='questions')
     answer_choices = db.relationship('AnswerChoice', 
         back_populates='question', cascade='all, delete-orphan'
     )
