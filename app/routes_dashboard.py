@@ -129,7 +129,7 @@ def edit_question(current_user, quiz_id, question_id):
         return redirect(url_for('full_bp.dashboard'))
 
     if request.method == 'POST':
-        print(f'{request.method} - {request.form}')
+        print(f'{request.method} - {request.get_json()}')
         
         try:
             if request.is_json:
@@ -143,12 +143,21 @@ def edit_question(current_user, quiz_id, question_id):
             options = data['options']
             points = int(data['points'])
 
+        except Exception as e:
+            logger.error(f"Invalid form data: {str(e)}")
+            return jsonify({
+                "success": False,
+                "message": "Invalid form data",
+                "error": str(e)
+            })
+
             # sample options: [
             # {"text":"","isCorrect":false},
             # {"text":"","isCorrect":false},
             # {"text":"","isCorrect":false}
             # ]
 
+        try:
             question.question_text = question_text
             question.question_type = question_type
             question.is_multiple_response = is_multiple_response
@@ -159,10 +168,10 @@ def edit_question(current_user, quiz_id, question_id):
             for option in options:
                 answer_choice = AnswerChoice(
                     question_id=question.id,
-                    text=option['text'],
+                    text=option["text"],
                     is_correct=option['isCorrect'],
                 )
-                print(f"Answer {option[text]} saved")
+                print(f"Answer {option["text"]} saved")
                 db.session.add(answer_choice)
 
             db.session.commit()
