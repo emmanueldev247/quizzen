@@ -146,7 +146,7 @@ class Question(db.Model):
                         nullable=False, index=True)
     question_text = db.Column(db.String(512), nullable=False)
     is_multiple_response = db.Column(db.Boolean, default=False, nullable=False)
-    question_type = db.Column(ENUM('multiple_choice', 'short_answer',
+    question_type = db.Column(Enum('multiple_choice', 'short_answer',
                                     name="question_type", create_type=True),
                               default='multiple_choice', nullable=False)
     points = db.Column(db.Integer, nullable=False, default=1)
