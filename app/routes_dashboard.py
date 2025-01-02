@@ -207,7 +207,7 @@ def edit_quiz(current_user, quiz_id):
     return render_template('edit_quiz.html', quiz=quiz)
 
     
-@full_bp.route('/quiz/<int:quiz_id>/question/new', methods=['GET', 'POST'])
+@full_bp.route('/quiz/<quiz_id>/question/new', methods=['GET', 'POST'])
 @auth_required
 def create_question(current_user, quiz_id):
     """Create a new question and redirect to edit page."""
