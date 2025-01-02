@@ -376,7 +376,7 @@
                 questionType: document.querySelector('input[name="question_type"]:checked')?.value || 'multiple_choice', // Ensure question_type is set
             };
 
-            formData.append("jsonPayload", JSON.stringify(jsonPayload));
+            formData.append("jsonPayload", JSON.stringify(payload));
 
             fetch(window.location.href, {
                 method: "POST",
