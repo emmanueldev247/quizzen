@@ -243,9 +243,10 @@ def reset_password():
     logger.debug(f"Password reset attempt")
     try:
         if request.is_json:
-                data = request.get_json()
-            else:
-                data = request.form
+            data = request.get_json()
+        else:
+            data = request.form
+        
         email = unicodedata.normalize(
                 'NFKC', data.get('email', '').strip().lower()
         )
