@@ -4,8 +4,8 @@
 """
 from app.extensions import db
 from app.models import (
-    Category, Leaderboard, Notification,
-    Quiz, QuizHistory, User
+    AnswerChoice, Category, Leaderboard, Notification,
+    Question, Quiz, QuizHistory, User
 )
 from app.routes import (
     auth_required, full_bp, logger
@@ -115,7 +115,7 @@ def create_quiz(current_user):
 
 
 
-@full_bp.route('/quiz/<int:quiz_id>/question/<int:question_id>/edit', methods=['GET', 'POST'])
+@full_bp.route('/quiz/<quiz_id>/question/<int:question_id>/edit', methods=['GET', 'POST'])
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
