@@ -132,27 +132,37 @@ def edit_question(current_user, quiz_id, question_id):
         print(f'{request.method} - {request.form}')
         
         try:
-            data = request.form
+            if request.is_json:
+                data = request.get_json()
+            else:
+                data = request.form
 
-            question_text = data.get('question')
-            question_type = data.get('question_type')
-            multiple_response = data.get('multipleResponse')
+            question_text = data.get('question', '').split()
+            question_type = data.get('questionType', '').split()
+            is_multiple_response = data.get('multipleResponse', '').split()
             options = data['options']
             points = int(data['points'])
 
+            # sample options: [
+            # {"text":"","isCorrect":false},
+            # {"text":"","isCorrect":false},
+            # {"text":"","isCorrect":false}
+            # ]
+
             question.question_text = question_text
             question.question_type = question_type
-            question.is_multiple_response = multiple_response
+            question.is_multiple_response = is_multiple_response
             question.points = points
 
 
 
             for option in options:
                 answer_choice = AnswerChoice(
+                    question_id=question.id,
                     text=option['text'],
                     is_correct=option['isCorrect'],
-                    question_id=question.id
                 )
+                print(f"Answer {option[text]} saved")
                 db.session.add(answer_choice)
 
             db.session.commit()
