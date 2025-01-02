@@ -105,7 +105,8 @@ class Quiz(db.Model):
 
 class Question(db.Model):
     """Question Model"""
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(16), primary_key=True, 
+                    default=lambda: str(ulid.new()).lower()[:16])
     quiz_id = db.Column(db.String(16),
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
                         nullable=False, index=True)
@@ -116,8 +117,7 @@ class Question(db.Model):
                               default='multiple_choice', nullable=False)
     points = db.Column(db.Integer, nullable=False, default=1)
     
-    # # Relationships
-    # quiz = db.relationship('Quiz', back_populates='questions')
+
     answer_choices = db.relationship('AnswerChoice', 
         back_populates='question', cascade='all, delete-orphan'
     )
@@ -185,7 +185,7 @@ class UserAnswer(db.Model):
                                 db.ForeignKey('quiz_history.id',
                                               ondelete='CASCADE'),
                                 nullable=False, index=True)
-    question_id = db.Column(db.Integer,
+    question_id = db.Column(db.String(16),
                             db.ForeignKey('question.id', ondelete='CASCADE'),
                             nullable=False, index=True)
     user_answer = db.Column(db.String(100), nullable=False)
