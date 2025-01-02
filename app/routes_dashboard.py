@@ -129,10 +129,10 @@ def edit_question(current_user, quiz_id, question_id):
         return redirect(url_for('full_bp.dashboard'))
 
     if request.method == 'POST':
-        print(f'{request.method} - {request.get_json()}')
+        print(f'{request.method} - {request.form()}')
         
         try:
-            data = request.get_json()
+            data = request.form()
 
             question_text = data.get('question')
             question_type = data.get('question_type')

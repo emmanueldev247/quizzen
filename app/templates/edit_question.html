@@ -356,6 +356,9 @@
             e.preventDefault();
             const formData = new FormData(this);
             console.log(`FORM -> ${formData}`)
+            formData.forEach((value, key) => {
+                console.log(`${key}: ${value}`);
+            });
 
             const options = [];
             document.querySelectorAll(".option-box").forEach((box, index) => {
@@ -364,26 +367,29 @@
                 options.push({ text: optionText, isCorrect });
             });
 
+
             const payload = {
                 question: formData.get("question"),
                 multipleResponse: document.getElementById("multiple-response").checked,
                 options: options,
-                points: formData.get("points")
+                points: formData.get("points"),
+                questionType: document.querySelector('input[name="question_type"]:checked')?.value || 'multiple_choice', // Ensure question_type is set
             };
+
+            formData.append("jsonPayload", JSON.stringify(jsonPayload));
 
             fetch(window.location.href, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
+                body: formData,
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log("Question saved successfully:", data);
                     window.location.href = "/quizzen/quiz/{{ quiz_id }}/edit";
-        })
-            .catch(error => {
-                console.error("Error saving question:", error);
-            });
+                })
+                .catch(error => {
+                    console.error("Error saving question:", error);
+                });
         });
     </script>
 </body>
