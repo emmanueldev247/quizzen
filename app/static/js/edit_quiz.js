@@ -3,11 +3,29 @@ import { showNotification } from "./utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   // Add a new quiz
   const addQuestionButtons = document.querySelectorAll(".add-question-btn");
+  const cancelButtons = document.querySelectorAll(".cancel-btn");
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+
   addQuestionButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const quizId = button.getAttribute("data-quiz-id");
       // Redirect to the new question page for the specific quiz
       window.location.href = `/quizzen/quiz/${quizId}/question/new`;
+    });
+  });
+
+  // Add event listener to delete buttons
+  cancelButtons.forEach(button, () => {
+    button.addEventListener("click", hideConfirmationBubble);
+  });
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const questionHeader = event.target.closest(".question-header");
+      const questionId = questionHeader.dataset.questionId;
+      const quizId = questionHeader.dataset.quizId;
+
+      showConfirmationBubble(event, questionId, quizId);
     });
   });
 
@@ -21,21 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       hideConfirmationBubble();
     }
-  });
-
-  // Add event listener to delete buttons
-  document.querySelectorAll(".delete-btn").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const questionHeader = event.target.closest(".question-header");
-      const questionId = questionHeader.dataset.questionId;
-      const quizId = questionHeader.dataset.quizId;
-
-      showConfirmationBubble(event, questionId, quizId);
-    });
-  });
-
-  document.querySelectorAll(".cancel-btn").forEach(button, () => {
-    button.addEventListener("click", hideConfirmationBubble);
   });
 
   // Handle point-select changes
@@ -77,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         select.add(customOption);
-
         select.value = customValue;
 
         input.style.display = "none";
@@ -176,7 +178,7 @@ export function updateQuizStats() {
 }
 
 // Attach function to the window object
-window.confirmDelete = confirmDelete;
-window.hideConfirmationBubble = hideConfirmationBubble;
-window.showConfirmationBubble = showConfirmationBubble;
-window.updateQuizStats = updateQuizStats;
+// window.confirmDelete = confirmDelete;
+// window.hideConfirmationBubble = hideConfirmationBubble;
+// window.showConfirmationBubble = showConfirmationBubble;
+// window.updateQuizStats = updateQuizStats;

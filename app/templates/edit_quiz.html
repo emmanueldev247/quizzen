@@ -36,7 +36,7 @@
   </div>
 {% for question in quiz.questions|sort(attribute='id') %}
 <section class="question-card">
-    <div class="question-header">
+    <div class="question-header" data-question-id="{{ question.id }}" data-quiz-id="{{ quiz.id }}">
         <div class="question-info">
             <span class="question-num-type">
                 <i class="fas fa-check"></i>
@@ -55,7 +55,7 @@
         </div>
         <div class="question-actions">
             <button class="btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn delete-btn" data-question-id="{{ question.id }}" data-quiz-id="{{ quiz.id }}"><i class="fas fa-trash"></i> Delete</button>
+            <button class="btn delete-btn"><i class="fas fa-trash"></i> Delete</button>
         </div>
     </div>
 
