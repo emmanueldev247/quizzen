@@ -218,7 +218,7 @@ def create_question(current_user, quiz_id):
     new_question = Question(
         quiz_id=quiz_id,
         question_text="",
-        answer_choices={},
+        answer_choices=[],
         question_type="multiple_choice"
     )
 
