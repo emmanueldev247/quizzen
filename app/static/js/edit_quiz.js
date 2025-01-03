@@ -1,17 +1,6 @@
 import { showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const cancelBtn = document.getElementById("cancel-btn");
-  const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
-
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", hideConfirmationBubble);
-  }
-
-  if (confirmDeleteBtn) {
-    confirmDeleteBtn.addEventListener("click", confirmDelete);
-  }
-
   // Add a new quiz
   const addQuestionButtons = document.querySelectorAll(".add-question-btn");
   addQuestionButtons.forEach((button) => {
@@ -43,6 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showConfirmationBubble(event, questionId, quizId);
     });
+  });
+
+  document.querySelectorAll(".cancel-btn").forEach(button, () => {
+    button.addEventListener("click", hideConfirmationBubble);
   });
 
   // Handle point-select changes
