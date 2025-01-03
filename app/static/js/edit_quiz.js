@@ -1,7 +1,6 @@
 import { showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  
   const cancelBtn = document.getElementById("cancel-btn");
   const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
 
@@ -12,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", confirmDelete);
   }
-  
-  
+
   // Add a new quiz
   const addQuestionButtons = document.querySelectorAll(".add-question-btn");
   addQuestionButtons.forEach((button) => {
@@ -101,79 +99,91 @@ document.addEventListener("DOMContentLoaded", () => {
 export function showConfirmationBubble(event, questionId, quizId) {
   const bubble = document.getElementById("confirmationBubble");
 
-  const buttonRect = event.target.getBoundingClientRect();
+  if (bubble) {
+    const buttonRect = event.target.getBoundingClientRect();
 
-  bubble.style.left = `${
-    buttonRect.left + window.scrollX + buttonRect.width / 2
-  }px`;
-  bubble.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
+    bubble.style.left = `${
+      buttonRect.left + window.scrollX + buttonRect.width / 2
+    }px`;
+    bubble.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
 
-  bubble.style.display = "block";
-  bubble.dataset.questionId = questionId;
-  bubble.dataset.questionId = questionId;
+    bubble.style.display = "block";
+    bubble.dataset.questionId = questionId;
+    bubble.dataset.quizId = quizId;
+  }
 }
 
 export function hideConfirmationBubble() {
   const bubble = document.getElementById("confirmationBubble");
-  const questionId = bubble.dataset.questionId;
-  const quizId = bubble.dataset.quizId;
+
+  if (bubble) {
+    const questionId = bubble.dataset.questionId;
+    const quizId = bubble.dataset.quizId;
+
+    console.log(`Hiding bubble for question ${questionId} in quiz ${quizId}`);
+
+    bubble.style.display = "none";
+    bubble.dataset.quizId = bubble.dataset.questionId = "";
+  }
 }
 
 export function confirmDelete() {
   const bubble = document.getElementById("confirmationBubble");
-  const questionId = bubble.dataset.questionId;
-  const quizId = bubble.dataset.quiz;
+  if (bubble) {
+    const questionId = bubble.dataset.questionId;
+    const quizId = bubble.dataset.quizId;
 
-  console.log(
-    `Deleting question with ID: ${questionId} from quiz ID: ${quizId}`
-  );
+    console.log(
+      `Deleting question with ID: ${questionId} from quiz ID: ${quizId}`
+    );
 
-  document.querySelectorAll(".delete-btn").forEach((button) => {
-    button.disabled = true;
-  });
-
-  fetch(`/quizzen/quiz/${quizId}/question/${questionId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(response.json())
-    .then((data) => {
-      if (data.success) {
-        showNotification("Question deleted successfully!", "success");
-
-        // Remove question from DOM
-        const questionCard = document
-          .querySelector(`.question-header[data-question-id="${questionId}"]`)
-          .closest(".question-card");
-        if (questionCard) questionCard.remove();
-
-        // Update quiz stats (optional)
-        updateQuizStats();
-      } else {
-        showNotification("Failed to delete question.", "error");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      showNotification("An error occurred. Please try again", "error");
-    })
-    .finally(() => {
-      document.querySelectorAll(".delete-btn").forEach((button) => {
-        button.disabled = false;
-      });
-      hideConfirmationBubble();
+    document.querySelectorAll(".delete-btn").forEach((button) => {
+      button.disabled = true;
     });
+
+    fetch(`/quizzen/quiz/${quizId}/question/${questionId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response.json())
+      .then((data) => {
+        if (data.success) {
+          showNotification("Question deleted successfully!", "success");
+
+          // Remove question from DOM
+          const questionCard = document
+            .querySelector(`.question-header[data-question-id="${questionId}"]`)
+            .closest(".question-card");
+          if (questionCard) questionCard.remove();
+
+          // Update quiz stats (optional)
+          updateQuizStats();
+        } else {
+          showNotification("Failed to delete question.", "error");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        showNotification("An error occurred. Please try again", "error");
+      })
+      .finally(() => {
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+          button.disabled = false;
+        });
+        hideConfirmationBubble();
+      });
+  }
 }
 
-
-
-export function updateQuizStats(){
-  const totalScoreElement = document.getElementById
-  alert("Just reload")
+export function updateQuizStats() {
+  const totalScoreElement = document.getElementById;
+  alert("Just reload");
 }
-
 
 // Attach function to the window object
 window.confirmDelete = confirmDelete;
+window.hideConfirmationBubble = hideConfirmationBubble;
+window.showConfirmationBubble = showConfirmationBubble;
+window.updateQuizStats = updateQuizStats;
