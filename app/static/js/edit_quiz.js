@@ -1,12 +1,13 @@
 import { showNotification } from "./utils.js";
 
+const bubble = document.getElementById("confirmationBubble");
+const addQuestionButtons = document.querySelectorAll(".add-question-btn");
+const cancelButtons = document.querySelectorAll(".cancel-btn");
+const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
+const deleteButtons = document.querySelectorAll(".delete-btn");
+
 document.addEventListener("DOMContentLoaded", () => {
   // Add a new quiz
-  const addQuestionButtons = document.querySelectorAll(".add-question-btn");
-  const cancelButtons = document.querySelectorAll(".cancel-btn");
-  const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-
   addQuestionButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const quizId = button.getAttribute("data-quiz-id");
@@ -35,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Hide confirmation bubble on outside click
   document.addEventListener("click", (event) => {
-    const bubble = document.getElementById("confirmationBubble");
     if (
       bubble &&
       !bubble.contains(event.target) &&
@@ -109,8 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 export function showConfirmationBubble(event, questionId, quizId) {
-  const bubble = document.getElementById("confirmationBubble");
-
   if (bubble) {
     const buttonRect = event.target.getBoundingClientRect();
 
@@ -126,8 +124,6 @@ export function showConfirmationBubble(event, questionId, quizId) {
 }
 
 export function hideConfirmationBubble() {
-  const bubble = document.getElementById("confirmationBubble");
-
   if (bubble) {
     const questionId = bubble.dataset.questionId;
     const quizId = bubble.dataset.quizId;
@@ -140,7 +136,6 @@ export function hideConfirmationBubble() {
 }
 
 export function confirmDelete() {
-  const bubble = document.getElementById("confirmationBubble");
   if (bubble) {
     const questionId = bubble.dataset.questionId;
     const quizId = bubble.dataset.quizId;
