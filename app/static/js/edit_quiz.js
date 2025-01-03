@@ -61,11 +61,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle custom point input
   document.addEventListener("keydown", (event) => {
+    const input = event.target;
+
+  if (input.classList.contains("custom-point")) {
+    const allowedKeys = ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Enter", "Delete"]; 
+
     if (
-      event.target.classList.contains("custom-point") &&
-      event.key === "Enter"
+      !/^\d$/.test(event.key) &&
+      !allowedKeys.includes(event.key)
     ) {
-      const input = event.target;
+      event.preventDefault();
+    }
+
+    if (event.key === "Enter") {
       const select = input.previousElementSibling;
       let customValue = input.value.trim();
 
@@ -88,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.blur();
       }
     }
-  });
+  }
 });
 
 export function showConfirmationBubble(event, questionId, quizId) {
