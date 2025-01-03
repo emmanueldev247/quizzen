@@ -148,7 +148,7 @@ def edit_question(current_user, quiz_id, question_id):
             logger.info(f"Saved Options Successfully")
             
             quiz.calculate_max_score()
-            logger.info(f"Quiz max point now:---> {max_score}")
+            logger.info(f"Quiz max point now:---> {quiz.max_score}")
 
             db.session.commit()
         
