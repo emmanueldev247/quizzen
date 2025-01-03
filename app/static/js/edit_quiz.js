@@ -19,13 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", hideConfirmationBubble);
   });
 
-  deleteButtons.forEach((button) => {
+  deleteButtons.forEach(button => {
     button.addEventListener("click", (event) => {
       const questionHeader = event.target.closest(".question-header");
       const questionId = questionHeader.dataset.questionId;
       const quizId = questionHeader.dataset.quizId;
 
-      showConfirmationBubble(event, questionId, quizId);
+      confirmDelete();
     });
   });
 
