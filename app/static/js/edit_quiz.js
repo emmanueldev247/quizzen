@@ -149,7 +149,7 @@ export function confirmDelete() {
       `Deleting question with ID: ${questionId} from quiz ID: ${quizId}`
     );
 
-    document.querySelectorAll(".delete-btn").forEach((button) => {
+    deleteButtons.forEach((button) => {
       button.disabled = true;
     });
 
@@ -159,7 +159,22 @@ export function confirmDelete() {
         "Content-Type": "application/json",
       },
     })
-      .then(response.json())
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.success) {
           showNotification("Question deleted successfully!", "success");
@@ -170,7 +185,6 @@ export function confirmDelete() {
             .closest(".question-card");
           if (questionCard) questionCard.remove();
 
-          // Update quiz stats (optional)
           updateQuizStats();
         } else {
           showNotification("Failed to delete question.", "error");
@@ -178,10 +192,14 @@ export function confirmDelete() {
       })
       .catch((error) => {
         console.error("Error:", error);
-        showNotification("An error occurred. Please try again", "error");
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
       })
       .finally(() => {
-        document.querySelectorAll(".delete-btn").forEach((button) => {
+        deleteButtons.forEach((button) => {
           button.disabled = false;
         });
         hideConfirmationBubble();
@@ -190,12 +208,22 @@ export function confirmDelete() {
 }
 
 export function updateQuizStats() {
-  const totalScoreElement = document.getElementById;
-  alert("Just reload");
-}
+  const quizLength = parseInt(document.getElementById("quiz_length"));
+  const questionsLabel = document.getElementById("questions_label");
+  const quizMaxScore = parseInt(document.getElementById("quiz_max_score"));
+  const pointsLabel = document.getElementById("points_label");
 
-// Attach function to the window object
-// window.confirmDelete = confirmDelete;
-// window.hideConfirmationBubble = hideConfirmationBubble;
-// window.showConfirmationBubble = showConfirmationBubble;
-// window.updateQuizStats = updateQuizStats;
+  if (quizLength < 2) window.location.href = "/quizzen/dashboard";
+  else {
+    quizLength.textContent = --quizLength;
+    if (quizLength > 2) questionsLabel.textContent = "Questions";
+    else questionsLabel.textContent = "Question";
+  }
+
+  if (quizMaxScore < 2) window.location.href = "/quizzen/dashboard";
+  else {
+    quizMaxScore.textContent = --quizMaxScore;
+    if (quizMaxScore > 2) pointsLabel.textContent = "Points";
+    else pointsLabel.textContent = "Point";
+  }
+}
