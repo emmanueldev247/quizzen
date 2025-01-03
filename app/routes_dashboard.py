@@ -49,6 +49,7 @@ def dashboard(current_user):
 @auth_required
 def create_quiz(current_user):
     """Creates a new quiz"""
+    limiter.limit("5 per minute")(lambda: None)()
     logger.debug(f"{request.method} - Create quiz attempt")
     try:
         new_quiz = Quiz(
@@ -83,33 +84,6 @@ def create_quiz(current_user):
         flash("An error occurred while creating the quiz. Please try again.", "error")
         return redirect(url_for('full_bp.dashboard'))
 
-    # if request.method == 'POST':
-    #     limiter.limit("5 per minute")(lambda: None)()
-    #     try:
-    #         if request.is_json:
-    #             data = request.get_json()
-    #         else:
-    #             data = request.form
-
-    #         title = data.get('title', '').strip()
-    #         duration = int(data.get('duration', '0'))
-    #         description = data.get('description', '')
-    #         category_id = data.get('category') 
-    #         category = Category.query.get(category_id)
-
-    #         if not all([title, duration]):
-    #             flash("All fields are required!", "error")
-    #             return redirect(url_for('full_bp.create_quiz'))
-
-    #     except Exception as e:
-    #         logger.error(f"Error during quiz creation: {e}")
-    #         return jsonify({
-    #             "success": False,
-    #             "message": "Form data not valid",
-    #             "error": str(e)
-    #         }), 400
-            
-
     # categories = Category.query.order_by(Category.name.asc()).all()
     # return render_template('create_quiz.html', categories=categories)
 
@@ -129,7 +103,6 @@ def edit_question(current_user, quiz_id, question_id):
         return redirect(url_for('full_bp.dashboard'))
 
     if request.method == 'POST':
-        print(f'{request.method} - {request.get_json()}')
         
         try:
             if request.is_json:
@@ -169,12 +142,14 @@ def edit_question(current_user, quiz_id, question_id):
                     text=option["text"],
                     is_correct=option['isCorrect'],
                 )
-                print(f"Answer {option["text"]} saved")
                 db.session.add(answer_choice)
 
             db.session.commit()
+            logger.info(f"Saved Options Successfully")
             
             quiz.calculate_max_score()
+            logger.info(f"Quiz max point now:---> {max_score}")
+
             db.session.commit()
         
         
@@ -188,8 +163,6 @@ def edit_question(current_user, quiz_id, question_id):
             })
 
     return render_template('edit_question.html', quiz=quiz, question=question)
-
-
 
 
 @full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST'])

@@ -371,7 +371,7 @@
                 question: formData.get("question"),
                 options: options,
                 points: formData.get("points"),
-                questionType: document.querySelector('input[name="question_type"]:checked')?.value || 'multiple_choice', 
+                questionType: document.querySelector('input[name="question_type"]:checked')?.value || 'multiple_choice',
                 multipleResponse: document.getElementById("multiple-response").checked,
             };
 
@@ -382,10 +382,12 @@
                 },
                 body: JSON.stringify(payload),
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (response.redirected) window.location.href = response.url;
+                    else response.json();
+                })
                 .then(data => {
                     console.log("Question saved successfully:", data);
-                    window.location.href = "/quizzen/quiz/{{ quiz_id }}/edit";
                 })
                 .catch(error => {
                     console.error("Error saving question:", error);
