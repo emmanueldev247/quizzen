@@ -63,40 +63,45 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (event) => {
     const input = event.target;
 
-  if (input.classList.contains("custom-point")) {
-    const allowedKeys = ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Enter", "Delete"]; 
+    if (input.classList.contains("custom-point")) {
+      const allowedKeys = [
+        "Backspace",
+        "Tab",
+        "ArrowLeft",
+        "ArrowRight",
+        "Enter",
+        "Delete",
+      ];
 
-    if (
-      !/^\d$/.test(event.key) &&
-      !allowedKeys.includes(event.key)
-    ) {
-      event.preventDefault();
-    }
+      if (!/^\d$/.test(event.key) && !allowedKeys.includes(event.key)) {
+        event.preventDefault();
+      }
 
-    if (event.key === "Enter") {
-      const select = input.previousElementSibling;
-      let customValue = input.value.trim();
+      if (event.key === "Enter") {
+        const select = input.previousElementSibling;
+        let customValue = input.value.trim();
 
-      if (customValue && !isNaN(customValue)) {
-        customValue = Math.min(customValue, 100);
+        if (customValue && !isNaN(customValue)) {
+          customValue = Math.min(customValue, 100);
 
-        const customOption = new Option(
-          `${customValue} Points`,
-          customValue,
-          true,
-          true
-        );
+          const customOption = new Option(
+            `${customValue} Points`,
+            customValue,
+            true,
+            true
+          );
 
-        select.add(customOption);
-        select.value = customValue;
+          select.add(customOption);
+          select.value = customValue;
 
-        input.style.display = "none";
-        input.value = "";
+          input.style.display = "none";
+          input.value = "";
 
-        input.blur();
+          input.blur();
+        }
       }
     }
-  }
+  });
 });
 
 export function showConfirmationBubble(event, questionId, quizId) {
