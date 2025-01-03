@@ -107,7 +107,12 @@ def edit_question(current_user, quiz_id, question_id):
     if quiz.created_by != current_user.id:
         flash("Unauthorized access.", "danger")
         logger.error("No owner")
-        return redirect(equest.get_json()
+        return redirect(url_for('full_bp.dashboard'))
+    
+    if request.method == 'POST':
+        try:
+            if request.is_json:
+                data = request.get_json()
             else:
                 data = request.form
 
