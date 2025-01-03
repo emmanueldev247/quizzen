@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Add event listener to delete buttons
-  cancelButtons.forEach(button, () => {
+  cancelButtons.forEach(button => {
     button.addEventListener("click", hideConfirmationBubble);
   });
 
