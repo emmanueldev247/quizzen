@@ -27,7 +27,7 @@
     <p class="question-summary">
         {{ quiz.question|length }} Questions ({{ quiz.max_score }} {% if quiz.max_score > 1%}Points{% else %}Points{% endif %})
     </p>
-    <button id="btnadd-question-btn" class="btn add-question-btn" data-quiz-id="{{ quiz.id }}">
+    <button id="btn add-question-btn" class="btn add-question-btn" data-quiz-id="{{ quiz.id }}">
         <i class="fas fa-plus"></i> Add Question
       </button>
   </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="question-actions">
             <button class="btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn delete-btn" data-question-id="{{ question.id }}" data-quiz-id="{{ quiz.id }}"></button>><i class="fas fa-trash"></i> Delete</button>
+            <button class="btn delete-btn" data-question-id="{{ question.id }}" data-quiz-id="{{ quiz.id }}"><i class="fas fa-trash"></i> Delete</button>
         </div>
     </div>
 
@@ -63,7 +63,7 @@
             {% for option in question.answer_choices %}
             <li>
                 <i class="fas {% if option.is_correct %}fa-check{% else %}fa-times{% endif %}"></i>
-                {{ option.text }}>
+                {{ option.text }}
             </li>
             {% endfor %}
         </ul>
