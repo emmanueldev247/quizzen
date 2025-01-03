@@ -1,6 +1,19 @@
 import { showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  
+  const cancelBtn = document.getElementById("cancel-btn");
+  const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", hideConfirmationBubble);
+  }
+
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener("click", confirmDelete);
+  }
+  
+  
   // Add a new quiz
   const addQuestionBtn = document.getElementById("add-question-btn");
   if (addQuestionBtn) {
@@ -84,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function showConfirmationBubble(event, questionId, quizId) {
+export function showConfirmationBubble(event, questionId, quizId) {
   const bubble = document.getElementById("confirmationBubble");
 
   const buttonRect = event.target.getBoundingClientRect();
@@ -99,13 +112,13 @@ function showConfirmationBubble(event, questionId, quizId) {
   bubble.dataset.questionId = questionId;
 }
 
-function hideConfirmationBubble() {
+export function hideConfirmationBubble() {
   const bubble = document.getElementById("confirmationBubble");
   const questionId = bubble.dataset.questionId;
   const quizId = bubble.dataset.quizId;
 }
 
-function confirmDelete() {
+export function confirmDelete() {
   const bubble = document.getElementById("confirmationBubble");
   const questionId = bubble.dataset.questionId;
   const quizId = bubble.dataset.quiz;
@@ -153,7 +166,13 @@ function confirmDelete() {
     });
 }
 
-function updateQuizStats(){
+
+
+export function updateQuizStats(){
   const totalScoreElement = document.getElementById
   alert("Just reload")
 }
+
+
+// Attach function to the window object
+window.confirmDelete = confirmDelete;
