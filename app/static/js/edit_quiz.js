@@ -15,13 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
   
   // Add a new quiz
-  const addQuestionBtn = document.getElementById("add-question-btn");
-  if (addQuestionBtn) {
-    addQuestionBtn.addEventListener("click", () => {
-      const quizId = addQuestionBtn.getAttribute("data-quiz-id");
+  const addQuestionButtons = document.querySelectorAll(".add-question-btn");
+  addQuestionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const quizId = button.getAttribute("data-quiz-id");
+      // Redirect to the new question page for the specific quiz
       window.location.href = `/quizzen/quiz/${quizId}/question/new`;
     });
-  }
+  });
 
   // Hide confirmation bubble on outside click
   document.addEventListener("click", (event) => {
