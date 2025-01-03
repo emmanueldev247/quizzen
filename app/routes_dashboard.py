@@ -94,8 +94,8 @@ def create_quiz(current_user):
     # return render_template('create_quiz.html', categories=categories)
 
 
-
-@full_bp.route('/quiz/<quiz_id>/question/<question_id>/edit', methods=['GET', 'POST'])
+@full_bp.route('/quiz/<quiz_id>/question/<question_id>', methods=['GET', 'POST', 'DELETE'])
+@full_bp.route('/quiz/<quiz_id>/question/<question_id>/edit', methods=['GET', 'POST', 'DELETE'])
 @auth_required
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
@@ -109,6 +109,20 @@ def edit_question(current_user, quiz_id, question_id):
         logger.error("No owner")
         return redirect(url_for('full_bp.dashboard'))
     
+    if request.method == 'DELETE':
+        try:
+            db.session.delete(question)
+            quiz.calculate_max_score()
+            db.session.commit()
+            return jsonify({"success": True, "message": "Question deleted successfully."}), 200 
+        except Exception as e:
+            logger.error(f"Error deleting question: {str(e)}")
+            return jsonify({
+                "success": False,
+                "message": "Error deleting question",
+                "error": str(e)
+            }), 500
+
     if request.method == 'POST':
         try:
             if request.is_json:
