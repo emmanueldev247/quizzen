@@ -28,7 +28,7 @@
         <span class="quiz_length">{{ len(quiz.questions) }}</span> 
         <span class = "questions_label">{% if len(quiz.questions) > 1 %}Questions{% else %}Question{% endif %}</span>
         (<span class="quiz_max_score">{{ quiz.max_score }}</span>
-        <span class="points_label">{% if quiz.max_score > 1 %}Points{% else %}Points{% endif %})</span>
+        <span class="points_label">{% if quiz.max_score > 1 %}Points{% else %}Point{% endif %}</span>)
     </p>
     <button id="btn add-question-btn" class="btn add-question-btn" data-quiz-id="{{ quiz.id }}">
         <i class="fas fa-plus"></i> Add Question
