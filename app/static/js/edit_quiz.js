@@ -4,28 +4,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add a new quiz
   const addQuestionButtons = document.querySelectorAll(".add-question-btn");
   const cancelButtons = document.querySelectorAll(".cancel-btn");
+  const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
   const deleteButtons = document.querySelectorAll(".delete-btn");
 
   addQuestionButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const quizId = button.getAttribute("data-quiz-id");
-      // Redirect to the new question page for the specific quiz
+
       window.location.href = `/quizzen/quiz/${quizId}/question/new`;
     });
   });
 
   // Add event listener to delete buttons
-  cancelButtons.forEach(button => {
-    button.addEventListener("click", hideConfirmationBubble);
-  });
+  cancelButtons.forEach((button) =>
+    button.addEventListener("click", hideConfirmationBubble)
+  );
+  confirmDeleteButtons.forEach((button) =>
+    button.addEventListener("click", confirmDelete)
+  );
 
-  deleteButtons.forEach(button => {
+  deleteButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       const questionHeader = event.target.closest(".question-header");
       const questionId = questionHeader.dataset.questionId;
       const quizId = questionHeader.dataset.quizId;
 
-      confirmDelete();
+      showConfirmationBubble(event, questionId, quizId);
     });
   });
 
