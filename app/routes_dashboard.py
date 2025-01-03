@@ -8,13 +8,19 @@ from app.models import (
     Question, Quiz, QuizHistory, User
 )
 from app.routes import (
-    auth_required, full_bp, logger
+    auth_required, full_bp, logger, ratelimit_exceeded
 )
 from flask import (
     current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
 )
+from flask_limiter.errors import RateLimitExceeded
+
+
+@full_bp.errorhandler(RateLimitExceeded)
+def handle_rate_limit_exceeded(e):
+    return rate_limit_exceeded(e)
 
 
 @full_bp.route('/dashboard')
@@ -97,18 +103,11 @@ def edit_question(current_user, quiz_id, question_id):
     question = Question.query.get_or_404(question_id)
     question.answer_choices = AnswerChoice.query.filter_by(question_id=question.id).all()
 
-    logger.info(f"This is Question: {str(question)} and answer {question.answer_choices}")
     # Ensure the user is authorized to edit
     if quiz.created_by != current_user.id:
         flash("Unauthorized access.", "danger")
         logger.error("No owner")
-        return redirect(url_for('full_bp.dashboard'))
-
-    if request.method == 'POST':
-        
-        try:
-            if request.is_json:
-                data = request.get_json()
+        return redirect(equest.get_json()
             else:
                 data = request.form
 
@@ -140,14 +139,10 @@ def edit_question(current_user, quiz_id, question_id):
                 )
                 db.session.add(answer_choice)
             quiz.calculate_max_score()
+            db.session.commit()
             logger.info(f"Saved Options Successfully")
-            db.session.commit()
-            
             logger.info(f"Quiz max point now:---> {quiz.max_score}")
-
-            db.session.commit()
-        
-        
+            
             return redirect(url_for('full_bp.edit_quiz', quiz_id=quiz_id))
         except Exception as e:
             logger.error(f"Error editing question: {str(e)}")
@@ -202,15 +197,10 @@ def edit_quiz(current_user, quiz_id):
         except Exception as e:
             db.session.rollback()
             flash('Error adding question. Please try again.', 'danger')
-
-    print(quiz.questions)
-    for x in quiz.questions:
-        print(x.answer_choices)
-
     return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
 
     
-@full_bp.route('/quiz/<quiz_id>/question/new', methods=['GET', 'POST'])
+@full_bp.route('/quiz/<quiz_id>/question/new')
 @auth_required
 def create_question(current_user, quiz_id):
     """Create a new question and redirect to edit page."""
