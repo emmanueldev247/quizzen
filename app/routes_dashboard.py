@@ -97,6 +97,7 @@ def edit_question(current_user, quiz_id, question_id):
     question = Question.query.get_or_404(question_id)
     question.answer_choices = AnswerChoice.query.filter_by(question_id=question.id).all()
 
+    logger.info(f"This is Question: {str(question)} and answer {question.answer_choices}")
     # Ensure the user is authorized to edit
     if quiz.created_by != current_user.id:
         flash("Unauthorized access.", "danger")
@@ -125,14 +126,7 @@ def edit_question(current_user, quiz_id, question_id):
                 "error": str(e)
             })
 
-            # sample options: [
-            # {"text":"","isCorrect":false},
-            # {"text":"","isCorrect":false},
-            # {"text":"","isCorrect":false}
-            # ]
-
         try:
-
             question.question_text = question_text
             question.question_type = question_type
             question.is_multiple_response = is_multiple_response
@@ -208,6 +202,10 @@ def edit_quiz(current_user, quiz_id):
         except Exception as e:
             db.session.rollback()
             flash('Error adding question. Please try again.', 'danger')
+
+    print(quiz.questions)
+    for x in quiz.questions:
+        print(x.answer_choices)
 
     return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
 
