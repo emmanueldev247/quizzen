@@ -109,6 +109,7 @@ header {
 .quiz_length,
 .questions_label {
   font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .add-question-btn {
@@ -294,4 +295,87 @@ header {
 .bottom-add {
   display: flex;
   justify-content: center;
+}
+
+
+.confirmation-bubble {
+  position: absolute;
+  display: none;
+  min-width: 150px;
+  line-height: 1.5;
+  text-align: center;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 10;
+  transform: translateX(-50%);
+}
+
+.confirmation-bubble i {
+  color: white;
+  padding: 10px;
+  background-color: #6a0dad;
+  border-radius: 50%;
+}
+
+.confirmation-bubble p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.confirmation-actions .btn {
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all ease .3s;
+}
+
+.confirmation-actions .cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.confirmation-actions .cancel-btn:hover {
+  background-color: #e3e3e3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.confirmation-actions .confirm-delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+}
+
+.confirmation-actions .confirm-delete-btn:hover {
+  background-color: #ee2610;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-actions .btn:disabled {
+  cursor: not-allowed;
+}
+/* Arrow pointing down */
+.confirmation-bubble::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
 }
