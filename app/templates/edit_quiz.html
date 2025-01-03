@@ -25,7 +25,7 @@
 <div class="quiz-header">
     <h2 class="quiz-title">{{ title }}</h2>
     <p class="question-summary">
-        {{ len(quiz.question) }} Questions ({{ quiz.max_score }} {% if quiz.max_score > 1%}Points{% else %}Points{% endif %})
+        {{ quiz.question|length }} Questions ({{ quiz.max_score }} {% if quiz.max_score > 1%}Points{% else %}Points{% endif %})
     </p>
     <button id="btnadd-question-btn" class="btn add-question-btn" data-quiz-id="{{ quiz.id }}">
         <i class="fas fa-plus"></i> Add Question
