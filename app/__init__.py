@@ -42,7 +42,8 @@ def create_app(config_name=None):
                 static_url_path='/quizzen/assets',
                 template_folder='templates')
     app.url_map.strict_slashes = False
-
+    app.jinja_env.globals.update(len=len)
+    
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])
 
