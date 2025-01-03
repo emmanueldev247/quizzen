@@ -131,6 +131,7 @@ def edit_question(current_user, quiz_id, question_id):
             # ]
 
         try:
+
             question.question_text = question_text
             question.question_type = question_type
             question.is_multiple_response = is_multiple_response
@@ -168,12 +169,14 @@ def edit_question(current_user, quiz_id, question_id):
 @full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST'])
 @auth_required
 def edit_quiz(current_user, quiz_id):
+    logger.info(f"Editting quiz attempt")
     quiz = Quiz.query.get_or_404(quiz_id)
 
     if quiz.created_by != current_user.id:
         flash("You are not authorized to edit this quiz", "error")
         return redirect(url_for('full_bp.dashboard'))
 
+    logger.info(f"Editting quiz: {quiz.id}")
     if request.method == 'POST':
         try:
             if request.is_json:
@@ -206,7 +209,7 @@ def edit_quiz(current_user, quiz_id):
             db.session.rollback()
             flash('Error adding question. Please try again.', 'danger')
 
-    return render_template('edit_quiz.html', quiz=quiz)
+    return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
 
     
 @full_bp.route('/quiz/<quiz_id>/question/new', methods=['GET', 'POST'])

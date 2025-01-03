@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title> {{ title }} | Quizzen</title>
+    {% else %}
+    <title>Quizzen</title>
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- ****************Icons library************** -->
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ****************local CSS************** -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/quiz_base.css') }}">
+    {% block styles_content %}
+    {% endblock styles_content %}
+
+</head>
+
+<body>
+    <header class="header">
+        {% block header_content %}
+        {% endblock header_content %}
+    </header>
+    <div id="notification" class="notification" aria-live="polite"></div>
+    <main class="main-content">
+        {% block main_content %}
+        {% endblock main_content %}
+    </main>
+
+
+    <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+
+</html>
