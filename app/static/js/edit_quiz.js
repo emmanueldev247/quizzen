@@ -203,22 +203,22 @@ export function confirmDelete() {
 }
 
 export function updateQuizStats() {
-  const quizLength = parseInt(document.getElementById("quiz_length"));
+  const quizLengthElem = document.getElementById("quiz_length");
   const questionsLabel = document.getElementById("questions_label");
-  const quizMaxScore = parseInt(document.getElementById("quiz_max_score"));
+  const quizMaxScoreElem = document.getElementById("quiz_max_score");
   const pointsLabel = document.getElementById("points_label");
 
-  if (quizLength < 2) window.location.href = "/quizzen/dashboard";
-  else {
-    quizLength.textContent = --quizLength;
-    if (quizLength > 2) questionsLabel.textContent = "Questions";
-    else questionsLabel.textContent = "Question";
+  let quizLength = parseInt(quizLengthElem.textContent);
+  let quizMaxScore = parseInt(quizMaxScoreElem.textContent);
+
+  if (quizLength < 2 || quizMaxScore < 2) {
+    window.location.href = "/quizzen/dashboard";
+    return;
   }
 
-  if (quizMaxScore < 2) window.location.href = "/quizzen/dashboard";
-  else {
-    quizMaxScore.textContent = --quizMaxScore;
-    if (quizMaxScore > 2) pointsLabel.textContent = "Points";
-    else pointsLabel.textContent = "Point";
-  }
+  quizLengthElem.textContent = --quizLength;
+  questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
+
+  quizMaxScoreElem.textContent == --quizMaxScore;
+  pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
 }
