@@ -103,7 +103,12 @@ header {
 
 .question-summary {
   font-size: 1.1rem;
-  color: #666;
+  color: #555;
+}
+
+.quiz_length,
+.questions_label {
+  font-weight: bold;
 }
 
 .add-question-btn {
