@@ -5,6 +5,8 @@ const addQuestionButtons = document.querySelectorAll(".add-question-btn");
 const cancelButtons = document.querySelectorAll(".cancel-btn");
 const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
 const deleteButtons = document.querySelectorAll(".delete-btn");
+const quizTitle = document.getElementById("quiz-title");
+let originalTitle = quizTitle.textContent.trim();
 
 document.addEventListener("DOMContentLoaded", () => {
   // Add a new quiz
@@ -34,6 +36,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // event listeners for title update
+  quizTitle.addEventListener("focus", () => {
+    originalTitle = quizTitle.textContent.trim();
+  });
+
+  quizTitle.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      quizTitle.blur();
+    }
+  });
+
+  quizTitle.addEventListener("blur", async () => {
+    const newTitle = quizTitle.textContent.trim();
+    if (!newTitle) {
+      quizTitle.textContent = originalTitle;
+
+      showNotification("Quiz title cannot be empty", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/update-title", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: newTitle }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        showNotification("Quiz title updated successfully!", "success");
+      } else {
+        quizTitle.textContent = originalTitle;
+        throw new Error("Failed to update the title.");
+      }
+    } catch (error) {
+      console.error("Error updating title:", error);
+      if (error.message === "Failed to fetch")
+        showNotification(
+          "Network error. Please check your connection",
+          "error"
+        );
+      else showNotification("Error updating title. Please try again", "error");
+    }
+  });
+  
   // Hide confirmation bubble on outside click
   document.addEventListener("click", (event) => {
     if (
@@ -219,6 +269,6 @@ export function updateQuizStats() {
   quizLengthElem.textContent = --quizLength;
   questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
 
-  quizMaxScoreElem.textContent == --quizMaxScore;
+  quizMaxScoreElem.textContent = --quizMaxScore;
   pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
 }
