@@ -322,8 +322,8 @@ header {
 }
 
 .confirmation-bubble p {
-  margin: 0;
-  font-size: 14px;
+  margin: 0.5rem;
+  font-size: 1rem;
   color: #333;
 }
 
@@ -331,11 +331,13 @@ header {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .confirmation-actions .btn {
-  padding: 5px 10px;
-  font-size: 14px;
+  /* padding: 5px 10px;
+  font-size: 14px; */
   font-weight: bold;
   cursor: pointer;
   transition: all ease .3s;
