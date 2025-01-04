@@ -180,7 +180,7 @@ def edit_quiz(current_user, quiz_id):
     logger.info(f"Editting quiz: {quiz.id}")
     if request.method == 'POST': # Adding a question
         try:
-            limiter.limit("5 per minute")(lambda: None)()
+            limiter.limit("20 per minute")(lambda: None)()
             data = request.get_json() if request.is_json else request.form
             
             question_text = data.get('question', '').strip()
