@@ -1,0 +1,456 @@
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?&family=Metamorphous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Titillium+Web:ital,wght@0,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Titillium Web", "Quattrocento Sans", Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #f9f9f9;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 30px;
+    color: white;
+    background-color: black;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+header .hamburger {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+    transition: left 0.3s ease;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-right: 60px;
+}
+
+header .profile,
+header .enter-code {
+    display: block;
+}
+
+
+header .profile-icon {
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+header .enter-code {
+    color: white;
+    background-color: black;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    padding: 0.7rem 1rem;
+    border: 2px solid #444;
+    cursor: pointer;
+}
+
+header .enter-code:hover {
+    background-color: #555;
+}
+
+
+/* Sidebar styles (Flyout Menu for Mobile) */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 200px;
+    height: calc(100vh - 60px);
+    background-color: white;
+    color: #333;
+    padding: 20px;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 500;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .create-button,
+.sidebar .enter-code {
+    background-color: #6a0dad;
+    color: white;
+    box-shadow: inset 0 -5px 1px rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    transition: box-shadow .2s ease;
+    transition: outline 0s;
+}
+
+.sidebar .create-button:hover,
+.sidebar .enter-code:hover {
+    background-color: #a94dd0;
+    transition: background-color .2s ease;
+}
+
+.sidebar .create-button:active,
+.sidebar .enter-code:active {
+    background-color: #520688;
+    box-shadow: none;
+    padding: 10px 24px;
+    margin-top: 4px;
+    outline: none;
+    transition: background-color .2s ease;
+}
+
+.sidebar .create-button:focus-visible,
+.sidebar .enter-code:focus-visible {
+    outline: 3px solid #a94dd0c5;
+    outline-offset: 3px;
+}
+
+/* Navigation Links */
+.sidebar a {
+    text-decoration: none;
+    color: #222;
+    padding: 15px;
+    display: flex;
+    gap: 1rem;
+    border-radius: 5px;
+    width: 100%;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar a:focus-visible {
+    outline: 3px solid #a94dd0c5;
+}
+
+.sidebar a.active {
+    color: #6a0dad;
+}
+
+.sidebar a.active .icon {
+    color: #6a0dad;
+}
+
+.sidebar .icon {
+    font-size: 1.2rem;
+    color: inherit;
+    width: 20px;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+
+/* Bottom Navigation for Mobile */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    padding-top: 0;
+    box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.bottom-nav-item {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+    margin: 0 10px;
+    transition: all border-top 0.3s;
+    font-size: 0.8rem;
+}
+
+.bottom-nav-item:hover {
+    color: #6a0dad;
+}
+
+.bottom-nav-item.active {
+    color: #6a0dad;
+    border-top: 2px solid #6a0dad;
+}
+
+.bottom-nav-item:focus-visible {
+    outline: 2px solid #a94dd0c5;
+    outline-offset: -1px;
+}
+
+.bottom-nav-item .icon {
+    font-size: 0.9rem;
+    color: inherit;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 1000;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1100;
+    width: 50%;
+    height: 85%;
+    max-width: 90%;
+    max-height: 90%;
+    display: none;
+    overflow-y: auto;
+}
+
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+    gap: 10px;
+}
+
+.modal-sub-content {
+    margin-bottom: 0.7rem;
+    flex-direction: column;
+}
+
+.modal-content label {
+    font-weight: bold;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.modal-content textarea {
+    resize: none;
+    height: 80px;
+}
+
+.modal-content button {
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: inset 0 -5px 1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow .2s ease;
+    transition: outline 0s;
+}
+
+.modal-content button:hover {
+    background-color: #a94dd0;
+    transition: background-color .2s ease;
+}
+
+.modal-content button:active {
+    background-color: #520688;
+    box-shadow: none;
+    padding: 10px 24px;
+    margin-top: 4px;
+    outline: none;
+}
+
+.modal-content button:focus-visible {
+    outline: 3px solid #a94dd0c5;
+    outline-offset: 3px;
+}
+
+
+/* Mobile Styles */
+@media screen and (max-height: 600px) {
+    .sidebar {
+        gap: 5px;
+        padding: 5px;
+        padding-top: 10px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sidebar {
+        gap: 2px;
+        padding: 2px;
+        padding-top: 10px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        display: flex;
+        gap: .9rem;
+    }
+}
+
+
+@media (max-width: 500px) {
+    header .enter-code {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    header .hamburger {
+        position: absolute;
+        left: 20px;
+        font-size: 1.5rem;
+    }
+
+    header .logo {
+        margin-left: 30px;
+    }
+
+    .sidebar {
+        left: -500%;
+        transition: left 1s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+        transition: left 0.3s ease;
+    }
+
+    .bottom-nav {
+        display: flex;
+    }
+
+    .bottom-nav-item {
+        flex: 1;
+        text-align: center;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding-bottom: 70px;
+    }
+
+    .modal-content {
+        padding: 0 1rem;
+    }
+
+    .modal {
+        width: 70%;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .hamburger {
+        display: none;
+    }
+
+    .sidebar {
+        left: 0;
+        width: 200px;
+    }
+
+    .bottom-nav {
+        display: none;
+    }
+}

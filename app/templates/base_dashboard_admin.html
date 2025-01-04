@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title> {{ title }} | Quizzen</title>
+    {% else %}
+    <title>Quizzen</title>
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- ****************Icons library************** -->
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ****************local CSS************** -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base_dashboard_admin.css') }}">
+    {% block styles_content %}
+    {% endblock styles_content %}
+
+</head>
+
+<body>
+    <header>
+        <button class="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">My Logo</div>
+        <div class="header-right">
+            <button class="enter-code">Enter Code</button>
+            <div class="profile profile-icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar (Flyout Menu for Mobile) -->
+    <div id="flyout-nav" class="sidebar">
+        <button class="create-button" id="openModal">
+            <i class="fas fa-plus"></i> Create
+        </button>
+
+        <!-- Navigation Links -->
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home icon"></i>
+            <span>Explore</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-book icon"></i>
+            <span>Library</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user-circle icon"></i>
+            <span>Profile</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-sign-out-alt icon"></i>
+            <span>Logout</span>
+        </a>
+        <button class="enter-code">Enter Code</button>
+    </div>
+
+    <!-- Bottom Nav for Mobile -->
+    <div class="bottom-nav">
+        <a href="#" class="bottom-nav-item active">
+            <i class="fas fa-home icon"></i>
+            <span>Explore</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-book icon"></i>
+            <span>Library</span>
+        </a>
+        <a href="#" class="bottom-nav-item create-button">
+            <i class="fas fa-plus icon"></i>
+            <span>Create</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-user-circle icon"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block main_content %}
+        {% endblock main_content %}
+    </div>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <!-- Modal -->
+    <div class="modal" id="quizModal">
+        <button class="close-modal" id="closeModal">&times;</button>
+        <form class="modal-content">
+            <h2>Create a New Quiz</h2>
+            <div class="modal-sub-content">
+                <label for="quizTitle">Title:</label>
+                <input type="text" id="quizTitle" name="title" placeholder="Enter quiz title" required>
+            </div>
+            <div class="modal-sub-content">
+                <label for="quizDescription">Description (optional):</label>
+                <textarea id="quizDescription" name="description" placeholder="Enter quiz description"></textarea>
+            </div>
+            <div class="modal-sub-content">
+                <label for="quizCategory">Category:</label>
+                <select id="quizCategory" name="category">
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-sub-content">
+                <label for="quizDuration">Duration (in minutes):</label>
+                <input type="number" id="quizDuration" name="duration" min="1" placeholder="Enter duration" required>
+            </div>
+
+            <button type="submit" id="submit-button" class="button">Create Quiz</button>
+        </form>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/base_dashboard_admin.js') }}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+</body>
