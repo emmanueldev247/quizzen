@@ -7,7 +7,7 @@
                 <li id=""><a href="{{ url_for('full_bp.logout') }}" class="button-log-out">Log Out</a></li>
 {% endblock nav_content %}
 
-{% block child_content %}
+{% block main_content %}
     <div class="dashboard-container" id="dashboard-container">
         <h1>Welcome, {{ user.username }}</h1>
         <section id="dashboard">
@@ -52,7 +52,7 @@
             </div>
         </section>
     </div>
-{% endblock child_content %}
+{% endblock main_content %}
 
 {% block scripts %}
     <!-- <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script> -->
