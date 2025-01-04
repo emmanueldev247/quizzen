@@ -12,7 +12,7 @@ from app.models import (
     Question, Quiz, QuizHistory, User
 )
 from app.routes import (
-    full_bp, logger, ratelimit_exceeded
+    full_bp, logger, rate_limit_exceeded
 )
 from flask import (
     current_app, flash, jsonify,

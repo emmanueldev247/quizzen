@@ -30,7 +30,7 @@ logger = setup_logger()
 
 
 @full_bp.errorhandler(RateLimitExceeded)
-def ratelimit_exceeded(e):
+def rate_limit_exceeded(e):
     """Rate limit handler"""
     logger.warning(
         f"Rate limit exceeded on route {request.path}. "
