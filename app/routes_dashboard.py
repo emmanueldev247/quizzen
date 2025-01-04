@@ -20,7 +20,7 @@ from flask import (
     session, url_for
 )
 from flask_limiter.errors import RateLimitExceeded
-
+from functools import wraps
 
 
 def auth_required(f):

@@ -19,7 +19,6 @@ from flask import (
 )
 from flask_mail import Message
 from flask_limiter.errors import RateLimitExceeded
-from functools import wraps
 from itsdangerous import (
     URLSafeTimedSerializer as Serializer,
     BadSignature, SignatureExpired
