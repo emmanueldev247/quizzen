@@ -90,12 +90,9 @@ def signup():
     """Signup  route"""
     logger.debug(f"{request.method} - Signup attempt")
     if request.method == 'POST':
-        limiter.limit("5 per minute")(lambda: None)()
         try:
-            if request.is_json:
-                data = request.get_json()
-            else:
-                data = request.form
+            limiter.limit("5 per minute")(lambda: None)()
+            data = request.get_json() if request.is_json else request.form
 
             email = unicodedata.normalize(
                 'NFKC', data.get('email', '').strip().lower()
@@ -178,12 +175,9 @@ def login():
     """Login route"""
     logger.debug(f"{request.method} - Login attempt")
     if request.method == 'POST':
-        limiter.limit("5 per minute")(lambda: None)()
         try:
-            if request.is_json:
-                data = request.get_json()
-            else:
-                data = request.form
+            limiter.limit("5 per minute")(lambda: None)()
+            data = request.get_json() if request.is_json else request.form
 
             email = data.get('email', '').strip()
             password = data.get('password', '')
@@ -240,12 +234,9 @@ def login():
 @limiter.limit("5 per hour")
 def reset_password():
     """reset password route"""
-    logger.debug(f"Password reset attempt")
     try:
-        if request.is_json:
-            data = request.get_json()
-        else:
-            data = request.form
+        logger.debug(f"Password reset attempt")
+        data = request.get_json() if request.is_json else request.form
         
         email = unicodedata.normalize(
                 'NFKC', data.get('email', '').strip().lower()
