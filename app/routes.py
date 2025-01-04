@@ -30,35 +30,6 @@ full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
 logger = setup_logger()
 
 
-def auth_required(f):
-    """Auth required function"""
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        """Auth required decorator"""
-        logger.info(f"Auth Attempt")
-        if 'user_id' not in session:
-            logger.error(f"Session token missing")
-            flash("log in", "error")
-            return redirect(url_for('full_bp.login'))
-
-        try:
-            user_id = session['user_id']
-            current_user = User.query.get(user_id)
-
-            if not current_user:
-                logger.error("Invalid Token")
-                flash("log in", "error")
-                return redirect(url_for('full_bp.login'))
-
-        except Exception as e:
-            logger.error(f"Invalid Token, Error: {str(e)}")
-            flash("log in", "error")
-            return redirect(url_for('full_bp.login'))
-
-        return f(current_user, *args, **kwargs)
-    return decorated
-
-
 @full_bp.errorhandler(RateLimitExceeded)
 def ratelimit_exceeded(e):
     """Rate limit handler"""
@@ -195,7 +166,7 @@ def login():
                 if user.has_password:
                     if user.check_password(password):
                         session['user_id'] = user.id
-                        session['username'] = user.username
+                        session['user_role'] = user.role
                         logger.info(f"User {user.id} logged in successfully")
                         return jsonify({
                             "success": True,
