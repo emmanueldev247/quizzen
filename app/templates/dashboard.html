@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_dashboard_admin.html" %}
 {% block styles_content %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
 {% endblock styles_content %}
@@ -17,7 +17,7 @@
                     {% for quiz in user.quizzes %}
                     <li>
                         <strong>{{ quiz.title }}</strong> - Score: {{ quiz.max_score }} / {{ quiz.max_score }}
-                        <!-- <a href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a> -->
+                        <a href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -55,5 +55,5 @@
 {% endblock child_content %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script> -->
 {% endblock scripts %}
