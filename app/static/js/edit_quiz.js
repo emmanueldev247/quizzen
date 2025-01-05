@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         if (data.success) {
-          quizTitle.forEach((title) => {
+          quizTitles.forEach((title) => {
             title.textContent = newTitle;
           });
           showNotification("Quiz title updated successfully!", "success");
