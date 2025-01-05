@@ -87,8 +87,8 @@ def user_dashboard(current_user):
 
 
 @full_bp.route('/admin/dashboard')
-@admin_check
 @auth_required
+@admin_check
 def admin_dashboard(current_user):
     """Admin-specific dashboard."""
     logger.debug(f"{request.method} - Dashboard")
@@ -119,8 +119,8 @@ def admin_dashboard(current_user):
 
 
 @full_bp.route('/quiz/new', methods=['POST'])
-@admin_check
 @auth_required
+@admin_check
 @limiter.limit("5 per minute")
 def create_quiz(current_user):
     """Creates a new quiz"""
@@ -165,8 +165,8 @@ def create_quiz(current_user):
 
 
 @full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST', 'PUT', 'DELETE'])
-@admin_check
 @auth_required
+@admin_check
 def edit_quiz(current_user, quiz_id):
     logger.info(f"Editting quiz attempt")
     quiz = Quiz.query.get_or_404(quiz_id)
@@ -200,7 +200,7 @@ def edit_quiz(current_user, quiz_id):
             )
             db.session.add(new_question)
             db.session.flush()
-            
+
             for option in answer_choices:
                 new_question.answer_choices.append(
                     AnswerChoice(
@@ -261,8 +261,8 @@ def edit_quiz(current_user, quiz_id):
 
 
 @full_bp.route('/quiz/<quiz_id>/question/new')
-@admin_check
 @auth_required
+@admin_check
 def create_question(current_user, quiz_id):
     """Create a new question and redirect to edit page."""
     quiz = Quiz.query.get_or_404(quiz_id)
@@ -290,8 +290,8 @@ def create_question(current_user, quiz_id):
 
 @full_bp.route('/quiz/<quiz_id>/question/<question_id>', methods=['GET', 'POST', 'DELETE'])
 @full_bp.route('/quiz/<quiz_id>/question/<question_id>/edit', methods=['GET', 'POST', 'DELETE'])
-@admin_check
 @auth_required
+@admin_check
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
     limiter.limit("5 per minute")(lambda: None)()
