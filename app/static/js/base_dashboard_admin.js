@@ -1,4 +1,4 @@
-import { showNotification } from "./utils";
+import { showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("flyout-nav");
