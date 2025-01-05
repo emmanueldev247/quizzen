@@ -93,7 +93,7 @@ header .enter-code:hover {
 /* Notification styles */
 .notification {
     width: 40%;
-    max-width: 45%;
+    max-width: 75%;
     padding: 15px;
     text-align: left;
     font-size: 16px;
