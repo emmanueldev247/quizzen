@@ -12,9 +12,8 @@ let originalTitle = quizTitle.textContent.trim();
 document.addEventListener("DOMContentLoaded", () => {
   goBack.addEventListener("click", () => {
     window.location.href = "/quizzen/admin/dashboard";
-  })
-  
-  
+  });
+
   // Add a new quiz
   addQuestionButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  quizTitle.addEventListener("blur", async () => {
+  quizTitle.addEventListener("blur", () => {
     const newTitle = quizTitle.textContent.trim();
     if (!newTitle) {
       quizTitle.textContent = originalTitle;
@@ -63,33 +62,53 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    try {
-      const response = await fetch("/api/update-title", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title: newTitle }),
+    const url = window.location.href;
+    quizTitle.removeAttribute("contenteditable");
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: newTitle }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          showNotification("Quiz title updated successfully!", "success");
+        } else {
+          showNotification(data.message || "Quiz creation failed.", "error");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating title:", error);
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+        else
+          showNotification("Error updating title. Please try again", "error");
+      })
+      .finally(() => {
+        quizTitle.setAttribute("contenteditable");
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        showNotification("Quiz title updated successfully!", "success");
-      } else {
-        quizTitle.textContent = originalTitle;
-        throw new Error("Failed to update the title.");
-      }
-    } catch (error) {
-      console.error("Error updating title:", error);
-      if (error.message === "Failed to fetch")
-        showNotification(
-          "Network error. Please check your connection",
-          "error"
-        );
-      else showNotification("Error updating title. Please try again", "error");
-    }
   });
-  
+
   // Hide confirmation bubble on outside click
   document.addEventListener("click", (event) => {
     if (

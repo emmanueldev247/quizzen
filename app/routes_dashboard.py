@@ -56,7 +56,7 @@ def admin_check(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         """Auth required decorator"""
-        logger.info(f"Auth Attempt")
+        logger.info(f"role-based checks")
         if 'user_role' not in session:
             logger.error(f"Session token missing")
             flash("log in", "error")
@@ -172,6 +172,7 @@ def edit_quiz(current_user, quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
 
     if quiz.created_by != current_user.id:
+        # return jsonify({"success": False, "message": "Unauthorized to edit this quiz"}), 403
         flash("You are not authorized to edit this quiz", "error")
         return redirect(url_for('full_bp.dashboard'))
 
@@ -198,7 +199,8 @@ def edit_quiz(current_user, quiz_id):
                 points=points
             )
             db.session.add(new_question)
-            db.commit()
+            db.session.flush()
+            
             for option in answer_choices:
                 new_question.answer_choices.append(
                     AnswerChoice(
@@ -207,8 +209,6 @@ def edit_quiz(current_user, quiz_id):
                         is_correct=option['isCorrect']
                     )
                 )
-
-            db.session.add(new_question)
             quiz.calculate_max_score()
             db.session.commit()
             return jsonify({"success": True, "message": "Question added successfully."}), 201
@@ -222,12 +222,11 @@ def edit_quiz(current_user, quiz_id):
             limiter.limit("10 per minute")(lambda: None)()
             data = request.get_json() if request.is_json else request.form
             
-
             quiz.title = data.get("title", quiz.title) 
             quiz.description = data.get("description", quiz.description) 
-            quiz.category = data.get("category", quiz.category) 
+            quiz.category_id = data.get("category", quiz.category_id) 
             quiz.duration = int(data.get("duration", quiz.duration)) 
-            quiz.public = data.get("title", quiz.public)
+            quiz.public = data.get("public", quiz.public)
     
             quiz.calculate_max_score()
             db.session.commit()
