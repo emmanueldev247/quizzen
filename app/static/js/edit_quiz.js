@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showNotification("Error updating title. Please try again", "error");
       })
       .finally(() => {
-        quizTitle.setAttribute("contenteditable");
+        quizTitle.setAttribute("contenteditable", "true");
       });
   });
 
@@ -290,14 +290,22 @@ export function updateQuizStats() {
   let quizLength = parseInt(quizLengthElem.textContent);
   let quizMaxScore = parseInt(quizMaxScoreElem.textContent);
 
-  if (quizLength < 2 || quizMaxScore < 2) {
-    window.location.href = "/quizzen/dashboard";
-    return;
-  }
+  // if (quizLength < 2 || quizMaxScore < 2) {
+  //   window.location.href = "/quizzen/dashboard";
+  //   return;
+  // }
 
   quizLengthElem.textContent = --quizLength;
   questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
 
   quizMaxScoreElem.textContent = --quizMaxScore;
   pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
+
+  const questionCards = document.querySelectorAll(".question-card");
+  questionCards.forEach((card, index) => {
+    const questionNumElement = card.querySelector(".question-num-type");
+    questionNumElement.textContent = `${index + 1}. ${
+      questionNumElement.textContent.split(". ")[1]
+    }`;
+  });
 }
