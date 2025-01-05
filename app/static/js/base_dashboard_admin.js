@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("quizModal");
   const overlay = document.getElementById("modalOverlay");
 
+  console.log("DOM fully loaded");
+  console.log("Nav element:", nav);
+  console.log("Hamburger button:", hamburgerButton);
+
   openModalButtons.forEach((button) => {
     button.addEventListener("click", () => {
       modal.style.display = "block";
