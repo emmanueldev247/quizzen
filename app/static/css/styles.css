@@ -179,6 +179,12 @@ input#check {
 	color: white;
 }
 
+@media (max-width: 768px) {
+	.notification {
+		width: 70%;
+	}
+}
+
 /* STOP HERE!!!!!!!!!!!!!!!! */
 .icons {
 	position: absolute;
