@@ -6,6 +6,7 @@ const cancelButtons = document.querySelectorAll(".cancel-btn");
 const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
 const deleteButtons = document.querySelectorAll(".delete-btn");
 const quizTitle = document.getElementById("quiz-title");
+const quizTitles = document.querySelectorAll(".quiz-title");
 const goBack = document.querySelector(".back-btn");
 let originalTitle = quizTitle.textContent.trim();
 
@@ -89,6 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         if (data.success) {
+          quizTitle.forEach((title) => {
+            title.textContent = newTitle;
+          });
           showNotification("Quiz title updated successfully!", "success");
         } else {
           showNotification(data.message || "Quiz creation failed.", "error");
