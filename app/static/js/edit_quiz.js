@@ -6,9 +6,15 @@ const cancelButtons = document.querySelectorAll(".cancel-btn");
 const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
 const deleteButtons = document.querySelectorAll(".delete-btn");
 const quizTitle = document.getElementById("quiz-title");
+const goBack = document.querySelector(".back-btn");
 let originalTitle = quizTitle.textContent.trim();
 
 document.addEventListener("DOMContentLoaded", () => {
+  goBack.addEventListener("click", () => {
+    window.location.href = "/quizzen/admin/dashboard";
+  })
+  
+  
   // Add a new quiz
   addQuestionButtons.forEach((button) => {
     button.addEventListener("click", () => {

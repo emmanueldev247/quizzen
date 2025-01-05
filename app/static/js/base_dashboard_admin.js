@@ -9,37 +9,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("quizModal");
   const overlay = document.getElementById("modalOverlay");
 
-  console.log("DOM fully loaded");
-  console.log("Nav element:", nav);
-  console.log("Hamburger button:", hamburgerButton);
-
   const closeModal = () => {
-    overlay.classList.remove("active");
-    modal.classList.add("hiding");
-  modal.addEventListener(
-    "animationend",
-    () => {
-      modal.classList.remove("active", "hiding");
-    },
-    { once: true }
-  );
-};
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  };
 
-openModalButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    overlay.classList.add("active");
-    modal.classList.add("active");
+  openModalButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      modal.style.display = "block";
+      overlay.style.display = "block";
+    });
   });
-});
 
-closeModalButton.addEventListener("click", closeModal);
-overlay.addEventListener("click", closeModal);
+  closeModalButton.addEventListener("click", closeModal);
+  overlay.addEventListener("click", closeModal);
 
-hamburgerButton.addEventListener("click", () => {
-  nav.classList.toggle("active");
-  hamburgerIcon.classList.toggle("fa-bars");
-  hamburgerIcon.classList.toggle("fa-times");
-});
+  hamburgerButton.addEventListener("click", () => {
+    nav.classList.toggle("active");
+    hamburgerIcon.classList.toggle("fa-bars");
+    hamburgerIcon.classList.toggle("fa-times");
+  });
 
   document.addEventListener("click", function (event) {
     if (!nav.contains(event.target) && !hamburgerIcon.contains(event.target)) {
@@ -83,12 +72,11 @@ document.querySelector(".modal-content").addEventListener("submit", (event) => {
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (data.success) {
         showNotification("Quiz created successfully!", "success");
         window.location.href = data.redirect_url;
-      }
-      else {
+      } else {
         showNotification(data.message || "Quiz creation failed.", "error");
       }
     })
