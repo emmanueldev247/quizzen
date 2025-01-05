@@ -81,7 +81,16 @@ document.querySelector(".modal-content").addEventListener("submit", (event) => {
           );
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      showNotification("Quiz created successfully!", "success");
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        showNotification("Quiz created successfully!", "success");
+        window.location.href = data.redirect.url;
+      }
+      else {
+        showNotification(data.message || "Quiz creation failed.", "error");
+      }
     })
     .catch((error) => {
       console.error("Error:", error);

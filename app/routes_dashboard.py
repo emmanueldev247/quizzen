@@ -152,16 +152,14 @@ def create_quiz(current_user):
         db.session.add(quiz)
         db.session.commit()
 
-        return redirect(
-            url_for(
-                'full_bp.edit_quiz',
-                quiz_id=quiz.id
-            )
-        )
+        return jsonify({'success': True, 'redirect_url': url_for('full_bp.edit_quiz', quiz_id=quiz.id)})
+
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error during quiz creation: {str(e)}")
-        flash("An error occurred while creating the quiz. Please try again.", "error")
+        return jsonify({'success': False, 'message': "An error occurred while creating the quiz. Please try again",
+        "error": str(e)})
+        flash(".", "error")
         return redirect(url_for('full_bp.admin_dashboard'))
 
 
