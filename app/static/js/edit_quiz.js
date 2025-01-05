@@ -28,9 +28,24 @@ document.addEventListener("DOMContentLoaded", () => {
   cancelButtons.forEach((button) =>
     button.addEventListener("click", hideConfirmationBubble)
   );
-  confirmDeleteButtons.forEach((button) =>
-    button.addEventListener("click", confirmDelete)
-  );
+
+  confirmDeleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const questionCards = document.querySelectorAll(".question-card");
+      const isLastQuestion = questionCards.length === 1;
+      if (isLastQuestion) {
+        const userConfirmed = confirm(
+          "You are about to delete the last question. The entire quiz will be deleted. Do you want to proceed?"
+        );
+        if (userConfirmed) {
+          const questionCard = this.closest(".question-card");
+          handleQuizDeletion(questionCard);
+        }
+      } else {
+        confirmDelete();
+      }
+    });
+  });
 
   deleteButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
@@ -219,11 +234,11 @@ export function confirmDelete() {
     const questionId = bubble.dataset.questionId;
     const quizId = bubble.dataset.quizId;
 
-    console.log(
-      `Deleting question with ID: ${questionId} from quiz ID: ${quizId}`
-    );
-
     deleteButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    confirmDeleteButtons.forEach((button) => {
       button.disabled = true;
     });
 
@@ -276,9 +291,68 @@ export function confirmDelete() {
         deleteButtons.forEach((button) => {
           button.disabled = false;
         });
+        confirmDeleteButtons.forEach((button) => {
+          button.disabled = false;
+        });
         hideConfirmationBubble();
       });
   }
+}
+
+// /quiz/<quiz_id>/edit
+export function handleQuizDeletion(questionCard) {
+  deleteButtons.forEach((button) => {
+    button.disabled = true;
+  });
+  confirmDeleteButtons.forEach((button) => {
+    button.disabled = true;
+  });
+
+  fetch(window.location.href, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 429) {
+          showNotification(
+            "You have made too many requests in a short period. Please try again later",
+            "error"
+          );
+        } else
+          showNotification(
+            "Something went wrong. Please try again later",
+            "error"
+          );
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        showNotification("Quiz deleted successfully!", "success");
+        if (questionCard) questionCard.remove();
+        window.location.href = "/quizzen/dashboard";
+      } else {
+        showNotification("Failed to delete quiz", "error");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      if (error.message === "Failed to fetch")
+        showNotification(
+          "Network error. Please check your connection",
+          "error"
+        );
+    })
+    .finally(() => {
+      deleteButtons.forEach((button) => {
+        button.disabled = false;
+      });
+      confirmDeleteButtons.forEach((button) => {
+        button.disabled = false;
+      });
+      hideConfirmationBubble();
+    });
 }
 
 export function updateQuizStats() {

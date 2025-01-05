@@ -294,7 +294,7 @@ def create_question(current_user, quiz_id):
 @admin_check
 def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
-    limiter.limit("5 per minute")(lambda: None)()
+    limiter.limit("20 per minute")(lambda: None)()
     quiz = Quiz.query.get_or_404(quiz_id)
     question = Question.query.get_or_404(question_id)
     question.answer_choices = AnswerChoice.query.filter_by(question_id=question.id).all()
