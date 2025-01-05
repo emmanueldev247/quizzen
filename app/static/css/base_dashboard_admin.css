@@ -255,8 +255,16 @@ header .enter-code:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: background-color 0.4s ease, opacity 0.4s ease;
     display: none;
     z-index: 1000;
+}
+
+.modal-overlay.active {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    display: block;
 }
 
 .modal {
@@ -275,8 +283,22 @@ header .enter-code:hover {
     max-height: 90%;
     display: none;
     overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+
+.modal.active {
+    display: block;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    animation: floatIn 0.4s ease forwards;
+}
+
+/* Modal Hidden State */
+.modal.hiding {
+    animation: floatOut 0.4s ease forwards;
+}
 
 .close-modal {
     position: absolute;
@@ -413,7 +435,7 @@ header .enter-code:hover {
 
     .sidebar.active {
         left: 0;
-        transition: left 0.3s ease;
+        transition: left 0.2s ease;
     }
 
     .bottom-nav {
@@ -453,5 +475,30 @@ header .enter-code:hover {
 
     .bottom-nav {
         display: none;
+    }
+}
+
+/* Animation for Modal Float-in */
+@keyframes floatIn {
+    from {
+        transform: translate(-50%, 100%) scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes floatOut {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: translate(-50%, 100%) scale(0.8);
+        opacity: 0;
     }
 }

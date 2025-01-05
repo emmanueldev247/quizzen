@@ -13,28 +13,33 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Nav element:", nav);
   console.log("Hamburger button:", hamburgerButton);
 
-  openModalButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      modal.style.display = "block";
-      overlay.style.display = "block";
-    });
-  });
+  const closeModal = () => {
+    overlay.classList.remove("active");
+    modal.classList.add("hiding");
+  modal.addEventListener(
+    "animationend",
+    () => {
+      modal.classList.remove("active", "hiding");
+    },
+    { once: true }
+  );
+};
 
-  hamburgerButton.addEventListener("click", () => {
-    nav.classList.toggle("active");
-    hamburgerIcon.classList.toggle("fa-bars");
-    hamburgerIcon.classList.toggle("fa-times");
+openModalButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    overlay.classList.add("active");
+    modal.classList.add("active");
   });
+});
 
-  closeModalButton.addEventListener("click", () => {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
+closeModalButton.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
 
-  overlay.addEventListener("click", () => {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
+hamburgerButton.addEventListener("click", () => {
+  nav.classList.toggle("active");
+  hamburgerIcon.classList.toggle("fa-bars");
+  hamburgerIcon.classList.toggle("fa-times");
+});
 
   document.addEventListener("click", function (event) {
     if (!nav.contains(event.target) && !hamburgerIcon.contains(event.target)) {
