@@ -86,7 +86,7 @@ document.querySelector(".modal-content").addEventListener("submit", (event) => {
     .then(data => {
       if (data.success) {
         showNotification("Quiz created successfully!", "success");
-        window.location.href = data.redirect.url;
+        window.location.href = data.redirect_url;
       }
       else {
         showNotification(data.message || "Quiz creation failed.", "error");
