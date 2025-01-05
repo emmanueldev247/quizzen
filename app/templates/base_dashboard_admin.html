@@ -109,7 +109,7 @@
                 <label for="quizCategory">Category:</label>
                 <select id="quizCategory" name="category">
                     {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    <option value="{{ category.id }}" {% if category.id == 1 %}selected{% endif %}>{{ category.name }}</option>
                     {% endfor %}
                 </select>
             </div>

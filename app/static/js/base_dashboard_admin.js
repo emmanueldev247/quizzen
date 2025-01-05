@@ -60,7 +60,7 @@ document.querySelector(".modal-content").addEventListener("submit", (event) => {
   const submitButton = document.getElementById("submit-button");
   submitButton.disabled = true;
 
-  fetch("/quiz/new", {
+  fetch("/quizzen/quiz/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
