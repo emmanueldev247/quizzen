@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   confirmDeleteButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
       const questionCards = document.querySelectorAll(".question-card");
       const isLastQuestion = questionCards.length === 1;
       if (isLastQuestion) {
