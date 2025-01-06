@@ -108,7 +108,7 @@ def admin_dashboard(current_user):
     categories = Category.query.order_by(Category.name.asc()).all()
 
     return render_template(
-        'dashboard.html',
+        'dashboard_admin.html',
         title='Dashboard',
         user=user,
         quizzes=quizzes,
@@ -254,7 +254,6 @@ def edit_quiz(current_user, quiz_id):
                 "message": "Error deleting quiz",
                 "error": str(e)
             }), 500
-
 
     return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
 

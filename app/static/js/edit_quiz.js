@@ -299,7 +299,6 @@ export function confirmDelete() {
   }
 }
 
-// /quiz/<quiz_id>/edit
 export function handleQuizDeletion(questionCard) {
   deleteButtons.forEach((button) => {
     button.disabled = true;
@@ -363,11 +362,6 @@ export function updateQuizStats() {
 
   let quizLength = parseInt(quizLengthElem.textContent);
   let quizMaxScore = parseInt(quizMaxScoreElem.textContent);
-
-  // if (quizLength < 2 || quizMaxScore < 2) {
-  //   window.location.href = "/quizzen/dashboard";
-  //   return;
-  // }
 
   quizLengthElem.textContent = --quizLength;
   questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";

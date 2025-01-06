@@ -39,50 +39,15 @@
 	<div id="notification" class="notification" aria-live="polite"></div>
     <!-- Sidebar (Flyout Menu for Mobile) -->
     <div id="flyout-nav" class="sidebar">
-        <button class="create-button" id="openModal">
-            <i class="fas fa-plus"></i> Create
-        </button>
-
-        <!-- Navigation Links -->
-        <a href="#" class="nav-item active">
-            <i class="fas fa-home icon"></i>
-            <span>Explore</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-book icon"></i>
-            <span>Library</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-user-circle icon"></i>
-            <span>Profile</span>
-        </a>
-        <a href="{{ url_for('full_bp.logout') }}" class="nav-item">
-            <i class="fas fa-sign-out-alt icon"></i>
-            <span>Logout</span>
-        </a>
-        <button class="enter-code">Enter Code</button>
+        {% flyout_nav_content %}
+        {% endblock flyout_nav_content %}
     </div>
 
     <!-- Bottom Nav for Mobile -->
     <div class="bottom-nav">
-        <a href="#" class="bottom-nav-item active">
-            <i class="fas fa-home icon"></i>
-            <span>Explore</span>
-        </a>
-        <a href="#" class="bottom-nav-item">
-            <i class="fas fa-book icon"></i>
-            <span>Library</span>
-        </a>
-        <a href="#" class="bottom-nav-item create-button">
-            <i class="fas fa-plus icon"></i>
-            <span>Create</span>
-        </a>
-        <a href="#" class="bottom-nav-item">
-            <i class="fas fa-user-circle icon"></i>
-            <span>Profile</span>
-        </a>
+        {% bottom_nav_content %}
+        {% endblock bottom_nav_content %}
     </div>
-
 
     <!-- Main Content -->
     <div class="main-content">

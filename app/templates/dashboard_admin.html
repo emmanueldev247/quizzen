@@ -3,10 +3,49 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
 {% endblock styles_content %}
 
-{% block nav_content %}
-                <li id=""><a href="{{ url_for('full_bp.logout') }}" class="button-log-out">Log Out</a></li>
-{% endblock nav_content %}
+{% block flyout_nav_content %}
+        <button class="create-button" id="openModal">
+            <i class="fas fa-plus"></i> Create
+        </button>
 
+        <!-- Navigation Links -->
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home icon"></i>
+            <span>Explore</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-book icon"></i>
+            <span>Library</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user-circle icon"></i>
+            <span>Profile</span>
+        </a>
+        <a href="{{ url_for('full_bp.logout') }}" class="nav-item">
+            <i class="fas fa-sign-out-alt icon"></i>
+            <span>Logout</span>
+        </a>
+<button class="enter-code">Enter Code</button>
+{% endblock flyout_nav_content %}
+
+{% bottom_nav_content %}
+        <a href="#" class="bottom-nav-item active">
+            <i class="fas fa-home icon"></i>
+            <span>Explore</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-book icon"></i>
+            <span>Library</span>
+        </a>
+        <a href="#" class="bottom-nav-item create-button">
+            <i class="fas fa-plus icon"></i>
+            <span>Create</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-user-circle icon"></i>
+            <span>Profile</span>
+        </a>
+{% endblock bottom_nav_content %}
 {% block main_content %}
     <div class="dashboard-container" id="dashboard-container">
         <h1>Welcome, {{ user.username }}</h1>

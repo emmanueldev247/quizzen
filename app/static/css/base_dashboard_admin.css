@@ -208,6 +208,7 @@ header .enter-code:hover {
 
 .sidebar a:hover {
     background-color: #f0f0f0;
+    color: #6a0dad;
 }
 
 .sidebar a:focus-visible {
