@@ -168,7 +168,7 @@ def create_quiz(current_user):
 
 
 
-@full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST', 'PUT', 'DELETE'])
+@full_bp.route('/quiz/<quiz_id>', methods= ['GET', 'POST', 'PUT', 'DELETE'])
 @full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST', 'PUT', 'DELETE'])
 @auth_required
 @admin_check
@@ -452,4 +452,6 @@ def edit_question(current_user, quiz_id, question_id):
                 "error": str(e)
             }), 500
 
-    return render_template('edit_question.html', quiz=quiz)
+    
+    question = Question.query.get(question_id)
+    return render_template('edit_question.html', quiz=quiz, question=question)
