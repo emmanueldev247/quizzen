@@ -386,7 +386,7 @@ def edit_question(current_user, quiz_id, question_id):
             return redirect(url_for('full_bp.admin_dashboard'))
 
             
-    elif request.method == 'PUT': # do PUT also PUT vs PATCH
+    elif request.method == 'PUT':
         try:
             question = Question.query.get_or_404(question_id)
             data = request.get_json() if request.is_json else request.form
@@ -451,5 +451,4 @@ def edit_question(current_user, quiz_id, question_id):
                 "error": str(e)
             }), 500
 
-    return render_template('edit_question.html', quiz=quiz, question=question)
-return render_template('edit_question.html', quiz=quiz)
+    return render_template('edit_question.html', quiz=quiz)
