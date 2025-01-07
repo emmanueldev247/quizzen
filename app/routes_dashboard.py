@@ -440,6 +440,7 @@ def edit_question(current_user, quiz_id, question_id):
 
     elif request.method == 'DELETE':
         try:
+            question = Question.query.get(question_id)
             db.session.delete(question)
             quiz.calculate_max_score()
             db.session.commit()
