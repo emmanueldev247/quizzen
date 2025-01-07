@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if quiz %}
     <title>Quiz: {{ quiz.title}} | Quizzen</title>
     {% else%}
@@ -16,6 +18,7 @@
 
     <!-- ****************local CSS************** -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_question.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base_styles.css') }}">
 </head>
 
 <body>
@@ -69,7 +72,7 @@
                 </div>
             </div>
         </header>
-
+        <div id="notification" class="notification" aria-live="polite"></div>
         <main class="content">
             <div class="container">
                 <form action="#" method="post" class="responsive-form" id="question-form">
@@ -166,6 +169,7 @@
         </footer>
     </div>
     <script type="module" src="{{ url_for('static', filename='js/edit_question.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='utils.js') }}"></script>
 </body>
 
 </html>
