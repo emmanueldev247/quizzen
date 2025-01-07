@@ -131,7 +131,7 @@
                     <div class="toggle-container">
                         <div class="toggle-multiple-response" style="display: none;">
                             <label class="toggle-label">
-                                <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if
+                                <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if question and
                                     question.is_multiple_response else ''}}>
                                 <span class="slider">
                                 </span>
@@ -141,7 +141,7 @@
                         <div class="toggle-alternative-response" style="display: none">
                             <label class="toggle-label">
                                 <input type="checkbox" id="alternative-response" name="alternative-response"
-                                    {{ 'checked' if question.answer_choices|length> 1 else '' }}>
+                                    {{ 'checked' if question and question.answer_choices|length> 1 else '' }}>
                                 <span class="slider"></span>
                             </label>
                             <span>Allow Alternative Answers
