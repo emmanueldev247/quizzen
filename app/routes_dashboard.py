@@ -6,6 +6,8 @@
       - '/quiz/<quiz_id>/question/new' -> create_question
       - '/quiz/<quiz_id>/question/<question_id>/edit' -> edit_question
 """
+
+import ulid
 from app.extensions import db, limiter
 from app.models import (
     AnswerChoice, Category, Leaderboard, Notification,
@@ -152,7 +154,9 @@ def create_quiz(current_user):
         db.session.add(quiz)
         db.session.commit()
 
-        return jsonify({'success': True, 'redirect_url': url_for('full_bp.edit_quiz', quiz_id=quiz.id)})
+        question_id = str(ulid.new()).lower()[:16]
+
+        return jsonify({'success': True, 'redirect_url': url_for('full_bp.edit_question', quiz_id=quiz.id, question_id=question_id)})
 
     except Exception as e:
         db.session.rollback()
@@ -270,22 +274,35 @@ def create_question(current_user, quiz_id):
         flash("Unauthorized access", "error")
         return redirect(url_for('full_bp.dashboard'))
 
-    new_question = Question(
-        quiz_id=quiz_id,
-        question_text=""
-    )
+    # OLD LOGIC
+    # 
+    # new_question = Question(
+    #     quiz_id=quiz_id,
+    #     question_text=""
+    # )
 
-    db.session.add(new_question)
-    db.session.commit()
+    # db.session.add(new_question)
+    # db.session.commit()
+
+    # return redirect(
+    #     url_for(
+    #         'full_bp.edit_question', 
+    #         quiz_id=quiz_id,
+    #         question_id=new_question.id
+    #     )
+    # )
+
+    # new logic
+
+    question_id = str(ulid.new()).lower()[:16]
 
     return redirect(
         url_for(
             'full_bp.edit_question', 
             quiz_id=quiz_id,
-            question_id=new_question.id
+            question_id=question_id
         )
     )
-
 
 @full_bp.route('/quiz/<quiz_id>/question/<question_id>', methods=['GET', 'POST', 'DELETE'])
 @full_bp.route('/quiz/<quiz_id>/question/<question_id>/edit', methods=['GET', 'POST', 'DELETE'])
@@ -295,25 +312,95 @@ def edit_question(current_user, quiz_id, question_id):
     """Edit a question"""
     limiter.limit("20 per minute")(lambda: None)()
     quiz = Quiz.query.get_or_404(quiz_id)
-    question = Question.query.get_or_404(question_id)
-    question.answer_choices = AnswerChoice.query.filter_by(question_id=question.id).all()
+
+    # question.answer_choices = AnswerChoice.query.filter_by(question_id=question.id).all()
 
     # Ensure the user is authorized to edit
     if quiz.created_by != current_user.id:
         flash("Unauthorized access.", "danger")
-        logger.error("No owner")
+        logger.error("Not owner")
         return redirect(url_for('full_bp.dashboard'))
 
 
-    if request.method == 'POST': # do PUT also PUT vs PATCH
+    if request.method == 'POST':
         try:
             data = request.get_json() if request.is_json else request.form
-            
+            if not data:
+                return jsonify({"message": "Invalid JSON data"}), 400
+
             question_text = data.get('question', '').strip()
-            question_type = data.get('questionType', '').strip()
-            is_multiple_response = data.get('multipleResponse', 'False')
-            options = data['options']
-            points = int(data['points'])
+            question_type = data.get('questionType', 'multiple_choice').strip()
+            is_multiple_response = data.get('isMultipleResponse', False)
+            points = int(data.get('points', 1))
+            options = data.get('options', [])
+
+            if not all([question_text, question_type, options]):
+                return jsonify({"message": "Missing required fields"}), 400
+
+        except Exception as e:
+            logger.error(f"Invalid form data: {str(e)}")
+            return jsonify({
+                "success": False,
+                "message": "Invalid form data",
+                "error": str(e)
+            })
+
+        try:
+            question = Question(
+                        id = question_id,
+                        quiz_id=quiz_id,
+                        question_text = question_text,
+                        question_type = question_type,
+                        is_multiple_response = is_multiple_response,
+                        points = points
+                    )
+                    
+            db.session.add(question)
+            db.session.commit()
+
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error during question creation: {str(e)}")
+            return jsonify({'success': False, 'message': "An error occurred while creating the question. Please try again",
+            "error": str(e)})
+            return redirect(url_for('full_bp.admin_dashboard'))
+
+        try:            
+            AnswerChoice.query.filter_by(question_id=question.id).delete()
+            for option in options:
+                answer_choice = AnswerChoice(
+                    question_id=question.id,
+                    text=option["text"],
+                    is_correct=option['isCorrect'],
+                )
+                db.session.add(answer_choice)
+            quiz.calculate_max_score()
+            db.session.commit()
+            return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
+        
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error during question creation: {str(e)}")
+            return jsonify({'success': False, 'message': "An error occurred while creating the question. Please try again",
+            "error": str(e)})
+            return redirect(url_for('full_bp.admin_dashboard'))
+
+            
+    elif request.method == 'PUT': # do PUT also PUT vs PATCH
+        try:
+            question = Question.query.get_or_404(question_id)
+            data = request.get_json() if request.is_json else request.form
+            if not data:
+                return jsonify({"message": "Invalid JSON data"}), 400
+
+            question_text = data.get('question', question.question_text).strip()
+            question_type = data.get('questionType', question_type).strip()
+            is_multiple_response = data.get('isMultipleResponse', question.is_multiple_response)
+            points = int(data.get('points', question.points))
+            options = data.get('options', [])
+
+            if not all([question_text, question_type, options]):
+                return jsonify({"message": "Missing required fields"}), 400
 
         except Exception as e:
             logger.error(f"Invalid form data: {str(e)}")
@@ -365,3 +452,4 @@ def edit_question(current_user, quiz_id, question_id):
             }), 500
 
     return render_template('edit_question.html', quiz=quiz, question=question)
+return render_template('edit_question.html', quiz=quiz)
