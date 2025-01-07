@@ -42,6 +42,7 @@
                     <input class="custom-point" name="custom-point" type="number" min="1" max="100"
                         placeholder="Enter points" value="1" />
                     <select class="point-select" id="point-select">
+                        {%if question %}
                         <option value="1" {{ 'selected' if question.points==1 else '' }}>1 Point</option>
                         <option value="2" {{ 'selected' if question.points==2 else '' }}>2 Points</option>
                         <option value="3" {{ 'selected' if question.points==3 else '' }}>3 Points</option>
@@ -51,6 +52,14 @@
                             Custom
                             point
                         </option>
+                        {% else %}
+                        <option value="1">1 Point</option>
+                        <option value="2">2 Points</option>
+                        <option value="3">3 Points</option>
+                        <option value="4">4 Points</option>
+                        <option value="5">5 Points</option>
+                        <option value="other">Custom point</option>
+                        {% endif %}
                     </select>
                 </div>
                 <div class="top-save-button">
