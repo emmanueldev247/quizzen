@@ -2,398 +2,162 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Quiz Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-        }
+    {% if quiz %}
+    <title>Quiz: {{ quiz.title}} | Quizzen</title>
+    {% else%}
+    <title>Quiz | Quizzen</title>
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    <!-- ****************Icons library************** -->
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            resize: vertical;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            line-height: 150px;
-            /* Matches the height for vertical centering */
-        }
-
-        .options-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .option-box {
-            flex: 1 1 calc(25% - 10px);
-            /* Default: 4 options per row */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-        }
-
-        .option-box input[type="checkbox"],
-        .option-box input[type="radio"] {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            transform: scale(1.2);
-            /* Slightly larger checkbox */
-            cursor: pointer;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            height: 60px;
-            font-size: 16px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-align: center;
-            line-height: 60px;
-            /* Matches height for vertical centering */
-            box-sizing: border-box;
-        }
-
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Responsive CSS */
-        @media (max-width: 768px) {
-            .option-box {
-                flex: 1 1 calc(50% - 10px);
-                /* 2 options per row on medium screens */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .option-box {
-                flex: 1 1 100%;
-                /* Stack options vertically on small screens */
-            }
-        }
-
-        /* Toggle Switch Styling */
-        .toggle-container {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-top: 20px;
-            gap: 10px;
-        }
-
-        .toggle-label {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-        }
-
-        .toggle-label input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: 0.4s;
-        }
-
-        input:checked+.slider {
-            background-color: #007bff;
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(30px);
-        }
-
-        .toggle-container label {
-            margin-left: 10px;
-            font-size: 16px;
-            color: #555;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+    <!-- ****************local CSS************** -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_question.css') }}">
 </head>
 
 <body>
-    <div class="container-fluid fullscreen-container">
-        <div class="container">
-            <h2>Edit Question for Quiz: {{ quiz.title }}</h2>
-
-            <form method="POST">
-                <!-- Question Type -->
-                <div class="form-group">
-                    <label for="question_type">Question Type</label>
-                    <select id="question_type" name="question_type" class="form-control">
-                        <option value="multiple_choice" {% if question.question_type=="multiple_choice" %}selected{%
-                            endif %}>Multiple Choice</option>
-                        <option value="short_answer" {% if question.question_type=="short_answer" %}selected{% endif %}>
-                            Short Answer</option>
+    <div class="layout">
+        <header class="header">
+            <div class="header-left">
+                <button class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <select id="question-type" name="question-type">
+                    <option value="multiple_choice" {% if question and question.question_type=="multiple_choice"
+                        %}selected{% endif %}>Multiple Choice</option>
+                    <option value="short_answer" {% if question and question.question_type=="short_answer" %}selected{%
+                        endif %}>Short Answer</option>
+                </select>
+            </div>
+            <div class="header-right">
+                <div class="three-dots">
+                    <button class="btn" id="toggle-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+                <div class="menu-content">
+                    <input class="custom-point" name="custom-point" type="number" min="1" max="100"
+                        placeholder="Enter points" value="1" />
+                    <select class="point-select" id="point-select">
+                        <option value="1" {{ 'selected' if question.points==1 else '' }}>1 Point</option>
+                        <option value="2" {{ 'selected' if question.points==2 else '' }}>2 Points</option>
+                        <option value="3" {{ 'selected' if question.points==3 else '' }}>3 Points</option>
+                        <option value="4" {{ 'selected' if question.points==4 else '' }}>4 Points</option>
+                        <option value="5" {{ 'selected' if question.points==5 else '' }}>5 Points</option>
+                        <option value="other" {{ 'selected' if question.points not in [1, 2, 3, 4, 5] else 'other' }}>
+                            Custom
+                            point
+                        </option>
                     </select>
                 </div>
-
-                <!-- Points -->
-                <div class="form-group">
-                    <label for="points">Points</label>
-                    <input type="number" id="points" name="points" class="form-control" value="{{ question.points }}"
-                        required min="1">
+                <div class="top-save-button">
+                    <button type="submit" class="btn publish-btn publish-top" data-tooltip="hey">
+                        <i class="fas fa-save"></i> Save
+                    </button>
                 </div>
+            </div>
+        </header>
 
-                <!-- Question Text -->
-                <div class="form-group">
-                    <label for="question">Question</label>
-                    <textarea id="question" name="question" placeholder="Enter your question here" required>
-                        {{ question.question_text }}
-                    </textarea>
-                </div>
-
-                <!-- Options (conditionally rendered based on question type) -->
-                <div class="options-container" id="options-container">
-                    {% if question.question_type == 'multiple_choice' %}
-                    <div class="option-box">
-                        <input type="radio" id="option1" name="option">
-                        <label for="option1">Option 1</label>
-                        <input type="text" id="option1" name="option1" placeholder="Option 1">
+        <main class="content">
+            <div class="container">
+                <form action="#" method="post" class="responsive-form" id="question-form">
+                    <div class="form-group">
+                        <textarea class="question" id="question" name="question"
+                            placeholder="Type question here">{{ question.question_text }}</textarea>
                     </div>
-                    <div class="option-box">
-                        <input type="radio" id="option1" name="option">
-                        <label for="option2">Option 2</label>
-                        <input type="text" id="option2" name="option2" placeholder="Option 2">
+                    <div class="options-container" id="options-container">
+                        {% if question %}
+                        {% if question.question_type == 'multiple_choice' %}
+                        {% for option in question.answer_choices %}
+                        <div class="option-box">
+                            <i class="fas fa-trash delete-option" title="Delete answer option"></i>
+                            <input type="{{ 'checkbox' if question.is_multiple_response else 'radio' }}" name="option"
+                                tabindex="-1" title="Mark as correct" {{ 'checked' if option.is_correct else '' }}>
+                            <input type="text" name="option" placeholder="Type answer option here"
+                                value="{{ option.text }}">
+                        </div>
+                        {% endfor %}
+                        {% elif question.question_type == 'short_answer' %}
+                        <div class="short-answer-container" style="display: none;">
+                            <div class="overlay-container">
+                                <input type="text" class="short-answer-input" name="short-answer-input"
+                                    placeholder="Type answer here"
+                                    value="{{ question.answer_choices[0].text if question.answer_choices else '' }}">
+                            </div>
+                            <!-- Check if Alternative Answers should be displayed -->
+                            <div class="alternative-answer"
+                                style="display: {{ 'block' if question.answer_choices|length > 1 else 'none' }}">
+                                <p>Alternative Options</p>
+                                <div class="alternative-answer-content">
+                                    {% for option in question.answer_choices[1:] %}
+                                    <div class="alternative-answer-box">
+                                        <input type="text" class="short-answer-input"
+                                            name="alternative-short-answer-input"
+                                            placeholder="Type alternative answer here" value="{{ option.text }}">
+                                        <i class="fas fa-trash delete-option-sa" title="Delete alternative answer"></i>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="add-option-container add-option-sa">
+                                        <i class="fas fa-plus" title="Add an alternative answer"></i>
+                                        Add alternative answer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        {% for i in range(4) %}
+                        <div class="option-box">
+                            <i class="fas fa-trash delete-option" title="Delete answer option"></i>
+                            <input type="radio" name="option" tabindex="-1" tabindex="-1" title="Mark as correct">
+                            <input type="text" name="option" placeholder="Type answer option here">
+                        </div>
+                        {% endfor %}
+                        <i class="fas fa-plus add-option" title="Add another option"></i>
+                        {% endif %}
                     </div>
-                    <div class="option-box">
-                        <input type="radio" id="option1" name="option">
-                        <label for="option3">Option 3</label>
-                        <input type="text" id="option3" name="option3" placeholder="Option 3">
+                    <div class="toggle-container">
+                        <div class="toggle-multiple-response" style="display: none;">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if
+                                    question.is_multiple_response else ''>
+                                <span class="slider"></span>
+                                </span>
+                            </label>
+                            <span>Allow Multiple Responses
+                        </div>
+                        <div class="toggle-alternative-response" style="display: none">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="alternative-response" name="alternative-response"
+                                    {{ 'checked' if question.answer_choices|length> 1 else '' }}>
+                                <span class="slider"></span>
+                                </span>
+                            </label>
+                            <span>Allow Alternative Answers
+                        </div>
                     </div>
+                    <div id="tooltip" class="tooltip"></div>
+                    {% if question %}
+                    <input type="hidden" name="_method" value="PUT"> 
+                    {% else %}
+                    <input type="hidden" name="_method" value="POST"> 
                     {% endif %}
-                </div>
+                </form>
+            </div>
+        </main>
 
-                {% if question.question_type == 'multiple_choice' %}
-                <!-- Multiple Response Toggle -->
-                <div class="toggle-container">
-                    <label class="toggle-label">
-                        <input type="checkbox" id="multiple-response" name="multiple-response" {% if
-                            question.is_multiple_response %}checked{% endif %}>
-                        <span class="slider"></span>
-                        </span>
-                    </label>
-                    <span> Multiple Correct Answers
-                </div>
-                {% endif %}
-
-                <div class="button-container">
-                    <button type="submit">Save Question</button>
-                </div>
-            </form>
-        </div>
+        <footer class="footer">
+            <div class="bottom-save-button">
+                <button type="submit" class="btn publish-btn publish-bottom" data-tooltip="hey">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </footer>
     </div>
-    <script>
-        // document.getElementById('question_type').addEventListener('change', function () {
-        //     const type = this.value;
-        //     const optionsContainer = document.getElementById('options-container');
-        //     const addOptionButton = document.getElementById('add-option');
-
-        //     document.getElementById('multiple_response').disabled = type !== 'multiple_choice';
-
-        //     optionsContainer.innerHTML = '';
-
-        //     if (type === 'true_false') {
-        //         optionsContainer.innerHTML = `
-        //         <label>Options</label>
-        //         <div class="option-item">
-        //             <input type="radio" name="correct_answers" value="True">
-        //             True
-        //         </div>
-        //         <div class="option-item">
-        //             <input type="radio" name="correct_answers" value="False">
-        //             False
-        //         </div>
-        //     `;
-        //         addOptionButton.disabled = true;  // Disable the "Add Option" button for True/False questions
-        //     } else if (type === 'multiple_choice') {
-        //         optionsContainer.innerHTML = `
-        //         <label>Options</label>
-        //         <div class="option-item">
-        //             <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Option 1" required>
-        //             <input type="radio" name="correct_answers" value="Option 1">
-        //         </div>
-        //         <div class="option-item">
-        //             <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Option 2" required>
-        //             <input type="radio" name="correct_answers" value="Option 2">
-        //         </div>
-        //         <div class="option-item">
-        //             <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Option 3" required>
-        //             <input type="radio" name="correct_answers" value="Option 3">
-        //         </div>
-        //     `;
-        //         addOptionButton.disabled = false;  // Enable the "Add Option" button for multiple-choice questions
-        //     } else if (type === 'short_answer') {
-        //         optionsContainer.innerHTML = `
-        //         <label>Answer</label>
-        //         <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Enter answer" required>
-        //     `;
-        //         addOptionButton.disabled = true;  // Disable the "Add Option" button for short-answer questions
-        //     }
-        // });
-
-
-        //     // Toggle the radio/checkbox for multiple response
-        //     document.getElementById('multiple_response').addEventListener('change', function () {
-        //         const inputs = document.querySelectorAll('[name="correct_answers"]');
-        //         inputs.forEach(input => input.type = this.checked ? 'checkbox' : 'radio');
-        //     });
-
-        //     // Add new options dynamically for multiple-choice questions
-        //     document.getElementById('add-option').addEventListener('click', function () {
-        //         const container = document.getElementById('options-container');
-        //         const optionCount = container.children.length + 1;
-        //         const optionDiv = document.createElement('div');
-        //         optionDiv.classList.add('option-item');
-        //         optionDiv.innerHTML = `
-        //         <input type="text" name="answer_choices" class="form-control mb-2" placeholder="Option ${optionCount}" required>
-        //         <input type="radio" name="correct_answers" value="Option ${optionCount}">
-        //     `;
-        //         container.appendChild(optionDiv);
-        //     });
-
-        document.getElementById("multiple-response").addEventListener("change", function () {
-            const optionsContainer = document.getElementById("options-container");
-            const inputType = this.checked ? "checkbox" : "radio";
-
-            // Update each option's input type
-            optionsContainer.querySelectorAll(".option-box input[type=radio], .option-box input[type=checkbox]").forEach(input => {
-                // const name = input.getAttribute("name");
-                input.type = inputType;
-                input.name = inputType === "radio" ? "option" : "options[]";
-            });
-        });
-
-        document.querySelector('form').addEventListener("submit", function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            console.log(`FORM -> ${formData}`)
-            formData.forEach((value, key) => {
-                console.log(`${key}: ${value}`);
-            });
-
-            const options = [];
-            document.querySelectorAll(".option-box").forEach((box, index) => {
-                const optionText = box.querySelector("input[type=text]").value;
-                const isCorrect = box.querySelector("input[type=checkbox], input[type=radio]").checked;
-                options.push({ text: optionText, isCorrect });
-            });
-
-            const payload = {
-                question: formData.get("question"),
-                options: options,
-                points: formData.get("points"),
-                questionType: document.querySelector('input[name="question_type"]:checked')?.value || 'multiple_choice',
-                multipleResponse: document.getElementById("multiple-response").checked,
-            };
-
-            fetch(window.location.href, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
-                .then(response => {
-                    if (response.redirected) window.location.href = response.url;
-                    else response.json();
-                })
-                .then(data => {
-                    console.log("Question saved successfully:", data);
-                })
-                .catch(error => {
-                    console.error("Error saving question:", error);
-                });
-        });
-    </script>
+    <script type="module" src="{{ url_for('static', filename='js/edit_question.js') }}"></script>
 </body>
 
 </html>
