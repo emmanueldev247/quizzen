@@ -212,6 +212,10 @@ document.addEventListener("DOMContentLoaded", () => {
         altAnswerContent.style.display = "none";
       }
     }
+
+    document.querySelector(".btn-back").addEventListener("click", () => {
+        window.location.href = window.location.href.split('/question/')[0]
+    })
   
     // initializing
     updateQuestionType();

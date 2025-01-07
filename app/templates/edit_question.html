@@ -63,7 +63,7 @@
                     </select>
                 </div>
                 <div class="top-save-button">
-                    <button type="submit" class="btn publish-btn publish-top" data-tooltip="hey">
+                    <button type="submit" class="btn publish-btn publish-top" data-tooltip="">
                         <i class="fas fa-save"></i> Save
                     </button>
                 </div>
@@ -75,7 +75,7 @@
                 <form action="#" method="post" class="responsive-form" id="question-form">
                     <div class="form-group">
                         <textarea class="question" id="question" name="question"
-                            placeholder="Type question here"> {% if question %} {{ question.question_text }} {% endif %}</textarea>
+                            placeholder="Type question here">{% if question %}{{ question.question_text }}{% else %}''{% endif %}</textarea>
                     </div>
                     <div class="options-container" id="options-container">
                         {% if question %}
@@ -159,7 +159,7 @@
 
         <footer class="footer">
             <div class="bottom-save-button">
-                <button type="submit" class="btn publish-btn publish-bottom" data-tooltip="hey">
+                <button type="submit" class="btn publish-btn publish-bottom" data-tooltip="">
                     <i class="fas fa-save"></i> Save
                 </button>
             </div>
