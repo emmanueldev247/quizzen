@@ -39,13 +39,13 @@
 	<div id="notification" class="notification" aria-live="polite"></div>
     <!-- Sidebar (Flyout Menu for Mobile) -->
     <div id="flyout-nav" class="sidebar">
-        {% flyout_nav_content %}
+        {% block flyout_nav_content %}
         {% endblock flyout_nav_content %}
     </div>
 
     <!-- Bottom Nav for Mobile -->
     <div class="bottom-nav">
-        {% bottom_nav_content %}
+        {% block bottom_nav_content %}
         {% endblock bottom_nav_content %}
     </div>
 
