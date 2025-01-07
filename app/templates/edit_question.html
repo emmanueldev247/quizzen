@@ -123,8 +123,8 @@
                         <div class="toggle-multiple-response" style="display: none;">
                             <label class="toggle-label">
                                 <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if
-                                    question.is_multiple_response else ''>
-                                <span class="slider"></span>
+                                    question.is_multiple_response else ''}}>
+                                <span class="slider">
                                 </span>
                             </label>
                             <span>Allow Multiple Responses
@@ -134,7 +134,6 @@
                                 <input type="checkbox" id="alternative-response" name="alternative-response"
                                     {{ 'checked' if question.answer_choices|length> 1 else '' }}>
                                 <span class="slider"></span>
-                                </span>
                             </label>
                             <span>Allow Alternative Answers
                         </div>
