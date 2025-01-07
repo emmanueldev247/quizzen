@@ -169,6 +169,7 @@ def create_quiz(current_user):
 
 
 @full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST', 'PUT', 'DELETE'])
+@full_bp.route('/quiz/<quiz_id>/edit', methods= ['GET', 'POST', 'PUT', 'DELETE'])
 @auth_required
 @admin_check
 def edit_quiz(current_user, quiz_id):
