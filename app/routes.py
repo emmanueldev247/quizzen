@@ -149,7 +149,9 @@ def login():
             limiter.limit("5 per minute")(lambda: None)()
             data = request.get_json() if request.is_json else request.form
 
-            email = data.get('email', '').strip()
+            email = unicodedata.normalize(
+                'NFKC', data.get('email', '').strip().lower()
+            )
             password = data.get('password', '')
         except Exception as e:
             logger.error(f"Error during signup: {e}")
