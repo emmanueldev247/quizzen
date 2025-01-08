@@ -56,11 +56,11 @@
                     {% for quiz in user.quizzes %}
                     <li>
                         <strong>{{ quiz.title }}</strong> - Score: {{ quiz.max_score }} / {{ quiz.max_score }}
-                        <a href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a>
+                        <a .create-button href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a>
                     </li>
                     {% endfor %}
                 </ul>
-                <a href="{{ url_for('full_bp.create_quiz') }}" class="button">Create New Quiz</a>
+                <a href="{{ url_for('full_bp.create_quiz') }}" class="button create-button">Create New Quiz</a>
             </div>
             <div class="section">
                 <h2>Leaderboard</h2>
@@ -94,5 +94,5 @@
 {% endblock main_content %}
 
 {% block scripts %}
-    <!-- <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock scripts %}

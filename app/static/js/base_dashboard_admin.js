@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   openModalButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
       modal.style.display = "block";
       overlay.style.display = "block";
     });
