@@ -162,9 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (questionTypeSelect.value === "short_answer") {
       if (!onLoad) {
         optionsContainer.innerHTML = shortAnswerOptions;
+        toggleAltResponse.style.display = "flex";
+        toggleMultResponse.style.display = "none";
       }
-      toggleAltResponse.style.display = "flex";
-      toggleMultResponse.style.display = "none";
 
       alternativeResponseCheckbox.removeEventListener(
         "change",
@@ -177,10 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       if (!onload) {
         optionsContainer.innerHTML = multChoiceOptions;
+        toggleAltResponse.style.display = "none";
+        toggleMultResponse.style.display = "flex";
       }
-      toggleAltResponse.style.display = "none";
-      toggleMultResponse.style.display = "flex";
-
       multipleResponseCheckbox.removeEventListener(
         "change",
         handleMultipleResponseChange
@@ -189,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
       multipleResponseCheckbox.addEventListener(
         "change",
         handleMultipleResponseChange
+
       );
 
       updateIcons();
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // initializing
-  // updateQuestionType(true);
+  updateQuestionType(true);
   questionTypeSelect.addEventListener("change", updateQuestionType);
 
   // Add event listeners for plus and delete icons
