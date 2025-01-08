@@ -101,7 +101,7 @@ def admin_dashboard(current_user):
     user = User.query.get(current_user.id)
     if not user:
         return redirect(url_for('full_bp.login'))
-        
+
     quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
     leaderboard = Leaderboard.query.order_by(
         Leaderboard.score.desc()
@@ -488,7 +488,5 @@ def admin_library(current_user):
         title='My Library',
         user=user,
         quizzes=quizzes,
-        categories=categories,
-        leaderboard=leaderboard,
-        notifications=notifications
+        categories=categories
     )
