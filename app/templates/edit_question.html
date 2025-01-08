@@ -93,6 +93,7 @@
                                     value="{{ option.text }}">
                             </div>
                             {% endfor %}
+                            <i class="fas fa-plus add-option" title="Add another option"></i>
                         {% elif question.question_type == 'short_answer' %}
                             <div class="short-answer-container">
                                 <div class="overlay-container">
@@ -102,7 +103,7 @@
                                 </div>
                                 <!-- Check if Alternative Answers should be displayed -->
                                 <div class="alternative-answer"
-                                    style="display: {{ 'fle;' if question.answer_choices|length > 1 else 'none;' }}">
+                                    style="display: {{ 'flex;' if question.answer_choices|length > 1 else 'none;' }}">
                                     <p>Alternative Options</p>
                                     <div class="alternative-answer-content">
                                         {% for option in question.answer_choices[1:] %}

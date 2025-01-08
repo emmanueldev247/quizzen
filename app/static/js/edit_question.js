@@ -158,11 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function updateQuestionType() {
-    const questionId = document.getElementById('question-id').value;
-    
+  function updateQuestionType(onLoad = false) {
     if (questionTypeSelect.value === "short_answer") {
-      if (!questionId) {
+      if (!onLoad) {
         optionsContainer.innerHTML = shortAnswerOptions;
       }
       toggleAltResponse.style.display = "flex";
@@ -177,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         handleAltAnswerToggle
       );
     } else {
-      if (!questionId) {
+      if (!onload) {
         optionsContainer.innerHTML = multChoiceOptions;
       }
       toggleAltResponse.style.display = "none";
@@ -226,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // initializing
-  updateQuestionType();
+  updateQuestionType(true);
   questionTypeSelect.addEventListener("change", updateQuestionType);
 
   // Add event listeners for plus and delete icons
@@ -475,7 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: options,
     };
 
-    console.log(payload)
+    console.log(payload);
 
     saveButtons.forEach((button) => {
       button.disabled = true;
@@ -507,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.redirect_url) {
           // window.location.href = data.redirect_url;
-          console.log(data.redirect_url)
+          console.log(data.redirect_url);
         }
       })
       .catch((error) => {
