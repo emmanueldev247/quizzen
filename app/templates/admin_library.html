@@ -31,13 +31,13 @@
                 {% set category_name = category.name %}
                 {% endif %}
                 {% endfor %}
-                {{ category_name }}
+                {{ category_name }} {{ quiz.category_id }}
             </div>
         </div>
         <div class="quiz-meta">
             <div class="author">
                 <i class="fas fa-user"></i>
-                <span class="ellipsis">{{ quiz.created_by }} {{ user.username }}</span>
+                <span class="ellipsis">{{ user.first_name + " " + user.last_name }}</span>
             </div>
             <span class="dot"></span>
             <div class="time-created">3 months ago - {{ quiz.created_at }}</div>

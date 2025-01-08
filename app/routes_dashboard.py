@@ -490,3 +490,26 @@ def admin_library(current_user):
         quizzes=quizzes,
         categories=categories
     )
+
+
+
+@full_bp.route('/admin/profile')
+@auth_required
+@admin_check
+def admin_profile(current_user):
+    """Admin-specific profile"""
+    logger.debug(f"{request.method} - Profile")
+    user = User.query.get(current_user.id)
+    if not user:
+        return redirect(url_for('full_bp.login'))
+    
+    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
+    categories = Category.query.order_by(Category.name.asc()).all()
+
+    return render_template(
+        'admin_library.html',
+        title='profile',
+        user=user,
+        quizzes=quizzes,
+        categories=categories
+    )
