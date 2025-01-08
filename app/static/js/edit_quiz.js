@@ -5,6 +5,7 @@ const addQuestionButtons = document.querySelectorAll(".add-question-btn");
 const cancelButtons = document.querySelectorAll(".cancel-btn");
 const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
 const deleteButtons = document.querySelectorAll(".delete-btn");
+const editButtons = document.querySelectorAll(".edit-btn");
 const quizTitle = document.getElementById("quiz-title");
 const quizTitles = document.querySelectorAll(".quiz-title");
 const goBack = document.querySelector(".back-btn");
@@ -54,6 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const quizId = questionHeader.dataset.quizId;
 
       showConfirmationBubble(event, questionId, quizId);
+    });
+  });
+
+  editButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const questionHeader = event.target.closest(".question-header");
+      const questionId = questionHeader.dataset.questionId;
+      const quizId = questionHeader.dataset.quizId;
+
+      window.location.href(`/quizzen/quiz/${quizId}/question/${questionId}/edit`);
     });
   });
 
