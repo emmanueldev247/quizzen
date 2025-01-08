@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const questionId = questionHeader.dataset.questionId;
       const quizId = questionHeader.dataset.quizId;
 
-      window.location.href(`/quizzen/quiz/${quizId}/question/${questionId}/edit`);
+      window.location.href = `/quizzen/quiz/${quizId}/question/${questionId}/edit`;
     });
   });
 
