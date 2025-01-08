@@ -127,8 +127,9 @@ header {
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 2rem 3rem;
-  margin-bottom: 20px;
+  padding: 1rem 2rem;
+  padding-bottom: 0;
+  margin-bottom: .7rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -137,14 +138,13 @@ header {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ddd;
-  padding: 0 10px 10px 15px;
+  padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
 .question-info span {
   font-size: 0.9rem;
   color: #555;
-  padding: 5px 10px;
   margin-right: 5px;
   font-weight: bold;
 }
@@ -191,11 +191,14 @@ header {
   transition: background-color 0.3s ease;
 }
 
+.question-body {
+  padding-bottom: .3rem;
+}
 
 .question-body .question-text {
   font-size: 1.1rem;
   color: #333;
-  margin: 0 0 10px;
+  margin: 0;
 }
 
 .option-info {
@@ -206,10 +209,9 @@ header {
 
 .answer-choices {
   padding: 0;
-  margin: 0 0 10px;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
 }
 
 
