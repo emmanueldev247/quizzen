@@ -65,3 +65,26 @@ export function togglePasswordVisibility(passwordSelector, confirmPasswordSelect
     });
   });
 }
+
+// function to set active link
+export function setActive(newTopActiveSelector, newBottomActiveSelector) {
+  // Remove the active class from the current active item
+  const currentTopActive = document.querySelector('.nav-item.active');
+  const currentBottomActive = document.querySelector('.bottom-nav-item.active');
+  if (currentTopActive) {
+    currentTopActive.classList.remove('active');
+  }
+  if (currentBottomActive) {
+    currentBottomActive.classList.remove('active');
+  }
+
+  // Add the active class to the new active item
+  const newTopActive = document.querySelector(newTopActiveSelector);
+  const newBottomActive = document.querySelector(newBottomActiveSelector);
+  if (newTopActive) {
+    newTopActive.classList.add('active');
+  }
+  if (newBottomActive) {
+    newBottomActive.classList.add('active');
+  }
+}
