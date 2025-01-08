@@ -260,7 +260,7 @@ def edit_quiz(current_user, quiz_id):
                 "error": str(e)
             }), 500
 
-    return render_template('edit_quiz.html', quiz=quiz, title=quiz.title)
+    return render_template('edit_quiz.html', quiz=quiz, title=f"Quiz: {quiz.title}")
 
 
 
