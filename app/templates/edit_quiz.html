@@ -48,16 +48,7 @@
                 <i class="fas fa-check"></i>
                 {{ loop.index }}. {{ question.question_type.replace('_', ' ').capitalize() }}
             </span>
-            <select class="point-select" onchange="handleSelectChange(event)">
-                <option value="1" {% if question.points==1 %}selected{% endif %}>1 Point</option>
-                <option value="2" {% if question.points==2 %}selected{% endif %}>2 Points</option>
-                <option value="3" {% if question.points==3 %}selected{% endif %}>3 Points</option>
-                <option value="4" {% if question.points==4 %}selected{% endif %}>4 Points</option>
-                <option value="5" {% if question.points==5 %}selected{% endif %}>5 Points</option>
-                <option value="other">Custom point</option>
-            </select>
-            <input class="custom-point" type="number" min="1" max="100" placeholder="Enter points"
-                value="{{ question.points }}" onkeypress="handleKeyPress(event)" style="display: none;" />
+            <span class="point-select">question.points</span>
         </div>
         <div class="question-actions">
             <button class="btn edit-btn"><i class="fas fa-edit"></i> Edit</button>

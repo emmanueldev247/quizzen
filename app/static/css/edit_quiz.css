@@ -31,7 +31,7 @@ header {
   background-color: white;
   color: #333;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family:  "Titillium Web", "Quattrocento Sans", "Josefin Sans", sans-serif, Arial;
+  font-family: "Titillium Web", "Quattrocento Sans", "Josefin Sans", sans-serif, Arial;
 }
 
 .header-left {
@@ -150,8 +150,7 @@ header {
 }
 
 .question-num-type,
-.point-select,
-.custom-point {
+.point-select {
   display: inline-block;
   padding: 5px 10px;
   border: 2px solid #cccbcb;
@@ -160,58 +159,16 @@ header {
   font-size: 0.9rem;
   color: #555;
   font-weight: bold;
+  font-family: "Josefin Sansn", "Quattrocento Sans", Arial, sans-serif;
+}
+
+.question-num-type {
   min-width: 150px;
-  font-family: "Quattrocento Sans", "Josefin Sans", sans-serif, Arial;
-
-}
-
-.point-select,
-.custom-point {
-  position: relative;
-  cursor: pointer;
-}
-
-.custom-point {
-  display: none;
-}
-
-.custom-point:focus {
-  border-color: #6a0dad;
-  outline: none;
 }
 
 .point-select {
-  padding-right: 25px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath fill="%236a0dad" d="M0 0l5 5 5-5z"/%3E%3C/svg%3E');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px 6px;
-}
-
-.point-select:hover {
-  border-color: #6a0dad;
-  background-color: #f1e9f9;
-}
-
-.point-select:focus {
-  outline: none;
-  border-color: #6a0dad;
-  background-color: #f1e9f9;
-  outline: none;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath fill="%236a0dad" d="M0 5l5-5 5 5z"/%3E%3C/svg%3E');
-}
-
-.point-select:disabled {
-  background: #a94dd0;
-  cursor: not-allowed;
-}
-
-.point-select option {
-  padding: 10px;
-  font-weight: bold;
+  min-width: 50px;
+  max-width: 100%;
 }
 
 .question-actions {
@@ -365,6 +322,7 @@ header {
 .confirmation-actions .btn:disabled {
   cursor: not-allowed;
 }
+
 /* Arrow pointing down */
 .confirmation-bubble::after {
   content: "";
