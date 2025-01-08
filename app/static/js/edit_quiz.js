@@ -9,11 +9,21 @@ const editButtons = document.querySelectorAll(".edit-btn");
 const quizTitle = document.getElementById("quiz-title");
 const quizTitles = document.querySelectorAll(".quiz-title");
 const goBack = document.querySelector(".back-btn");
+const publishButton = document.querySelector(".publish-quiz");
+const unpublishButton = document.querySelector(".unpublish-quiz");
 let originalTitle = quizTitle.textContent.trim();
 
 document.addEventListener("DOMContentLoaded", () => {
   goBack.addEventListener("click", () => {
     window.location.href = "/quizzen/admin/dashboard";
+  });
+  
+  publishButton.addEventListener("click", function () {
+    const questionId = this.dataset.questionId;
+    const quizId = this.dataset.quizId;
+
+    console.log(`p -> ${quizId}/${questionId}`)
+    // window.location.href = `/quizzen/quiz/${quizId}/question/${questionId}/edit`;
   });
 
   // Add a new quiz
