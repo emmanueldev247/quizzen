@@ -48,7 +48,7 @@
                 <i class="fas fa-check"></i>
                 {{ loop.index }}. {{ question.question_type.replace('_', ' ').capitalize() }}
             </span>
-            <span class="point-select">question.points</span>
+            <span class="point-select">{{ question.points }}</span>
         </div>
         <div class="question-actions">
             <button class="btn edit-btn"><i class="fas fa-edit"></i> Edit</button>
