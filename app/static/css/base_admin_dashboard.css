@@ -239,6 +239,7 @@ header .enter-code:hover {
     overflow-y: auto;
     background-color: #f9f9f9;
     box-sizing: border-box;
+    width: 100%;
 }
 
 
