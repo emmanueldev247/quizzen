@@ -52,13 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Update the UI to reflect action
           if (isPublish) {
-            isPublish.classList.replace("publish-quiz", "unpublish-quiz");
-            isPublish.classList.replace("fa-check-circle", "fa-eye-slash");
-            isPublish.textContent = " Unpublish";
+            publishButton.innerHTML = `
+            <i class="fas fa-eye-slash unpublish-quiz" data-quiz-id="${quizId}"></i> Unpublish
+            `;
           } else if (isUnpublish) {
-            isUnpublish.classList.replace("unpublish-quiz", "publish-quiz");
-            isUnpublish.classList.replace("fa-eye-slash", "fa-check-circle");
-            isUnpublish.textContent = " Publish";
+            publishButton.innerHTML = `
+            <i class="fas fa-check-circle publish-quiz" data-quiz-id="${quizId}"></i> Publish
+            `;
           }
         } else {
           console.error(`${action} failed for quiz ${quizId}`);
