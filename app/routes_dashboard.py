@@ -266,9 +266,9 @@ def edit_quiz(current_user, quiz_id):
 @auth_required
 @admin_check
 @limiter.limit("10 per minute")
-def publish_quiz(quiz_id):
+def publish_quiz(current_user, quiz_id):
     try:
-        response, status_code = update_quiz_public_status(quiz_id, True)
+        response, status_code = update_quiz_public_status(current_user, quiz_id, True)
         return jsonify(response), status_code
     except Exception as e:
         db.session.rollback()
@@ -280,9 +280,9 @@ def publish_quiz(quiz_id):
 @auth_required
 @admin_check
 @limiter.limit("10 per minute")
-def unpublish_quiz(quiz_id):
+def unpublish_quiz(current_user, quiz_id):
     try:
-        response, status_code = update_quiz_public_status(quiz_id, False)
+        response, status_code = update_quiz_public_status(current_user, quiz_id, False)
         return jsonify(response), status_code
     except Exception as e:
         db.session.rollback()
@@ -290,7 +290,7 @@ def unpublish_quiz(quiz_id):
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-def update_quiz_public_status(quiz_id, status):
+def update_quiz_public_status(current_user, quiz_id, status):
     quiz = Quiz.query.get_or_404(quiz_id)
     if quiz.created_by != current_user.id:
         return {"success": False, "message": "Unauthorized"}, 403
