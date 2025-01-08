@@ -199,7 +199,7 @@ header {
 .question-body .question-text {
   font-size: 1.1rem;
   color: #333;
-  margin: 0;
+  margin: 3px 0;
 }
 
 .option-info {
