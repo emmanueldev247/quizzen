@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         handleAltAnswerToggle
       );
     } else {
-      if (!onload) {
+      if (!onLoad) {
         optionsContainer.innerHTML = multChoiceOptions;
         toggleAltResponse.style.display = "none";
         toggleMultResponse.style.display = "flex";
@@ -504,8 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         if (data.redirect_url) {
-          // window.location.href = data.redirect_url;
-          console.log(data.redirect_url);
+          window.location.href = data.redirect_url;
         }
       })
       .catch((error) => {
