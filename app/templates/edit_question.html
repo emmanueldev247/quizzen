@@ -104,7 +104,7 @@
                             </div>
                             {% endfor %}
                         {% elif question.question_type == 'short_answer' %}
-                            <div class="short-answer-container" style="display: none;">
+                            <div class="short-answer-container">
                                 <div class="overlay-container">
                                     <input type="text" class="short-answer-input" name="short-answer-input"
                                         placeholder="Type answer here"
@@ -112,7 +112,7 @@
                                 </div>
                                 <!-- Check if Alternative Answers should be displayed -->
                                 <div class="alternative-answer"
-                                    style="display: {{ 'block' if question.answer_choices|length > 1 else 'none' }}">
+                                    style="display: {{ 'fle;' if question.answer_choices|length > 1 else 'none;' }}">
                                     <p>Alternative Options</p>
                                     <div class="alternative-answer-content">
                                         {% for option in question.answer_choices[1:] %}
@@ -143,7 +143,7 @@
                     {% endif %}
                     </div>
                     <div class="toggle-container">
-                        <div class="toggle-multiple-response" style="display: none;">
+                        <div class="toggle-multiple-response" style="display: {{ 'none;' if question and question.question_type == 'short_answer' else 'flex' }}">
                             <label class="toggle-label">
                                 <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if question and
                                     question.is_multiple_response else ''}}>
@@ -152,7 +152,7 @@
                             </label>
                             <span>Allow Multiple Responses
                         </div>
-                        <div class="toggle-alternative-response" style="display: none">
+                        <div class="toggle-alternative-response" style="display: {{ 'flex;' if question and question.question_type == 'short_answer' and question.answer_choices|length> 1 else 'none' }}">
                             <label class="toggle-label">
                                 <input type="checkbox" id="alternative-response" name="alternative-response"
                                     {{ 'checked' if question and question.answer_choices|length> 1 else '' }}>
