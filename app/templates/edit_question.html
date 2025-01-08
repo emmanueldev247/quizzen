@@ -82,18 +82,18 @@
                     </div>
                     <div class="options-container" id="options-container">
                     {% if question %}
-                        <div>
+                        <!-- <div>
                             Debug: Question Type: {{ question.question_type }}
                         </div>
                         <div>
                             Debug: Is Multiple Response: {{ question.is_multiple_response }}
-                        </div>
+                        </div> -->
                         {% if question.question_type == 'multiple_choice' %}
                             {% for option in question.answer_choices %}
-                            <div>
+                            <!-- <div>
                                 Debug: Option Text: {{ option.text }}
                                 Debug: Is Correct: {{ option.is_correct }}
-                            </div>
+                            </div> -->
 
                             <div class="option-box">
                                 <i class="fas fa-trash delete-option" title="Delete answer option"></i>
