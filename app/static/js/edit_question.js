@@ -468,7 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const payload = {
       question: questionText,
       questionType,
-      is_multiple_response: isMultipleResponse,
+      isMultipleResponse,
       points: points,
       options: options,
     };
