@@ -9,21 +9,84 @@ const editButtons = document.querySelectorAll(".edit-btn");
 const quizTitle = document.getElementById("quiz-title");
 const quizTitles = document.querySelectorAll(".quiz-title");
 const goBack = document.querySelector(".back-btn");
-const publishButton = document.querySelector(".publish-quiz");
-const unpublishButton = document.querySelector(".unpublish-quiz");
+const publishButton = document.querySelector(".publish-btn");
 let originalTitle = quizTitle.textContent.trim();
 
 document.addEventListener("DOMContentLoaded", () => {
   goBack.addEventListener("click", () => {
     window.location.href = "/quizzen/admin/dashboard";
   });
-  
-  publishButton.addEventListener("click", function () {
-    const questionId = this.dataset.questionId;
-    const quizId = this.dataset.quizId;
 
-    console.log(`p -> ${quizId}/${questionId}`)
-    // window.location.href = `/quizzen/quiz/${quizId}/question/${questionId}/edit`;
+  publishButton.addEventListener("click", function () {
+    const isPublish = this.querySelector(".publish-quiz");
+    const isUnpublish = this.querySelector(".unpublish-quiz");
+
+    const quizId = isPublish
+      ? isPublish.dataset.quizId
+      : isUnpublish
+      ? isUnpublish.dataset.quizId
+      : null;
+
+    if (!quizId) {
+      showNotification("An error occured", "error");
+      return;
+    }
+
+    const action = isPublish ? "publish" : "unpublish";
+    const endpoint = `/quizzen/quiz/${quizId}/${action}`;
+
+    console.log(`${action} -> ${quizId}`); // Debugging log
+    publishButton.disabled = true;
+
+    // Send an AJAX request to the server
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quizId }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(`${action} successful for quiz ${quizId}`);
+
+          // Update the UI to reflect action
+          if (isPublish) {
+            isPublish.classList.replace("publish-quiz", "unpublish-quiz");
+            isPublish.classList.replace("fa-check-circle", "fa-eye-slash");
+            isPublish.textContent = " Unpublish";
+          } else if (isUnpublish) {
+            isUnpublish.classList.replace("unpublish-quiz", "publish-quiz");
+            isUnpublish.classList.replace("fa-eye-slash", "fa-check-circle");
+            isUnpublish.textContent = " Publish";
+          }
+        } else {
+          console.error(`${action} failed for quiz ${quizId}`);
+          if (response.status === 429)
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          else if (response.status === 403)
+            showNotification("Unauthorized access", "error");
+          else {
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => (publishButton.disabled = false));
   });
 
   // Add a new quiz

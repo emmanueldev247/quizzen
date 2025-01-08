@@ -262,7 +262,41 @@ def edit_quiz(current_user, quiz_id):
 
     return render_template('edit_quiz.html', quiz=quiz, title=f"Quiz: {quiz.title}")
 
+@full_bp.route('/quiz/<quiz_id>/publish', methods=['POST'])
+@auth_required
+@admin_check
+@limiter.limit("10 per minute")
+def publish_quiz(quiz_id):
+    try:
+        response, status_code = update_quiz_public_status(quiz_id, True)
+        return jsonify(response), status_code
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error publishing quiz: {str(e)}")
+        return jsonify({"success": False, "error": str(e)}), 500
 
+
+@full_bp.route('/quiz/<quiz_id>/unpublish', methods=['POST'])
+@auth_required
+@admin_check
+@limiter.limit("10 per minute")
+def unpublish_quiz(quiz_id):
+    try:
+        response, status_code = update_quiz_public_status(quiz_id, False)
+        return jsonify(response), status_code
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error unpublishing quiz: {str(e)}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+def update_quiz_public_status(quiz_id, status):
+    quiz = Quiz.query.get_or_404(quiz_id)
+    if quiz.created_by != current_user.id:
+        return {"success": False, "message": "Unauthorized"}, 403
+    quiz.public = status
+    db.session.commit()
+    return {"success": True, "message": f"Quiz {'published' if status else 'unpublished'}"}, 200
 
 @full_bp.route('/quiz/<quiz_id>/question/new')
 @auth_required
