@@ -27,7 +27,6 @@
                 {% for category in categories %}
                 {% if category.id == quiz.category_id %}
                 {% set category_name = category.name %}
-                {% break %}
                 {% endif %}
                 {% endfor %}
                 {{ category_name }}
