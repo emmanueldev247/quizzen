@@ -21,7 +21,7 @@
         <div class="quiz-details">
             <div class="detail-item question-count">
                 <i class="fas fa-list"></i>
-                {{ quiz.questions|length "Questions" if quiz.questions|length > 1 else "Question"  }}
+                {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{% endif %}
             </div>
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
