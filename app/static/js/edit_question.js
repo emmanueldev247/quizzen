@@ -469,6 +469,10 @@ document.addEventListener("DOMContentLoaded", () => {
       options: options,
     };
 
+    saveButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
     fetch(window.location.href, {
       method: method,
       headers: {
@@ -477,13 +481,44 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify(payload),
     })
       .then((response) => {
-        if (response.redirected) window.location.href = response.url;
-        else response.json();
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
       })
       .then((data) => {
-        showNotification("Question saved successfully", "success")
+        if (data.success) {
+          showNotification(
+            data.message || "Question saved successfully",
+            "success"
+          );
+        }
+        if (data.redirect_url) {
+          window.location.href = data.redirect_url;
+        }
       })
       .catch((error) => {
+        console.log(`Error: ${error}`);
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => {
+        saveButtons.forEach((button) => {
+          button.disabled = false;
+        });
       });
   }
 });

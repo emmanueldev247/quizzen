@@ -368,7 +368,11 @@ def edit_question(current_user, quiz_id, question_id):
             update_answer_choices(question.id, options)
             quiz.calculate_max_score()
             db.session.commit()
-            return jsonify({"success": True, "message": "Question saved successfully."}), 201
+            return jsonify(
+                {"success": True, 
+                "message": "Question saved successfully.",
+                "redirect_url": url_for('full_bp.edit_quiz', quiz_id=quiz_id)}
+            ), 201
 
         except Exception as e:
             db.session.rollback()
@@ -390,7 +394,11 @@ def edit_question(current_user, quiz_id, question_id):
             update_answer_choices(question.id, options)
             quiz.calculate_max_score()
             db.session.commit()
-            return jsonify({"success": True, "message": "Question updated successfully."}), 200
+            return jsonify(
+                {"success": True, 
+                "message": "Question updated successfully.",
+                "redirect_url": url_for('full_bp.edit_quiz', quiz_id=quiz_id)}
+            ), 200
 
         except Exception as e:
             logger.error(f"Error editing question: {str(e)}")
@@ -408,7 +416,11 @@ def edit_question(current_user, quiz_id, question_id):
             db.session.delete(question)
             quiz.calculate_max_score()
             db.session.commit()
-            return jsonify({"success": True, "message": "Question deleted successfully."}), 200 
+            return jsonify(
+                {"success": True, 
+                "message": "Question deleted successfully",
+                "redirect_url": url_for('full_bp.edit_quiz', quiz_id=quiz_id)}
+            ), 200
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error deleting question: {str(e)}")
