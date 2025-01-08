@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const action = isPublish ? "publish" : "unpublish";
     const endpoint = `/quizzen/quiz/${quizId}/${action}`;
 
-    console.log(`${action} -> ${quizId}`); // Debugging log
     publishButton.disabled = true;
 
     // Send an AJAX request to the server
@@ -48,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log(`${action} successful for quiz ${quizId}`);
-
           // Update the UI to reflect action
           if (isPublish) {
             publishButton.innerHTML = `
