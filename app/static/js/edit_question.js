@@ -159,8 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateQuestionType() {
+    const questionId = document.getElementById('question-id').value;
+    
     if (questionTypeSelect.value === "short_answer") {
-      optionsContainer.innerHTML = shortAnswerOptions;
+      if (!questionId) {
+        optionsContainer.innerHTML = shortAnswerOptions;
+      }
       toggleAltResponse.style.display = "flex";
       toggleMultResponse.style.display = "none";
 
@@ -173,7 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
         handleAltAnswerToggle
       );
     } else {
-      optionsContainer.innerHTML = multChoiceOptions;
+      if (!questionId) {
+        optionsContainer.innerHTML = multChoiceOptions;
+      }
       toggleAltResponse.style.display = "none";
       toggleMultResponse.style.display = "flex";
 
@@ -471,50 +477,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(payload)
 
-    // saveButtons.forEach((button) => {
-    //   button.disabled = true;
-    // });
+    saveButtons.forEach((button) => {
+      button.disabled = true;
+    });
 
-    // fetch(window.location.href, {
-    //   method: method,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(payload),
-    // })
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       if (response.status === 429) {
-    //         showNotification(
-    //           "You have made too many requests in a short period. Please try again later",
-    //           "error"
-    //         );
-    //       } else
-    //         showNotification(
-    //           "Something went wrong. Please try again later",
-    //           "error"
-    //         );
-    //       throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     if (data.redirect_url) {
-    //       window.location.href = data.redirect_url;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(`Error: ${error}`);
-    //     if (error.message === "Failed to fetch")
-    //       showNotification(
-    //         "Network error. Please check your connection",
-    //         "error"
-    //       );
-    //   })
-    //   .finally(() => {
-    //     saveButtons.forEach((button) => {
-    //       button.disabled = false;
-    //     });
-    //   });
+    fetch(window.location.href, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.redirect_url) {
+          // window.location.href = data.redirect_url;
+          console.log(data.redirect_url)
+        }
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => {
+        saveButtons.forEach((button) => {
+          button.disabled = false;
+        });
+      });
   }
 });

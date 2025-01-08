@@ -76,25 +76,15 @@
         <main class="content">
             <div class="container">
                 <form action="#" method="post" class="responsive-form" id="question-form">
+                    <input type="hidden" id="question-id" name="question_id" value="{% if question %}{{ question.id }}{% else %}{% endif %}">
                     <div class="form-group">
                         <textarea class="question" id="question" name="question"
                             placeholder="Type question here">{% if question %}{{ question.question_text }}{% else %}{% endif %}</textarea>
                     </div>
                     <div class="options-container" id="options-container">
                     {% if question %}
-                        <!-- <div>
-                            Debug: Question Type: {{ question.question_type }}
-                        </div>
-                        <div>
-                            Debug: Is Multiple Response: {{ question.is_multiple_response }}
-                        </div> -->
                         {% if question.question_type == 'multiple_choice' %}
                             {% for option in question.answer_choices %}
-                            <!-- <div>
-                                Debug: Option Text: {{ option.text }}
-                                Debug: Is Correct: {{ option.is_correct }}
-                            </div> -->
-
                             <div class="option-box">
                                 <i class="fas fa-trash delete-option" title="Delete answer option"></i>
                                 <input type="{{ 'checkbox' if question.is_multiple_response else 'radio' }}" name="option"
