@@ -1,0 +1,57 @@
+{% extends "base_dashboard_admin.html" %}
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_library.css') }}">
+{% endblock styles_content %}
+
+{% block main_content %}
+<main>
+    {% for quiz in user.quizzes %}
+    <!-- <a .create-button href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a> -->
+    <div class="quiz-card">
+        {% if quiz.public %}
+        <div class="quiz-status public">
+            <span>Public</span>
+        </div>
+        {% else %}
+        <div class="quiz-status private">
+            <span>Private</span>
+        </div>
+        <h2 class="quiz-title">{{ quiz.title }}</h2>
+        <div class="quiz-details">
+            <div class="detail-item question-count">
+                <i class="fas fa-list"></i> {{ quiz.questions|length }}
+            </div>
+            <div class="detail-item quiz-category">
+                <i class="fas fa-tag"></i>
+                {% set category_name = "Not found" %}
+                {% for category in categories %}
+                {% if category.id == quiz.category_id %}
+                {% set category_name = category.name %}
+                {% break %}
+                {% endif %}
+                {% endfor %}
+                {{ category_name }}
+            </div>
+        </div>
+        <div class="quiz-meta">
+            <div class="author">
+                <i class="fas fa-user"></i>
+                <span class="ellipsis">{{ quiz.created_by }} {{ user.username }}</span>
+            </div>
+            <span class="dot"></span>
+            <div class="time-created">3 months ago - {{ quiz.created_at }}</div>
+        </div>
+        <div class="quiz-actions">
+            <button type="button" class="btn delete-btn">
+                <i class="fas fa-trash" title="Delete"></i>
+                Delete forever
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</main>
+{% endblock main_content %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin_library.js') }}"></script>
+{% endblock scripts %}

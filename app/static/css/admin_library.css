@@ -1,0 +1,167 @@
+/* Main container */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+}
+
+/* Quiz card */
+.quiz-card {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Status label */
+.quiz-status {
+    font-size: 0.9rem;
+    padding: 2px 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    min-width: 60px;
+    border-radius: 12px;
+}
+
+.quiz-status.public {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.quiz-status.private {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.quiz-title {
+    font-size: 1.5rem;
+    margin: 0;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* Quiz details */
+.quiz-details {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.detail-item i {
+    font-size: 1rem;
+    color: #777;
+}
+
+/* Quiz meta */
+.quiz-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.author i {
+    font-size: 1rem;
+    color: #777;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #aaa;
+    display: inline-block;
+}
+
+.time-created {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Action icons */
+.delete-btn {
+    display: flex;
+    gap: .8rem;
+    padding: 7px 15px;
+    color: white;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: .9rem;
+    font-family: "Quattrocento Sans", "Josefin Sans", sans-serif, Arial;
+}
+
+.delete-btn:hover {
+    background-color: #a94dd0;
+}
+
+.delete-btn:active {
+    background: #4c0380;
+}
+
+.delete-btn:disabled {
+    background: #a94dd0;
+    cursor: not-allowed;
+}
+
+.quiz-actions {
+    position: absolute;
+    top: 16px;
+    right: 30px;
+}
+
+/* Ellipsis for long author names */
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    min-width: 150px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .quiz-card {
+        padding: 12px;
+    }
+
+    .quiz-title {
+        font-size: 1.2rem;
+    }
+
+    .quiz-actions i {
+        font-size: 1rem;
+    }
+
+    .detail-item,
+    .time-created {
+        font-size: 0.85rem;
+    }
+}

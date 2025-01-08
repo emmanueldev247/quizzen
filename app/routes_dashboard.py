@@ -94,9 +94,9 @@ def user_dashboard(current_user):
 def admin_dashboard(current_user):
     """Admin-specific dashboard."""
     logger.debug(f"{request.method} - Dashboard")
-    user = User.query.get(current_user.id)
-    if not user:
-        return redirect(url_for('full_bp.login'))
+
+    if current_user.role != 'admin':
+        return redirect(url_for('full_bp.user_dashboard'))
 
     quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
     leaderboard = Leaderboard.query.order_by(
@@ -110,7 +110,7 @@ def admin_dashboard(current_user):
     categories = Category.query.order_by(Category.name.asc()).all()
 
     return render_template(
-        'dashboard_admin.html',
+        'admin_dashboard.html',
         title='Dashboard',
         user=user,
         quizzes=quizzes,
@@ -306,7 +306,6 @@ def create_question(current_user, quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
 
     if quiz.created_by != current_user.id:
-        flash("Unauthorized access", "error")
         return redirect(url_for('full_bp.dashboard'))
 
     # OLD LOGIC
@@ -466,3 +465,26 @@ def edit_question(current_user, quiz_id, question_id):
 
     
     return render_template('edit_question.html', quiz=quiz, question=question)
+
+@full_bp.route('/admin/library')
+@auth_required
+@admin_check
+def admin_library(current_user):
+    """Admin-specific library"""
+    logger.debug(f"{request.method} - Library")
+    user = User.query.get(current_user.id)
+    if not user:
+        return redirect(url_for('full_bp.login'))
+
+    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
+    categories = Category.query.order_by(Category.name.asc()).all()
+
+    return render_template(
+        'admin_library.html',
+        title='My Library',
+        user=user,
+        quizzes=quizzes,
+        categories=categories,
+        leaderboard=leaderboard,
+        notifications=notifications
+    )
