@@ -20,7 +20,8 @@
         <h2 class="quiz-title">{{ quiz.title }}</h2>
         <div class="quiz-details">
             <div class="detail-item question-count">
-                <i class="fas fa-list"></i> {{ quiz.questions|length }}
+                <i class="fas fa-list"></i>
+                {{ quiz.questions|length "Questions" if quiz.questions|length > 1 else "Question"  }}
             </div>
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
@@ -53,5 +54,5 @@
 {% endblock main_content %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/admin_library.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/admin_library.js') }}"></script>
 {% endblock scripts %}
