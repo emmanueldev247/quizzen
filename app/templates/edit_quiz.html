@@ -10,7 +10,7 @@
         <i class="fas fa-arrow-left"></i>
     </button>
     <h1 class="quiz-title" id="quiz-title" contenteditable="true">
-        {{ title }}
+        {{ quiz.title }}
     </h1>
 </div>
 <div class="header-right">
@@ -29,7 +29,7 @@
 
 {% block main_content %}
 <div class="quiz-header">
-    <h2 class="quiz-title">{{ title }}</h2>
+    <h2 class="quiz-title">{{ quiz.title }}</h2>
     <p class="question-summary">
         <span id="quiz_length">{{ len(quiz.questions) }}</span>
         <span id="questions_label">{% if len(quiz.questions) > 1 %}Questions{% else %}Question{% endif %}</span>
