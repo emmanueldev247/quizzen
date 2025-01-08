@@ -332,6 +332,7 @@ def edit_question(current_user, quiz_id, question_id):
         logger.error("User is not authorized to edit this quiz.")
         return redirect(url_for('full_bp.dashboard'))
 
+    question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
 
     if request.method == 'POST':
         try:
@@ -348,29 +349,34 @@ def edit_question(current_user, quiz_id, question_id):
             if not all([question_text, question_type, options]):
                 return jsonify({"message": "Missing required fields"}), 400
 
-            question = Question(
-                id = question_id,
-                quiz_id=quiz_id,
-                question_text = question_text,
-                question_type = question_type,
-                is_multiple_response = is_multiple_response,
-                points = points,
-            )
-                    
-            db.session.add(question)
+            if not question:
+                question = Question(
+                    id = question_id,
+                    quiz_id=quiz_id,
+                    question_text = question_text,
+                    question_type = question_type,
+                    is_multiple_response = is_multiple_response,
+                    points = points,
+                )    
+                db.session.add(question)
+            else:
+                question.question_text = question_text
+                question.question_type = question_type
+                question.is_multiple_response = is_multiple_response
+                question.points = points
+                
             update_answer_choices(question.id, options)
             quiz.calculate_max_score()
             db.session.commit()
-            return jsonify({"success": True, "message": "Question added successfully."}), 201
+            return jsonify({"success": True, "message": "Question saved successfully."}), 201
 
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error during question creation: {str(e)}")
-            return jsonify({"success": False, "message": "Error adding question.", "error": str(e)}), 500
+            return jsonify({"success": False, "message": "Error saving question.", "error": str(e)}), 500
                  
     elif request.method == 'PUT':
         try:
-            question = Question.query.get_or_404(question_id)
             data = request.get_json() if request.is_json else request.form
             if not data:
                 return jsonify({"message": "Invalid JSON data"}), 400
@@ -396,7 +402,6 @@ def edit_question(current_user, quiz_id, question_id):
 
     elif request.method == 'DELETE':
         try:            
-            question = Question.query.get(question_id)
             if not question:
                     return jsonify({"success": False, "message": "Question not found."}), 404
 
@@ -405,6 +410,7 @@ def edit_question(current_user, quiz_id, question_id):
             db.session.commit()
             return jsonify({"success": True, "message": "Question deleted successfully."}), 200 
         except Exception as e:
+            db.session.rollback()
             logger.error(f"Error deleting question: {str(e)}")
             return jsonify({
                 "success": False,
@@ -413,5 +419,4 @@ def edit_question(current_user, quiz_id, question_id):
             }), 500
 
     
-    question = Question.query.get(question_id)
     return render_template('edit_question.html', quiz=quiz, question=question)
