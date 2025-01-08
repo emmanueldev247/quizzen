@@ -497,12 +497,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then((data) => {
-        if (data.success) {
-          showNotification(
-            data.message || "Question saved successfully",
-            "success"
-          );
-        }
         if (data.redirect_url) {
           window.location.href = data.redirect_url;
         }

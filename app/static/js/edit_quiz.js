@@ -230,11 +230,6 @@ export function showConfirmationBubble(event, questionId, quizId) {
 
 export function hideConfirmationBubble() {
   if (bubble) {
-    const questionId = bubble.dataset.questionId;
-    const quizId = bubble.dataset.quizId;
-
-    console.log(`Hiding bubble for question ${questionId} in quiz ${quizId}`);
-
     bubble.style.display = "none";
     bubble.dataset.quizId = bubble.dataset.questionId = "";
   }
