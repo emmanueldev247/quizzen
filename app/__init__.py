@@ -30,10 +30,12 @@ through environment variables for security.
 import os
 from flask import Flask
 from flask_login import LoginManager
-from app.extensions import db, bcrypt, session, migrate, mail, limiter
-from app.routes import full_bp
+from app.extensions import db, bcrypt, session, migrate, mail, limiter, jwt
 from config import config
 from app import routes_dashboard
+from app.api import v1
+from app.api.v1 import api_v1
+from app.routes import full_bp
 from app.filters import timeago_filter
 
 
@@ -56,7 +58,9 @@ def create_app(config_name=None):
     migrate.init_app(app, db)
     mail.init_app(app)
     limiter.init_app(app)
+    jwt.init_app(app)
 
     app.register_blueprint(full_bp)
+    app.register_blueprint(api_v1)
 
     return app
