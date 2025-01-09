@@ -25,13 +25,11 @@
             </div>
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
-                {% set category_name = "Not found" %}
-                {% for category in categories %}
-                {% if category.id == quiz.category_id %}
-                {% set category_name = category.name %}
+                {% if quiz.category_id and quiz.category_id|int - 1 < category_names|length %}
+                {{ category_names[quiz.category_id|int - 1] }}
+                {% else %}
+                No category
                 {% endif %}
-                {% endfor %}
-                {{ category_name }} {{ quiz.category_id }}
             </div>
         </div>
         <div class="quiz-meta">
