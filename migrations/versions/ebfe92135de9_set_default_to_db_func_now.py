@@ -1,8 +1,9 @@
-"""made models time not nullable
+"""set: default to db.func.now()
 
-Revision ID: 911dce501e56
-Revises: bdd629556cb7
-Create Date: 2025-01-09 08:36:29.562875
+
+Revision ID: ebfe92135de9
+Revises: 911dce501e56
+Create Date: 2025-01-09 08:57:13.297812
 
 """
 from alembic import op
@@ -10,8 +11,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '911dce501e56'
-down_revision = 'bdd629556cb7'
+revision = 'ebfe92135de9'
+down_revision = '911dce501e56'
 branch_labels = None
 depends_on = None
 
@@ -21,26 +22,22 @@ def upgrade():
     with op.batch_alter_table('notification', schema=None) as batch_op:
         batch_op.alter_column('date_sent',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
-               nullable=False)
+               nullable=True)
 
     with op.batch_alter_table('quiz', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
-               nullable=False)
+               nullable=True)
 
     with op.batch_alter_table('quiz_history', schema=None) as batch_op:
         batch_op.alter_column('date_taken',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
-               nullable=False)
+               nullable=True)
 
     with op.batch_alter_table('used_token', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
-               nullable=False,
+               nullable=True,
                existing_server_default=sa.text('now()'))
 
     # ### end Alembic commands ###
@@ -51,22 +48,22 @@ def downgrade():
     with op.batch_alter_table('used_token', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               nullable=True,
+               nullable=False,
                existing_server_default=sa.text('now()'))
 
     with op.batch_alter_table('quiz_history', schema=None) as batch_op:
         batch_op.alter_column('date_taken',
                existing_type=postgresql.TIMESTAMP(),
-               nullable=True)
+               nullable=False)
 
     with op.batch_alter_table('quiz', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               nullable=True)
+               nullable=False)
 
     with op.batch_alter_table('notification', schema=None) as batch_op:
         batch_op.alter_column('date_sent',
                existing_type=postgresql.TIMESTAMP(),
-               nullable=True)
+               nullable=False)
 
     # ### end Alembic commands ###

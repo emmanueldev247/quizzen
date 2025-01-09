@@ -1,8 +1,8 @@
-"""made models time not nullable
+"""making: columns not nullable
 
-Revision ID: 911dce501e56
-Revises: bdd629556cb7
-Create Date: 2025-01-09 08:36:29.562875
+Revision ID: 3f12d80fcad3
+Revises: ebfe92135de9
+Create Date: 2025-01-09 09:00:03.723435
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '911dce501e56'
-down_revision = 'bdd629556cb7'
+revision = '3f12d80fcad3'
+down_revision = 'ebfe92135de9'
 branch_labels = None
 depends_on = None
 
@@ -21,25 +21,21 @@ def upgrade():
     with op.batch_alter_table('notification', schema=None) as batch_op:
         batch_op.alter_column('date_sent',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
                nullable=False)
 
     with op.batch_alter_table('quiz', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
                nullable=False)
 
     with op.batch_alter_table('quiz_history', schema=None) as batch_op:
         batch_op.alter_column('date_taken',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
                nullable=False)
 
     with op.batch_alter_table('used_token', schema=None) as batch_op:
         batch_op.alter_column('created_at',
                existing_type=postgresql.TIMESTAMP(),
-               server_default=sa.func.now(),
                nullable=False,
                existing_server_default=sa.text('now()'))
 
