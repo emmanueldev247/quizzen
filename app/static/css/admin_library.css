@@ -14,7 +14,7 @@ main {
     border-radius: 8px;
     padding: 1rem 1.5rem;
     position: relative;
-    background-color: #ccc;
+    border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
@@ -207,7 +207,7 @@ main {
         top: 14px;
         right: 15px;
     }
-    
+
     .quiz-actions .btn  {
         display: flex;
         gap: .5rem;
