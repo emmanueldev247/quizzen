@@ -163,19 +163,19 @@ main {
 
 
 .delete-btn {
-    background-color: rgb(162, 5, 5);
-}
+    background-color: rgb(223, 3, 3);
+    }
 
 .delete-btn:hover {
-    background-color: rgb(223, 3, 3);
+    background-color: rgb(246, 18, 18);
 }
 
 .delete-btn:active {
-    background-color: rgb(96, 4, 4);
+    background-color: rgb(194, 8, 8);
 }
 
 .delete-btn:disabled {
-    background-color: rgb(223, 3, 3);
+    background-color: rgb(96, 4, 4);
     cursor: not-allowed;
 }
 

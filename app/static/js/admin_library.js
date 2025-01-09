@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.success) {
           showNotification("Quiz deleted successfully!", "success");
-          if (quizCard) quizCard.remove();
           if (isLastQuiz) window.location.href = "/quizzen/dashboard";
         } else {
           showNotification("Failed to delete quiz", "error");
