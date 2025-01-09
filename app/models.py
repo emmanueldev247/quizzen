@@ -82,7 +82,7 @@ class Quiz(db.Model):
                             nullable=True, index=True)
     created_by = db.Column(db.String(16), db.ForeignKey('user.id'),
                            nullable=False, index=True)
-    created_at = db.Column(db.DateTime,  default=db.func.now(), server_default=db.func.now(), nullable=True)
+    created_at = db.Column(db.DateTime,  default=db.func.now(), server_default=db.func.now(), nullable=False)
     max_score = db.Column(db.Integer, default=0)
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
     public = db.Column(db.Boolean, default=False)  # Public or private quiz
@@ -163,7 +163,7 @@ class QuizHistory(db.Model):
                         db.ForeignKey('quiz.id', ondelete='CASCADE'),
                         nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)  # Store the total score
-    date_taken = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=True)
+    date_taken = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=False)
     answers = db.relationship('UserAnswer', backref='quiz_history',
                               cascade='all, delete-orphan', lazy=True)
 
@@ -254,10 +254,10 @@ class Notification(db.Model):
                         nullable=False, index=True)
     message = db.Column(db.String(255), nullable=False)
     is_read = db.Column(db.Boolean, default=False, index=True)
-    date_sent = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=True)
+    date_sent = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=False)
 
 
 class UsedToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String(256), unique=True, nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=True)
+    created_at = db.Column(db.DateTime, default=db.func.now(), server_default=db.func.now(),  nullable=False)
