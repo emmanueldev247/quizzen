@@ -187,6 +187,92 @@ main {
     max-width: 130px;
 }
 
+
+.confirmation-bubble {
+    position: absolute;
+    display: none;
+    max-width: 170px;
+    line-height: 1.5;
+    text-align: center;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem .5rem;
+    z-index: 10;
+    transform: translateX(-50%);
+}
+
+.confirmation-bubble i {
+    color: white;
+    padding: 10px;
+    background-color: #6a0dad;
+    border-radius: 50%;
+}
+
+.confirmation-bubble p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    gap: .5rem;
+    padding: 1rem;
+}
+
+.confirmation-actions .btn {
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all ease .3s;
+}
+
+.confirmation-actions .cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.confirmation-actions .cancel-btn:hover {
+    background-color: #e3e3e3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.confirmation-actions .confirm-delete-btn {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+}
+
+.confirmation-actions .confirm-delete-btn:hover {
+    background-color: #ee2610;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-actions .btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Arrow pointing down */
+.confirmation-bubble::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .quiz-card {
@@ -201,17 +287,40 @@ main {
     .time-created {
         font-size: 0.85rem;
     }
-   
+
     .quiz-actions {
         position: absolute;
         top: 14px;
         right: 15px;
     }
 
-    .quiz-actions .btn  {
+    .quiz-actions .btn {
         display: flex;
         gap: .5rem;
         padding: 5px 10px;
         font-size: .9rem;
+    }
+
+    .confirmation-bubble {
+        max-width: 120px;
+        border: 1px solid #ccc;
+        padding: .5rem;
+    }
+
+    .confirmation-bubble i {
+        margin: 3px 0;
+    }
+
+    .confirmation-bubble p {
+        font-size: .9rem;
+    }
+
+    .confirmation-bubble .btn {
+        padding: 4px 8px;
+    }
+
+    .confirmation-actions {
+        gap: .5rem;
+        padding: .3rem;
     }
 }

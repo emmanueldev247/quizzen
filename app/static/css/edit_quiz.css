@@ -256,14 +256,14 @@ header {
 .confirmation-bubble {
   position: absolute;
   display: none;
-  min-width: 150px;
+  max-width: 170px;
   line-height: 1.5;
   text-align: center;
   background-color: #fff;
   border: 2px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  padding: 1rem .5rem;
   z-index: 10;
   transform: translateX(-50%);
 }
@@ -276,22 +276,20 @@ header {
 }
 
 .confirmation-bubble p {
-  margin: 0.5rem;
+  margin: 0;
   font-size: 1rem;
   color: #333;
 }
 
 .confirmation-actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  gap: 1rem;
+  justify-content: center;
+  margin: 0;
+  gap: .5rem;
   padding: 1rem;
 }
 
 .confirmation-actions .btn {
-  /* padding: 5px 10px;
-  font-size: 14px; */
   font-weight: bold;
   cursor: pointer;
   transition: all ease .3s;
@@ -336,4 +334,30 @@ header {
   border-width: 0 10px 10px 10px;
   border-style: solid;
   border-color: transparent transparent #fff transparent;
+}
+
+
+@media (max-width: 768px) {
+  .confirmation-bubble {
+    max-width: 120px;
+    border: 1px solid #ccc;
+    padding: .5rem;
+  }
+
+  .confirmation-bubble i {
+    margin: 3px 0;
+  }
+
+  .confirmation-bubble p {
+    font-size: .9rem;
+  }
+
+  .confirmation-bubble .btn {
+    padding: 4px 8px;
+  }
+
+  .confirmation-actions {
+    gap: .5rem;
+    padding: .3rem;
+  }
 }
