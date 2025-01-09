@@ -44,8 +44,12 @@
             <div class="time-created">{{ quiz.created_at|timeago }}</div>
         </div>
         <div class="quiz-actions">
-            <button type="button" class="btn delete-btn">
-                <i class="fas fa-trash" title="Delete"></i>
+            <button type="button" class="btn view-btn" data-quiz-id="{{ quiz.id }}" title="View Quiz">
+                <i class="fas fa-eye"></i>
+                View
+            </button>
+            <button type="button" class="btn delete-btn" data-quiz-id="{{ quiz.id }}" title="Delete quiz">
+                <i class="fas fa-trash"></i>
                 Delete
             </button>
         </div>
