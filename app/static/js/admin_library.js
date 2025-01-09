@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const quizId = bubble.dataset.quizId;
-    fetch(`quizzen/quiz/${quizId}`, {
+    const baseUrl = `${window.location.origin}/quizzen`;
+    fetch(`${baseUrl}/quiz/${quizId}`, {
       method: "DELETE",
     })
       .then((response) => {
