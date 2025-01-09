@@ -1,4 +1,4 @@
-import { setActive } from "./utils.js";
+import { setActive, showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setActive(".nav-item:nth-child(3)", ".bottom-nav-item:nth-child(2)");
@@ -45,51 +45,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const quizId = bubble.dataset.quizId;
-    fetch(`quizzen/quiz/${quizId}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 429) {
-            showNotification(
-              "You have made too many requests in a short period. Please try again later",
-              "error"
-            );
-          } else
-            showNotification(
-              "Something went wrong. Please try again later",
-              "error"
-            );
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          showNotification("Quiz deleted successfully!", "success");
-          if (quizCard) quizCard.remove();
-          if (isLastQuiz) window.location.href = "/quizzen/dashboard";
-        } else {
-          showNotification("Failed to delete quiz", "error");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        if (error.message === "Failed to fetch")
-          showNotification(
-            "Network error. Please check your connection",
-            "error"
-          );
-      })
-      .finally(() => {
-        deleteButtons.forEach((button) => {
-          button.disabled = false;
-        });
-        confirmDeleteButtons.forEach((button) => {
-          button.disabled = false;
-        });
-        hideConfirmationBubble();
-      });
+    console.log(`Fetch url: quizzen/quiz/${quizId}`);
+    // fetch(`quizzen/quiz/${quizId}`, {
+    //   method: "DELETE",
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       if (response.status === 429) {
+    //         showNotification(
+    //           "You have made too many requests in a short period. Please try again later",
+    //           "error"
+    //         );
+    //       } else
+    //         showNotification(
+    //           "Something went wrong. Please try again later",
+    //           "error"
+    //         );
+    //       throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     if (data.success) {
+    //       showNotification("Quiz deleted successfully!", "success");
+    //       if (quizCard) quizCard.remove();
+    //       if (isLastQuiz) window.location.href = "/quizzen/dashboard";
+    //     } else {
+    //       showNotification("Failed to delete quiz", "error");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //     if (error.message === "Failed to fetch")
+    //       showNotification(
+    //         "Network error. Please check your connection",
+    //         "error"
+    //       );
+    //   })
+    //   .finally(() => {
+    //     deleteButtons.forEach((button) => {
+    //       button.disabled = false;
+    //     });
+    //     confirmDeleteButtons.forEach((button) => {
+    //       button.disabled = false;
+    //     });
+    //     hideConfirmationBubble();
+    //   });
   }
 
   // Hide confirmation bubble on outside click
