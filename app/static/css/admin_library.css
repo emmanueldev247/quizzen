@@ -17,7 +17,7 @@ main {
     background-color: #fff;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition:all 0.3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
@@ -27,6 +27,7 @@ main {
     box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
     background-color: #f9f9f9;
 }
+
 .quiz-card:active {
     transform: translateY(0px);
     background-color: #f9f9f9;
@@ -131,27 +132,29 @@ main {
     gap: .8rem;
     padding: 7px 15px;
     color: white;
-    background-color: #6a0dad;
+    background-color: rgb(162, 5, 5);
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.2s ease;
     font-size: 1rem;
+    font-weight: bold;
     font-family: "Quattrocento Sans", "Josefin Sans", sans-serif, Arial;
 }
 
 .delete-btn:hover {
-    background-color: #a94dd0;
+    background-color: rgb(223, 3, 3);
 }
 
 .delete-btn:active {
-    background: #4c0380;
+    background-color: rgb(96, 4, 4);
 }
 
 .delete-btn:disabled {
-    background: #a94dd0;
+    background-color: rgb(223, 3, 3);
     cursor: not-allowed;
 }
+
 
 .quiz-actions {
     position: absolute;
@@ -175,10 +178,6 @@ main {
 
     .quiz-title {
         font-size: 1.2rem;
-    }
-
-    .quiz-actions i {
-        font-size: 1rem;
     }
 
     .detail-item,
