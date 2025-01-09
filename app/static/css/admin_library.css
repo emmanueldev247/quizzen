@@ -191,7 +191,7 @@ main {
 .confirmation-bubble {
     position: absolute;
     display: none;
-    max-width: 170px;
+    max-width: 180px;
     line-height: 1.5;
     text-align: center;
     background-color: #fff;
