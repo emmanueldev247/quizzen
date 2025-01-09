@@ -20,6 +20,22 @@ main {
     cursor: pointer;
 }
 
+.quiz-card {
+    /* flex-direction: column; */
+    /* position: relative; */
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.quiz-card.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+}
+
 /* Hover effect */
 .quiz-card:hover {
     transform: translateY(-3px);

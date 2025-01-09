@@ -1,14 +1,21 @@
-import { setActive, showNotification } from "./utils.js";
+import { setActive, showNotification, showElements } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setActive(".nav-item:nth-child(3)", ".bottom-nav-item:nth-child(2)");
 
+  const quizCards = document.querySelectorAll(".quiz-card");
   const bubble = document.getElementById("confirmationBubble");
   const cancelButtons = document.querySelectorAll(".cancel-btn");
   const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
   const deleteButtons = document.querySelectorAll(".delete-btn");
   const viewButtons = document.querySelectorAll(".view-btn");
   let targetQuizCard = null;
+
+  quizCards.forEach((card, index) => {
+    setTimeout(() => {
+      showElements(card);
+    }, index * 100);
+  });
 
   function showConfirmationBubble(event, quizId) {
     if (bubble) {
