@@ -34,6 +34,7 @@ from app.extensions import db, bcrypt, session, migrate, mail, limiter
 from app.routes import full_bp
 from config import config
 from app import routes_dashboard
+from app.filters import timeago_filter
 
 
 def create_app(config_name=None):
@@ -43,6 +44,7 @@ def create_app(config_name=None):
                 template_folder='templates')
     app.url_map.strict_slashes = False
     app.jinja_env.globals.update(len=len)
+    app.jinja_env.filters['timeago'] = timeago_filter
     
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])

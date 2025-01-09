@@ -41,7 +41,7 @@
                 <span class="ellipsis">{{ user.first_name + " " + user.last_name }}</span>
             </div>
             <span class="dot"></span>
-            <div class="time-created">3 months ago - {{ quiz.created_at }}</div>
+            <div class="time-created">{{ quiz.created_at|timeago }}</div>
         </div>
         <div class="quiz-actions">
             <button type="button" class="btn delete-btn">

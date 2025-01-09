@@ -8,6 +8,7 @@
 """
 
 import ulid
+import humanize
 from app.extensions import db, limiter
 from app.models import (
     AnswerChoice, Category, Leaderboard, Notification,
@@ -517,3 +518,16 @@ def admin_profile(current_user):
         quizzes=quizzes,
         categories=categories
     )
+
+from flask import Flask
+from datetime import datetime
+import humanize
+
+app = Flask(__name__)
+
+@app.template_filter('timeago')
+def timeago_filter(value):
+    """Convert a datetime object to 'time ago' format."""
+    if isinstance(value, datetime):
+        return humanize.naturaltime(datetime.utcnow() - value)
+    return value  # Return as-is if it's not a datetime object
