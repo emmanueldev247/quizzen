@@ -18,6 +18,9 @@
         </div>
         {% endif %}
         <h2 class="quiz-title">{{ quiz.title }}</h2>
+        <p class="quiz-description">
+            {{ quiz.description }}
+          </p>
         <div class="quiz-details">
             <div class="detail-item question-count">
                 <i class="fas fa-list"></i>
@@ -43,7 +46,7 @@
         <div class="quiz-actions">
             <button type="button" class="btn delete-btn">
                 <i class="fas fa-trash" title="Delete"></i>
-                Delete forever
+                Delete
             </button>
         </div>
     </div>
