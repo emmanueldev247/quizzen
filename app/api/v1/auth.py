@@ -2,6 +2,8 @@ from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from app.models import User
 from app.extensions import db, blacklist_redis
+from . import api_v1
+import unicodedata
 
 @api_v1.route('/connect', methods=['POST'])
 def login():

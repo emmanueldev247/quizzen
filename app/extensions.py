@@ -10,6 +10,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager
 import redis
+import os
 
 def get_ip_from_proxy():
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
@@ -36,7 +37,7 @@ jwt = JWTManager()
 blacklist_redis = redis.StrictRedis(
     host=os.getenv('REDIS_HOST', 'localhost'),
     port=int(os.getenv('REDIS_PORT', 6379)),
-    db=int(os.get('REDIS_DB1', 1)),
+    db=int(os.getenv('REDIS_DB1', 1)),
     decode_responses=True
 )
 

@@ -39,7 +39,7 @@ class Config:
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', '')
 
     #JWT Configuration
-    JWT_SECRET_KEY = os.get('JWT_SECRET_KEY', secrets.token_urlsafe(32))
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', secrets.token_urlsafe(32))
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
 
 class DevelopmentConfig(Config):
