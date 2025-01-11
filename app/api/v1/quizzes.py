@@ -71,6 +71,23 @@ def get_all_quiz():
         else:
             query = Quiz.query.filter_by(public=True)
 
+
+
+        # Debugging prints
+        print(f"user_id: {user_id}")
+        print(f"Public only: {public_only}")
+        print(f"Query before pagination: {query}")
+        print(f"Generated SQL: {str(query.statement)}")
+
+        # Pagination
+        pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+
+        print(f"Pagination total: {pagination.total}")
+        print(f"Pagination pages: {pagination.pages}")
+        print(f"Pagination items: {pagination.items}")
+
+
+
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
         print(pagination)
         quizzes = pagination.items
