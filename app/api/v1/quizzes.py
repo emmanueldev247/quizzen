@@ -77,7 +77,7 @@ def get_all_quiz():
                 "title": quiz.title,
                 "description": quiz.description,
                 "duration": quiz.duration,
-                "category": category_id,
+                "category": quiz.category_id,
                 "public": quiz.public,
                 "max_score": quiz.max_score,
                 "created_at": quiz.created_at
@@ -123,7 +123,7 @@ def get_user_quiz():
                 "title": quiz.title,
                 "description": quiz.description,
                 "duration": quiz.duration,
-                "category": category_id,
+                "category": quiz.category_id,
                 "public": quiz.public,
                 "max_score": quiz.max_score,
                 "created_at": quiz.created_at
@@ -188,7 +188,7 @@ def get_quiz():
                     "title": quiz.title,
                     "description": quiz.description,
                     "duration": quiz.duration,
-                    "category": category_id,
+                    "category": quiz.category_id,
                     "public": quiz.public,
                     "max_score": quiz.max_score,
                     "created_at": quiz.created_at,
