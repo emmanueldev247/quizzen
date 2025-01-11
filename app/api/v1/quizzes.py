@@ -88,38 +88,47 @@ def get_all_quiz():
         print(f"Pagination pages: {pagination.pages}")
         print(f"Pagination items: {pagination.items}")
 
-
-
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
         print(pagination)
         quizzes = pagination.items
         total = pagination.total
         pages = pagination.pages
-                    
+
         result = [
-            {
-                "id": quiz.id,
-                "title": quiz.title,
-                "description": quiz.description,
-                "duration": quiz.duration,
-                "category": quiz.category_id,
-                "public": quiz.public,
-                "max_score": quiz.max_score,
-                "created_at": quiz.created_at
-            }
+            OrderedDict([
+                ("id", quiz.id),
+                ("title", quiz.title),
+                ("description", quiz.description),
+                ("duration", quiz.duration),
+                ("category", quiz.category_id),
+                ("public", quiz.public),
+                ("questions", quiz.questios), #here
+                ("max_score", quiz.max_score),
+                ("created_at", quiz.created_at),
+            ])
             for quiz in quizzes
         ]
 
         # HATEOAS links
-        links = {
+        links = OrderedDict({
             "self" : url_for('api_v1.get_all_quiz', page=page, limit=per_page, _external=True),
             "next" : url_for('api_v1.get_all_quiz', page=page+1, limit=per_page, _external=True) if pagination.has_next else None,
             "prev" : url_for('api_v1.get_all_quiz', page=page-1, limit=per_page, _external=True) if pagination.has_prev else None,
             "first" : url_for('api_v1.get_all_quiz', page=1, limit=per_page, _external=True),
-            "prev" : url_for('api_v1.get_all_quiz', page=pages, limit=per_page, _external=True)
-        } 
+            "last" : url_for('api_v1.get_all_quiz', page=pages, limit=per_page, _external=True)
+        })
 
-        return jsonify({"success": True, "data": result, "total": total, "pages": pages, "links": links}), 200
+        response_data = OrderedDict({
+            "success": True,
+            "data": result,
+            "total": total,
+            "pages": pages,
+            "links": links
+        })
+
+        response_json = json.dumps(response_data, default=str, sort_keys=False)
+        return Response(response_json, status=200, mimetype='application/json')
+
     except Exception as e:
         return jsonify({"success": False, "error": "Failed to fetch quizzes", "details": str(e)}), 500
 
