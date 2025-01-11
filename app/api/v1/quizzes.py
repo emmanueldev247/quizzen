@@ -10,7 +10,8 @@
 
 
 from . import api_v1
-from flask import request, jsonify, url_for
+from flask import request, jsonify, url_for, Response
+import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz
 from app.extensions import db, limiter
@@ -139,8 +140,19 @@ def get_user_quiz():
             "next" : url_for('api_v1.get_user_quiz', page=page+1, limit=per_page, _external=True) if pagination.has_next else None,
             "prev" : url_for('api_v1.get_user_quiz', page=page-1, limit=per_page, _external=True) if pagination.has_prev else None,
             "first" : url_for('api_v1.get_user_quiz', page=1, limit=per_page, _external=True),
-            "last" : url_for('api_v1.get_user_quiz', page=pages, limit=per_page, _external=False)
-        } )
+            "last" : url_for('api_v1.get_user_quiz', page=pages, limit=per_page, _external=True)
+        })
+
+        response_data = OrderedDict({
+            "success": True,
+            "data": result,
+            "total": total,
+            "pages": pages,
+            "links": links
+        })
+
+        response_json = json.dumps(response_data, default=str, sort_keys=False)
+        return Response(response_json, status=200, mimetype='application/json')
 
         return jsonify(OrderedDict({
             "success": True, 
