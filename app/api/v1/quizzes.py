@@ -100,11 +100,12 @@ def get_all_quiz():
                 ("title", quiz.title),
                 ("description", quiz.description),
                 ("duration", quiz.duration),
-                ("category", quiz.category_id),
+                ("category", quiz.related_category.name if quiz.related_category else None),
                 ("public", quiz.public),
-                ("questions", quiz.questios), #here
+                ("question_count", len(quiz.questions)),
+                ("questions", quiz.questions), #here
                 ("max_score", quiz.max_score),
-                ("created_at", quiz.created_at),
+                ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
             ])
             for quiz in quizzes
         ]
@@ -157,10 +158,11 @@ def get_user_quiz():
                 ("title", quiz.title),
                 ("description", quiz.description),
                 ("duration", quiz.duration),
-                ("category", quiz.category_id),
+                ("category", quiz.related_category.name if quiz.related_category else None),
                 ("public", quiz.public),
+                ("question_count", len(quiz.questions)),
                 ("max_score", quiz.max_score),
-                ("created_at", quiz.created_at),
+                ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
             ])
             for quiz in quizzes
         ]
@@ -231,10 +233,11 @@ def get_quiz():
                     "title": quiz.title,
                     "description": quiz.description,
                     "duration": quiz.duration,
-                    "category": quiz.category_id,
+                    "category": quiz.related_category.name if quiz.related_category else None,
                     "public": quiz.public,
+                    "question_count": len(quiz.questions),
                     "max_score": quiz.max_score,
-                    "created_at": quiz.created_at,
+                    "created_at": quiz.created_at.strftime('%Y-%m-%d'),
                     "questions": questions,
                     "pagination": {
                         "page": paginated_questions.page,
