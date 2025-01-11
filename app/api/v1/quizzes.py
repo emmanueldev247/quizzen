@@ -14,6 +14,7 @@ from flask import request, jsonify, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz
 from app.extensions import db, limiter
+from collections import OrderedDict
 
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
@@ -106,8 +107,7 @@ def get_user_quiz():
     """Retrieve paginated quizzes created by the logged-in user"""
     try:
         user_id = get_jwt_identity()
-
-        print(Quiz.query.filter_by(created_by=user_id).all())
+        # print(Quiz.query.filter_by(created_by=user_id).all())
 
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
@@ -120,29 +120,35 @@ def get_user_quiz():
         pages = pagination.pages
                     
         result = [
-            {
-                "id": quiz.id,
-                "title": quiz.title,
-                "description": quiz.description,
-                "duration": quiz.duration,
-                "category": quiz.category_id,
-                "public": quiz.public,
-                "max_score": quiz.max_score,
-                "created_at": quiz.created_at
-            }
+            OrderedDict([
+                ("id", quiz.id),
+                ("title", quiz.title),
+                ("description", quiz.description),
+                ("duration", quiz.duration),
+                ("category", quiz.category_id),
+                ("public", quiz.public),
+                ("max_score", quiz.max_score),
+                ("created_at", quiz.created_at),
+            ])
             for quiz in quizzes
         ]
 
         # HATEOAS links
-        links = {
+        links = OrderedDict({
             "self" : url_for('api_v1.get_user_quiz', page=page, limit=per_page, _external=True),
             "next" : url_for('api_v1.get_user_quiz', page=page+1, limit=per_page, _external=True) if pagination.has_next else None,
             "prev" : url_for('api_v1.get_user_quiz', page=page-1, limit=per_page, _external=True) if pagination.has_prev else None,
             "first" : url_for('api_v1.get_user_quiz', page=1, limit=per_page, _external=True),
-            "prev" : url_for('api_v1.get_user_quiz', page=pages, limit=per_page, _external=True)
-        } 
+            "last" : url_for('api_v1.get_user_quiz', page=pages, limit=per_page, _external=False)
+        } )
 
-        return jsonify({"success": True, "data": result, "total": total, "pages": pages, "links": links}), 200
+        return jsonify(OrderedDict({
+            "success": True, 
+            "data": result, 
+            "total": total, 
+            "pages": pages, 
+            "links": links
+        })), 200
     
     except Exception as e:
         return jsonify({"success": False, "error": "Failed to fetch user quizzes", "details": str(e)}), 500    
