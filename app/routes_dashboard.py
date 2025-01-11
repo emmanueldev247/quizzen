@@ -136,7 +136,7 @@ def create_quiz(current_user):
 
         data = request.get_json() if request.is_json else request.form
         title = data.get('title', '').strip()
-        description = data.get('description', '').strip()
+        description = data.get('description').strip()
         category_id = data.get('category')
         duration = data.get('duration', 0)
 
