@@ -56,7 +56,7 @@ def get_all_quiz():
     """Retrieve paginated quizzes created by the logged-in user and/or quizzes that are public"""
     try:
         user_id = get_jwt_identity()
-        public_only = request.get('public', 'true').lower() =='true'
+        public_only = request.args.get('public', 'true').lower() =='true'
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
 
