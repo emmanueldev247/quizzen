@@ -62,6 +62,9 @@ def get_all_quiz():
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
 
+        print(Quiz.query.filter_by(created_by=user_id).all())
+        print(Quiz.query.all())
+
         if user_id:
             query = Quiz.query.filter_by(public=True) if public_only else Quiz.query
             query = query.filter((Quiz.public == True) | (Quiz.created_by == user_id))
@@ -69,6 +72,7 @@ def get_all_quiz():
             query = Quiz.query.filter_by(public=True)
 
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+        print(pagination)
         quizzes = pagination.items
         total = pagination.total
         pages = pagination.pages
@@ -108,8 +112,7 @@ def get_user_quiz():
     """Retrieve paginated quizzes created by the logged-in user"""
     try:
         user_id = get_jwt_identity()
-        # print(Quiz.query.filter_by(created_by=user_id).all())
-
+        
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
 
@@ -154,14 +157,6 @@ def get_user_quiz():
         response_json = json.dumps(response_data, default=str, sort_keys=False)
         return Response(response_json, status=200, mimetype='application/json')
 
-        return jsonify(OrderedDict({
-            "success": True, 
-            "data": result, 
-            "total": total, 
-            "pages": pages, 
-            "links": links
-        })), 200
-    
     except Exception as e:
         return jsonify({"success": False, "error": "Failed to fetch user quizzes", "details": str(e)}), 500    
 
