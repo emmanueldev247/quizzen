@@ -62,7 +62,7 @@ def get_all_quiz():
 
         if user_id:
             query = Quiz.query.filter_by(public=True) if public_only else Quiz.query
-            query = query.filter((Quiz.public == True)) | (Quiz.created_by == user_id)
+            query = query.filter((Quiz.public == True) | (Quiz.created_by == user_id))
         else:
             query = Quiz.query.filter_by(public=True)
 
