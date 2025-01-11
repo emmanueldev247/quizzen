@@ -66,12 +66,14 @@ def get_all_quiz():
         print(Quiz.query.all())
 
         if user_id:
-            query = Quiz.query.filter_by(public=True) if public_only else Quiz.query
-            query = query.filter((Quiz.public == True) | (Quiz.created_by == user_id))
+            if public_only:
+                query = Quiz.query.filter_by(public==True)
+            else:
+                query = Quiz.query.filter_by(
+                    db.or_(Quiz.public==True, Quiz.created_by == user_id)
+                )
         else:
             query = Quiz.query.filter_by(public=True)
-
-
 
         # Debugging prints
         print(f"user_id: {user_id}")
