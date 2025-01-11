@@ -107,6 +107,8 @@ def get_user_quiz():
     try:
         user_id = get_jwt_identity()
 
+        print(Quiz.query.filter_by(user_id=user.id).all())
+
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
 
