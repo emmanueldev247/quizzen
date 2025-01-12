@@ -12,14 +12,38 @@
 from . import api_v1
 from flask import request, jsonify, url_for, Response
 import json
-from flask_jwt_extended import jwt_required, get_jwt_identity, RevokedTokenError, exceptions as jwt_exceptions
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity, verify_jwt_in_request, exceptions as jwt_exceptions
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from app.models import Quiz, Question
 from app.extensions import db, limiter
 from app.routes import logger
 from collections import OrderedDict
 from sqlalchemy import or_
+from werkzeug.exceptions import Unauthorized
 
+
+@api_v1.before_request
+def check_token_revocation():
+    try:
+        verify_jwt_in_request()  # Verify the JWT token in the request
+        jwt_data = get_jwt()
+        # You can add custom checks here for revoked tokens, like checking a blacklist or database.
+        if jwt_data.get("revoked", False):  # Example custom check for revocation
+            raise Unauthorized("Token has been revoked")
+    except Unauthorized:
+        response = {
+            "success": False,
+            "error": 401,
+            "message": "Your token has been revoked. Please log in again."
+        }
+        return jsonify(response), 401
+    except Exception as e:
+        response = {
+            "success": False,
+            "error": 500,
+            "message": str(e)
+        }
+        return jsonify(response), 500
 
 @api_v1.errorhandler(429)
 def handle_rate_limit_error(e):
@@ -39,6 +63,17 @@ def handle_missing_authorization_header(e):
         "message": "Request must include an Authorization header with a valid JWT token"
     }
     return jsonify(response), 422
+
+
+@api_v1.errorhandler(Unauthorized)
+def handle_revoked_token_error(e):
+    response = {
+        "success": False,
+        "error": 401,
+        "message": "Your token has been revoked. Please log in again."
+    }
+    return jsonify(response), 401
+
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
