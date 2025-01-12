@@ -159,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateQuestionType(onLoad = false) {
+    console.log(`onLoad: ${onLoad}`)
     if (questionTypeSelect.value === "short_answer") {
       if (!onLoad) {
         optionsContainer.innerHTML = shortAnswerOptions;
