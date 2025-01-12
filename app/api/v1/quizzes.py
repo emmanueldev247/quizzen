@@ -26,7 +26,22 @@ def create_quiz():
     """Create new quiz"""
     try:
         user_id = get_jwt_identity()
-        data = request.json
+
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Invalid JSON",
+                "details": "Request content must be 'application/json'"
+            }), 400
+
+        try:
+            data = request.get_json()
+        except Exception as parse_error:
+            return jsonify({
+                "success": False,
+                "error": "Failed to parse JSON",
+                "details": str(parse_error)
+            }), 400
 
         required_fields = ['title', 'duration']
         missing_fields = [field for field in required_fields if not data.get(field)]
@@ -83,9 +98,8 @@ def create_quiz():
 
         db.session.add(new_quiz)
         db.session.commit()
-        return jsonify({"success": True, "quiz": new_quiz.id}), 201, {
-            'Location': url_for('api_v1.get_quiz', quiz_id=new_quiz.id)
-        }
+        return jsonify({"success": True, "quiz": new_quiz.id}), 201
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "error": "Failed to create quiz", "details": str(e)}), 400
