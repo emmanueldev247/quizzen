@@ -266,48 +266,61 @@ def get_quiz(quiz_id):
             Question.query.filter_by(quiz_id=quiz_id)
             .paginate(page=page, per_page=per_page, error_out=False)
         )
+        total = paginated_questions.total
+        pages = paginated_questions.pages
         
         questions = [
-            {
-                "id": question.id,
-                "question_type": question.question_type,
-                "question_text": question.question_text,
-                "points": question.points,
-                "is_multiple_response": question.is_multiple_response,
-                "answer_choices": [
-                    {
-                        "id": answer_choice.id,
-                        "text": answer_choice.text,
-                        "is_correct": answer_choice.is_correct
-                    }
+            OrderedDict([
+                ("id", question.id),
+                ("question_type", question.question_type),
+                ("question_text", question.question_text),
+                ("points", question.points),
+                ("is_multiple_response", question.is_multiple_response),
+                ("answer_choices", [
+                    OrderedDict([
+                        ("id", answer_choice.id),
+                        ("text", answer_choice.text),
+                        ("is_correct", answer_choice.is_correct)
+                    ])      
                     for answer_choice in question.answer_choices
-                ]
-            }
-
-            for question in paginated_questions.items
+                ])
+            ])
+            for question in paginated_questions.items                
         ]
 
-        return jsonify({
-                "success": True,
-                "data": {
-                    "id": quiz.id,
-                    "title": quiz.title,
-                    "description": quiz.description,
-                    "duration": f'{quiz.duration} minute(s)',
-                    "category": quiz.related_category.name if quiz.related_category else None,
-                    "public": quiz.public,
-                    "question_count": len(quiz.questions),
-                    "max_score": quiz.max_score,
-                    "created_at": quiz.created_at.strftime('%Y-%m-%d'),
-                    "questions": questions,
-                    "pagination": {
-                        "page": paginated_questions.page,
-                        "limit": paginated_questions.per_page,
-                        "total_pages": paginated_questions.pages,
-                        "total_items": paginated_questions.total
-                    }
-                }
-            }), 200
+        result = [
+            OrderedDict([
+                 ("id", quiz.id),
+                ("title", quiz.title),
+                ("description", quiz.description),
+                ("duration", f'{quiz.duration} minute(s)'),
+                ("category", quiz.related_category.name if quiz.related_category else None),
+                ("public", quiz.public),
+                ("question_count", len(quiz.questions)),
+                ("max_score", quiz.max_score),
+                ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
+                ("questions", questions),
+            ])
+        ]
+        
+        # HATEOAS links
+        links = OrderedDict({
+            "self" : url_for('api_v1.get_quiz(quiz_id)', page=page, limit=per_page, _external=True),
+            "next" : url_for('api_v1.get_quiz(quiz_id)', page=page+1, limit=per_page, _external=True) if paginated_questions.has_next else None,
+            "prev" : url_for('api_v1.get_quiz(quiz_id)', page=page-1, limit=per_page, _external=True) if paginated_questions.has_prev else None,
+            "first" : url_for('api_v1.get_quiz(quiz_id)', page=1, limit=per_page, _external=True),
+            "last" : url_for('api_v1.get_quiz(quiz_id)', page=pages, limit=per_page, _external=True)
+        })
+
+        response_data = OrderedDict({
+            "success": True,
+            "data": result,
+            "total_items": total,
+            "total_pages": pages,
+            "links": links
+        })
+        response_json = json.dumps(response_data, default=str, sort_keys=False)
+        return Response(response_json, status=200, mimetype='application/json')
     except Exception as e:
         return jsonify({"success": False, "error": "Failed to retrieve quiz", "details": str(e)}), 500
     
