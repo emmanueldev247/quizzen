@@ -79,7 +79,7 @@ def handle_revoked_token_error(e):
     }), 401
 
 # General error handler for Unauthorized access
-@app.errorhandler(Unauthorized)
+@api_v1.errorhandler(Unauthorized)
 def handle_unauthorized_error(e):
     return jsonify({
         "success": False,
