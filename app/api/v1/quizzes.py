@@ -152,7 +152,7 @@ def get_all_quiz():
                 ("public", quiz.public),
                 ("question_count", len(quiz.questions)),
                 ("max_score", quiz.max_score),
-                ("created_by", f'{quiz.user.first_name} {quiz.user.last_name}' if quiz.user else "Unknown User")
+                ("created_by", f'{quiz.user.first_name} {quiz.user.last_name}' if quiz.user else "Unknown User"),
                 ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
             ])
             for quiz in quizzes
