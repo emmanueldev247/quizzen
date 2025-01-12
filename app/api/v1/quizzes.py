@@ -372,7 +372,22 @@ def get_quiz(quiz_id):
 def update_quiz(quiz_id):
     """Update the details of a specific quiz"""
     try:
-        data = request.json
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Invalid JSON",
+                "details": "Request content must be 'application/json'"
+            }), 400
+
+        try:
+            data = request.get_json()
+        except Exception as parse_error:
+            return jsonify({
+                "success": False,
+                "error": "Failed to parse JSON",
+                "details": str(parse_error)
+            }), 400
+            
         if not data:
             return jsonify({"success": False, "error": "Invalid input", "message": "Request body is missing or malformed"}), 400
 
@@ -416,7 +431,22 @@ def update_quiz(quiz_id):
 @limiter.limit("10 per minute")
 def delete_quiz(quiz_id):
     try:
-        data = request.json
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Invalid JSON",
+                "details": "Request content must be 'application/json'"
+            }), 400
+
+        try:
+            data = request.get_json()
+        except Exception as parse_error:
+            return jsonify({
+                "success": False,
+                "error": "Failed to parse JSON",
+                "details": str(parse_error)
+            }), 400
+            
         user_id = get_jwt_identity()
         quiz = Quiz.query.get(quiz_id)
         if not quiz:

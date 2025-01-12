@@ -106,7 +106,21 @@ def handle_generic_error(e):
 @limiter.limit("5 per minute")
 def login():
     try:
-        data = request.json
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "error": "Invalid JSON",
+                "details": "Request content must be 'application/json'"
+            }), 400
+
+        try:
+            data = request.get_json()
+        except Exception as parse_error:
+            return jsonify({
+                "success": False,
+                "error": "Failed to parse JSON",
+                "details": str(parse_error)
+            }), 400
 
         if not data or 'email' not in data or 'password' not in data:
             return jsonify({"success": False, "error": "Invalid input", "message": "Email and password are required"}), 400
