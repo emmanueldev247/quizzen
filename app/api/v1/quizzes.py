@@ -15,6 +15,7 @@ import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz
 from app.extensions import db, limiter
+from app.routes import logger
 from collections import OrderedDict
 from sqlalchemy import or_
 
@@ -36,6 +37,16 @@ def handle_not_found_error(e):
         "message": "Endpoint not found"
     }
     return jsonify(response), 404
+
+@api_v1.errorhandler(Exception)
+def handle_generic_error(e):
+    response = {
+        "success": False,
+        "error": "Internal Server Error",
+        "message": "An unexpected error occurred. Please try again later."
+    }
+    logger.error(f"Unhandled exception: {e}")
+    return jsonify(response), 500
 
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
@@ -195,7 +206,7 @@ def get_user_quiz():
 @api_v1.route('/quiz/<quiz_id>', methods=['GET'])
 @jwt_required(optional=True)
 @limiter.limit("20 per minute")
-def get_quiz():
+def get_quiz(quiz_id):
     try:
         user_id = get_jwt_identity()
         quiz = Quiz.query.get(quiz_id)
