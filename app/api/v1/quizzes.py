@@ -18,6 +18,25 @@ from app.extensions import db, limiter
 from collections import OrderedDict
 from sqlalchemy import or_
 
+
+@api_v1.errorhandler(429)
+def handle_rate_limit_error(e):
+    response = {
+        "success": False,
+        "error": 429,
+        "message": "Too many requests. Please try again later"
+    }
+    return jsonify(response), 429
+
+@api_v1.errorhandler(404)
+def handle_not_found_error(e):
+    response = {
+        "success": False,
+        "error": 404,
+        "message": "Endpoint not found"
+    }
+    return jsonify(response), 404
+
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
 @limiter.limit("10 per minute")
@@ -44,7 +63,7 @@ def create_quiz():
             public=public
         )
 
-        db.add(new_quiz)
+        db.session.add(new_quiz)
         db.commit()
         return jsonify({"success": True, "quiz": new_quiz.id}), 201
     except Exception as e:
