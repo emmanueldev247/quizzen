@@ -24,11 +24,9 @@ from werkzeug.exceptions import Unauthorized
 
 @api_v1.before_request
 def check_token_revocation():
-    print("testing")
     try:
-        verify_jwt_in_request()  # Verify the JWT token in the request
+        verify_jwt_in_request() 
         jwt_data = get_jwt()
-        # You can add custom checks here for revoked tokens, like checking a blacklist or database.
         if jwt_data.get("revoked", False):  # Example custom check for revocation
             raise Unauthorized("Token has been revoked")
     except Unauthorized:
@@ -65,15 +63,29 @@ def handle_missing_authorization_header(e):
     }
     return jsonify(response), 422
 
-
-@api_v1.errorhandler(Unauthorized)
+# Error handler for revoked tokens
+@api_v1.errorhandler(401)
 def handle_revoked_token_error(e):
-    response = {
+    if str(e) == "Token has been revoked":
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "Your token has been revoked. Please log in again."
+        }), 401
+    return jsonify({
         "success": False,
         "error": 401,
-        "message": "Your token has been revoked. Please log in again."
-    }
-    return jsonify(response), 401
+        "message": "Unauthorized access. Please provide a valid token."
+    }), 401
+
+# General error handler for Unauthorized access
+@app.errorhandler(Unauthorized)
+def handle_unauthorized_error(e):
+    return jsonify({
+        "success": False,
+        "error": 401,
+        "message": "Unauthorized access. Please provide a valid token."
+    }), 401
 
 
 @api_v1.errorhandler(405)
@@ -114,15 +126,15 @@ def handle_invalid_token_error(e):
     return jsonify(response), 400
 
 
-@api_v1.errorhandler(Exception)
-def handle_generic_error(e):
-    response = {
-        "success": False,
-        "error": "Internal Server Error",
-        "message": "An unexpected error occurred. Please try again later."
-    }
-    logger.error(f"Unhandled exception: {e}")
-    return jsonify(response), 500
+# @api_v1.errorhandler(Exception)
+# def handle_generic_error(e):
+#     response = {
+#         "success": False,
+#         "error": "Internal Server Error",
+#         "message": "An unexpected error occurred. Please try again later."
+#     }
+#     logger.error(f"Unhandled exception: {e}")
+#     return jsonify(response), 500
 
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
