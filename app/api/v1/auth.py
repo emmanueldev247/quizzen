@@ -1,7 +1,7 @@
 import unicodedata
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt, exceptions as jwt_exceptions
-from jwt.exceptions import (
+from flask_jwt_extended.exceptions import (
     NoAuthorizationError,
     RevokedTokenError,
     ExpiredSignatureError,
