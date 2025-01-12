@@ -5,9 +5,8 @@
 
 {% block main_content %}
 <main>
-    {% for quiz in user.quizzes %}
-    <!-- <a .create-button href="{{ url_for('full_bp.edit_quiz', quiz_id=quiz.id) }}">View Details</a> -->
-    <div class="quiz-card" data-quiz-id="{{ quiz.id }}">
+    {% for quiz in quizzes %}
+   <div class="quiz-card" data-quiz-id="{{ quiz.id }}">
         {% if quiz.public %}
         <div class="quiz-status public">
             <span>Public</span>
@@ -29,11 +28,6 @@
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
                 {{ quiz.related_category.name if quiz.related_category else None }}
-                <!-- {% if quiz.category_id and quiz.category_id|int - 1 < category_names|length %}
-                {{ category_names[quiz.category_id|int - 1] }}
-                {% else %}
-                No category
-                {% endif %} -->
             </div>
         </div>
         <div class="quiz-meta">
