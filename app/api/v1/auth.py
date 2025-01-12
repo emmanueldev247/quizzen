@@ -1,7 +1,12 @@
 import unicodedata
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt, exceptions as jwt_exceptions
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+from jwt.exceptions import (
+    NoAuthorizationError,
+    RevokedTokenError,
+    ExpiredSignatureError,
+    InvalidTokenError,
+)
 from app.models import User
 from app.extensions import blacklist_redis, limiter, jwt
 from app.routes import logger
@@ -76,6 +81,9 @@ def handle_rate_limit_error(e):
 
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
+    if isinstance(e, (NoAuthorizationError, RevokedTokenError, ExpiredSignatureError, InvalidTokenError)):
+        raise e 
+
     response = {
         "success": False,
         "error": "Internal Server Error",
