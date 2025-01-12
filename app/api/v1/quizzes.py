@@ -12,8 +12,8 @@
 from . import api_v1
 from flask import request, jsonify, url_for, Response
 import json
-from flask_jwt_extended import jwt_required, get_jwt_identity,  exceptions as jwt_exceptions
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError, RevokedTokenError
+from flask_jwt_extended import jwt_required, get_jwt_identity, RevokedTokenError, exceptions as jwt_exceptions
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from app.models import Quiz, Question
 from app.extensions import db, limiter
 from app.routes import logger
