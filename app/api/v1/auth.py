@@ -101,7 +101,7 @@ def handle_generic_error(e):
         "error": "Internal Server Error",
         "message": "An unexpected error occurred. Please try again later."
     }
-    logger.error(f"Unhandled exception: {e}")
+    logger.error(f"Unhandled exception in {request.path}: {e}, Data: {request.json}")
     return jsonify(response), 500
 
 
