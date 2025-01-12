@@ -9,7 +9,15 @@ from . import api_v1
 def revoked_token_callback(jwt_header, jwt_data):
     """Handle token revoked errors"""
     return jsonify({
-        "msg": "Token has been revoked. Please re-authenticate."
+        "success": False,
+        "message": "Token has been revoked. Please re-authenticate."
+    }), 401
+
+@jwt.unauthorized_loader
+def unauthorized_response(error):
+    """Handle unauthorized errors when token is missing or invalid."""
+    return jsonify({
+        "msg": "Missing Authorization Header. Please provide a valid token."
     }), 401
 
 @api_v1.route('/connect', methods=['POST'])
