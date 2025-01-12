@@ -32,9 +32,10 @@ def handle_rate_limit_error(e):
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
+    logger.error(f"Method not allowed error: {str(e)}")
     response = {
         "success": False,
-        "error": 404,
+        "error": 405,
         "message": "Method Not Allowed"
     }
     return jsonify(response), 405
@@ -273,7 +274,14 @@ def get_quiz(quiz_id):
                 "question_text": question.question_text,
                 "points": question.points,
                 "is_multiple_response": question.is_multiple_response,
-                "answer_choices": question.answer_choices
+                "answer_choices": [
+                    {
+                        "id": answer_choice.id,
+                        "text": answer_choice.text,
+                        "is_correct": answer_choice.is_correct
+                    }
+                    for answer_choice in question.answer_choices
+                ]
             }
 
             for question in paginated_questions.items
