@@ -137,7 +137,7 @@
                     <div class="toggle-container">
                         <div class="toggle-multiple-response" style="display: {{ 'none;' if question and question.question_type == 'short_answer' else 'flex' }}">
                             <label class="toggle-label">
-                                <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if question and
+                                <input type="checkbox" id="multiple-response" name="multiple-response" {{ 'checked' if question and question.question_type == 'multiple_choice' and
                                     question.is_multiple_response else ''}}>
                                 <span class="slider">
                                 </span>
