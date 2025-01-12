@@ -8,53 +8,30 @@ from . import api_v1
 from werkzeug.exceptions import Unauthorized
 
 
-# @api_v1.before_request
-# def check_token_revocation():
-#     try:
-#         verify_jwt_in_request() 
-#         jwt_data = get_jwt()
-#         if jwt_data.get("revoked", False):  # Example custom check for revocation
-#             raise Unauthorized("Token has been revoked")
-#     except Unauthorized:
-#         response = {
-#             "success": False,
-#             "error": 401,
-#             "message": "Your token has been revoked. Please log in again."
-#         }
-#         return jsonify(response), 401
-#     except Exception as e:
-#         response = {
-#             "success": False,
-#             "error": 500,
-#             "message": str(e)
-#         }
-#         return jsonify(response), 500
-
+@jwt.unauthorized_loader
+def unauthorized_response(error):
+    """Handle unauthorized errors when token is missing or invalid."""
+    return jsonify({
+        "success": False,
+        "error": "Unauthorized access",
+        "message": "Request must include an Authorization header with a valid token"
+    }), 401
 
 @jwt.revoked_token_loader
 def revoked_token_callback(jwt_header, jwt_data):
     """Handle token revoked errors"""
     return jsonify({
         "success": False,
+        "error": "Revoked Token",
         "message": "Token has been revoked. Please re-authenticate."
     }), 401
-
-@jwt.unauthorized_loader
-def unauthorized_response(error):
-    """Handle unauthorized errors when token is missing or invalid."""
-    return jsonify({
-        "success": False,
-        "error": "Missing Authorization Header",
-        "message": "Request must include an Authorization header with a valid token"
     
-    }), 401
-
 # Blueprint error handlers
 @api_v1.errorhandler(ExpiredSignatureError)
 def handle_expired_token_error(e):
     response = {
         "success": False,
-        "error": 401,
+        "error": "Expired Token",
         "message": "Your session has expired. Please log in again."
     }
     return jsonify(response), 401
@@ -63,19 +40,10 @@ def handle_expired_token_error(e):
 def handle_invalid_token_error(e):
     response = {
         "success": False,
-        "error": 400,
+        "error": "Invalid Token",
         "message": "Invalid token. Please provide a valid token."
     }
     return jsonify(response), 400
-
-# General error handler for Unauthorized access
-@api_v1.errorhandler(Unauthorized)
-def handle_unauthorized_error(e):
-    return jsonify({
-        "success": False,
-        "error": 401,
-        "message": "Unauthorized access. Please provide a valid token."
-    }), 401
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
@@ -105,15 +73,15 @@ def handle_rate_limit_error(e):
     }
     return jsonify(response), 429
 
-# @api_v1.errorhandler(Exception)
-# def handle_generic_error(e):
-#     response = {
-#         "success": False,
-#         "error": "Internal Server Error",
-#         "message": "An unexpected error occurred. Please try again later."
-#     }
-#     logger.error(f"Unhandled exception: {e}")
-#     return jsonify(response), 500
+@api_v1.errorhandler(Exception)
+def handle_generic_error(e):
+    response = {
+        "success": False,
+        "error": "Internal Server Error",
+        "message": "An unexpected error occurred. Please try again later."
+    }
+    logger.error(f"Unhandled exception: {e}")
+    return jsonify(response), 500
 
 
 @api_v1.route('/connect', methods=['POST'])
