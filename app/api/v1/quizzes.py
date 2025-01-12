@@ -56,7 +56,7 @@ def handle_invalid_token_error(e):
         "message": "Invalid token. Please provide a valid token."
     }
     return jsonify(response), 400
-    
+
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
     response = {
@@ -326,7 +326,7 @@ def update_quiz():
 @api_v1.route('/quiz/<quiz_id>', methods=['DELETE'])
 @jwt_required()
 @limiter.limit("10 per minute")
-def delete_quiz():
+def delete_quiz(quiz_id):
     try:
         data = request.json
         user_id = get_jwt_identity()
