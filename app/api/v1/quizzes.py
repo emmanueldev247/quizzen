@@ -39,7 +39,9 @@ def create_quiz():
             }), 400
                 
         if 'description' in data:
-            description=data.get('description')
+            description=data.get('description').strip()
+        else:
+            description=None
         title=data.get('title').strip()
         category_id=data.get('category_id', '1')
         duration=data.get('duration')
