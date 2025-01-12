@@ -256,7 +256,7 @@ def edit_quiz(current_user, quiz_id):
         try:
             db.session.delete(quiz)
             db.session.commit()
-            return jsonify({"success": True, "message": "Quiz deleted successfully."}), 204
+            return jsonify({"success": True, "message": "Quiz deleted successfully."}), 200
         except Exception as e:
             logger.error(f"Error deleting quiz: {str(e)}")
             return jsonify({
@@ -458,7 +458,7 @@ def edit_question(current_user, quiz_id, question_id):
                 {"success": True,
                 "message": "Question deleted successfully",
                 "redirect_url": url_for('full_bp.edit_quiz', quiz_id=quiz_id)}
-            ), 204
+            ), 200
         except Exception as e:
             db.session.rollback()
             logger.error(f"Error deleting question: {str(e)}")

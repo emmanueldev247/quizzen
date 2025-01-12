@@ -372,7 +372,7 @@ def delete_quiz(quiz_id):
 
         db.session.delete(quiz)
         db.session.commit()
-        return jsonify({"success": True, "message": "Quiz deleted successfully"}), 200
+        return jsonify({"success": True, "message": "Quiz deleted successfully"}), 204
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "error": "Failed to delete quiz", "details": str(e)}), 400
