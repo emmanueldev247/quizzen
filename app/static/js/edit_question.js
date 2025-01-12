@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateQuestionType(onLoad = false) {
-    console.log(`onLoad: ${onLoad}`)
+    console.log(`onLoad: ${onLoad}`);
     if (questionTypeSelect.value === "short_answer") {
       if (!onLoad) {
         optionsContainer.innerHTML = shortAnswerOptions;
@@ -189,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
       multipleResponseCheckbox.addEventListener(
         "change",
         handleMultipleResponseChange
-
       );
 
       updateIcons();
@@ -226,7 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // initializing
   updateQuestionType(true);
-  questionTypeSelect.addEventListener("change", updateQuestionType);
+  questionTypeSelect.addEventListener("change", function (event) {
+    updateQuestionType(false);
+  });
 
   // Add event listeners for plus and delete icons
   optionsContainer.addEventListener("click", (event) => {
