@@ -78,7 +78,7 @@ def handle_rate_limit_error(e):
     response = {
         "success": False,
         "error": 429,
-        "message": f"Too many requests. Try again in later."
+        "message": f"Too many requests. Try again later."
     }
     return jsonify(response), 429
 
