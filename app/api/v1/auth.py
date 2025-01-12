@@ -22,7 +22,7 @@ def unauthorized_response(error):
     return jsonify({
         "success": False,
         "error": "Unauthorized access",
-        "message": "Request must include an Authorization header with a valid token"
+        "message": "Authorization header with valid token is required"
     }), 401
 
 @jwt.revoked_token_loader
@@ -40,7 +40,7 @@ def handle_expired_token_error(e):
     response = {
         "success": False,
         "error": "Expired Token",
-        "message": "Your session has expired. Please log in again."
+        "message": "Your session has expired. Please re-authenticate."
     }
     return jsonify(response), 401
 
@@ -49,13 +49,9 @@ def handle_invalid_token_error(e):
     response = {
         "success": False,
         "error": "Invalid Token",
-        "message": "Invalid token. Please provide a valid token."
+        "message": "Provided token is invalid. Please re-authenticate."
     }
     return jsonify(response), 400
-
-# @api_v1.errorhandler(InvalidTokenError)
-# def handle_invalid_token_error(e):
-#     return abort(401)
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
@@ -69,6 +65,7 @@ def handle_not_allowed_error(e):
 
 @api_v1.errorhandler(404)
 def handle_not_found_error(e):
+    logger.error(f"Method not allowed: {str(e)}")
     response = {
         "success": False,
         "error": 404,
@@ -78,10 +75,11 @@ def handle_not_found_error(e):
 
 @api_v1.errorhandler(429)
 def handle_rate_limit_error(e):
+    reset_time = e.description.split(" ")[-1]
     response = {
         "success": False,
         "error": 429,
-        "message": "Too many requests. Please try again later"
+        "message": f"Too many requests. Try again in {reset_time} seconds."
     }
     return jsonify(response), 429
 
@@ -108,23 +106,35 @@ def handle_generic_error(e):
 @api_v1.route('/connect', methods=['POST'])
 @limiter.limit("5 per minute")
 def login():
-    data = request.json
+    try:
+        data = request.json
 
-    email = unicodedata.normalize(
-                'NFKC', data.get('email', '').strip().lower()
-            )
-    password = data.get('password', '')
-    user = User.query.filter_by(email=email).first()
-    if user and user.check_password(password):
-        access_token = create_access_token(identity=user.id)
-        return jsonify({"success": True, "access_token":access_token}), 200
-    return jsonify({"success": False, "error": "Invalid credentials"}), 401
+        if not data or 'email' not in data or 'password' not in data:
+            return jsonify({"success": False, "error": "Invalid input", "message": "Email and password are required"}), 400
+
+        email = unicodedata.normalize(
+                    'NFKC', data.get('email', '').strip().lower()
+                )
+        password = data.get('password', '')
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            access_token = create_access_token(identity=user.id)
+            return jsonify({"success": True, "access_token":access_token}), 200
+        return jsonify({"success": False, "error": "Invalid credentials"}), 401
+    
+    except Exception as e:
+        logger.error(f"Error during login: {e}")
+        return jsonify({"success": False, "error": "Login failed", "details": str(e)}), 500
 
 
 @api_v1.route('/disconnect', methods=['POST'])
 @jwt_required()
 @limiter.limit("5 per minute")
 def logout():
-    jti = get_jwt()["jti"]
-    blacklist_redis.set(jti, "blacklisted", ex=60*60)
-    return jsonify({"success": True, "message": "Token successfully disconnected"})
+    try:
+        jti = get_jwt()["jti"]
+        blacklist_redis.set(jti, "blacklisted", ex=60*60)
+        return jsonify({"success": True, "message": "Token successfully disconnected"})
+    except Exception as e:
+        logger.error(f"Error during logout: {e}")
+        return jsonify({"success": False, "error": "Logout failed", "details": str(e)}), 500
