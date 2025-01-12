@@ -59,12 +59,9 @@ def get_all_quiz():
     """Retrieve paginated quizzes created by the logged-in user and/or quizzes that are public"""
     try:
         user_id = get_jwt_identity()
-        public_only = request.args.get('public', 'false').lower() =='true'
+        public_only = request.args.get('public', 'true').lower() =='true'
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', 10))
-
-        print(Quiz.query.filter_by(created_by=user_id).all())
-        print(Quiz.query.all())
 
         if user_id:
             if public_only:
@@ -76,21 +73,7 @@ def get_all_quiz():
         else:
             query = Quiz.query.filter_by(public=True)
 
-        # Debugging prints
-        print(f"user_id: {user_id}")
-        print(f"Public only: {public_only}")
-        print(f"Query before pagination: {query}")
-        print(f"Generated SQL: {str(query.statement)}")
-
-        # Pagination
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-
-        print(f"Pagination total: {pagination.total}")
-        print(f"Pagination pages: {pagination.pages}")
-        print(f"Pagination items: {pagination.items}")
-
-        pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-        print(pagination)
         quizzes = pagination.items
         total = pagination.total
         pages = pagination.pages
@@ -104,7 +87,6 @@ def get_all_quiz():
                 ("category", quiz.related_category.name if quiz.related_category else None),
                 ("public", quiz.public),
                 ("question_count", len(quiz.questions)),
-                ("questions", quiz.questions), #here
                 ("max_score", quiz.max_score),
                 ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
             ])
