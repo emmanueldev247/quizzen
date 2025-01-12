@@ -137,8 +137,10 @@ def create_quiz(current_user):
         data = request.get_json() if request.is_json else request.form
         title = data.get('title', '').strip()
         description = data.get('description').strip()
-        category_id = data.get('category')
+        category_id = data.get('category').strip()
         duration = data.get('duration', 0)
+
+        print(f'Category: {category_id}')
 
         if not title:
             return jsonify({'success': False, 'message': 'Title is required.'}), 400
@@ -478,12 +480,14 @@ def admin_library(current_user):
         return redirect(url_for('full_bp.login'))
 
     quizzes = Quiz.query.filter_by(created_by=user.id).all()
+    categories = Category.query.order_by(Category.name.asc()).all()
    
     return render_template(
         'admin_library.html',
         title='My Library',
         user=user,
         quizzes=quizzes,
+        categories=categories
     )
 
 
