@@ -140,7 +140,8 @@ def create_quiz(current_user):
         category_id = data.get('category').strip()
         duration = data.get('duration', 0)
 
-        print(f'Category: {category_id}')
+        print(f'Descrption: {description}')
+        print(not description)
 
         if not title:
             return jsonify({'success': False, 'message': 'Title is required.'}), 400
