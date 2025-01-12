@@ -16,6 +16,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz
 from app.extensions import db, limiter
 from collections import OrderedDict
+from sqlalchemy import or_
 
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
@@ -69,8 +70,8 @@ def get_all_quiz():
             if public_only:
                 query = Quiz.query.filter_by(public==True)
             else:
-                query = Quiz.query.filter_by(
-                    db.or_(Quiz.public==True, Quiz.created_by == user_id)
+                query = Quiz.query.filter(
+                    or_(Quiz.public==True, Quiz.created_by == user_id)
                 )
         else:
             query = Quiz.query.filter_by(public=True)
