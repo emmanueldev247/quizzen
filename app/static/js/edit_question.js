@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // initializing
   updateQuestionType(true);
-  questionTypeSelect.addEventListener("change", updateQuestionType);
+  questionTypeSelect.addEventListener("change", updateQuestionType(false));
 
   // Add event listeners for plus and delete icons
   optionsContainer.addEventListener("click", (event) => {
