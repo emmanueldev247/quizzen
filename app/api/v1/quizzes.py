@@ -15,7 +15,6 @@ import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz, Question
 from app.extensions import db, limiter
-from app.routes import logger
 from collections import OrderedDict
 from sqlalchemy import or_
 

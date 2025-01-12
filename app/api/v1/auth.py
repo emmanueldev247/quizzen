@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt, excep
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from app.models import User
 from app.extensions import blacklist_redis, limiter, jwt
+from app.routes import logger
 from . import api_v1
 from werkzeug.exceptions import Unauthorized
 
