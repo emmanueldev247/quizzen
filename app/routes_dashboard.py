@@ -481,19 +481,13 @@ def admin_library(current_user):
     if not user:
         return redirect(url_for('full_bp.login'))
 
-    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
-    categories = Category.query.order_by(Category.name.asc()).all()
-    categories_id_sort = Category.query.order_by(Category.id.asc()).all()
-    category_names = [category.name for category in categories_id_sort]
-
-
+    quizzes = Quiz.query.filter_by(created_by=user.id).all()
+   
     return render_template(
         'admin_library.html',
         title='My Library',
         user=user,
         quizzes=quizzes,
-        categories=categories,
-        category_names=category_names
     )
 
 
