@@ -13,7 +13,7 @@ from . import api_v1
 from flask import request, jsonify, url_for, Response
 import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models import Quiz
+from app.models import Quiz, Question
 from app.extensions import db, limiter
 from app.routes import logger
 from collections import OrderedDict
