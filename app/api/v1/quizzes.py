@@ -71,7 +71,7 @@ def get_all_quiz():
                     or_(Quiz.public==True, Quiz.created_by == user_id)
                 )
         else:
-            query = Quiz.query.filter_by(public=True)
+            query = Quiz.query.filter_by(public==True)
 
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
         quizzes = pagination.items
