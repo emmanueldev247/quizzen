@@ -6,7 +6,7 @@ from app.extensions import blacklist_redis, limiter, jwt
 from . import api_v1
 
 @jwt.revoked_token_loader
-def revoked_token_callback():
+def revoked_token_callback(jwt_header, jwt_data):
     """Handle token revoked errors"""
     return jsonify({
         "msg": "Token has been revoked. Please re-authenticate."
