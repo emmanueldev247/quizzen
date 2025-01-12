@@ -52,9 +52,10 @@ def handle_invalid_token_error(e):
         "message": "Invalid token. Please provide a valid token."
     }
     return jsonify(response), 400
-@api_v1.errorhandler(InvalidTokenError)
-def handle_invalid_token_error(e):
-    return abort(401)
+
+# @api_v1.errorhandler(InvalidTokenError)
+# def handle_invalid_token_error(e):
+#     return abort(401)
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
@@ -86,9 +87,15 @@ def handle_rate_limit_error(e):
 
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
-    if isinstance(e, (NoAuthorizationError, RevokedTokenError, ExpiredSignatureError, InvalidTokenError)):
-        raise e 
-
+    if isinstance(e, NoAuthorizationError):
+        return unauthorized_response(str(e))
+    elif isinstance(e, RevokedTokenError):
+        return revoked_token_callback(None, None)
+    elif isinstance(e, ExpiredSignatureError):
+        return handle_expired_token_error(e)
+    elif isinstance(e, InvalidTokenError):
+        return handle_invalid_token_error(e)
+        
     response = {
         "success": False,
         "error": "Internal Server Error",
