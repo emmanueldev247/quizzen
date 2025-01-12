@@ -305,11 +305,11 @@ def get_quiz(quiz_id):
         
         # HATEOAS links
         links = OrderedDict({
-            "self" : url_for('api_v1.get_quiz(quiz_id)', page=page, limit=per_page, _external=True),
-            "next" : url_for('api_v1.get_quiz(quiz_id)', page=page+1, limit=per_page, _external=True) if paginated_questions.has_next else None,
-            "prev" : url_for('api_v1.get_quiz(quiz_id)', page=page-1, limit=per_page, _external=True) if paginated_questions.has_prev else None,
-            "first" : url_for('api_v1.get_quiz(quiz_id)', page=1, limit=per_page, _external=True),
-            "last" : url_for('api_v1.get_quiz(quiz_id)', page=pages, limit=per_page, _external=True)
+            "self" : url_for('api_v1.get_quiz', page=page, limit=per_page, _external=True),
+            "next" : url_for('api_v1.get_quiz', page=page+1, limit=per_page, _external=True) if paginated_questions.has_next else None,
+            "prev" : url_for('api_v1.get_quiz', page=page-1, limit=per_page, _external=True) if paginated_questions.has_prev else None,
+            "first" : url_for('api_v1.get_quiz', page=1, limit=per_page, _external=True),
+            "last" : url_for('api_v1.get_quiz', page=pages, limit=per_page, _external=True)
         })
 
         response_data = OrderedDict({
