@@ -22,27 +22,27 @@ from sqlalchemy import or_
 from werkzeug.exceptions import Unauthorized
 
 
-@api_v1.before_request
-def check_token_revocation():
-    try:
-        verify_jwt_in_request() 
-        jwt_data = get_jwt()
-        if jwt_data.get("revoked", False):  # Example custom check for revocation
-            raise Unauthorized("Token has been revoked")
-    except Unauthorized:
-        response = {
-            "success": False,
-            "error": 401,
-            "message": "Your token has been revoked. Please log in again."
-        }
-        return jsonify(response), 401
-    except Exception as e:
-        response = {
-            "success": False,
-            "error": 500,
-            "message": str(e)
-        }
-        return jsonify(response), 500
+# @api_v1.before_request
+# def check_token_revocation():
+#     try:
+#         verify_jwt_in_request() 
+#         jwt_data = get_jwt()
+#         if jwt_data.get("revoked", False):  # Example custom check for revocation
+#             raise Unauthorized("Token has been revoked")
+#     except Unauthorized:
+#         response = {
+#             "success": False,
+#             "error": 401,
+#             "message": "Your token has been revoked. Please log in again."
+#         }
+#         return jsonify(response), 401
+#     except Exception as e:
+#         response = {
+#             "success": False,
+#             "error": 500,
+#             "message": str(e)
+#         }
+#         return jsonify(response), 500
 
 @api_v1.errorhandler(429)
 def handle_rate_limit_error(e):
