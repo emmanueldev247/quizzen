@@ -56,14 +56,21 @@ def create_quiz():
     try:
         user_id = get_jwt_identity()
         data = request.json
-        
+
+        required_fields = ['title', 'duration']
+        missing_fields = [field for field in required_fields if not data.get(field)]
+
+        if missing_fields:
+            return jsonify({
+                "success": False,
+                "error": "Bad Request",
+                "message": f"Missing required fields: {', '.join(missing_fields)}"
+            }), 400
+                
         title=data.get('title', '')
-        if not title:
-            return jsonify({"success": False, "error": "Quiz Title is required"}), 400
-        
         description=data.get('description')
         category_id=int(data.get('category_id', '1'))
-        duration=data.get('duration', 30)
+        duration=int(data.get('duration'))
         public=data.get('public', False)
 
         new_quiz = Quiz(
@@ -71,6 +78,7 @@ def create_quiz():
             description=description,
             category_id=category_id,
             created_by=user_id,
+            duration = duration,
             public=public
         )
 
