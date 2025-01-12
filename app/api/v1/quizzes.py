@@ -12,129 +12,13 @@
 from . import api_v1
 from flask import request, jsonify, url_for, Response
 import json
-from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity, verify_jwt_in_request, exceptions as jwt_exceptions
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz, Question
 from app.extensions import db, limiter
 from app.routes import logger
 from collections import OrderedDict
 from sqlalchemy import or_
-from werkzeug.exceptions import Unauthorized
 
-
-# @api_v1.before_request
-# def check_token_revocation():
-#     try:
-#         verify_jwt_in_request() 
-#         jwt_data = get_jwt()
-#         if jwt_data.get("revoked", False):  # Example custom check for revocation
-#             raise Unauthorized("Token has been revoked")
-#     except Unauthorized:
-#         response = {
-#             "success": False,
-#             "error": 401,
-#             "message": "Your token has been revoked. Please log in again."
-#         }
-#         return jsonify(response), 401
-#     except Exception as e:
-#         response = {
-#             "success": False,
-#             "error": 500,
-#             "message": str(e)
-#         }
-#         return jsonify(response), 500
-
-@api_v1.errorhandler(429)
-def handle_rate_limit_error(e):
-    response = {
-        "success": False,
-        "error": 429,
-        "message": "Too many requests. Please try again later"
-    }
-    return jsonify(response), 429
-
-
-@api_v1.errorhandler(422)
-def handle_missing_authorization_header(e):
-    response = {
-        "success": False,
-        "error": "Missing Authorization Header",
-        "message": "Request must include an Authorization header with a valid JWT token"
-    }
-    return jsonify(response), 422
-
-# Error handler for revoked tokens
-@api_v1.errorhandler(401)
-def handle_revoked_token_error(e):
-    if str(e) == "Token has been revoked":
-        return jsonify({
-            "success": False,
-            "error": 401,
-            "message": "Your token has been revoked. Please log in again."
-        }), 401
-    return jsonify({
-        "success": False,
-        "error": 401,
-        "message": "Unauthorized access. Please provide a valid token."
-    }), 401
-
-# General error handler for Unauthorized access
-@api_v1.errorhandler(Unauthorized)
-def handle_unauthorized_error(e):
-    return jsonify({
-        "success": False,
-        "error": 401,
-        "message": "Unauthorized access. Please provide a valid token."
-    }), 401
-
-
-@api_v1.errorhandler(405)
-def handle_not_allowed_error(e):
-    logger.error(f"Method not allowed error: {str(e)}")
-    response = {
-        "success": False,
-        "error": 405,
-        "message": "Method Not Allowed"
-    }
-    return jsonify(response), 405
-
-@api_v1.errorhandler(404)
-def handle_not_found_error(e):
-    response = {
-        "success": False,
-        "error": 404,
-        "message": "Endpoint not found"
-    }
-    return jsonify(response), 404
-
-@api_v1.errorhandler(ExpiredSignatureError)
-def handle_expired_token_error(e):
-    response = {
-        "success": False,
-        "error": 401,
-        "message": "Your session has expired. Please log in again."
-    }
-    return jsonify(response), 401
-
-@api_v1.errorhandler(InvalidTokenError)
-def handle_invalid_token_error(e):
-    response = {
-        "success": False,
-        "error": 400,
-        "message": "Invalid token. Please provide a valid token."
-    }
-    return jsonify(response), 400
-
-
-# @api_v1.errorhandler(Exception)
-# def handle_generic_error(e):
-#     response = {
-#         "success": False,
-#         "error": "Internal Server Error",
-#         "message": "An unexpected error occurred. Please try again later."
-#     }
-#     logger.error(f"Unhandled exception: {e}")
-#     return jsonify(response), 500
 
 @api_v1.route('/quiz', methods=['POST'])
 @jwt_required()
