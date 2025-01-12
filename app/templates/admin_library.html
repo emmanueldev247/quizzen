@@ -28,6 +28,7 @@
             </div>
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
+                {{ quiz.related_category.name}}
                 {% if quiz.category_id and quiz.category_id|int - 1 < category_names|length %}
                 {{ category_names[quiz.category_id|int - 1] }}
                 {% else %}
