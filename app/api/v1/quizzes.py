@@ -24,6 +24,7 @@ from werkzeug.exceptions import Unauthorized
 
 @api_v1.before_request
 def check_token_revocation():
+    print("testing")
     try:
         verify_jwt_in_request()  # Verify the JWT token in the request
         jwt_data = get_jwt()
