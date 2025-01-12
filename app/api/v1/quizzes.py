@@ -13,7 +13,7 @@ from . import api_v1
 from flask import request, jsonify, url_for, Response
 import json
 from flask_jwt_extended import jwt_required, get_jwt_identity,  exceptions as jwt_exceptions
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError, RevokedTokenError
 from app.models import Quiz, Question
 from app.extensions import db, limiter
 from app.routes import logger
@@ -76,6 +76,15 @@ def handle_invalid_token_error(e):
         "message": "Invalid token. Please provide a valid token."
     }
     return jsonify(response), 400
+
+@api_v1.errorhandler(RevokedTokenError)
+def handle_revoked_token_error(e):
+    response = {
+        "success": False,
+        "error": 401,
+        "message": "Your token has been revoked. Please log in again."
+    }
+    return jsonify(response), 401
 
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
