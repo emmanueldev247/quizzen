@@ -479,7 +479,7 @@ def admin_library(current_user):
     if not user:
         return redirect(url_for('full_bp.login'))
 
-    quizzes = Quiz.query.filter_by(created_by=user.id).all()
+    quizzes = Quiz.query.filter_by(created_by=user.id).order_by(Quiz.created_at.desc()).all()
     categories = Category.query.order_by(Category.name.asc()).all()
    
     return render_template(
