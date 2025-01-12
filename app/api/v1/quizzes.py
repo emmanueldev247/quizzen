@@ -31,6 +31,15 @@ def handle_rate_limit_error(e):
     return jsonify(response), 429
 
 @api_v1.errorhandler(404)
+def handle_not_allowed_error(e):
+    response = {
+        "success": False,
+        "error": 404,
+        "message": "Method Not Allowed"
+    }
+    return jsonify(response), 404
+
+@api_v1.errorhandler(404)
 def handle_not_found_error(e):
     response = {
         "success": False,
@@ -295,7 +304,7 @@ def get_quiz(quiz_id):
         return jsonify({"success": False, "error": "Failed to retrieve quiz", "details": str(e)}), 500
     
 @api_v1.route('/quiz/<quiz_id>', methods=['PUT'])
-@jwt_required()
+@jwt_required(quiz_id)
 @limiter.limit("10 per minute")
 def update_quiz():
     try:
