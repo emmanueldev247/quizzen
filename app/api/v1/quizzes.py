@@ -64,7 +64,7 @@ def create_quiz():
         )
 
         db.session.add(new_quiz)
-        db.commit()
+        db.session.commit()
         return jsonify({"success": True, "quiz": new_quiz.id}), 201
     except Exception as e:
         db.session.rollback()
