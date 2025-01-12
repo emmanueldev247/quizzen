@@ -304,9 +304,9 @@ def get_quiz(quiz_id):
         return jsonify({"success": False, "error": "Failed to retrieve quiz", "details": str(e)}), 500
     
 @api_v1.route('/quiz/<quiz_id>', methods=['PUT'])
-@jwt_required(quiz_id)
+@jwt_required()
 @limiter.limit("10 per minute")
-def update_quiz():
+def update_quiz(quiz_id):
     try:
         data = request.json
         quiz = Quiz.query.get(quiz_id)
