@@ -38,8 +38,9 @@ def create_quiz():
                 "message": f"Missing required fields: {', '.join(missing_fields)}"
             }), 400
                 
+        if 'description' in data:
+            description=data.get('description')
         title=data.get('title').strip()
-        description=data.get('description').strip()
         category_id=data.get('category_id', '1')
         duration=data.get('duration')
         public=data.get('public', False)
