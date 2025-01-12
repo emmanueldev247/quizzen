@@ -112,14 +112,6 @@ def handle_invalid_token_error(e):
     }
     return jsonify(response), 400
 
-@api_v1.errorhandler(RevokedTokenError)
-def handle_revoked_token_error(e):
-    response = {
-        "success": False,
-        "error": 401,
-        "message": "Your token has been revoked. Please log in again."
-    }
-    return jsonify(response), 401
 
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
