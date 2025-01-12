@@ -75,11 +75,10 @@ def handle_not_found_error(e):
 
 @api_v1.errorhandler(429)
 def handle_rate_limit_error(e):
-    reset_time = e.description.split(" ")[-1]
     response = {
         "success": False,
         "error": 429,
-        "message": f"Too many requests. Try again in {reset_time} seconds."
+        "message": f"Too many requests. Try again in later."
     }
     return jsonify(response), 429
 
