@@ -9,11 +9,12 @@ from jwt.exceptions import (
     ExpiredSignatureError,
     InvalidTokenError,
 )
-from app.models import User
-from app.extensions import blacklist_redis, limiter, jwt
-from app.routes import logger
-from . import api_v1
 from werkzeug.exceptions import Unauthorized
+
+from . import api_v1
+from app.extensions import blacklist_redis, jwt, limiter
+from app.models import User
+from app.routes import logger
 
 
 @jwt.unauthorized_loader
@@ -25,6 +26,7 @@ def unauthorized_response(error):
         "message": "Authorization header with valid token is required"
     }), 401
 
+
 @jwt.revoked_token_loader
 def revoked_token_callback(jwt_header, jwt_data):
     """Handle token revoked errors"""
@@ -33,10 +35,12 @@ def revoked_token_callback(jwt_header, jwt_data):
         "error": "Revoked Token",
         "message": "Token has been revoked. Please re-authenticate."
     }), 401
-    
+
+
 # Blueprint error handlers
 @api_v1.errorhandler(ExpiredSignatureError)
 def handle_expired_token_error(e):
+    """Expired token error handler"""
     response = {
         "success": False,
         "error": "Expired Token",
@@ -44,8 +48,10 @@ def handle_expired_token_error(e):
     }
     return jsonify(response), 401
 
+
 @api_v1.errorhandler(InvalidTokenError)
 def handle_invalid_token_error(e):
+    """Invalid token error handler"""
     response = {
         "success": False,
         "error": "Invalid Token",
@@ -53,8 +59,10 @@ def handle_invalid_token_error(e):
     }
     return jsonify(response), 400
 
+
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
+    """Error 405 handler"""
     logger.error(f"Method not allowed error: {str(e)}")
     response = {
         "success": False,
@@ -63,8 +71,10 @@ def handle_not_allowed_error(e):
     }
     return jsonify(response), 405
 
+
 @api_v1.errorhandler(404)
 def handle_not_found_error(e):
+    """Error 404 handler"""
     logger.error(f"Method not allowed: {str(e)}")
     response = {
         "success": False,
@@ -73,8 +83,10 @@ def handle_not_found_error(e):
     }
     return jsonify(response), 404
 
+
 @api_v1.errorhandler(429)
 def handle_rate_limit_error(e):
+    """Error 429 handler"""
     response = {
         "success": False,
         "error": 429,
@@ -82,8 +94,10 @@ def handle_rate_limit_error(e):
     }
     return jsonify(response), 429
 
+
 @api_v1.errorhandler(Exception)
 def handle_generic_error(e):
+    """Generic error handler"""
     if isinstance(e, NoAuthorizationError):
         return unauthorized_response(str(e))
     elif isinstance(e, RevokedTokenError):
@@ -92,19 +106,22 @@ def handle_generic_error(e):
         return handle_expired_token_error(e)
     elif isinstance(e, InvalidTokenError):
         return handle_invalid_token_error(e)
-        
+
     response = {
         "success": False,
         "error": "Internal Server Error",
         "message": "An unexpected error occurred. Please try again later."
     }
-    logger.error(f"Unhandled exception in {request.path}: {e}, Data: {request.json}")
+    logger.error(
+        f"Unhandled exception in {request.path}: {e}, Data: {request.json}"
+    )
     return jsonify(response), 500
 
 
 @api_v1.route('/connect', methods=['POST'])
 @limiter.limit("5 per minute")
 def login():
+    """Api login route"""
     try:
         if not request.is_json:
             return jsonify({
@@ -123,7 +140,11 @@ def login():
             }), 400
 
         if not data or 'email' not in data or 'password' not in data:
-            return jsonify({"success": False, "error": "Invalid input", "message": "Email and password are required"}), 400
+            return jsonify({
+                "success": False,
+                "error": "Invalid input",
+                "message": "Email and password are required"
+            }), 400
 
         email = unicodedata.normalize(
                     'NFKC', data.get('email', '').strip().lower()
@@ -132,22 +153,38 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             access_token = create_access_token(identity=user.id)
-            return jsonify({"success": True, "access_token":access_token}), 200
-        return jsonify({"success": False, "error": "Invalid credentials"}), 401
-    
+            return jsonify({
+                "success": True,
+                "access_token": access_token
+            }), 200
+        return jsonify({
+            "success": False,
+            "error": "Invalid credentials"
+        }), 401
+
     except Exception as e:
         logger.error(f"Error during login: {e}")
-        return jsonify({"success": False, "error": "Login failed", "details": str(e)}), 500
+        return jsonify({
+            "success": False,
+            "error": "Login failed"
+        }), 500
 
 
 @api_v1.route('/disconnect', methods=['POST'])
 @jwt_required()
 @limiter.limit("5 per minute")
 def logout():
+    """Api logout route"""
     try:
         jti = get_jwt()["jti"]
         blacklist_redis.set(jti, "blacklisted", ex=60*60)
-        return jsonify({"success": True, "message": "Token successfully disconnected"})
+        return jsonify({
+            "success": True,
+            "message": "Token successfully disconnected"
+        })
     except Exception as e:
         logger.error(f"Error during logout: {e}")
-        return jsonify({"success": False, "error": "Logout failed", "details": str(e)}), 500
+        return jsonify({
+            "success": False,
+            "error": "Logout failed"
+        }), 500

@@ -11,17 +11,6 @@ Key Features:
 - Custom application root and static file handling.
 - Centralized initialization of extensions and blueprints.
 
-Modules Imported:
-- `os`, `secrets`: For environment variables and secure random key generation.
-- `redis`: For managing session storage via a Redis backend.
-- `datetime.timedelta`: For setting session expiration times.
-- `flask.Flask`: To create the core Flask application instance.
-- `flask_login.LoginManager`: To manage user authentication & session handling.
-- `app.routes.full_bp`: The main application blueprint for routing.
-- `app.extensions`: Custom application extensions for database (`db`),
-  password hashing (`bcrypt`), session management (`session`),
-  migration Object (`migrate`), mail Object (`mail`), rate limiter (`limiter`)
-
 Note:
 Sensitive values such as secret keys and database credentials are managed
 through environment variables for security.
@@ -30,13 +19,17 @@ through environment variables for security.
 import os
 from flask import Flask
 from flask_login import LoginManager
-from app.extensions import db, bcrypt, session, migrate, mail, limiter, jwt
-from config import config
+
 from app import routes_dashboard
 from app.api import v1
 from app.api.v1 import api_v1
+from app.extensions import (
+    bcrypt, db, jwt,
+    limiter, mail, migrate,
+    session, timeago_filter
+)
 from app.routes import full_bp
-from app.filters import timeago_filter
+from config import config
 
 
 def create_app(config_name=None):
@@ -47,7 +40,7 @@ def create_app(config_name=None):
     app.url_map.strict_slashes = False
     app.jinja_env.globals.update(len=len)
     app.jinja_env.filters['timeago'] = timeago_filter
-    
+
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])
 

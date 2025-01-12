@@ -1,18 +1,22 @@
 """Extensions to prevent circular import error"""
 
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-from flask_session import Session
-from flask_migrate import Migrate
-from flask_mail import Mail
+import humanize
+import os
+import redis
+from datetime import datetime, timezone
 from flask import Flask, request
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_jwt_extended import JWTManager
-import redis
-import os
+from flask_mail import Mail
+from flask_migrate import Migrate
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+
 
 def get_ip_from_proxy():
+    """gets ip from clients for logger"""
     x_forwarded_for = request.headers.get("X-Forwarded-For", "")
     if x_forwarded_for:
         return x_forwarded_for.split(",")[0].strip()
@@ -20,6 +24,18 @@ def get_ip_from_proxy():
     if x_real_ip:
         return x_real_ip.split(",")[0].strip()
     return request.remote_addr
+
+
+def timeago_filter(value):
+    """Convert a datetime object to 'time ago' format."""
+    if isinstance(value, datetime):
+        current_time = datetime.now(timezone.utc)
+
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+
+        return humanize.naturaltime(current_time - value)
+    return value
 
 
 # Initialize extensions
@@ -41,7 +57,9 @@ blacklist_redis = redis.StrictRedis(
     decode_responses=True
 )
 
+
 @jwt.token_in_blocklist_loader
 def check_if_token_in_blacklist(jwt_header, jwt_payload):
+    """checks for jwt revoke status"""
     jti = jwt_payload["jti"]
     return blacklist_redis.get(jti) is not None

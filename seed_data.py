@@ -25,11 +25,11 @@ categories = [
 
 with app.app_context():
     for category_name in categories:
-        existing_category = Category.query.filter_by(name=category_name).first()
-        if not existing_category:
+        existing_cat = Category.query.filter_by(name=category_name).first()
+        if not existing_cat:
             category = Category(name=category_name)
             db.session.add(category)
-            
+
     db.session.commit()
 
 print("Categories added successfully!")

@@ -8,21 +8,22 @@
       - '/logout' -> logout
 """
 import unicodedata
-from app.extensions import db, mail, limiter
-from app.models import User, UsedToken
-from app.utils.logger import setup_logger
 from datetime import datetime
 from flask import (
     Blueprint, current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
 )
-from flask_mail import Message
 from flask_limiter.errors import RateLimitExceeded
+from flask_mail import Message
 from itsdangerous import (
-    URLSafeTimedSerializer as Serializer,
-    BadSignature, SignatureExpired
+    BadSignature, SignatureExpired,
+    URLSafeTimedSerializer as Serializer
 )
+
+from app.extensions import db, mail, limiter
+from app.models import User, UsedToken
+from app.utils.logger import setup_logger
 
 
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
@@ -179,7 +180,7 @@ def login():
                         "message": "Invalid Credentials"
                     }), 401
                 else:
-                    logger.warning(f"User with email {email} is an OAuth user.")
+                    logger.warning(f"User with email {email} is an OAuth user")
                     return jsonify({
                         "success": False,
                         "message": "Please use OAuth to log in."
@@ -209,7 +210,7 @@ def reset_password():
     try:
         logger.debug(f"Password reset attempt")
         data = request.get_json() if request.is_json else request.form
-        
+
         email = unicodedata.normalize(
                 'NFKC', data.get('email', '').strip().lower()
         )
