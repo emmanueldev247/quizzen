@@ -113,7 +113,7 @@ def get_all_quiz():
             ("id", quiz.id),
             ("title", quiz.title),
             ("description", quiz.description),
-            ("duration", quiz.duration),
+            ("duration", f'{quiz.duration} minute(s)'),
             ("category", quiz.related_category.name if quiz.related_category else None),
             ("public", quiz.public),
             ("question_count", len(quiz.questions)),
@@ -170,7 +170,7 @@ def get_user_quiz():
                 ("id", quiz.id),
                 ("title", quiz.title),
                 ("description", quiz.description),
-                ("duration", quiz.duration),
+                ("duration", f'{quiz.duration} minute(s)'),
                 ("category", quiz.related_category.name if quiz.related_category else None),
                 ("public", quiz.public),
                 ("question_count", len(quiz.questions)),
@@ -225,7 +225,11 @@ def get_quiz(quiz_id):
         page = int(request.args.get('page', '1'))
         per_page = int(request.args.get('limit', '10'))
 
-        paginated_questions = Quiz.query.get(quiz_id).questions.paginate(page=page, per_page=per_page, error_out=False)
+        paginated_questions = (
+            Question.query.filter_by(quiz_id=quiz_id)
+            .paginate(page=page, per_page=per_page, error_out=False)
+        )
+        
         questions = [
             {
                 "id": question.id,
@@ -245,7 +249,7 @@ def get_quiz(quiz_id):
                     "id": quiz.id,
                     "title": quiz.title,
                     "description": quiz.description,
-                    "duration": quiz.duration,
+                    "duration": f'{quiz.duration} minute(s)',
                     "category": quiz.related_category.name if quiz.related_category else None,
                     "public": quiz.public,
                     "question_count": len(quiz.questions),
