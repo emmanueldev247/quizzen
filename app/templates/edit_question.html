@@ -144,10 +144,10 @@
                             </label>
                             <span>Allow Multiple Responses
                         </div>
-                        <div class="toggle-alternative-response" style="display: {{ 'flex;' if question and question.question_type == 'short_answer' and question.answer_choices|length> 1 else 'none' }}">
+                        <div class="toggle-alternative-response" style="display: {{ 'flex;' if question and question.question_type == 'short_answer' else 'none' }}">
                             <label class="toggle-label">
                                 <input type="checkbox" id="alternative-response" name="alternative-response"
-                                    {{ 'checked' if question and question.answer_choices|length> 1 else '' }}>
+                                    {{ 'checked' if question and question.question_type == 'short_answer' and question.answer_choices|length> 1 else '' }}>
                                 <span class="slider"></span>
                             </label>
                             <span>Allow Alternative Answers
