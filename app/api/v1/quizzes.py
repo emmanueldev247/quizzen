@@ -15,6 +15,7 @@ import json
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Quiz, Question
 from app.extensions import db, limiter
+from app.routes import logger
 from collections import OrderedDict
 from sqlalchemy import or_
 
@@ -151,7 +152,7 @@ def get_all_quiz():
                 ("public", quiz.public),
                 ("question_count", len(quiz.questions)),
                 ("max_score", quiz.max_score),
-                ("created_by", f'{quiz.User.first_name} {quiz.User.last_name}')
+                ("created_by", f'{quiz.User.first_name} {quiz.User.last_name}' )
                 ("created_at", quiz.created_at.strftime('%Y-%m-%d')),
             ])
             for quiz in quizzes
