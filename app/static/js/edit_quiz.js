@@ -337,11 +337,7 @@ export function confirmDelete() {
               "error"
             );
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
+        } else {
           showNotification("Question deleted successfully!", "success");
 
           // Remove question from DOM
@@ -349,10 +345,7 @@ export function confirmDelete() {
             .querySelector(`.question-header[data-question-id="${questionId}"]`)
             .closest(".question-card");
           if (questionCard) questionCard.remove();
-
           updateQuizStats();
-        } else {
-          showNotification("Failed to delete question.", "error");
         }
       })
       .catch((error) => {
@@ -399,16 +392,10 @@ export function handleQuizDeletion(questionCard) {
             "error"
           );
         throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.success) {
+      } else {
         showNotification("Quiz deleted successfully!", "success");
         if (questionCard) questionCard.remove();
         window.location.href = "/quizzen/dashboard";
-      } else {
-        showNotification("Failed to delete quiz", "error");
       }
     })
     .catch((error) => {

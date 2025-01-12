@@ -69,15 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
               "error"
             );
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
+        } else {
           showNotification("Quiz deleted successfully!", "success");
           if (isLastQuiz) window.location.href = "/quizzen/dashboard";
-        } else {
-          showNotification("Failed to delete quiz", "error");
         }
       })
       .catch((error) => {
