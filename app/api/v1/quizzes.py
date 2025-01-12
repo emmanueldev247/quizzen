@@ -124,7 +124,7 @@ def get_all_quiz():
             return jsonify({
                 "success": False,
                 "error": "Bad Request",
-                "message": str(ve)
+                "message": "Pagination values must be positive integers."
             }), 400
 
         if user_id:
@@ -180,7 +180,7 @@ def get_all_quiz():
     
     except ValueError as ve:
         logger.error(f"ValueError: {ve}")
-        return jsonify({"success": False, "error": "Bad Request", "message": str(ve)}), 400
+        return jsonify({"success": False, "error": "Bad Request", "message": "Pagination values must be positive integers."}), 400
 
     except Exception as e:
         logger.error(f"Unexpected error in get_all_quiz: {e}")
@@ -204,7 +204,7 @@ def get_user_quiz():
             return jsonify({
                 "success": False,
                 "error": "Bad Request",
-                "message": str(ve)
+                "message": "Pagination values must be positive integers."
             }), 400
 
         query =  Quiz.query.filter_by(created_by=user_id)
@@ -250,7 +250,7 @@ def get_user_quiz():
      
     except ValueError as ve:
         logger.error(f"ValueError: {ve}")
-        return jsonify({"success": False, "error": "Bad Request", "message": str(ve)}), 400
+        return jsonify({"success": False, "error": "Bad Request", "message": "Pagination values must be positive integers."}), 400
 
     except Exception as e:
         logger.error(f"Unexpected error in get_user_quiz: {e}")
@@ -291,7 +291,7 @@ def get_quiz(quiz_id):
             return jsonify({
                 "success": False,
                 "error": "Bad Request",
-                "message": str(ve)
+                "message": "Pagination values must be positive integers."
             }), 400
 
         paginated_questions = (
@@ -356,7 +356,7 @@ def get_quiz(quiz_id):
     
     except ValueError as ve:
         logger.error(f"ValueError: {ve}")
-        return jsonify({"success": False, "error": "Bad Request", "message": str(ve)}), 400
+        return jsonify({"success": False, "error": "Bad Request", "message": "Pagination values must be positive integers."}), 400
 
     except Exception as e:
         logger.error(f"Unexpected error in get_quiz: {e}")
@@ -413,7 +413,11 @@ def update_quiz(quiz_id):
                 if quiz.duration <= 0:
                     raise ValueError("Duration must be a positive integer")
             except ValueError as ve:
-                return jsonify({"success": False, "error": "Invalid input", "message": str(ve)}), 400
+                return jsonify({
+                    "success": False, 
+                    "error": "Invalid input", 
+                    "message": "Duration must be a positive integer"
+                }), 400
         if 'public' in data:
             if not isinstance(data['public'], bool):
                 return jsonify({"success": False, "error": "Invalid input", "message": "Public must be a boolean"}), 400
