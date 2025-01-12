@@ -30,6 +30,16 @@ def handle_rate_limit_error(e):
     }
     return jsonify(response), 429
 
+
+@api_v1.errorhandler(422)
+def handle_missing_authorization_header(e):
+    response = {
+        "success": False,
+        "error": "Missing Authorization Header",
+        "message": "Request must include an Authorization header with a valid JWT token"
+    }
+    return jsonify(response), 422
+
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
     logger.error(f"Method not allowed error: {str(e)}")
