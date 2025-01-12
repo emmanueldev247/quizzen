@@ -30,14 +30,14 @@ def handle_rate_limit_error(e):
     }
     return jsonify(response), 429
 
-@api_v1.errorhandler(404)
+@api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
     response = {
         "success": False,
         "error": 404,
         "message": "Method Not Allowed"
     }
-    return jsonify(response), 404
+    return jsonify(response), 405
 
 @api_v1.errorhandler(404)
 def handle_not_found_error(e):
