@@ -1,5 +1,5 @@
 import unicodedata
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from flask_jwt_extended.exceptions import (
     NoAuthorizationError,
@@ -52,6 +52,9 @@ def handle_invalid_token_error(e):
         "message": "Invalid token. Please provide a valid token."
     }
     return jsonify(response), 400
+@api_v1.errorhandler(InvalidTokenError)
+def handle_invalid_token_error(e):
+    return abort(401)
 
 @api_v1.errorhandler(405)
 def handle_not_allowed_error(e):
