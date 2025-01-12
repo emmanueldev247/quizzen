@@ -128,12 +128,9 @@ def get_all_quiz():
             }), 400
 
         if user_id:
-            print("user only")
             if public_only:
-                print("public only")
                 query = Quiz.query.filter_by(public=True)
             else:
-                print("public and user")
                 query = Quiz.query.filter(
                     or_(Quiz.public==True, Quiz.created_by == user_id)
                 )
