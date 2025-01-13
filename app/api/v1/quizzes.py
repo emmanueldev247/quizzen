@@ -9,15 +9,16 @@
 """
 
 
-from . import api_v1
-from flask import request, jsonify, url_for, Response
 import json
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models import Quiz, Question
-from app.extensions import db, limiter
-from app.routes import logger
 from collections import OrderedDict
+from flask import request, jsonify, url_for, Response
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_
+
+from . import api_v1
+from app.extensions import db, limiter
+from app.models import Question, Quiz
+from app.routes import logger
 
 
 @api_v1.route('/quiz', methods=['POST'])
