@@ -198,8 +198,8 @@ def get_all_quiz():
         response_data = OrderedDict({
             "success": True,
             "data": result,
-            "total": total,
-            "pages": pages,
+            "total": f"{total} item(s)",
+            "pages": f"{pages} page(s)",
             "links": links
         })
 
@@ -285,8 +285,8 @@ def get_user_quiz():
         response_data = OrderedDict({
             "success": True,
             "data": result,
-            "total": total,
-            "pages": pages,
+            "total": f"{total} item(s)",
+            "pages": f"{pages} page(s)",
             "links": links
         })
 
@@ -405,8 +405,8 @@ def get_quiz(quiz_id):
         response_data = OrderedDict({
             "success": True,
             "data": result,
-            "total_items": total,
-            "total_pages": pages,
+            "total": f"{total} item(s)",
+            "pages": f"{pages} page(s)",
             "links": links
         })
         response_json = json.dumps(response_data, default=str, sort_keys=False)
