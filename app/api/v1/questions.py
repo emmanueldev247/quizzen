@@ -70,26 +70,33 @@ def create_question(quiz_id):
                 "message": f"Missing required fields: {x_fields}"
             }), 400
 
-        question_text = data['question_text'].strip()
-        is_multiple_response = data['is_multiple_response']
-        question_type = data['question_type'].strip()
-        points = data['points']
-        answer_choices = data['answer_choices']
+        try:
+            question_text = data['question_text'].strip()
+            question_type = data['question_type'].strip()
+            is_multiple_response = data['is_multiple_response']
+            points = data['points']
+            answer_choices = data['answer_choices']
+        except Exception as e:
+            logger.error(f"Unexpected error in create_question: {e}")
+            return jsonify({
+                'success': False,
+                'error': 'Bad Request',
+                'message': 'Invalid data sent'
+            }), 400
 
         # Validating data
-        if not isinstance(is_multiple_response, bool):
-            return jsonify({
-                "success": False,
-                "error": "Bad Request",
-                "message": "is_multiple_response must be a boolean value (true or false)."
-            }), 400
-        is_multiple_response = bool(is_multiple_response)
-
         if question_type not in ['multiple_choice', 'short_answer']:
             return jsonify({
                 "success": False,
                 "error": "Bad Request",
                 "message": "question_type must be either 'multiple_choice' or 'short_answer'"
+            }), 400
+
+        if not isinstance(is_multiple_response, bool):
+            return jsonify({
+                "success": False,
+                "error": "Bad Request",
+                "message": "is_multiple_response must be a boolean value (true or false)."
             }), 400
 
         if question_type == 'multiple_choice' and len(answer_choices) < 2:
@@ -164,11 +171,11 @@ def create_question(quiz_id):
             question_type=question_type,
             points=points,
         )
-        db.session.add(new_question)
+        # db.session.add(new_question)
 
         update_answer_choices(new_question.id, answer_choices)
         quiz.calculate_max_score()
-        db.session.commit()
+        # db.session.commit()
 
         return jsonify({
             "success": True,
