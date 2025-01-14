@@ -21,12 +21,11 @@ from itsdangerous import (
     URLSafeTimedSerializer as Serializer
 )
 
-from app.extensions import db, mail, limiter
+from app.extensions import db, full_bp, mail, limiter
 from app.models import User, UsedToken
 from app.utils.logger import setup_logger
 
 
-full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
 logger = setup_logger()
 
 

@@ -22,13 +22,12 @@ from flask_login import LoginManager
 
 from app import routes_dashboard
 from app.api import v1
-from app.api.v1 import api_v1
 from app.extensions import (
     bcrypt, db, jwt,
     limiter, mail, migrate,
     session, timeago_filter
 )
-from app.routes import full_bp
+from app.extensions import api_v1, full_bp
 from config import config
 
 

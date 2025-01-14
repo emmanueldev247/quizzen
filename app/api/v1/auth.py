@@ -11,8 +11,7 @@ from jwt.exceptions import (
 )
 from werkzeug.exceptions import Unauthorized
 
-from . import api_v1
-from app.extensions import blacklist_redis, jwt, limiter
+from app.extensions import api_v1, blacklist_redis, jwt, limiter
 from app.models import User
 from app.routes import logger
 

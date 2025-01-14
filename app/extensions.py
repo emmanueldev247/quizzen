@@ -63,3 +63,7 @@ def check_if_token_in_blacklist(jwt_header, jwt_payload):
     """checks for jwt revoke status"""
     jti = jwt_payload["jti"]
     return blacklist_redis.get(jti) is not None
+
+# Blueprints
+full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
+api_v1 = Blueprint('api_v1', __name__, url_prefix='/quizzen/api/v1')

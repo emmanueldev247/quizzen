@@ -15,8 +15,7 @@ from flask import request, jsonify, url_for, Response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_
 
-from . import api_v1
-from app.extensions import db, limiter
+from app.extensions import api_v1, db, limiter
 from app.models import Question, Quiz
 from app.routes import logger
 

@@ -30,13 +30,13 @@ from flask import (
 from flask_limiter.errors import RateLimitExceeded
 from functools import wraps
 
-from app.extensions import db, limiter
+from app.extensions import db, full_bp, limiter
 from app.models import (
     AnswerChoice, Category, Leaderboard, Notification,
     Question, Quiz, QuizHistory, User
 )
 from app.routes import (
-    full_bp, logger, rate_limit_exceeded
+    logger, rate_limit_exceeded
 )
 
 
