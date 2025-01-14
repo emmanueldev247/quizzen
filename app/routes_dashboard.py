@@ -213,7 +213,7 @@ def create_quiz(current_user):
 
         return jsonify({
             'success': True,
-            'redirect_url': url_for('full_bp.edit_question',
+            'redirect_url': url_for('full_bp.get_question',
                                     quiz_id=quiz.id,
                                     question_id=question_id)
         }), 201
@@ -553,7 +553,7 @@ def get_question(current_user, quiz_id, question_id):
                 "message": "Question not found"
             }), 404
 
-        return render_template('edit_question.html',
+        return render_template('get_question.html',
                                quiz=quiz, question=question)
 
     except Exception as e:
