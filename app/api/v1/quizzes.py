@@ -112,6 +112,7 @@ def create_quiz():
         }), 201
 
     except Exception as e:
+        logger.error(f"Unexpected error in create_quiz: {e}")
         db.session.rollback()
         return jsonify({
             "success": False,
