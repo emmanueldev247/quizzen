@@ -743,8 +743,9 @@ def update_question(current_user, quiz_id, question_id):
         db.session.commit()
         return jsonify({
             "success": True,
-            "message": "Quiz updated successfully"
-        }), 200
+            "message": "Quiz updated successfully",
+            "redirect_url": url_for('full_bp.get_quiz', quiz_id=quiz_id)
+        }), 201
     except Exception as e:
         logger.error(f"Error editing question: {str(e)}")
         return jsonify({

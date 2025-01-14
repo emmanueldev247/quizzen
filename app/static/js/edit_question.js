@@ -501,12 +501,14 @@ document.addEventListener("DOMContentLoaded", () => {
               "error"
             );
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        } else showNotification("Question saved successfully", "success");
         return response.json();
       })
       .then((data) => {
         if (data.redirect_url) {
-          window.location.href = data.redirect_url;
+          setTimeout(() => {
+            window.location.href = data.redirect_url;
+          }, 300);
         }
       })
       .catch((error) => {
