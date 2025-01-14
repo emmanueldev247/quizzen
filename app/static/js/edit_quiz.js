@@ -344,8 +344,14 @@ export function confirmDelete() {
           const questionCard = document
             .querySelector(`.question-header[data-question-id="${questionId}"]`)
             .closest(".question-card");
-          if (questionCard) questionCard.remove();
-          updateQuizStats();
+          if (questionCard) {
+            const pointSelect = questionCard.querySelector(".point-select");
+            const negPoints = parseInt(
+              pointSelect.textContent.trim().split(" ")[0]
+            );
+            questionCard.remove();
+            updateQuizStats(negPoints);
+          }
         }
       })
       .catch((error) => {
@@ -417,7 +423,7 @@ export function handleQuizDeletion(questionCard) {
     });
 }
 
-export function updateQuizStats() {
+export function updateQuizStats(negPoints = 1) {
   const quizLengthElem = document.getElementById("quiz_length");
   const questionsLabel = document.getElementById("questions_label");
   const quizMaxScoreElem = document.getElementById("quiz_max_score");
@@ -429,7 +435,7 @@ export function updateQuizStats() {
   quizLengthElem.textContent = --quizLength;
   questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
 
-  quizMaxScoreElem.textContent = --quizMaxScore;
+  quizMaxScoreElem.textContent = quizMaxScore - negPoints;
   pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
 
   const questionCards = document.querySelectorAll(".question-card");
