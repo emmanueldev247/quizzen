@@ -55,16 +55,22 @@ def create_quiz():
                 "error": "Bad Request",
                 "message": f"Missing required fields: {x_fields}"
             }), 400
-
-        if 'description' in data:
-            description = data.get('description').strip()
-        else:
-            description = None
-
-        title = data.get('title').strip()
-        category_id = data.get('category_id', '1')
-        duration = data.get('duration')
-        public = data.get('public', False)
+        
+        try:
+            title = data.get('title').strip()
+            category_id = data.get('category_id', '1')
+            duration = data.get('duration')
+            public = data.get('public', False)
+            description = data.get('description', None)
+            if description:
+                description = description.strip()
+        except Exception as e:
+            logger.error(f"Unexpected error in create_quiz: {e}")
+            return jsonify({
+                'success': False,
+                'error': 'Bad Request',
+                'message': 'Invalid data sent'
+            }), 400
 
         # Validating category_id
         try:
@@ -469,29 +475,37 @@ def update_quiz(quiz_id):
                 "error": "Unauthorized to update this quiz"
             }), 403
 
-        if 'title' in data:
-            quiz.title = data['title']
-        if 'description' in data:
-            quiz.description = data['description']
-        if 'duration' in data:
-            try:
-                quiz.duration = int(data['duration'])
-                if quiz.duration <= 0:
-                    raise ValueError("Duration must be a positive integer")
-            except ValueError as ve:
-                return jsonify({
-                    "success": False,
-                    "error": "Invalid input",
-                    "message": "Duration must be a positive integer"
-                }), 400
-        if 'public' in data:
-            if not isinstance(data['public'], bool):
-                return jsonify({
-                    "success": False,
-                    "error": "Invalid input",
-                    "message": "Public must be a boolean"
-                }), 400
-            quiz.public = data['public']
+        try:
+            if 'title' in data:
+                quiz.title = data['title'].strip()
+            if 'description' in data:
+                quiz.description = data['description'].strip()
+            if 'duration' in data:
+                try:
+                    quiz.duration = int(data['duration'])
+                    if quiz.duration <= 0:
+                        raise ValueError("Duration must be a positive integer")
+                except ValueError as ve:
+                    return jsonify({
+                        "success": False,
+                        "error": "Invalid input",
+                        "message": "Duration must be a positive integer"
+                    }), 400
+            if 'public' in data:
+                if not isinstance(data['public'], bool):
+                    return jsonify({
+                        "success": False,
+                        "error": "Invalid input",
+                        "message": "Public must be a boolean"
+                    }), 400
+                quiz.public = data['public']
+        except Exception as e:
+            logger.error(f"Unexpected error in update_quiz: {e}")
+            return jsonify({
+                'success': False,
+                'error': 'Bad Request',
+                'message': 'Invalid data sent'
+            }), 400
 
         quiz.calculate_max_score()
         db.session.commit()
