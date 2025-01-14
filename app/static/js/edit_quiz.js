@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
           }
         } else {
-          console.error(`${action} failed for quiz ${quizId}`);
           if (response.status === 429)
             showNotification(
               "You have made too many requests in a short period. Please try again later",
@@ -76,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
         if (error.message === "Failed to fetch")
           showNotification(
             "Network error. Please check your connection",
@@ -195,7 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch((error) => {
-        console.error("Error updating title:", error);
         if (error.message === "Failed to fetch")
           showNotification(
             "Network error. Please check your connection",
@@ -355,7 +352,6 @@ export function confirmDelete() {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
         if (error.message === "Failed to fetch")
           showNotification(
             "Network error. Please check your connection",
@@ -405,7 +401,6 @@ export function handleQuizDeletion(questionCard) {
       }
     })
     .catch((error) => {
-      console.error("Error:", error);
       if (error.message === "Failed to fetch")
         showNotification(
           "Network error. Please check your connection",

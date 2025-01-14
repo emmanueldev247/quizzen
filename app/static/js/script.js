@@ -15,7 +15,6 @@ document.getElementById('conversion-form').addEventListener('submit', function(e
 			}
 		})
 		.catch(error => {
-			console.error('Error:', error);
 			document.getElementById('result').textContent = 'An error occurred. Please try again later.';
 		});
 });

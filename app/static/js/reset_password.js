@@ -115,7 +115,6 @@ resetPasswordForm.addEventListener("submit", function (event) {
       }
     })
     .catch((error) => {
-      console.error("Error:", error);
       if (error.message === "Failed to fetch")
         showNotification(
           "Network error. Please check your connection",

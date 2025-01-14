@@ -160,7 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateQuestionType(onLoad = false) {
-    console.log(`onLoad: ${onLoad}`);
     if (questionTypeSelect.value === "short_answer") {
       if (!onLoad) {
         optionsContainer.innerHTML = shortAnswerOptions;
@@ -422,14 +421,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   questionForm.addEventListener("input", () => {
-    console.log("real time")
     saveButtons.forEach((button) => {
       displayErrors(button, validateForm());
     });
   });
 
   questionForm.addEventListener("change", () => {
-    console.log("change")
     saveButtons.forEach((button) => {
       displayErrors(button, validateForm());
     });
@@ -447,7 +444,6 @@ document.addEventListener("DOMContentLoaded", () => {
       parseInt(document.getElementById("point-select").value.trim(), 10) || 1;
     const method = document.querySelector('input[name="_method"]').value;
 
-    console.log(method);
     const options = [];
     if (questionType === "multiple_choice") {
       const optionBoxes = document.querySelectorAll(".option-box");
@@ -490,8 +486,6 @@ document.addEventListener("DOMContentLoaded", () => {
       options: options,
     };
 
-    console.log(payload);
-
     saveButtons.forEach((button) => {
       button.disabled = true;
     });
@@ -527,7 +521,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch((error) => {
-        console.log(`Error: ${error}`);
         if (error.message === "Failed to fetch")
           showNotification(
             "Network error. Please check your connection",
