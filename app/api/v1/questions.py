@@ -58,9 +58,9 @@ def create_question(quiz_id):
             }), 400
 
         required_fields =\
-            ['question_text', 'is_multiple_response', 'question_type', 'points', 'answer_choices']
+            ['question_text', 'question_type', 'is_multiple_response', 'points', 'answer_choices']
         missing_fields =\
-            [field for field in required_fields if not data.get(field)]
+            [field for field in required_fields if field not in data]
 
         if missing_fields:
             x_fields = ', '.join(missing_fields)
@@ -177,6 +177,7 @@ def create_question(quiz_id):
         }), 201
 
     except Exception as e:
+        logger.error(f"Unexpected error in create_question: {e}")
         db.session.rollback()
         return jsonify({
             "success": False,
