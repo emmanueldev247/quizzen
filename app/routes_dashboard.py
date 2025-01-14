@@ -177,17 +177,26 @@ def create_quiz(current_user):
                 'message': 'Category is required'
             }), 400
 
-        if not isinstance(category_id, int) or int(category_id) <= 0:
+        try:
+            category_id = int(category_id)
+            if category_id <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
             return jsonify({
                 'success': False,
                 'message': 'Category ID must be a positive integer'
             }), 400
 
-        if not duration or not isinstance(duration, int) or int(duration) <= 0:
+        try:
+            duration = int(duration)
+            if duration <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
             return jsonify({
                 'success': False,
                 'message': 'Duration must be a positive integer'
             }), 400
+
 
         quiz = Quiz(
             title=title,
@@ -279,7 +288,11 @@ def post_quiz(current_user, quiz_id):
         answer_choices = data.getlist('answer_choices')
         points = data.get('points', '0')
 
-        if not points or not isinstance(points, int) or int(points) <= 0:
+        try:
+            points = int(points)
+            if points <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
             return jsonify({
                 'success': False,
                 'message': 'Points must be a positive integer'

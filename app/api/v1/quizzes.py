@@ -76,11 +76,15 @@ def create_quiz():
         category_id = int(category_id)
 
         # Validating duration
-        if not isinstance(duration, int):
+        try:
+            duration = int(duration)
+            if duration <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
             return jsonify({
-                "success": False,
-                "error": "Bad Request",
-                "message": "duration must be an integer."
+                'success': False,
+                'error': 'Bad Request',
+                'message': 'duration must be a positive integer'
             }), 400
 
         # Validating public
