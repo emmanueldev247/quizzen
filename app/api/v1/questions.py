@@ -14,8 +14,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_
 
 from app.extensions import api_v1, db, limiter
-from app.models import AnswerChoice,Question, Quiz
-from app.routes import logger, update_answer_choices
+from app.models import AnswerChoice, Question, Quiz
+from app.routes import logger
+from app.routes_dashboard import update_answer_choices
 
 
 question_route = '/quiz/<quiz_id>/question/<question_id>'
