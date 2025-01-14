@@ -25,6 +25,10 @@
                 <i class="fas fa-list"></i>
                 {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{% endif %}
             </div>
+            <div class="detail-item question-duration">
+                <i class="fas fa-clock"></i>
+                {{ quiz.duration }} {% if quiz.duration > 1 %}Minutes{% else %}Minute{% endif %}
+            </div>
             <div class="detail-item quiz-category">
                 <i class="fas fa-tag"></i>
                 {{ quiz.related_category.name if quiz.related_category else None }}
