@@ -4,7 +4,7 @@ import humanize
 import os
 import redis
 from datetime import datetime, timezone
-from flask import Flask, request
+from flask import Blueprint, Flask, request
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter

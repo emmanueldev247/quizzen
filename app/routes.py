@@ -10,7 +10,7 @@
 import unicodedata
 from datetime import datetime
 from flask import (
-    Blueprint, current_app, flash, jsonify,
+    current_app, flash, jsonify,
     redirect, render_template, request,
     session, url_for
 )
