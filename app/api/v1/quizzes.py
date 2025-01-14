@@ -67,13 +67,16 @@ def create_quiz():
         public = data.get('public', False)
 
         # Validating category_id
-        if not category_id.isdigit():
+        try:
+            category_id = int(category_id)
+            if (category_id < 1) or (category_id > 16):
+                raise ValueError
+        except (ValueError, TypeError):
             return jsonify({
-                "success": False,
-                "error": "Bad Request",
-                "message": "category_id must be a valid integer."
+                'success': False,
+                'error': 'Bad Request',
+                'message': 'category_id must be a valid integer [1 - 16].'
             }), 400
-        category_id = int(category_id)
 
         # Validating duration
         try:
