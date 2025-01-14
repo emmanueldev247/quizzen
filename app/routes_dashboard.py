@@ -82,7 +82,7 @@ def admin_check(f):
             return redirect(url_for('full_bp.login'))
         try:
             if session['user_role'] != 'admin':
-                return redirect(url_for('full_bp.dashboard'))
+                return redirect(url_for('full_bp.user_dashboard'))
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
             flash("log in", "error")
@@ -240,7 +240,7 @@ def get_quiz(current_user, quiz_id):
 
     if quiz.created_by != current_user.id:
         # Test
-        return redirect(url_for('full_bp.dashboard'))
+        return redirect(url_for('full_bp.user_dashboard'))
     return render_template('edit_quiz.html',
                            quiz=quiz,
                            title=f"Quiz: {quiz.title}")
@@ -256,7 +256,7 @@ def post_quiz(current_user, quiz_id):
     try:
         quiz = Quiz.query.get_or_404(quiz_id)
         if quiz.created_by != current_user.id:
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
         try:
             data = request.get_json() if request.is_json else request.form
         except Exception as parse_error:
@@ -347,7 +347,7 @@ def update_quiz(current_user, quiz_id):
     try:
         quiz = Quiz.query.get_or_404(quiz_id)
         if quiz.created_by != current_user.id:
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
         try:
             data = request.get_json() if request.is_json else request.form
         except Exception as parse_error:
@@ -429,7 +429,7 @@ def delete_quiz(current_user, quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
 
     if quiz.created_by != current_user.id:
-        return redirect(url_for('full_bp.dashboard'))
+        return redirect(url_for('full_bp.user_dashboard'))
     try:
         db.session.delete(quiz)
         db.session.commit()
@@ -505,7 +505,7 @@ def create_question(current_user, quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
 
     if quiz.created_by != current_user.id:
-        return redirect(url_for('full_bp.dashboard'))
+        return redirect(url_for('full_bp.user_dashboard'))
     question_id = str(ulid.new()).lower()[:16]
 
     return redirect(
@@ -558,14 +558,14 @@ def get_question(current_user, quiz_id, question_id):
         quiz = Quiz.query.get_or_404(quiz_id)
         if quiz.created_by != current_user.id:
             logger.error("User is not authorized to edit this quiz.")
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
 
         query = Question.query.filter_by(id=question_id, quiz_id=quiz_id)
         question = query.first()
 
         if not question:
             if not is_valid_id(question_id):
-                return redirect(url_for('full_bp.dashboard'))
+                return redirect(url_for('full_bp.user_dashboard'))
                 # return jsonify({
                 #     "success": False,
                 #     "message": "Question not found"
@@ -596,7 +596,7 @@ def save_question(current_user, quiz_id, question_id):
 
         if quiz.created_by != current_user.id:
             logger.error("User is not authorized to edit this quiz.")
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
 
         query = Question.query.filter_by(id=question_id, quiz_id=quiz_id)
         question = query.first()
@@ -681,7 +681,7 @@ def update_question(current_user, quiz_id, question_id):
 
         if quiz.created_by != current_user.id:
             logger.error("User is not authorized to edit this quiz.")
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
 
         query = Question.query.filter_by(id=question_id, quiz_id=quiz_id)
         question = query.first()
@@ -764,7 +764,7 @@ def delete_question(current_user, quiz_id, question_id):
         quiz = Quiz.query.get_or_404(quiz_id)
         if quiz.created_by != current_user.id:
             logger.error("User is not authorized to edit this quiz.")
-            return redirect(url_for('full_bp.dashboard'))
+            return redirect(url_for('full_bp.user_dashboard'))
 
         query = Question.query.filter_by(id=question_id, quiz_id=quiz_id)
         question = query.first()
