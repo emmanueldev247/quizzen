@@ -21,6 +21,7 @@
 """
 
 import humanize
+import re
 import ulid
 from flask import (
     current_app, flash, jsonify,
@@ -531,6 +532,21 @@ def update_answer_choices(question_id, options):
         db.session.add(answer_choice)
 
 
+def is_valid_id(identifier):
+    """
+    Validates that an identifier matches our scheme:
+        str(ulid.new()).lower()[:16]
+
+    Args:
+        identifier (str): The identifier to validate.
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    # Check if the identifier is a 16-character lowercase alphanumeric string
+    return bool(re.fullmatch(r'[a-z0-9]{16}', identifier))
+
+
 @full_bp.route(f'{question_route}', methods=['GET'])
 @full_bp.route(f'{question_route}/edit', methods=['GET'])
 @auth_required
@@ -548,12 +564,15 @@ def get_question(current_user, quiz_id, question_id):
         question = query.first()
 
         if not question:
-            return jsonify({
-                "success": False,
-                "message": "Question not found"
-            }), 404
+            if not is_valid_id(question_id):
+                return redirect(url_for('full_bp.dashboard'))
+                # return jsonify({
+                #     "success": False,
+                #     "message": "Question not found"
+                # }), 404    
+            return render_template('edit_question.html', quiz=quiz)
 
-        return render_template('get_question.html',
+        return render_template('edit_question.html',
                                quiz=quiz, question=question)
 
     except Exception as e:
