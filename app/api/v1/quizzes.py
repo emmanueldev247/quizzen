@@ -528,22 +528,6 @@ def update_quiz(quiz_id):
 def delete_quiz(quiz_id):
     """Delete a quiz"""
     try:
-        if not request.is_json:
-            return jsonify({
-                "success": False,
-                "error": "Invalid JSON",
-                "details": "Request content must be 'application/json'"
-            }), 400
-
-        try:
-            data = request.get_json()
-        except Exception as parse_error:
-            return jsonify({
-                "success": False,
-                "error": "Failed to parse JSON",
-                "details": str(parse_error)
-            }), 400
-
         user_id = get_jwt_identity()
         quiz = Quiz.query.get(quiz_id)
         if not quiz:
