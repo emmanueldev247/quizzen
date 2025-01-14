@@ -1,3 +1,5 @@
+"""API auth file"""
+
 import unicodedata
 from flask import request, jsonify, abort
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt

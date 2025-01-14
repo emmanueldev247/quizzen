@@ -7,6 +7,7 @@
       - '/reset_password/<token>' -> reset_password_with_token
       - '/logout' -> logout
 """
+
 import unicodedata
 from datetime import datetime
 from flask import (

@@ -1,3 +1,5 @@
+"""config file"""
+
 import os
 import redis
 import secrets

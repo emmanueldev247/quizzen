@@ -1,3 +1,5 @@
+"""Seed data for category"""
+
 from app import create_app, db
 from app.models import Category
 

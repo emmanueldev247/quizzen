@@ -6,7 +6,6 @@
       - '.../question/<question_id>' DELETE -> delete_question
 """
 
-
 import json
 from collections import OrderedDict
 from flask import request, jsonify, url_for, Response
