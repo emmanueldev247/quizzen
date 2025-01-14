@@ -1,6 +1,7 @@
 import { showNotification } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const questionForm = document.getElementById("question-form");
   const menuToggle = document.querySelector(".three-dots");
   const menuContent = document.querySelector(".menu-content");
   const saveButtons = document.querySelectorAll(".publish-btn");
@@ -354,7 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options.forEach((box, index) => {
         const optionText = box.querySelector('input[type="text"]').value.trim();
         if (!optionText) {
-          errorMessages.push(`Option ${index + 1} must not be empty.`);
+          errorMessages.push(`Option ${index + 1} must not be empty`);
         }
       });
 
@@ -390,8 +391,8 @@ document.addEventListener("DOMContentLoaded", () => {
       button.disabled = true;
     } else {
       button.removeAttribute("data-tooltip");
+      button.disabled = false;
     }
-    button.disabled = false;
   }
 
   // Add click listeners to the save buttons
@@ -418,6 +419,20 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("blur", () =>
       displayErrors(button, validateForm())
     );
+  });
+
+  questionForm.addEventListener("input", () => {
+    console.log("real time")
+    saveButtons.forEach((button) => {
+      displayErrors(button, validateForm());
+    });
+  });
+
+  questionForm.addEventListener("change", () => {
+    console.log("change")
+    saveButtons.forEach((button) => {
+      displayErrors(button, validateForm());
+    });
   });
 
   // Process form submission using AJAX
