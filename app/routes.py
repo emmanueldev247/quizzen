@@ -525,9 +525,9 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-#GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 
-print(GOOGLE_CLIENT_ID)
+print(f'Google ID: {GOOGLE_CLIENT_ID}')
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
 flow = Flow.from_client_secrets_file(
@@ -546,7 +546,7 @@ def login_is_required(function):
     return wrapper
 
 
-@full_bp.route("/quizzen")
+@full_bp.route("/quizzen/index")
 def index_oauth():
     return "Hello World <a href='/quizzen/auth/login'><button>Login</button></a>"
 
@@ -588,13 +588,13 @@ def callback():
     return redirect("/quizzen/protected_area")
 
 
-@app.route("/quizzen/logout")
+@full_bpapp.route("/quizzen/logout2")
 def logout2():
     session.clear()
-    return redirect("/quizzen")
+    return redirect("/quizzen/index")
 
 
-@app.route("/quizzen/protected_area")
+@full_bp.route("/quizzen/protected_area")
 @login_is_required
 def protected_area():
     return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
