@@ -14,6 +14,7 @@ from flask_migrate import Migrate
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 
+from authlib.integrations.flask_client import OAuth
 
 def get_ip_from_proxy():
     """gets ip from clients for logger"""
@@ -39,6 +40,7 @@ def timeago_filter(value):
 
 
 # Initialize extensions
+oauth = OAuth()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 session = Session()
