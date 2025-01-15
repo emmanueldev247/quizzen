@@ -28,6 +28,7 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
 
+
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 
@@ -40,6 +41,17 @@ flow = Flow.from_client_secrets_file(
      redirect_uri="https://emmanueldev247.tech/quizzen/auth/google/callback"
 )
 
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)  # Authorization required
+        else:
+            return function()
+
+    return wrapper
+
+    
 @full_bp.route("/quizzen/index")
 def index_oauth():
     return "Hello World <a href='/quizzen/auth/login'><button>Login</button></a>"
