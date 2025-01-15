@@ -68,7 +68,7 @@ def testing():
 
 @full_bp.route("/auth/google/callback")
 def callback():
-    print(session)
+    print(f'Session: {session}')
     flow.fetch_token(authorization_response=request.url)
 
     try:
