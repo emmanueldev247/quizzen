@@ -507,80 +507,94 @@ def logout():
 #     app.run(debug=True)
 
 
-from flask import Flask, redirect, url_for, session
-from authlib.integrations.flask_client import OAuth
-from dotenv import load_dotenv
-import os
+# from flask import Flask, redirect, url_for, session
+# from authlib.integrations.flask_client import OAuth
+# from dotenv import load_dotenv
+# import os
 
-GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-google = oauth.register(
-    name='google',
-    client_id=GOOGLE_CLIENT_ID,
-    client_secret=GOOGLE_CLIENT_SECRET,
-    access_token_url='https://oauth2.googleapis.com/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    api_base_url='https://www.googleapis.com/oauth2/v1/',
-    client_kwargs={
-        'scope': 'openid email profile'
-    }
+# GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+# GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
+import os
+import pathlib
+
+import requests
+from flask import Flask, session, abort, redirect, request
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from pip._vendor import cachecontrol
+import google.auth.transport.requests
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+#GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+
+print(GOOGLE_CLIENT_ID)
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+
+flow = Flow.from_client_secrets_file(
+     client_secrets_file=client_secrets_file,
+    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/    auth/userinfo.email", "openid"],
+     redirect_uri="https://emmanueldev247.tech/quizzen/auth/google/callback"
 )
 
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)  # Authorization required
+        else:
+            return function()
+
+    return wrapper
 
 
-@full_bp.route("/oauth-test")
+@full_bp.route("/quizzen")
 def index_oauth():
     return "Hello World <a href='/quizzen/auth/login'><button>Login</button></a>"
 
 
-@full_bp.route('/auth/login')
+@full_bp.route("/auth/login")
 def testing():
-    """Login route"""
-    redirect_uri = url_for('full_bp.authorize', _external=True)
-    return google.authorize_redirect(redirect_uri)
-
     authorization_url, state = flow.authorization_url()
-    print(f'Flow is: {flow.authorization_url()}')
     session["state"] = state
+
+    print(session)
+    print(authorizational_url)
+
     return redirect(authorization_url)
 
 
-import time
-@full_bp.route('/authorize')
-def authorize():
-    token = google.authorize_access_token()  
-    user_info = google.get('userinfo').json()
-    
-    print(f'user: {user_info}')
-    
-    email = user_info.get('email')
-    name = user_info.get('name')
+@full_bp.route("/auth/google/callback")
+def callback():
+    print(session)
+    flow.fetch_token(authorization_response=request.url)
 
-    time.sleep(10)
+    if not session["state"] == request.args["state"]:
+        abort(500)  # State does not match!
 
-    return redirect(url_for('full_bp.login'))
+    credentials = flow.credentials
+    request_session = requests.session()
+    cached_session = cachecontrol.CacheControl(request_session)
+    token_request = google.auth.transport.requests.Request(session=cached_session)
 
-    # user = find_user_by_email(email)  # Implement this function to query your database
-    # if user:
-    #     # Existing user: log them in
-    #     session['user'] = user  # Store user info in the session
-    #     return redirect(url_for('dashboard'))
-    # else:
-    #     # New user: sign them up
-    #     create_new_user(email, name)  # Implement this function to save to your database
-    #     session['user'] = {'email': email, 'name': name}
-    #     return redirect(url_for('dashboard'))
+    id_info = id_token.verify_oauth2_token(
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=GOOGLE_CLIENT_ID
+    )
 
-# @full_bp.route('/auth/google/callback')
-# def callback():
-#     """Login route"""
-#     flow.fetch_token(authorization_response=request.url)
+    print(id_info)
 
-#     if not session["state"] == request.args["state"]:
-#         abort(500)  # State does not match!
+    session["google_id"] = id_info.get("sub")
+    session["name"] = id_info.get("name")
+    return redirect("/quizzen/protected_area")
 
-#     credentials = flow.credentials
-#     request_session = requests.session()
-#     cached_session = cachecontrol.CacheControl(request_session)
-#     token_request = google.auth.transport.requests.Request(session=cached_session)
 
+@app.route("/quizzen/logout")
+def logout2():
+    session.clear()
+    return redirect("/quizzen")
+
+
+@app.route("/quizzen/protected_area")
+@login_is_required
+def protected_area():
+    return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
