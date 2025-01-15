@@ -1,18 +1,3 @@
-
-# import unicodedata
-# from datetime import datetime
-# from flask import (
-#     current_app, flash, jsonify,
-#     redirect, render_template, request,
-#     session, url_for
-# )
-# from flask_limiter.errors import RateLimitExceeded
-# from flask_mail import Message
-# from itsdangerous import (
-#     BadSignature, SignatureExpired,
-#     URLSafeTimedSerializer as Serializer
-# )
-
 from app.extensions import full_bp, mail, limiter, oauth
 from app.models import User, UsedToken
 from app.utils.logger import setup_logger
@@ -27,6 +12,14 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
+@full_bp.before_request
+def debug_session():
+    print(f"Session before request: {session}")
+
+@full_bp.after_request
+def debug_session_after(response):
+    print(f"Session after request: {session}")
+    return response
 
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -59,10 +52,16 @@ def index_oauth():
 
 @full_bp.route("/auth/login")
 def testing():
+    """print(session)
+    session.clear()
+    print("session cleared")"""
+    
+    print(f'Session: {session}')
+
     authorization_url, state = flow.authorization_url()
     session["state"] = state
-    print(session)
-    print(authorization_url)
+    print(f'Session after set: {session}')
+    print(f'URL: {authorization_url}')
 
     return redirect(authorization_url)
 
@@ -72,8 +71,11 @@ def callback():
     print(session)
     flow.fetch_token(authorization_response=request.url)
 
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
+    try:
+        if not session["state"] == request.args["state"]:
+            abort(500)  # State does not match!
+    except Exception as e:
+        print(f'Error: {str(e)}')
 
     credentials = flow.credentials
     request_session = requests.session()
@@ -86,7 +88,7 @@ def callback():
         audience=GOOGLE_CLIENT_ID
     )
 
-    print(id_info)
+    print(f'ID_INFO: {id_info}')
 
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
@@ -103,64 +105,3 @@ def logout2():
 @login_is_required
 def protected_area():
     return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
-
-
-# def login_is_required(function):
-#     def wrapper(*args, **kwargs):
-#         if "google_id" not in session:
-#             return abort(401)  # Authorization required
-#         else:
-#             return function()
-
-#     return wrapper
-
-
-# @app.route("/login")
-# def login():
-#     authorization_url, state = flow.authorization_url()
-#     session["state"] = state
-#     return redirect(authorization_url)
-
-
-# @app.route("/callback")
-# def callback():
-#     flow.fetch_token(authorization_response=request.url)
-
-#     if not session["state"] == request.args["state"]:
-#         abort(500)  # State does not match!
-
-#     credentials = flow.credentials
-#     request_session = requests.session()
-#     cached_session = cachecontrol.CacheControl(request_session)
-#     token_request = google.auth.transport.requests.Request(session=cached_session)
-
-#     id_info = id_token.verify_oauth2_token(
-#         id_token=credentials._id_token,
-#         request=token_request,
-#         audience=GOOGLE_CLIENT_ID
-#     )
-
-#     session["google_id"] = id_info.get("sub")
-#     session["name"] = id_info.get("name")
-#     return redirect("/protected_area")
-
-
-# @app.route("/logout")
-# def logout():
-#     session.clear()
-#     return redirect("/")
-
-
-# @app.route("/")
-# def index():
-#     return "Hello World <a href='/login'><button>Login</button></a>"
-
-
-# @app.route("/protected_area")
-# @login_is_required
-# def protected_area():
-#     return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
-
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
