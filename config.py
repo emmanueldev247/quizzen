@@ -44,6 +44,10 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', secrets.token_urlsafe(32))
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
 
+    # Google Auth
+    GOOGLE_CLIENT_ID=os.getenv('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
 
 class DevelopmentConfig(Config):
     """Development configuration."""
