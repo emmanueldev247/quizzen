@@ -557,7 +557,7 @@ def testing():
     session["state"] = state
 
     print(session)
-    print(authorizational_url)
+    print(authorization_url)
 
     return redirect(authorization_url)
 
@@ -588,7 +588,7 @@ def callback():
     return redirect("/quizzen/protected_area")
 
 
-@full_bpapp.route("/quizzen/logout2")
+@full_bp.route("/logout2")
 def logout2():
     session.clear()
     return redirect("/quizzen/index")
