@@ -512,7 +512,8 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 import os
 
-
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 google = oauth.register(
     name='google',
     client_id=GOOGLE_CLIENT_ID,
