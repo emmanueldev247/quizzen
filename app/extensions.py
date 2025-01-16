@@ -69,4 +69,4 @@ def check_if_token_in_blacklist(jwt_header, jwt_payload):
 # Blueprints
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
 api_v1 = Blueprint('api_v1', __name__, url_prefix='/quizzen/api/v1')
-oauth_bp = Blueprint('oauth', __name__, url_prefix='quizzen/auth/google')
+oauth_bp = Blueprint('oauth', __name__, url_prefix='/quizzen/auth/google')
