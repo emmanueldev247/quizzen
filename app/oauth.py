@@ -38,6 +38,7 @@ def debug_session_after(response):
 @oauth_bp.before_app_request
 def before_oauth_request():
     print(f'Endpoint: {request.endpoint}')
+    print(f'Request arg: {request.args}')
     if request.endpoint == 'oauth.callback' and 'state' in request.args:
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
     else:
