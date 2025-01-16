@@ -55,7 +55,7 @@ def before_oauth_request():
 def after_oauth_request(response):
     if 'state' not in session:
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
-    print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMES    ITE']}")
+    print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     return response
 
 
