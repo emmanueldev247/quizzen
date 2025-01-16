@@ -28,18 +28,23 @@ flow = Flow.from_client_secrets_file(
 # come back
 @full_bp.before_request
 def debug_session():
+    print(f"fbp: SESSION_COOKIE_SAMESITE before request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     print(f"Session before request: {dict(session)}")
 
 @full_bp.after_request
 def debug_session_after(response):
     print(f"Session after request: {dict(session)}")
+    print(f"fbp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     return response
 
 @oauth_bp.before_app_request
 def before_oauth_request():
+    print(f"abp: SESSION_COOKIE_SAMESITE before request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     print(f'Endpoint: {request.endpoint}')
-    print(f'Request arg: {request.args}')
-    if request.endpoint == 'oauth.callback' and 'state' in request.args:
+
+    if request.endpoint == 'oauth.login' or request.endpoint == 'oauth.callback':
+    #     and 'state' in request.args:
+    # if request.endpoint == 'oauth.callback' and 'state' in request.args:
         print("setting............")
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
     else:
@@ -50,6 +55,7 @@ def before_oauth_request():
 def after_oauth_request(response):
     if 'state' not in session:
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+    print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMES    ITE']}")
     return response
 
 
