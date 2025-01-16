@@ -40,6 +40,7 @@ def before_oauth_request():
     print(f'Endpoint: {request.endpoint}')
     print(f'Request arg: {request.args}')
     if request.endpoint == 'oauth.callback' and 'state' in request.args:
+        print("setting............")
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
     else:
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
