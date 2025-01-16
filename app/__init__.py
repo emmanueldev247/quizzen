@@ -27,7 +27,7 @@ from app.extensions import (
     limiter, mail, migrate,
     session, timeago_filter
 )
-from app.extensions import api_v1, full_bp
+from app.extensions import api_v1, full_bp, oauth_bp
 from config import config
 
 
@@ -55,5 +55,6 @@ def create_app(config_name=None):
 
     app.register_blueprint(full_bp)
     app.register_blueprint(api_v1)
+    app.register_blueprint(oauth_bp)
 
     return app

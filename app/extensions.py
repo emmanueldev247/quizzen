@@ -14,7 +14,7 @@ from flask_migrate import Migrate
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 
-from authlib.integrations.flask_client import OAuth
+# from authlib.integrations.flask_client import OAuth
 
 def get_ip_from_proxy():
     """gets ip from clients for logger"""
@@ -40,7 +40,7 @@ def timeago_filter(value):
 
 
 # Initialize extensions
-oauth = OAuth()
+# oauth = OAuth()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 session = Session()
@@ -69,3 +69,4 @@ def check_if_token_in_blacklist(jwt_header, jwt_payload):
 # Blueprints
 full_bp = Blueprint('full_bp', __name__, url_prefix='/quizzen')
 api_v1 = Blueprint('api_v1', __name__, url_prefix='/quizzen/api/v1')
+oauth_bp = Blueprint('oauth', __name__, url_prefix='quizzen/auth/google')
