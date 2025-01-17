@@ -198,9 +198,12 @@ def callback():
             }
             return redirect(url_for("full_bp.oauth_registration"))
 
+        print("saved user..................................")
         # Log in the user
         session['user_id'] = user.id
         session['user_role'] = user.role
+        
+        print("logged saved user.............................")
         logger.info(f"Oauth User {user.id} logged in successfully")
         
         return redirect(url_for("full_bp.user_dashboard"))
