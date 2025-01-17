@@ -29,6 +29,10 @@ document.querySelectorAll(".role-option").forEach((option) => {
   });
 });
 
+function scrollToBottom() {
+  signupForm.scrollTop = signupForm.scrollHeight;
+}
+
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
 const contBtnNames = document.getElementById("continue-button-names");
@@ -53,6 +57,7 @@ contBtnEmail.addEventListener("click", () => {
     socialSignup.style.display =
       "none";
   firstNameDiv.style.display = "block";
+  scrollToBottom();
 });
 
 contBtnNames.addEventListener("click", () => {
@@ -77,6 +82,7 @@ contBtnNames.addEventListener("click", () => {
   if (firstName && lastName) {
     contBtnNames.style.display = "none";
     roleDiv.style.display = "block";
+    scrollToBottom();
   }
 });
 
@@ -91,8 +97,9 @@ contBtnRole.addEventListener("click", () => {
     return;
   }
   contBtnRole.style.display = "none";
-  roleDiv.style.display = "none";
+  // roleDiv.style.display = "none";
   passwordDiv.style.display = "block";
+  scrollToBottom();
 });
 
 submitBtn.addEventListener("click", (event) => {
