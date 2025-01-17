@@ -1,4 +1,16 @@
 {% extends "base.html" %}
+
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sections.css') }}">
+{% endblock styles_content %}
+
+{% block nav_content %}
+<button class="signup-button">
+	Signup
+</button>
+{% endblock nav_content %}
+
 {% block child_content %}
 <div class="cover-conv">
 	<div class="converter-container" id="converter">

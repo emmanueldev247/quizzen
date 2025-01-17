@@ -3,9 +3,16 @@
 {% block styles_content %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock styles_content %}
+{% block header_content%}
+<a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">
+	Signup
+</a>
+{% endblock header_content%}
 
 {% block nav_content %}
-		<li id=""><a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">Sign Up</a></li>
+	<button class="signup-button">
+		Signup
+	</button>
 {% endblock nav_content %}
 
 {% block child_content %}

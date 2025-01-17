@@ -53,7 +53,7 @@ contBtnEmail.addEventListener("click", () => {
   const emailError = document.getElementById("email-error");
 
   if (!email) {
-    email.textContent = "Please enter your email address";
+    emailError.textContent = "Please enter your email address";
     emailError.style.display = "block";
     return;
   }
