@@ -63,13 +63,19 @@ h4 {
     position: relative;
 }
 
-
 .signup-form h2 {
     margin-bottom: .5rem;
     color: #333;
 }
 
-.signup-form input {
+.signup-form-sub {
+    flex-direction: column;
+    max-height: 40vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.signup-form-sub input {
     font-size: 16px;
     width: 100%;
     padding: 0.8rem;
@@ -78,13 +84,13 @@ h4 {
     border-radius: 5px;
 }
 
-.signup-form input:focus {
+.signup-form-sub input:focus {
     border: 2px solid #6a0dad75;
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
 }
 
-.signup-form button {
+.signup-form-sub button {
     width: 100%;
     padding: 0.8rem;
     border: none;
@@ -98,16 +104,16 @@ h4 {
     margin-bottom: 1.5rem;
 }
 
-.signup-form button:hover {
+.signup-form-sub button:hover {
     background: #a94dd0;
 }
 
-.signup-form button:disabled {
+.signup-form-sub button:disabled {
     background: #a94dd0;
     cursor: not-allowed;
 }
 
-.signup-form button:focus {
+.signup-form-sub button:focus {
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
     background: #a94dd0;
