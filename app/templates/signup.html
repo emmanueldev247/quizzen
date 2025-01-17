@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 
 {% block styles_content %}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
 {% endblock styles_content %}
 
 {% block header_content%}
-		<a href="{{ url_for('full_bp.login') }}" class="button-log-in">
-			Log In
-		</a>
+<a href="{{ url_for('full_bp.login') }}" class="button-log-in">
+	Log In
+</a>
 {% endblock header_content%}
 
 {% block nav_content %}
-		<button class="login-button">
-			Login
-		</button>
+<button class="login-button">
+	Login
+</button>
 {% endblock nav_content %}
 
 {% block child_content %}
-	<div class="signup-container" id="signup-container">
-		<form class="signup-form" id="signup-form">
-			<h2>Welcome to Quizzen</h2>
-			<h4>Create a free account in few steps</h4>
+<div class="signup-container" id="signup-container">
+	<form class="signup-form" id="signup-form">
+		<h2>Welcome to Quizzen</h2>
+		<h4>Create a free account in few steps</h4>
+		<div class="signup-form-sub">
 			<input type="email" id="email" name="email" placeholder="Email" aria-label="Email Address" required
 				autocomplete="email">
 			<div id="email-error" class="error-message" style="display: none;" aria-live="polite"></div>
@@ -30,31 +31,11 @@
 				<input type="text" id="first_name" name="first_name" placeholder="First Name" aria-label="First Name"
 					required autocomplete="given-name">
 				<div id="first-name-error" class="error-message" style="display: none;" aria-live="polite"></div>
-				<input type="text" id="last_name" name="last_name" placeholder="Last Name" aria-label="Last Name" required
-					autocomplete="family-name">
+				<input type="text" id="last_name" name="last_name" placeholder="Last Name" aria-label="Last Name"
+					required autocomplete="family-name">
 				<div id="last-name-error" class="error-message" style="display: none;" aria-live="polite"></div>
 				<button type="button" id="continue-button-names">Continue</button>
 			</div>
-<!-- 
-			<div id="gender-container" style="display: none;">
-				<h4>Select your gender</h4>
-				<div class="gender-option" data-gender="male">
-					<i class='bx bx-male'></i>
-					<span>Male</span>
-				</div>
-				<div class="gender-option" data-gender="female">
-					<i class='bx bx-female'></i>
-					<span>Female</span>
-				</div>
-				<div class="gender-option" data-gender="others">
-					<i class='bx bx-body'></i>
-					<span>Others</span>
-				</div>
-				<input type="hidden" id="gender" name="gender" aria-label="Gender" required>
-				<div id="gender-error" class="error-message" style="display: none;" aria-live="polite"></div>
-				<button type="button" id="continue-button-gender">Continue</button>
-			</div> -->
-
 			<div id="role-container" style="display: none;">
 				<h4>I am</h4>
 				<h4><i>(Select what best describes you)</i></h4>
@@ -92,25 +73,26 @@
 				<div id="c_password-error2" class="error-message" style="display: none;" aria-live="polite"></div>
 				<button type="submit" id="submit-button" aria-label="Sign up for an account">Register</button>
 			</div>
-		</form>
-		<div class="social-signup" id="social-signup">
-			<h4>or continue with</h4>
-			<button class="google-signup">
-				<i class='bx bxl-google'></i>
-			</button>
-			<button class="microsoft-signup">
-				<i class='bx bxl-microsoft'></i>
-			</button>
-			<button class="facebook-signup">
-				<i class='bx bxl-facebook'></i>
-			</button>
 		</div>
-		<div class="login-link" id="login-link">
-			<p>Already have an account? <a href="{{ url_for('full_bp.login') }}">Log in</a></p>
-		</div>
+	</form>
+	<div class="social-signup" id="social-signup">
+		<h4>or continue with</h4>
+		<button class="google-signup">
+			<i class='bx bxl-google'></i>
+		</button>
+		<button class="microsoft-signup">
+			<i class='bx bxl-microsoft'></i>
+		</button>
+		<button class="facebook-signup">
+			<i class='bx bxl-facebook'></i>
+		</button>
 	</div>
+	<div class="login-link" id="login-link">
+		<p>Already have an account? <a href="{{ url_for('full_bp.login') }}">Log in</a></p>
+	</div>
+</div>
 {% endblock child_content %}
 
 {% block scripts %}
-	<script type="module" src="{{ url_for('static', filename='js/signup.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/signup.js') }}"></script>
 {% endblock scripts %}
