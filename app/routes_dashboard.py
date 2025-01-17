@@ -49,7 +49,7 @@ def auth_required(f):
         logger.info(f"Auth Attempt")
         if 'user_id' not in session:
             logger.error(f"Session token missing")
-            flash("log in", "error")
+            flash("You need to log in first", "error")
             return redirect(url_for('full_bp.login'))
 
         try:
@@ -58,12 +58,12 @@ def auth_required(f):
 
             if not current_user:
                 logger.error("Invalid Token")
-                flash("log in", "error")
+                flash("You need to log in first", "error")
                 return redirect(url_for('full_bp.login'))
 
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
-            flash("log in", "error")
+            flash("You need to log in first", "error")
             return redirect(url_for('full_bp.login'))
 
         return f(current_user, *args, **kwargs)
@@ -78,14 +78,14 @@ def admin_check(f):
         logger.info(f"role-based checks")
         if 'user_role' not in session:
             logger.error(f"Session token missing")
-            flash("log in", "error")
+            flash("You need to log in first", "error")
             return redirect(url_for('full_bp.login'))
         try:
             if session['user_role'] != 'admin':
                 return redirect(url_for('full_bp.user_dashboard'))
         except Exception as e:
             logger.error(f"Invalid Token, Error: {str(e)}")
-            flash("log in", "error")
+            flash("You need to log in first", "error")
             return redirect(url_for('full_bp.login'))
         return f(*args, **kwargs)
     return decorated

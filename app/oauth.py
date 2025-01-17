@@ -46,7 +46,7 @@ def oauth_is_required(f):
         logger.info(f"OAuth Attempt")
         if "oauth_user" not in session:
             logger.error(f"Oauth token missing")
-            flash("log in", "error")
+            flash("You need to log in first", "error")
             return redirect(url_for('full_bp.login'))
         else:
             return f(*args, **kwargs)
@@ -143,7 +143,7 @@ def callback():
     try:
         if not session or session['state'] != request.args['state']:
             logger.error(f"State does not match")
-            flash("log in", "error")
+            flash("Session expired. Please log in again", "error")
             return redirect(url_for('full_bp.login'))
 
         credentials = flow.credentials
@@ -204,8 +204,8 @@ def oauth_registration():
         # Retrieve user info from session
         oauth_user = session.get("oauth_user")
         if not oauth_user:
-            flash("Session expired. Please log in again.", "danger")
-            return redirect(url_for("full_bp.user_dashboard"))
+            flash("Session expired. Please log in again", "error")
+            return redirect(url_for("full_bp.login"))
 
         try:
 
@@ -216,8 +216,8 @@ def oauth_registration():
 
             # Validate input
             if not role:
-                flash("All fields are required.", "danger")
-                return redirect(url_for("full_bp.user_dashboard"))
+                flash("You must select a role", "error")
+                return redirect(url_for("full_bp.oauth_registration"))
 
             # Create and save user
             user = User(
@@ -237,7 +237,6 @@ def oauth_registration():
 #current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
             session["user_id"] = user.id
             session['user_role'] = user.role
-            flash("Oauth Registration complete!", "success")
             logger.info(f"Oauth User {user.id} logged in successfully")
             return jsonify({
                 "success": True,
