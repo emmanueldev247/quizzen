@@ -11,7 +11,11 @@ import google.auth.transport.requests
 import os
 import pathlib
 import requests
-from flask import current_app, redirect, request, session, flash, url_for
+from flask import (
+    current_app, flash, jsonify,
+    redirect, render_template, request,
+    session, url_for
+)
 from flask_limiter.errors import RateLimitExceeded
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
