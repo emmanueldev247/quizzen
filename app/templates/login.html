@@ -83,19 +83,15 @@
 <script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% with messages = get_flashed_messages(with_categories=true) %}
 	{% if messages %}
-		{% for category, message in messages %}
-			{% if message == "log in" %}
-				<script type="module">
-					import { showNotification } from '/quizzen/assets/js/utils.js';
-					document.addEventListener('DOMContentLoaded', () => {
-						const flashMessage = "You need to log in first";
-						const flashCategory = "error";
-
-						showNotification(flashMessage, flashCategory);
-					});
-				</script>
-			{% endif %}
-		{% endfor %}				
+		<script type="module">
+			import { showNotification } from '/quizzen/assets/js/utils.js';
+			document.addEventListener('DOMContentLoaded', () => {
+				const flashMessages = {{ messages | tojson }};
+				flashMessages.forEach(([category, message]) => {
+					showNotification(message, category);
+				});
+			});
+		</script>				
 	{% endif %}
 {% endwith %}
 {% endblock scripts %}
