@@ -34,7 +34,7 @@ from oauthlib.oauth2.rfc6749.errors import (
 from google.auth.exceptions import RefreshError, TransportError
 from requests.exceptions import ConnectionError, Timeout
 
-from app.extensions import full_bp, oauth_bp, limiter
+from app.extensions import db, full_bp, oauth_bp, limiter
 from app.models import User
 from app.routes import logger, rate_limit_exceeded
 
