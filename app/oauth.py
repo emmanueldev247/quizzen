@@ -212,6 +212,7 @@ def callback():
         return redirect(url_for("full_bp.user_dashboard"))
 
 
+
 @full_bp.route("/oauth/signin", methods=["GET", "POST"])
 @oauth_is_required
 def oauth_registration():
@@ -252,6 +253,9 @@ def oauth_registration():
             db.session.commit()
 
             # Log in user
+            session.clear()
+            logger.info(f"Session: {session}")
+            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
             session["user_id"] = user.id
             session['user_role'] = user.role
             flash("Oauth Registration complete!", "success")
