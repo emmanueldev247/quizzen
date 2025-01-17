@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
+{% endblock styles_content %}
+
+{% block header_content%}
+<a href="{{ url_for('full_bp.login') }}" class="button-log-in">
+    Log In
+</a>
+{% endblock header_content%}
+
+{% block nav_content %}
+<button class="login-button">
+    Login
+</button>
+{% endblock nav_content %}
+
+{% block child_content %}
+<div class="signup-container" id="signup-container">
+    <form class="signup-form" id="signup-form">
+        <h2>Welcome to Quizzen</h2>
+        <h4>Complete Your Registration in few steps</h4>
+        <div class="signup-form-sub">
+            <div id="role-container">
+                <h4>I am</h4>
+                <div class="role-option" data-role="user">
+                    <i class="fa-solid fa-user"></i>
+                    <span>a user</span>
+                </div>
+                <div class="role-option" data-role="admin">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span>an admin</span>
+                </div>
+                <input type="hidden" id="role" name="role" aria-label="Role" required>
+                <div id="role-error" class="error-message" style="display: none;" aria-live="polite"></div>
+                <button type="submit" id="submit-button" aria-label="Sign up for an account">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock child_content %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/signup_oauth.js') }}"></script>
+{% endblock scripts %}
