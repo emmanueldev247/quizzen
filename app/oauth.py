@@ -11,7 +11,7 @@ import google.auth.transport.requests
 import os
 import pathlib
 import requests
-from flask import current_app, redirect, request, session
+from flask import current_app, redirect, request, session, flash, url_for
 from flask_limiter.errors import RateLimitExceeded
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -74,7 +74,7 @@ def before_oauth_request():
 def after_oauth_request(response):
     if 'state' not in session:
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
-    #print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
+    print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     return response
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
