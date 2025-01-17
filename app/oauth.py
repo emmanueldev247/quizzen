@@ -73,12 +73,20 @@ def before_oauth_request():
     if request.endpoint == 'oauth.login' or request.endpoint == 'oauth.callback':
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
     else:
-        current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+        if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
+            logger.info(f"1. Session was None, now made Stict")
+            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+        else:
+            logger.info(f"1. Session was already Stict")
 
 @oauth_bp.after_app_request
 def after_oauth_request(response):
     if 'state' not in session:
-        current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+        if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
+            logger.info(f"2. Session was None, now made Stict")
+            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+        else:
+            logger.info(f"2. Session was already Stict")
     print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
     return response
 
