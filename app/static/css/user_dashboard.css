@@ -1,0 +1,26 @@
+.dashboard-container{
+    min-height: 100vh;
+}
+
+.section {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    min-height: 50vh;
+}
+
+.section h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 5px;
+}
