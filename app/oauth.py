@@ -11,6 +11,7 @@ import google.auth.transport.requests
 import os
 import pathlib
 import requests
+import unicodedata
 from flask import (
     current_app, flash, jsonify,
     redirect, render_template, request,
@@ -33,7 +34,7 @@ from oauthlib.oauth2.rfc6749.errors import (
 from google.auth.exceptions import RefreshError, TransportError
 from requests.exceptions import ConnectionError, Timeout
 
-from app.extensions import full_bp, oauth_bp
+from app.extensions import full_bp, oauth_bp, limiter
 from app.models import User
 from app.routes import logger, rate_limit_exceeded
 
@@ -180,7 +181,9 @@ def callback():
             audience=GOOGLE_CLIENT_ID
         )
 
-        email = user_info.get('email')
+        email = unicodedata.normalize(
+            'NFKC', user_info.get('email', '').strip().lower()
+        )
         first_name = user_info.get('given_name', '')
         last_name = user_info.get('family_name', '')
         profile_picture = user_info.get('picture', '')
@@ -202,44 +205,64 @@ def callback():
         
         return redirect(url_for("full_bp.user_dashboard"))
     except Exception as e:
-        flash(f"An error occurred: {str(e)}", "danger")
-        return redirect(url_for("index"))
+        logger.error(f"Error during callback: {e}")
+        return redirect(url_for("full_bp.user_dashboard"))
+
 
 @full_bp.route("/oauth/signin", methods=["GET", "POST"])
 @oauth_is_required
 def oauth_registration():
     if request.method == "GET":
+        limiter.limit("20 per minute")(lambda: None)()
         return render_template("signup_oauth.html")
 
     if request.method == "POST":
+        limiter.limit("5 per minute")(lambda: None)()
         # Retrieve user info from session
         oauth_user = session.get("oauth_user")
         if not oauth_user:
             flash("Session expired. Please log in again.", "danger")
             return redirect(url_for("full_bp.user_dashboard"))
 
-        # Get form data
-        role = data.get('role', '').strip()
+        try:
+            
+            # Get form data
+            data = request.get_json() if request.is_json else request.form
 
-        # Validate input
-        if not role:
-            flash("All fields are required.", "danger")
-            return redirect(url_for("full_bp.user_dashboard"))
+            role = data.get('role', '').strip()
 
-        # Create and save user
-        user = User(
-            email=oauth_user["email"],
-            first_name=oauth_user["first_name"],
-            last_name=oauth_user["last_name"],
-            profile_picture=oauth_user["profile_picture"],
-            role=role,
-        )
+            # Validate input
+            if not role:
+                flash("All fields are required.", "danger")
+                return redirect(url_for("full_bp.user_dashboard"))
 
-        db.session.add(user)
-        db.session.commit()
+            # Create and save user
+            user = User(
+                email=oauth_user["email"],
+                first_name=oauth_user["first_name"],
+                last_name=oauth_user["last_name"],
+                profile_picture=oauth_user["profile_picture"],
+                role=role,
+            )
 
-        # Log in user
-        session["user_id"] = user.id
-        session['user_role'] = user.role
-        flash("Registration complete!", "success")
-        return redirect(url_for("full_bp.user_dashboard"))
+            db.session.add(user)
+            db.session.commit()
+
+            # Log in user
+            session["user_id"] = user.id
+            session['user_role'] = user.role
+            flash("Oauth Registration complete!", "success")
+            logger.info(f"Oauth User {user.id} logged in successfully")
+            return jsonify({
+                "success": True,
+                "message": "OAuth User registered successfully"
+            }), 201
+            # return redirect(url_for("full_bp.user_dashboard"))
+        except Exception as e:
+            logger.error(f"Error during Oauth signup: {e}")
+            db.session.rollback()
+            return jsonify({
+                "success": False,
+                "message": "Error saving user",
+                "error": str(e)
+            }), 500
