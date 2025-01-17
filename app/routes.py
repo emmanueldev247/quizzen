@@ -72,8 +72,8 @@ def signup():
             password = data.get('password', '')
             first_name = data.get('first_name', '').strip()
             last_name = data.get('last_name', '').strip()
-            # date_of_birth = data.get('date_of_birth', '').strip()
             role = data.get('role', '').strip()
+            # date_of_birth = data.get('date_of_birth', '').strip()
             # gender = data.get('gender', '').strip()
         except Exception as e:
             logger.error(f"Error during signup: {e}")
