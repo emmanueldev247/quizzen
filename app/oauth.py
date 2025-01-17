@@ -57,39 +57,6 @@ def oauth_is_required(f):
 def handle_rate_limit_exceeded(e):
     return rate_limit_exceeded(e)
 
-@full_bp.before_request
-def debug_session():
-    print(f"fbp: SESSION_COOKIE_SAMESITE before request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
-    print(f"Session before request: {dict(session)}")
-
-@full_bp.after_request
-def debug_session_after(response):
-    print(f"Session after request: {dict(session)}")
-    print(f"fbp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
-    return response
-
-@oauth_bp.before_app_request
-def before_oauth_request():
-    if request.endpoint == 'oauth.login' or request.endpoint == 'oauth.callback':
-        #current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-        pass
-    else:
-        if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
-            logger.info(f"1. Session was None, now made Stict")
-#    current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
-        else:
-            logger.info(f"1. Session was already Stict")
-
-@oauth_bp.after_app_request
-def after_oauth_request(response):
-    if 'state' not in session:
-        if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
-            logger.info(f"2. Session was None, now made Stict")
-#           current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
-        else:
-            logger.info(f"2. Session was already Stict")
-    print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
-    return response
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
