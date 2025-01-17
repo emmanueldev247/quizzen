@@ -48,10 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
 
     const formData = new FormData(this);
-    console.log(formData);
 
     // Send POST request to backend
-    fetch("/quizzen/complete_registration", {
+    fetch("/quizzen/oauth/signin", {
       method: "POST",
       body: formData,
     })
