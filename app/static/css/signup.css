@@ -69,8 +69,8 @@ h4 {
 }
 
 .signup-form-sub {
-    padding: 0 10px;
-    max-height: 35vh;
+    padding-right: 1rem;
+    max-height: 50vh;
     overflow: hidden;
     overflow-y: scroll;
 }

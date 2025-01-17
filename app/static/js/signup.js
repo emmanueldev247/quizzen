@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.getElementById("login-link");
 
   function scrollToBottom() {
-    signupForm.scrollTop = signupForm.scrollHeight;
+    const signupFormSub = document.querySelector(".signup-form-sub");
+    signupFormSub.scrollTop = signupFormSub.scrollHeight -10;
   }
 
   // Initialize by showing the signup form
