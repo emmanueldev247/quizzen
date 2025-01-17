@@ -71,11 +71,12 @@ def debug_session_after(response):
 @oauth_bp.before_app_request
 def before_oauth_request():
     if request.endpoint == 'oauth.login' or request.endpoint == 'oauth.callback':
-        current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+        #current_app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+        pass
     else:
         if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
             logger.info(f"1. Session was None, now made Stict")
-            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+#    current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
         else:
             logger.info(f"1. Session was already Stict")
 
@@ -84,7 +85,7 @@ def after_oauth_request(response):
     if 'state' not in session:
         if current_app.config['SESSION_COOKIE_SAMESITE'] != 'Strict':
             logger.info(f"2. Session was None, now made Stict")
-            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+#           current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
         else:
             logger.info(f"2. Session was already Stict")
     print(f"obp: SESSION_COOKIE_SAMESITE after request: {current_app.config['SESSION_COOKIE_SAMESITE']}")
@@ -210,13 +211,13 @@ def callback():
         # Log in the user
         session.clear()
         logger.info(f"Session (before clear): {session}")
-        current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+#current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
         session['user_id'] = user.id
         session['user_role'] = user.role
-        logger.info(f"Session (after clear): {session}")        
+        logger.info(f"Session (after clear): {session}")
         print("logged saved user.............................")
         logger.info(f"Oauth User {user.id} logged in successfully")
-        
+
         return redirect(url_for("full_bp.user_dashboard"))
     except Exception as e:
         logger.error(f"Error during callback: {e}")
@@ -240,7 +241,7 @@ def oauth_registration():
             return redirect(url_for("full_bp.user_dashboard"))
 
         try:
-            
+
             # Get form data
             data = request.get_json() if request.is_json else request.form
 
@@ -266,7 +267,7 @@ def oauth_registration():
             # Log in user
             session.clear()
             logger.info(f"Session: {session}")
-            current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
+#current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
             session["user_id"] = user.id
             session['user_role'] = user.role
             flash("Oauth Registration complete!", "success")

@@ -23,7 +23,7 @@ class Config:
     SESSION_USE_SIGNER = True
     SESSION_COOKIE_HTTPONLY = True,
     SESSION_COOKIE_SECURE = True,
-    SESSION_COOKIE_SAMESITE = 'Strict'
+    SESSION_COOKIE_SAMESITE = 'Lax'
     SESSION_KEY_PREFIX = 'quizzen_'
     SESSION_REDIS = redis.StrictRedis(
         host=os.getenv('REDIS_HOST', 'localhost'),
