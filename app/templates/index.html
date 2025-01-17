@@ -5,10 +5,23 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sections.css') }}">
 {% endblock styles_content %}
 
+{% block header_content%}
+<a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">
+	Signup
+</a>
+<a href="{{ url_for('full_bp.login') }}" class="button-log-in">
+	Log In
+</a>
+{% endblock header_content%}
+
 {% block nav_content %}
 <button class="signup-button">
 	Signup
 </button>
+<button class="login-button">
+	Login
+</button>
+
 {% endblock nav_content %}
 
 {% block child_content %}
