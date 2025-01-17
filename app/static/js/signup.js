@@ -18,17 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 togglePasswordVisibility("#password", "#c_password");
 
-// Gender icon select
-document.querySelectorAll(".gender-option").forEach((option) => {
-  option.addEventListener("click", function () {
-    document.getElementById("gender").value = this.dataset.gender;
-    document
-      .querySelectorAll(".gender-option")
-      .forEach((opt) => opt.classList.remove("selected"));
-    this.classList.add("selected");
-  });
-});
-
 // Role icon select
 document.querySelectorAll(".role-option").forEach((option) => {
   option.addEventListener("click", function () {
@@ -43,10 +32,12 @@ document.querySelectorAll(".role-option").forEach((option) => {
 // paginated registration page buttons
 const contBtnEmail = document.getElementById("continue-button-email");
 const contBtnNames = document.getElementById("continue-button-names");
-const contBtnGender = document.getElementById("continue-button-gender");
 const contBtnRole = document.getElementById("continue-button-role");
-const contBtnDob = document.getElementById("continue-button-dob");
 const submitBtn = document.getElementById("submit-button");
+
+const firstNameDiv = document.getElementById("first-name-container");
+const roleDiv = document.getElementById("role-container");
+const passwordDiv = document.getElementById("password-container");
 
 contBtnEmail.addEventListener("click", () => {
   const email = document.getElementById("email").value;
@@ -61,7 +52,7 @@ contBtnEmail.addEventListener("click", () => {
     contBtnEmail.style.display =
     socialSignup.style.display =
       "none";
-  document.getElementById("first-name-container").style.display = "block";
+  firstNameDiv.style.display = "block";
 });
 
 contBtnNames.addEventListener("click", () => {
@@ -85,23 +76,8 @@ contBtnNames.addEventListener("click", () => {
 
   if (firstName && lastName) {
     contBtnNames.style.display = "none";
-    document.getElementById("gender-container").style.display = "block";
+    roleDiv.style.display = "block";
   }
-});
-
-contBtnGender.addEventListener("click", () => {
-  const gender = document.getElementById("gender").value;
-  const genderError = document.getElementById("gender-error");
-  genderError.style.display = "none";
-
-  if (!gender) {
-    genderError.textContent = "Please select your gender";
-    genderError.style.display = "block";
-    return;
-  }
-  contBtnGender.style.display = "none";
-  document.getElementById("gender-container").style.display = "none";
-  document.getElementById("role-container").style.display = "block";
 });
 
 contBtnRole.addEventListener("click", () => {
@@ -115,22 +91,8 @@ contBtnRole.addEventListener("click", () => {
     return;
   }
   contBtnRole.style.display = "none";
-  document.getElementById("role-container").style.display = "none";
-  document.getElementById("dob-container").style.display = "block";
-});
-
-contBtnDob.addEventListener("click", () => {
-  const dob = document.getElementById("date_of_birth").value;
-  const dobError = document.getElementById("dob-error");
-  dobError.style.display = "none";
-
-  if (!dob) {
-    dobError.textContent = "Please enter your date of birth";
-    dobError.style.display = "block";
-    return;
-  }
-  contBtnDob.style.display = "none";
-  document.getElementById("password-container").style.display = "block";
+  roleDiv.style.display = "none";
+  passwordDiv.style.display = "block";
 });
 
 submitBtn.addEventListener("click", (event) => {

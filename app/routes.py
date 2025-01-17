@@ -72,9 +72,9 @@ def signup():
             password = data.get('password', '')
             first_name = data.get('first_name', '').strip()
             last_name = data.get('last_name', '').strip()
-            date_of_birth = data.get('date_of_birth', '').strip()
+            # date_of_birth = data.get('date_of_birth', '').strip()
             role = data.get('role', '').strip()
-            gender = data.get('gender', '').strip()
+            # gender = data.get('gender', '').strip()
         except Exception as e:
             logger.error(f"Error during signup: {e}")
             return jsonify({
@@ -84,7 +84,7 @@ def signup():
             }), 401
 
         if not all([email, password, first_name,
-                    last_name, date_of_birth, role, gender]):
+                    last_name, role]):
             logger.error(f"Form data not valid")
             return jsonify({
                 "success": False,
@@ -112,8 +112,8 @@ def signup():
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d'),
-                gender=gender,
+                # date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d'),
+                # gender=gender,
                 role=role
             )
             if password:

@@ -32,14 +32,14 @@ class User(db.Model):
     has_password = db.Column(db.Boolean, default=False, nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    date_of_birth = db.Column(db.Date, nullable=False)
     profile_picture = db.Column(db.String(255))
     role = db.Column(Enum('user', 'admin',
                           name='role_types', create_type=True),
                      default='user')
-    gender = db.Column(Enum('male', 'female', 'others',
-                            name='gender_types', create_type=True),
-                       default='others', nullable=False)
+    # date_of_birth = db.Column(db.Date, nullable=False)
+    # gender = db.Column(Enum('male', 'female', 'others',
+    #                         name='gender_types', create_type=True),
+    #                    default='others', nullable=False)
 
     # Relationships
     quiz_history = db.relationship('QuizHistory', backref='user',
