@@ -1,22 +1,21 @@
-from app.extensions import full_bp, oauth_bp
-from app.models import User, UsedToken
-
-from functools import wraps
-
+"""
+    Defined routes:
+      - '/' -> home
+      - '/signup' -> signup
+      - '/login' -> login
+      - '/reset_password' -> reset_password
+      - '/reset_password/<token>' -> reset_password_with_token
+      - '/logout' -> logout
+"""
+import google.auth.transport.requests
 import os
 import pathlib
 import requests
-from flask import session, abort, redirect, request, abort, current_app
+from flask import current_app, redirect, request, session
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
-import google.auth.transport.requests
-
-from app.routes import (
-    logger, rate_limit_exceeded
-)
-
-
+from functools import wraps
 from oauthlib.oauth2.rfc6749.errors import (
     MismatchingStateError,
     InvalidGrantError,
@@ -27,7 +26,11 @@ from oauthlib.oauth2.rfc6749.errors import (
     TokenExpiredError,
 )
 from google.auth.exceptions import RefreshError, TransportError
-from requests.exceptions import Timeout, ConnectionError
+from requests.exceptions import ConnectionError, Timeout
+
+from app.extensions import full_bp, oauth_bp
+from app.models import User
+from app.routes import logger, rate_limit_exceeded
 
 def oauth_is_required(f):
     """OAuth required function"""
@@ -86,7 +89,7 @@ flow = Flow.from_client_secrets_file(
      redirect_uri="https://emmanueldev247.tech/quizzen/auth/google/callback"
 )
 
-    
+
 @full_bp.route("/quizzen/index")
 def index_oauth():
     return "Hello World <a href='/quizzen/auth/google'><button>Login</button></a>"
@@ -157,7 +160,9 @@ def callback():
 
     try:
         if not session or session['state'] != request.args['state']:
-            abort(500, 'State does not match')
+            logger.error(f"State does not match")
+            flash("log in", "error")
+            return redirect(url_for('full_bp.login'))
 
         credentials = flow.credentials
         request_session = requests.session()
