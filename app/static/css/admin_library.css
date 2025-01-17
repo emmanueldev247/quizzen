@@ -21,8 +21,6 @@ main {
 }
 
 .quiz-card {
-    /* flex-direction: column; */
-    /* position: relative; */
     visibility: hidden;
     opacity: 0;
     transform: translateX(100%);
