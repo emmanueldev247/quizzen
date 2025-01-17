@@ -201,11 +201,11 @@ def callback():
         print("saved user..................................")
         # Log in the user
         session.clear()
-        logger.info(f"Session: {session}")
+        logger.info(f"Session (before clear): {session}")
         current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
         session['user_id'] = user.id
         session['user_role'] = user.role
-        
+        logger.info(f"Session (after clear): {session}")        
         print("logged saved user.............................")
         logger.info(f"Oauth User {user.id} logged in successfully")
         
