@@ -14,26 +14,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupLink = document.getElementById("signup-link");
   const forgotPasswordLink = document.getElementById("forgot-password");
   const backToLoginLink = document.getElementById("back-to-login");
-  
+  const googleLogin = document.querySelector(".google-login");
   const resetPasswordElements = Array.from(
     resetPasswordForm.querySelectorAll("h2, p, input, button, a")
   );
   const loginFormElements = Array.from(
     loginForm.querySelectorAll("h2, input, button, a")
   );
-  
+
   // Function to show the login form
   function showLoginForm() {
     hideElements(resetPasswordForm);
     showElements(loginForm, socialLogin, signupLink);
   }
-  
+
   // Function to show the reset password form
   function showResetPasswordForm() {
     hideElements(loginForm, socialLogin, signupLink);
     showElements(resetPasswordForm);
   }
-  
+
   // Initialize by showing the login form
   setTimeout(() => {
     showLoginForm();
@@ -47,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "click",
       () => (window.location.href = "/quizzen/signup")
     );
+
+  googleLogin.addEventListener(
+    "click",
+    () => (window.location.href = "/quizzen/auth/google")
+  );
 
   // Event listeners for toggling views
   forgotPasswordLink.addEventListener("click", function () {

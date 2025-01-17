@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const socialSignup = document.getElementById("social-signup");
   const loginLink = document.getElementById("login-link");
-
+  const googleSignup = document.querySelector(".google-signup");
   function scrollToBottom() {
     const signupFormSub = document.querySelector(".signup-form-sub");
-    signupFormSub.scrollTop = signupFormSub.scrollHeight -10;
+    signupFormSub.scrollTop = signupFormSub.scrollHeight - 10;
   }
 
   // Initialize by showing the signup form
@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelector(".login-button")
     .addEventListener("click", () => (window.location.href = "/quizzen/login"));
+
+  googleSignup.addEventListener(
+    "click",
+    () => (window.location.href = "/quizzen/auth/google")
+  );
 
   // Role icon select
   document.querySelectorAll(".role-option").forEach((option) => {
