@@ -276,19 +276,23 @@ h4 {
 }
 
 
-@media (max-width: 530px) {
-    .signup-container {
-        padding: 1rem;
-        margin-top: 1rem;
-        max-height: 100vh;
-        border-radius: 0;
-    }
-
-}
-
 @media (max-width: 768px) {
     .signup-container {
         padding: 1.5rem;
         margin-top: 2rem;
+    }
+}
+
+@media (max-width: 530px) {
+    .signup-container {
+        min-height: 100vh;
+        border-radius: 0;
+    }
+}
+
+@media (max-height: 500px) {
+
+    .signup-container {
+        padding-bottom: 20px;
     }
 }

@@ -288,21 +288,29 @@ form {
 }
 
 
-@media (max-width: 530px) {
-    .login-container,
-    .reset-password-container {
-        padding: 1rem;
-        margin-top: 1rem;
-        max-height: 100vh;
-        border-radius: 0;
-    }
-
-}
 
 @media (max-width: 768px) {
+
     .login-container,
     .reset-password-container {
         padding: 1.5rem;
         margin-top: 2rem;
+    }
+}
+
+@media (max-width: 530px) {
+
+    .login-container,
+    .reset-password-container {
+        min-height: 100vh;
+        border-radius: 0;
+    }
+}
+
+@media (max-height: 500px) {
+
+    .login-container,
+    .reset-password-container {
+        padding-bottom: 20px;
     }
 }
