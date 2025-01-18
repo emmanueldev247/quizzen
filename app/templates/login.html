@@ -4,9 +4,9 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock styles_content %}
 {% block header_content%}
-<a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">
-	Signup
-</a>
+			<a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">
+				Signup
+			</a>
 {% endblock header_content%}
 
 {% block nav_content %}
@@ -37,7 +37,6 @@
 			<button type="submit" id="login-button" aria-label="Login to your account">Log in</button>
 		</form>
 
-		<!-- Reset Password Form (Initially Hidden) -->
 		<form class="login-form" id="reset-password-form" style="display: none;">
 			<h2>Reset Password</h2>
 			<div id="reset-password-warning" class="login-warning" style="display: none;" aria-live="polite">
@@ -80,7 +79,7 @@
 {% endblock child_content %}
 
 {% block scripts %}
-<script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
+	<script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% with messages = get_flashed_messages(with_categories=true) %}
 	{% if messages %}
 		<script type="module">
