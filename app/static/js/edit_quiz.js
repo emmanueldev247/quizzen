@@ -1,18 +1,182 @@
 import { showNotification } from "./utils.js";
 
-const bubble = document.getElementById("confirmationBubble");
-const addQuestionButtons = document.querySelectorAll(".add-question-btn");
-const cancelButtons = document.querySelectorAll(".cancel-btn");
-const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
-const deleteButtons = document.querySelectorAll(".delete-btn");
-const editButtons = document.querySelectorAll(".edit-btn");
-const quizTitle = document.getElementById("quiz-title");
-const quizTitles = document.querySelectorAll(".quiz-title");
-const goBack = document.querySelector(".back-btn");
-const publishButton = document.querySelector(".publish-btn");
-let originalTitle = quizTitle.textContent.trim();
-
 document.addEventListener("DOMContentLoaded", () => {
+  const bubble = document.getElementById("confirmationBubble");
+  const addQuestionButtons = document.querySelectorAll(".add-question-btn");
+  const cancelButtons = document.querySelectorAll(".cancel-btn");
+  const confirmDeleteButtons = document.querySelectorAll(".confirm-delete-btn");
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  const editButtons = document.querySelectorAll(".edit-btn");
+  const quizTitle = document.getElementById("quiz-title");
+  const quizTitles = document.querySelectorAll(".quiz-title");
+  const goBack = document.querySelector(".back-btn");
+  const publishButton = document.querySelector(".publish-btn");
+  let originalTitle = quizTitle.textContent.trim();
+
+  function showConfirmationBubble(event, questionId, quizId) {
+    if (bubble) {
+      const buttonRect = event.target.getBoundingClientRect();
+
+      bubble.style.left = `${
+        buttonRect.left + window.scrollX + buttonRect.width / 2
+      }px`;
+      bubble.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
+
+      bubble.style.display = "block";
+      bubble.dataset.questionId = questionId;
+      bubble.dataset.quizId = quizId;
+    }
+  }
+
+  function hideConfirmationBubble() {
+    if (bubble) {
+      bubble.style.display = "none";
+      bubble.dataset.quizId = bubble.dataset.questionId = "";
+    }
+  }
+
+  function confirmDelete() {
+    if (bubble) {
+      const questionId = bubble.dataset.questionId;
+      const quizId = bubble.dataset.quizId;
+
+      deleteButtons.forEach((button) => {
+        button.disabled = true;
+      });
+
+      confirmDeleteButtons.forEach((button) => {
+        button.disabled = true;
+      });
+
+      fetch(`/quizzen/quiz/${quizId}/question/${questionId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            if (response.status === 429) {
+              showNotification(
+                "You have made too many requests in a short period. Please try again later",
+                "error"
+              );
+            } else
+              showNotification(
+                "Something went wrong. Please try again later",
+                "error"
+              );
+            throw new Error(`HTTP error! status: ${response.status}`);
+          } else {
+            showNotification("Question deleted successfully!", "success");
+
+            // Remove question from DOM
+            const questionCard = document
+              .querySelector(
+                `.question-header[data-question-id="${questionId}"]`
+              )
+              .closest(".question-card");
+            if (questionCard) {
+              const pointSelect = questionCard.querySelector(".point-select");
+              const negPoints = parseInt(
+                pointSelect.textContent.trim().split(" ")[0]
+              );
+              questionCard.remove();
+              updateQuizStats(negPoints);
+            }
+          }
+        })
+        .catch((error) => {
+          if (error.message === "Failed to fetch")
+            showNotification(
+              "Network error. Please check your connection",
+              "error"
+            );
+        })
+        .finally(() => {
+          deleteButtons.forEach((button) => {
+            button.disabled = false;
+          });
+          confirmDeleteButtons.forEach((button) => {
+            button.disabled = false;
+          });
+          hideConfirmationBubble();
+        });
+    }
+  }
+
+  function handleQuizDeletion(questionCard) {
+    deleteButtons.forEach((button) => {
+      button.disabled = true;
+    });
+    confirmDeleteButtons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    fetch(window.location.href, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          showNotification("Quiz deleted successfully!", "success");
+          if (questionCard) questionCard.remove();
+          window.location.href = "/quizzen/dashboard";
+        }
+      })
+      .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => {
+        deleteButtons.forEach((button) => {
+          button.disabled = false;
+        });
+        confirmDeleteButtons.forEach((button) => {
+          button.disabled = false;
+        });
+        hideConfirmationBubble();
+      });
+  }
+
+  function updateQuizStats(negPoints = 1) {
+    const quizLengthElem = document.getElementById("quiz_length");
+    const questionsLabel = document.getElementById("questions_label");
+    const quizMaxScoreElem = document.getElementById("quiz_max_score");
+    const pointsLabel = document.getElementById("points_label");
+
+    let quizLength = parseInt(quizLengthElem.textContent);
+    let quizMaxScore = parseInt(quizMaxScoreElem.textContent);
+
+    quizLengthElem.textContent = --quizLength;
+    questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
+
+    quizMaxScoreElem.textContent = quizMaxScore - negPoints;
+    pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
+
+    const questionCards = document.querySelectorAll(".question-card");
+    questionCards.forEach((card, index) => {
+      const questionNumElement = card.querySelector(".question-num-type");
+      questionNumElement.textContent = `${index + 1}. ${
+        questionNumElement.textContent.split(". ")[1]
+      }`;
+    });
+  }
+
   goBack.addEventListener("click", () => {
     window.location.href = "/quizzen/admin/dashboard";
   });
@@ -279,165 +443,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-export function showConfirmationBubble(event, questionId, quizId) {
-  if (bubble) {
-    const buttonRect = event.target.getBoundingClientRect();
-
-    bubble.style.left = `${
-      buttonRect.left + window.scrollX + buttonRect.width / 2
-    }px`;
-    bubble.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
-
-    bubble.style.display = "block";
-    bubble.dataset.questionId = questionId;
-    bubble.dataset.quizId = quizId;
-  }
-}
-
-export function hideConfirmationBubble() {
-  if (bubble) {
-    bubble.style.display = "none";
-    bubble.dataset.quizId = bubble.dataset.questionId = "";
-  }
-}
-
-export function confirmDelete() {
-  if (bubble) {
-    const questionId = bubble.dataset.questionId;
-    const quizId = bubble.dataset.quizId;
-
-    deleteButtons.forEach((button) => {
-      button.disabled = true;
-    });
-
-    confirmDeleteButtons.forEach((button) => {
-      button.disabled = true;
-    });
-
-    fetch(`/quizzen/quiz/${quizId}/question/${questionId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 429) {
-            showNotification(
-              "You have made too many requests in a short period. Please try again later",
-              "error"
-            );
-          } else
-            showNotification(
-              "Something went wrong. Please try again later",
-              "error"
-            );
-          throw new Error(`HTTP error! status: ${response.status}`);
-        } else {
-          showNotification("Question deleted successfully!", "success");
-
-          // Remove question from DOM
-          const questionCard = document
-            .querySelector(`.question-header[data-question-id="${questionId}"]`)
-            .closest(".question-card");
-          if (questionCard) {
-            const pointSelect = questionCard.querySelector(".point-select");
-            const negPoints = parseInt(
-              pointSelect.textContent.trim().split(" ")[0]
-            );
-            questionCard.remove();
-            updateQuizStats(negPoints);
-          }
-        }
-      })
-      .catch((error) => {
-        if (error.message === "Failed to fetch")
-          showNotification(
-            "Network error. Please check your connection",
-            "error"
-          );
-      })
-      .finally(() => {
-        deleteButtons.forEach((button) => {
-          button.disabled = false;
-        });
-        confirmDeleteButtons.forEach((button) => {
-          button.disabled = false;
-        });
-        hideConfirmationBubble();
-      });
-  }
-}
-
-export function handleQuizDeletion(questionCard) {
-  deleteButtons.forEach((button) => {
-    button.disabled = true;
-  });
-  confirmDeleteButtons.forEach((button) => {
-    button.disabled = true;
-  });
-
-  fetch(window.location.href, {
-    method: "DELETE",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 429) {
-          showNotification(
-            "You have made too many requests in a short period. Please try again later",
-            "error"
-          );
-        } else
-          showNotification(
-            "Something went wrong. Please try again later",
-            "error"
-          );
-        throw new Error(`HTTP error! status: ${response.status}`);
-      } else {
-        showNotification("Quiz deleted successfully!", "success");
-        if (questionCard) questionCard.remove();
-        window.location.href = "/quizzen/dashboard";
-      }
-    })
-    .catch((error) => {
-      if (error.message === "Failed to fetch")
-        showNotification(
-          "Network error. Please check your connection",
-          "error"
-        );
-    })
-    .finally(() => {
-      deleteButtons.forEach((button) => {
-        button.disabled = false;
-      });
-      confirmDeleteButtons.forEach((button) => {
-        button.disabled = false;
-      });
-      hideConfirmationBubble();
-    });
-}
-
-export function updateQuizStats(negPoints = 1) {
-  const quizLengthElem = document.getElementById("quiz_length");
-  const questionsLabel = document.getElementById("questions_label");
-  const quizMaxScoreElem = document.getElementById("quiz_max_score");
-  const pointsLabel = document.getElementById("points_label");
-
-  let quizLength = parseInt(quizLengthElem.textContent);
-  let quizMaxScore = parseInt(quizMaxScoreElem.textContent);
-
-  quizLengthElem.textContent = --quizLength;
-  questionsLabel.textContent = quizLength > 1 ? "Questions" : "Question";
-
-  quizMaxScoreElem.textContent = quizMaxScore - negPoints;
-  pointsLabel.textContent = quizMaxScore > 1 ? "Points" : "Point";
-
-  const questionCards = document.querySelectorAll(".question-card");
-  questionCards.forEach((card, index) => {
-    const questionNumElement = card.querySelector(".question-num-type");
-    questionNumElement.textContent = `${index + 1}. ${
-      questionNumElement.textContent.split(". ")[1]
-    }`;
-  });
-}

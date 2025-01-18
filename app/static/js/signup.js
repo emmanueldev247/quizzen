@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const socialSignup = document.getElementById("social-signup");
   const loginLink = document.getElementById("login-link");
   const googleSignup = document.querySelector(".google-signup");
+
   function scrollToBottom() {
     const signupFormSub = document.querySelector(".signup-form-sub");
     signupFormSub.scrollTop = signupFormSub.scrollHeight - 10;

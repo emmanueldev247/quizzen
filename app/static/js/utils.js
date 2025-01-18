@@ -19,29 +19,33 @@ export function animateElements(elements) {
 }
 
 export function showElements(...elements) {
-  elements.forEach(element => {
+  elements.forEach((element) => {
     element.classList.add("visible");
   });
 }
 
 export function hideElements(...elements) {
-  elements.forEach(element => {
-    element.classList.remove("visible")
-  })
+  elements.forEach((element) => {
+    element.classList.remove("visible");
+  });
 }
 
-
 // Function to toggle password visibility
-export function togglePasswordVisibility(passwordSelector, confirmPasswordSelector = null) {
+export function togglePasswordVisibility(
+  passwordSelector,
+  confirmPasswordSelector = null
+) {
   document.querySelectorAll(".toggle-password").forEach((icon) => {
     icon.addEventListener("click", function () {
       const passwordField = document.querySelector(passwordSelector);
-      const confirmPasswordField = confirmPasswordSelector ? document.querySelector(confirmPasswordSelector) : null;
+      const confirmPasswordField = confirmPasswordSelector
+        ? document.querySelector(confirmPasswordSelector)
+        : null;
 
       // Check the current state of password visibility
       if (passwordField.type === "password") {
         passwordField.type = "text";
-        
+
         // If confirmPasswordSelector is provided, show the confirm password field too
         if (confirmPasswordField) {
           confirmPasswordField.type = "text";
@@ -53,7 +57,7 @@ export function togglePasswordVisibility(passwordSelector, confirmPasswordSelect
       } else {
         // Set both password fields to 'password' (hide passwords)
         passwordField.type = "password";
-        
+
         if (confirmPasswordField) {
           confirmPasswordField.type = "password";
         }
@@ -69,22 +73,22 @@ export function togglePasswordVisibility(passwordSelector, confirmPasswordSelect
 // function to set active link
 export function setActive(newTopActiveSelector, newBottomActiveSelector) {
   // Remove the active class from the current active item
-  const currentTopActive = document.querySelector('.nav-item.active');
-  const currentBottomActive = document.querySelector('.bottom-nav-item.active');
+  const currentTopActive = document.querySelector(".nav-item.active");
+  const currentBottomActive = document.querySelector(".bottom-nav-item.active");
   if (currentTopActive) {
-    currentTopActive.classList.remove('active');
+    currentTopActive.classList.remove("active");
   }
   if (currentBottomActive) {
-    currentBottomActive.classList.remove('active');
+    currentBottomActive.classList.remove("active");
   }
 
   // Add the active class to the new active item
   const newTopActive = document.querySelector(newTopActiveSelector);
   const newBottomActive = document.querySelector(newBottomActiveSelector);
   if (newTopActive) {
-    newTopActive.classList.add('active');
+    newTopActive.classList.add("active");
   }
   if (newBottomActive) {
-    newBottomActive.classList.add('active');
+    newBottomActive.classList.add("active");
   }
 }

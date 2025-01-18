@@ -1,13 +1,13 @@
 import { showNotification, showElements } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Get the elements
+  const signupForm = document.getElementById("signup-form");
+
   // Initialize by showing the signup form
   setTimeout(() => {
     showElements(signupForm);
   }, 200);
-
-  // Get the elements
-  const signupForm = document.getElementById("signup-form");
 
   // Role icon select
   document.querySelectorAll(".role-option").forEach((option) => {

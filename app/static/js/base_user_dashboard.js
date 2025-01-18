@@ -1,10 +1,8 @@
-import { showNotification } from "./utils.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("flyout-nav");
   const hamburgerButton = document.querySelector(".hamburger");
   const hamburgerIcon = document.querySelector(".hamburger i");
-  
+
   hamburgerButton.addEventListener("click", () => {
     nav.classList.toggle("active");
     hamburgerIcon.classList.toggle("fa-bars");
