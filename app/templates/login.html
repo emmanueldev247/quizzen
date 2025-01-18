@@ -86,7 +86,7 @@
 		<script type="module">
 			import { showNotification } from '/quizzen/assets/js/utils.js';
 			document.addEventListener('DOMContentLoaded', () => {
-				const flashMessages = {{ messages | tojson }};
+				const flashMessages = JSON.parse('{{ messages | tojson | safe }}');
 				flashMessages.forEach(([category, message]) => {
 					showNotification(message, category);
 				});
