@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           profilePic.src = "/quizzen/assets/images/default_image.jpg";
         } else {
-          showNotification("Failed to delete photo", "error");
+          showNotification(data.message, "error");
         }
       })
       .catch((error) => {
