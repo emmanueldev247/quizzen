@@ -874,12 +874,12 @@ def upload_profile_picture(current_user):
                 if os.path.exists(old_image):
                     os.remove(old_image)
 
-            current_user.profile_picture = f"quizzen/uploads/{unique_filename}"
+            current_user.profile_picture = f"uploads/{unique_filename}"
             db.session.commit()
 
             return jsonify({
                 'success': True,
-                'image_url': f"quizzen/uploads/{unique_filename}"
+                'image_url': f"uploads/{unique_filename}"
             })
 
         return jsonify({
@@ -900,7 +900,7 @@ def upload_profile_picture(current_user):
 def delete_profile_picture(current_user):
     try:
         if current_user.profile_picture:
-            print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)}")
+            print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], "01jj07jnym0mf6mpvp8sgspwh5")}")
             image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], os.path.basename(current_user.profile_picture))
             if os.path.exists(image_path):
                 os.remove(image_path)
