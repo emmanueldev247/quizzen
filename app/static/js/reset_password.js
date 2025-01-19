@@ -75,8 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const newPassword = document.getElementById("new-password").value;
     const token = window.location.pathname.split("/").pop();
 
-    submitBtn.textContent = "Resetting password...";
     submitBtn.disabled = true;
+    const loader = submitBtn.querySelector(".loader");
+    loader.style.display = "inline-block";
 
     // Send POST request to backend
     fetch(`/quizzen/reset_password/${token}`, {
@@ -122,8 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
       })
       .finally(() => {
-        submitBtn.textContent = "Reset Password";
         submitBtn.disabled = false;
+        loader.style.display = "none";
       });
   });
 });

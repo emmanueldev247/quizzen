@@ -44,9 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     isValid = false;
-    submitBtn.textContent = "Submitting...";
     submitBtn.disabled = true;
-
+    const loader = submitBtn.querySelector(".loader");
+    loader.style.display = "inline-block";
+    
     const formData = new FormData(this);
 
     // Send POST request to backend
@@ -95,8 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
       })
       .finally(() => {
-        submitBtn.textContent = "Submit";
         submitBtn.disabled = false;
+        loader.style.display = "none";
       });
   });
 });

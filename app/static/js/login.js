@@ -78,8 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const warningCard = document.getElementById("login-warning");
     const loginWarningSpan = document.querySelector("#login-warning span");
 
-    loginButton.textContent = "Logging in...";
     loginButton.disabled = true;
+    const loader = loginButton.querySelector(".loader");
+    loader.style.display = "inline-block";
 
     warningCard.style.display = "none";
 
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .finally(() => {
         loginButton.disabled = false;
-        loginButton.textContent = "Log in";
+        loader.style.display = "none";
       });
   });
 
@@ -142,8 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
       "#reset-password-success span"
     );
 
-    resetPasswordButton.textContent = "Resetting password...";
     resetPasswordButton.disabled = true;
+    const loader = resetPasswordButton.querySelector(".loader");
+    loader.style.display = "inline-block";
 
     warningCard.style.display = successCard.style.display = "none";
 
@@ -190,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .finally(() => {
         resetPasswordButton.disabled = false;
-        resetPasswordButton.textContent = "Reset password";
+        loader.style.display = "none";
       });
   });
 });

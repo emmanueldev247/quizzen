@@ -165,8 +165,10 @@ document.addEventListener("DOMContentLoaded", () => {
   signupForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    submitBtn.textContent = "Registering...";
     submitBtn.disabled = true;
+    const loader = submitBtn.querySelector(".loader");
+    loader.style.display = "inline-block";
+    
 
     const formData = new FormData(this);
 
@@ -216,8 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
       })
       .finally(() => {
-        submitBtn.textContent = "Register";
         submitBtn.disabled = false;
+        loader.style.display = "none";
       });
   });
 });

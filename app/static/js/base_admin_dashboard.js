@@ -51,6 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const submitButton = document.getElementById("submit-button");
       submitButton.disabled = true;
 
+      submitButton.innerHTML = `
+                            Creating
+                            <div class="loader"></div>
+                        `;
+      const loader = submitButton.querySelector(".loader");
+      loader.style.display = "inline-block";
+
       fetch("/quizzen/quiz/new", {
         method: "POST",
         headers: {
@@ -94,6 +101,13 @@ document.addEventListener("DOMContentLoaded", () => {
               "error"
             );
         })
-        .finally(() => (submitButton.disabled = false));
+        .finally(() => {
+          submitButton.disabled = false;
+          submitButton.innerHTML = `
+                              Create Quiz
+                              <div class="loader"></div>
+                          `;
+          loader.style.display = "none";
+        });
     });
 });

@@ -200,6 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const endpoint = `/quizzen/quiz/${quizId}/${action}`;
 
     publishButton.disabled = true;
+    const loader = publishButton.querySelector(".loader");
+    loader.style.display = "inline-block";
 
     // Send an AJAX request to the server
     fetch(endpoint, {
@@ -245,7 +247,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "error"
           );
       })
-      .finally(() => (publishButton.disabled = false));
+      .finally(() => {
+        publishButton.disabled = false;
+        loader.style.display = "none";
+      });
   });
 
   // Add a new quiz
