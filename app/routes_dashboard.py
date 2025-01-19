@@ -21,15 +21,17 @@
 """
 
 import humanize
+import os
 import re
 import ulid
 from flask import (
     current_app, flash, jsonify,
     redirect, render_template, request,
-    session, url_for
+    send_from_directory, session, url_for
 )
 from flask_limiter.errors import RateLimitExceeded
 from functools import wraps
+from werkzeug.utils import secure_filename
 
 from app.extensions import db, full_bp, limiter
 from app.models import (
@@ -813,24 +815,111 @@ def admin_library(current_user):
     )
 
 
-@full_bp.route('/admin/profile')
+@full_bp.route('/profile')
 @auth_required
-@admin_check
 @limiter.limit("30 per minute")
-def admin_profile(current_user):
-    """Admin-specific profile"""
+def my_profile(current_user):
+    """Profile for all users"""
     logger.debug(f"{request.method} - Profile")
     user = User.query.get(current_user.id)
     if not user:
         return redirect(url_for('full_bp.login'))
 
-    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
-    categories = Category.query.order_by(Category.name.asc()).all()
-
+    
     return render_template(
-        'admin_library.html',
-        title='profile',
+        'profile.html',
+        title='My Profile',
         user=user,
-        quizzes=quizzes,
-        categories=categories
     )
+
+
+UPLOAD_FOLDER = './uploads'
+current_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+@full_bp.route('/upload-profile-picture', methods=['POST'])
+@auth_required
+@limiter.limit("10 per minute")
+def upload_profile_picture(current_user):
+    try:
+        if 'profile_picture' not in request.files:
+            return jsonify({
+                'success': False,
+                'message': 'No file part'
+            })
+        
+        file = request.files['profile_picture']
+        if file.filename == '':
+            return jsonify({
+                'success': False,
+                'message': 'No selected file'
+            })
+
+        if file:
+            original_filename = secure_filename(file.filename)
+            file_extension = os.path.splitext(original_filename)[1] 
+            unique_filename = f"{str(ulid.new()).lower()}{file_extension}"
+
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
+            file.save(file_path)
+
+            if current_user.profile_picture:
+                old_image = os.path.join(current_app.config['UPLOAD_FOLDER'], os.path.basename(current_user.profile_picture))
+                if os.path.exists(old_image):
+                    os.remove(old_image)
+
+            current_user.profile_picture = f"/uploads/{unique_filename}"
+            db.session.commit()
+
+            return jsonify({
+                'success': True,
+                'image_url': f"/uploads/{unique_filename}"
+            })
+
+        return jsonify({
+            'success': False,
+            'message': 'File upload failed'
+        })
+    except Exception as e:
+        logger.error(f"Error uploading ppf: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': 'File upload failed'
+        })
+
+
+@full_bp.route('/delete-profile-picture', methods=['POST'])
+@auth_required
+@limiter.limit("5 per minute")
+def delete_profile_picture(current_user):
+    try:
+        if current_user.profile_picture:
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], os.path.basename(current_user.profile_picture))
+            if os.path.exists(image_path):
+                os.remove(image_path)
+            current_user.profile_picture = None
+            
+            db.session.commit()
+            return jsonify({
+                'success': True,
+                'message': 'Image deleted successfully'
+            })
+
+        return jsonify({
+            'success': False,
+            'message': 'No image to delete'
+        })
+    except Exception as e:
+        logger.error(f"Error deleting ppf: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': 'No image to delete'
+        })
+
+
+@full_bp.route('/uploads/<filename>')
+@limiter.limit("30 per minute")
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
