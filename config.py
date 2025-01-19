@@ -49,6 +49,7 @@ class Config:
     GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 
     UPLOAD_FOLDER=os.getenv('UPLOAD_FOLDER')
+    UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
 
 
 class DevelopmentConfig(Config):
