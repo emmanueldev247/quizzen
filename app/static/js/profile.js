@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          profilePic.src = "/quizzen/assets/images/default-profile.jpg";
+          profilePic.src = "/quizzen/assets/images/default_image.jpg";
         } else {
           showNotification("Failed to delete photo", "error");
         }
