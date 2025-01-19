@@ -29,17 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let cropper;
 
-  setTimeout(() => {
-    showElements(profileHead);
-  }, 100);
+  const elements = [profileHead, profileDiv, biodataDiv];
+  const delays = [100, 200, 300];
 
-  setTimeout(() => {
-    showElements(profileDiv);
-  }, 200);
-
-  setTimeout(() => {
-    showElements(biodataDiv);
-  }, 300);
+  for (let i = 0; i < elements.length; i++) {
+    setTimeout(() => {
+      showElements(elements[i]);
+    }, delays[i]);
+  }
 
   function activateTab(tab, content) {
     hideElements(biodataDiv);
