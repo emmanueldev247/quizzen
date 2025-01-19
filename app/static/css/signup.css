@@ -285,14 +285,17 @@ h4 {
 
 @media (max-width: 530px) {
     .signup-container {
-        min-height: 100vh;
+        max-height: 100vh;
         border-radius: 0;
+        padding-left: 1rem;
+        margin-top: .5rem;
     }
 }
 
 @media (max-height: 500px) {
 
     .signup-container {
-        padding-bottom: 20px;
+        /* padding-bottom: 20px; */
+        max-height: 100vh;
     }
 }

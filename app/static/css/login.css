@@ -302,8 +302,10 @@ form {
 
     .login-container,
     .reset-password-container {
-        min-height: 100vh;
+        max-height: 100vh;
         border-radius: 0;
+        padding-left: 1rem;
+        margin-top: .5rem;
     }
 }
 
@@ -311,6 +313,7 @@ form {
 
     .login-container,
     .reset-password-container {
-        padding-bottom: 20px;
+        /* padding-bottom: 20px; */
+        max-height: 100vh;
     }
 }

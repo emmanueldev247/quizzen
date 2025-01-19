@@ -313,55 +313,6 @@ header .enter-code:hover {
 
 
 /* Mobile Styles */
-@media screen and (max-height: 600px) {
-    .sidebar {
-        gap: 5px;
-        padding: 5px;
-        padding-top: 10px;
-    }
-
-    .sidebar a {
-        text-decoration: none;
-        color: #333;
-        padding: 10px 15px;
-        display: flex;
-        gap: 1rem;
-    }
-}
-
-@media screen and (max-height: 450px) {
-    .sidebar {
-        gap: 2px;
-        padding: 2px;
-        padding-top: 10px;
-    }
-
-    .sidebar a {
-        text-decoration: none;
-        color: #333;
-        padding: 10px 15px;
-        display: flex;
-        gap: .9rem;
-    }
-}
-
-
-@media (max-width: 530px) {
-    header .enter-code {
-        display: none;
-    }
-
-    header .logo img {
-        margin-top: 7px;
-        height: 30px;
-    }
-
-    header .hamburger i {
-        font-size: 1.2rem;
-    }
-}
-
-
 @media (max-width: 768px) {
     .notification {
         width: 70%;
@@ -404,6 +355,54 @@ header .enter-code:hover {
         margin-left: 0;
         width: 100%;
         padding-bottom: 70px;
+        margin-bottom: 50px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .sidebar {
+        gap: 5px;
+        padding: 5px;
+        padding-top: 10px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 530px) {
+    header .enter-code {
+        display: none;
+    }
+
+    header .logo img {
+        margin-top: 7px;
+        height: 30px;
+    }
+
+    header .hamburger i {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sidebar {
+        gap: 2px;
+        padding: 2px;
+        padding-top: 10px;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        display: flex;
+        gap: .9rem;
     }
 }
 
