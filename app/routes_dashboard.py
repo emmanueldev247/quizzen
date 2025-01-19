@@ -818,20 +818,25 @@ def admin_library(current_user):
 @full_bp.route('/profile')
 @auth_required
 @limiter.limit("30 per minute")
-def my_profile(current_user):
+def profile(current_user):
     """Profile for all users"""
     logger.debug(f"{request.method} - Profile")
     user = User.query.get(current_user.id)
     if not user:
         return redirect(url_for('full_bp.login'))
 
+    if current_user.role == "admin":
+        base_template = "base_admin_dashboard.html"
+
+    else:
+        base_template = "base_user_dashboard.html"
     
     return render_template(
         'profile.html',
+        base_template=base_template,
         title='My Profile',
         user=user,
     )
-
 
 
 @full_bp.route('/upload-profile-picture', methods=['POST'])
