@@ -63,7 +63,6 @@ GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 
 # Flow setup
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "utils/client_secret.json")
-print(client_secrets_file)
 
 flow = Flow.from_client_secrets_file(
      client_secrets_file=client_secrets_file,
@@ -72,73 +71,51 @@ flow = Flow.from_client_secrets_file(
 )
 
 
-@full_bp.route("/quizzen/index")
-def index_oauth():
-    return "Hello World <a href='/quizzen/auth/google'><button>Login</button></a>"
-
-
 @oauth_bp.route("/")
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
-    print(f'Session after set: {session}')
-    print(f'Session after set: {dict(session)}')
-
     return redirect(authorization_url)
 
 
 @oauth_bp.route("/callback")
 def callback():
-    print(f'Session: {session}')
     try:
         flow.fetch_token(authorization_response=request.url)
-    except MismatchingStateError:
-        # Handle CSRF state mismatch error
-        print("Error: CSRF protection triggered. State does not match.")
-        # Take appropriate action, like logging or showing an error to the user
+    except MismatchingStateError as e:
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("An error occured. Please log in again", "error")
+        return redirect(url_for('full_bp.login'))
+        
+    except AccessDeniedError as e:
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("An error occured. Please log in again", "error")
+        return redirect(url_for('full_bp.login'))
 
-    except AccessDeniedError:
-        # User denied access to the app
-        print("Error: The user denied the authorization request.")
-
-    except InvalidGrantError:
-        # Authorization code invalid, expired, or already used
-        print("Error: Invalid or expired authorization code.")
-
-    except InvalidClientError:
-        # Client credentials are incorrect or not recognized
-        print("Error: Invalid client credentials. Check your client_id and client_secret.")
-
-    except UnauthorizedClientError:
-        # Client not authorized to request tokens for this flow
-        print("Error: Unauthorized client. Ensure your app is authorized for this flow.")
-
-    except InvalidScopeError:
-        # The requested scope is invalid or malformed
-        print("Error: Invalid or unknown scope. Check your requested scopes.")
+    except InvalidGrantError as e:
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("An error occured. Please log in again", "error")
+        return redirect(url_for('full_bp.login'))
 
     except TokenExpiredError:
-        # Token expired before it could be used
-        print("Error: The token has expired. Reauthenticate to get a new token.")
-
-    except RefreshError:
-        # Failure while refreshing or exchanging the token
-        print("Error: Failed to refresh or fetch the token. Verify network and credentials.")
-
-    except TransportError:
-        # Network transport error occurred
-        print("Error: Network transport error occurred. Check your connection.")
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("Session expired. Please log in again", "error")
+        return redirect(url_for('full_bp.login'))
 
     except Timeout:
-        # Network request timed out
-        print("Error: The request timed out. Try again later.")
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("The request timed out. Try again later", "error")
+        return redirect(url_for('full_bp.login'))
 
     except ConnectionError:
-        # Network connection issue
-        print("Error: Network connection error. Ensure your internet is stable.")
-
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("Network connection error", "error")
+        return redirect(url_for('full_bp.login'))
+        
     except Exception as e:
-        pass
+        logger.error(f"Error occured in callback: {str(e)}")
+        flash("An error occured. Please log in again", "error")
+        return redirect(url_for('full_bp.login'))
 
     try:
         if not session or session['state'] != request.args['state']:
@@ -174,15 +151,10 @@ def callback():
             }
             return redirect(url_for("full_bp.oauth_registration"))
 
-        print("saved user..................................")
-        # Log in the user
         session.clear()
-        logger.info(f"Session (before clear): {session}")
-#current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
         session['user_id'] = user.id
         session['user_role'] = user.role
         logger.info(f"Session (after clear): {session}")
-        print("logged saved user.............................")
         logger.info(f"Oauth User {user.id} logged in successfully")
 
         return redirect(url_for("full_bp.user_dashboard"))
@@ -201,25 +173,19 @@ def oauth_registration():
 
     if request.method == "POST":
         limiter.limit("5 per minute")(lambda: None)()
-        # Retrieve user info from session
+
         oauth_user = session.get("oauth_user")
         if not oauth_user:
             flash("Session expired. Please log in again", "error")
             return redirect(url_for("full_bp.login"))
 
         try:
-
-            # Get form data
             data = request.get_json() if request.is_json else request.form
-
             role = data.get('role', '').strip()
-
-            # Validate input
             if not role:
                 flash("You must select a role", "error")
                 return redirect(url_for("full_bp.oauth_registration"))
 
-            # Create and save user
             user = User(
                 email=oauth_user["email"],
                 first_name=oauth_user["first_name"],
@@ -231,10 +197,8 @@ def oauth_registration():
             db.session.add(user)
             db.session.commit()
 
-            # Log in user
             session.clear()
             logger.info(f"Session: {session}")
-#current_app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
             session["user_id"] = user.id
             session['user_role'] = user.role
             logger.info(f"Oauth User {user.id} logged in successfully")
@@ -242,7 +206,6 @@ def oauth_registration():
                 "success": True,
                 "message": "OAuth User registered successfully"
             }), 201
-            # return redirect(url_for("full_bp.user_dashboard"))
         except Exception as e:
             logger.error(f"Error during Oauth signup: {e}")
             db.session.rollback()
