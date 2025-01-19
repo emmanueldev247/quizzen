@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
     const loader = deletePhotoOption.querySelector(".loader");
     loader.style.display = "inline-block";
-    fetch("/delete-profile-picture", {
+    fetch("/quizzen/delete-profile-picture", {
       method: "POST",
       body: formData,
     })
