@@ -1,0 +1,161 @@
+{% extends base_template %}
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+{% endblock styles_content %}
+
+{% block main_content %}
+<main>
+    <h2 class="profile-head">{{ 'Admin' if user.role == 'admin' else 'User' }} Profile</h2>
+    <div class="profile-container">
+        <div class="profile-container-data">
+            <div class="profile-pic-name-container data-item">
+                <div class="profile-pic">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture }}" alt="Profile Picture">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
+                    {% endif %}
+                    <div class="camera-icon">&#128247;</div>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                </div>
+                <div class="action-menu" id="action-menu">
+                    <button id="library-option">
+                        <i class="fa-solid fa-images"></i>
+                        Picture Library
+                    </button>
+                    <button id="take-photo-option">
+                        <i class="fa-solid fa-camera"></i>
+                        Take Photo
+                    </button>
+                    <button id="choose-photo-option">
+                        <i class="fa-solid fa-file-image"></i>
+                        Choose Photo
+                    </button>
+                    <button id="delete-photo-option">
+                        <i class="fa-solid fa-trash-can"></i>
+                        Delete Photo
+                        <div class="loader"></div>
+                    </button>
+                </div>
+                <div class="profile-names">
+                    <p class="full-name">{{ user.first_name ~ ' ' ~ user.last_name}}</p>
+                    <p class="username"> {{ user.username }} </p>
+                </div>
+            </div>
+            <div class="profile-email-role-container data-item">
+                <div class="profile-email">
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ user.email }}
+                    {% if user.email_verified %}
+                    <span class="is-verified verified" title="Your email is verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-check-circle w-3 h-3 ml-1 text-theme-9 tooltip tooltipstered">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </span>
+                    {% else %}
+                    <span class="is-verified not-verified" title="Your email is not verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-x-circle w-3 h-3 ml-1 text-theme-6 tooltip tooltipstered">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="profile-role">
+                    <i class="fa-solid fa-user-tag"></i>
+                    {% if user.role == 'admin' %}
+                    <span class="role admin">
+                        Admin
+                    </span>
+                    {% else %}
+                    <span class="role user">
+                        User
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="profile-container-links">
+            <div id="profile-tab" class="link-items">Profile</div>
+            <div id="password-tab" class="link-items">Change Password</div>
+        </div>
+    </div>
+    <div class="biodata-container">
+        <div id="update-profile" class="content">
+            <h3>Bio Data</h3>
+            <form id="update-profile-form">
+                <div class="bio-data-form">
+                    <div class="info">
+                        <label for="email">Email:</label>
+                        <input id="email" type="text" value="{{ user.email }}" readonly
+                            title="You cannot change your email address" autocomplete="email">
+                    </div>
+                    <div class="info">
+                        <label for="username">Username:</label>
+                        <input id="username" type="text" value="{{ user.username }}" autocomplete="name">
+                    </div>
+                    <div class="info">
+                        <label for="f_name">First Name:</label>
+                        <input id="f_name" type="text" value="{{ user.first_name }}">
+                    </div>
+                    <div class="info">
+                        <label for="l_name">Last Name:</label>
+                        <input id="l_name" type="text" value="{{ user.last_name }}">
+                    </div>
+                    <button type="submit" class="save-btn">
+                        Update Profile
+                        <div class="loader"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="change-password" class="content hidden">
+            <h3>Change Password</h3>
+            <form id="change-password-form">
+                <div class="bio-data-form">
+                    <div class="info">
+                        <label for="current-password">Your Current Password:</label>
+                        <input id="current-password" type="password">
+                    </div>
+                    <div class="info">
+                        <label for="new-password">Create a new password:</label>
+                        <input id="new-password" type="password">
+                    </div>
+                    <div class="info">
+                        <label for="c-new-password">Confirm your new password</label>
+                        <input id="c-new-password" type="password">
+                    </div>
+                    <button type="submit" class="save-btn">
+                        Change Password
+                        <div class="loader"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Image Upload and Crop Modal -->
+    <div id="crop-modal" class="crop-modal">
+        <div class="crop-modal-sub">
+            <div class="crop-modal-sub-inner">
+                <h3>Adjust Your Photo</h3>
+                <div id="crop-container"></div>
+                <button id="save-crop-btn">Save</button>
+                <button id="cancel-crop-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main_content %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock scripts %}
