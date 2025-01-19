@@ -900,7 +900,10 @@ def upload_profile_picture(current_user):
 def delete_profile_picture(current_user):
     try:
         if current_user.profile_picture:
-            print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], "01jj07jnym0mf6mpvp8sgspwh5")}")
+            try:
+                print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], "01jj07jnym0mf6mpvp8sgspwh5")}")
+            except:
+                print("ERROR!!!!!!!!!!!")
             image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], os.path.basename(current_user.profile_picture))
             if os.path.exists(image_path):
                 os.remove(image_path)
