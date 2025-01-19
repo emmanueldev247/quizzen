@@ -48,6 +48,8 @@ class Config:
     GOOGLE_CLIENT_ID=os.getenv('GOOGLE_CLIENT_ID')
     GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 
+    UPLOAD_FOLDER=os.getenv('UPLOAD_FOLDER')
+
 
 class DevelopmentConfig(Config):
     """Development configuration."""

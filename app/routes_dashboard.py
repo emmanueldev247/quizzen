@@ -833,11 +833,6 @@ def my_profile(current_user):
     )
 
 
-UPLOAD_FOLDER = './uploads'
-current_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 
 @full_bp.route('/upload-profile-picture', methods=['POST'])
 @auth_required

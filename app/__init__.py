@@ -51,7 +51,6 @@ def create_app(config_name=None):
     mail.init_app(app)
     limiter.init_app(app)
     jwt.init_app(app)
-    # oauth.init_app(app)
 
     app.register_blueprint(full_bp)
     app.register_blueprint(api_v1)
