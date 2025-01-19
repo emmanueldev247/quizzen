@@ -236,7 +236,7 @@ main h2 {
 .profile-container.visible,
 .biodata-container.visible,
 .profile-head.visible {
-    
+
     transition: all 0.5s ease, transform 0.5s ease;
     visibility: visible;
     opacity: 1;
@@ -389,9 +389,10 @@ button#cancel-crop-btn {
         align-items: stretch;
         justify-content: center;
     }
-    .profile-pic-name-container{
-        
-    margin-right: -20px;
+
+    .profile-pic-name-container {
+
+        margin-right: -20px;
     }
 
     .profile-pic-name-container,
@@ -420,6 +421,10 @@ button#cancel-crop-btn {
 @media (max-width: 500px) {
     * {
         overflow-x: hidden;
+    }
+
+    main h2 {
+        font-size: 20px;
     }
 
     .profile-pic-name-container {

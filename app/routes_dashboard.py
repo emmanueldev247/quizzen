@@ -858,9 +858,13 @@ def upload_profile_picture(current_user):
             })
 
         if file:
+            print(f'Filename: {file.filename}')
             original_filename = secure_filename(file.filename)
+            print(f'Original Filename: {original_filename}')
             file_extension = os.path.splitext(original_filename)[1] 
+            print(f'Extension: {file_extension}')
             unique_filename = f"{str(ulid.new()).lower()}{file_extension}"
+            print(f'Unique FN: {unique_filename}')
 
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
             file.save(file_path)
@@ -870,12 +874,12 @@ def upload_profile_picture(current_user):
                 if os.path.exists(old_image):
                     os.remove(old_image)
 
-            current_user.profile_picture = f"/uploads/{unique_filename}"
+            current_user.profile_picture = f"quizzen/uploads/{unique_filename}"
             db.session.commit()
 
             return jsonify({
                 'success': True,
-                'image_url': f"/uploads/{unique_filename}"
+                'image_url': f"quizzen/uploads/{unique_filename}"
             })
 
         return jsonify({
@@ -922,4 +926,5 @@ def delete_profile_picture(current_user):
 @full_bp.route('/uploads/<filename>')
 @limiter.limit("30 per minute")
 def uploaded_file(filename):
+    print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)}")
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
