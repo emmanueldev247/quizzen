@@ -8,7 +8,7 @@ import {
 document.addEventListener("DOMContentLoaded", () => {
   const userType = document.body.getAttribute("data-user-type");
   const navIndex = userType === "admin" ? 4 : 3;
-  setActive(".nav-item:nth-child(navIndex)", ".bottom-nav-item:nth-child(navIndex)");
+  setActive(`.nav-item:nth-child(${navIndex})`, `.bottom-nav-item:nth-child(${navIndex})`);
 
   const profileHead = document.querySelector(".profile-head");
   const profileDiv = document.querySelector(".profile-container");
