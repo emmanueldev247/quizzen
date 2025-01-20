@@ -6,7 +6,7 @@ import {
 } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  setActive(".nav-item:nth-child(4)", ".bottom-nav-item:nth-child(3)");
+  setActive(".nav-item:nth-child(4)", ".bottom-nav-item:nth-child(4)");
 
   const profileHead = document.querySelector(".profile-head");
   const profileDiv = document.querySelector(".profile-container");
