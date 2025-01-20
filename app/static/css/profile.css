@@ -39,7 +39,6 @@ main h2 {
     align-items: center;
     position: relative;
     border-right: #e2e8f0 1px solid;
-    margin-right: -100px;
 }
 
 .profile-pic {
@@ -88,6 +87,7 @@ main h2 {
 }
 
 .action-menu button {
+    font-size: 14px;
     display: block;
     width: 100%;
     margin-bottom: 5px;
@@ -306,7 +306,8 @@ main h2 {
     color: #999;
 }
 
-.save-btn {
+.save-btn,
+.verify-email {
     background: #6a0dad;
     color: #fff;
     padding: 10px 20px;
@@ -318,16 +319,25 @@ main h2 {
     transition: all ease .2s;
 }
 
-.save-btn:hover {
+.save-btn:hover,
+.verify-email:hover {
     background: #a94dd0;
 }
 
-.save-btn:disabled {
+.verify-email {
+    font-size: 14px;
+    padding: 5px 10px;
+    align-self: center;
+}
+
+.save-btn:disabled,
+.verify-email:disabled {
     background: #a94dd0;
     cursor: not-allowed;
 }
 
-.save-btn:focus {
+.save-btn:focus,
+.verify-email:focus {
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
     background: #a94dd0;
