@@ -571,7 +571,7 @@ def get_question(current_user, quiz_id, question_id):
                 # return jsonify({
                 #     "success": False,
                 #     "message": "Question not found"
-                # }), 404    
+                # }), 404
             return render_template('edit_question.html', quiz=quiz)
 
         return render_template('edit_question.html',
@@ -830,7 +830,7 @@ def profile(current_user):
 
     else:
         base_template = "base_user_dashboard.html"
-    
+
     return render_template(
         'profile.html',
         base_template=base_template,
@@ -849,7 +849,7 @@ def upload_profile_picture(current_user):
                 'success': False,
                 'message': 'No file part'
             })
-        
+
         file = request.files['profile_picture']
         if file.filename == '':
             return jsonify({
@@ -861,7 +861,7 @@ def upload_profile_picture(current_user):
             print(f'Filename: {file.filename}')
             original_filename = secure_filename(file.filename)
             print(f'Original Filename: {original_filename}')
-            file_extension = os.path.splitext(original_filename)[1] 
+            file_extension = os.path.splitext(original_filename)[1]
             print(f'Extension: {file_extension}')
             unique_filename = f"{str(ulid.new()).lower()}{file_extension}"
             print(f'Unique FN: {unique_filename}')
@@ -908,7 +908,7 @@ def delete_profile_picture(current_user):
             if os.path.exists(image_path):
                 os.remove(image_path)
             current_user.profile_picture = None
-            
+
             db.session.commit()
             return jsonify({
                 'success': True,
