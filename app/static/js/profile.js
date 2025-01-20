@@ -6,7 +6,9 @@ import {
 } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  setActive(".nav-item:nth-child(4)", ".bottom-nav-item:nth-child(4)");
+  const userType = document.body.getAttribute("data-user-type");
+  const navIndex = userType === "admin" ? 4 : 3;
+  setActive(".nav-item:nth-child(navIndex)", ".bottom-nav-item:nth-child(navIndex)");
 
   const profileHead = document.querySelector(".profile-head");
   const profileDiv = document.querySelector(".profile-container");
@@ -21,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const profilePic = document.querySelector(".profile-pic img");
   const deletePhotoOption = document.getElementById("delete-photo-option");
   const libraryOption = document.getElementById("library-option");
-  const takePhotoOption = document.getElementById("take-photo-option");
   const profileTab = document.getElementById("profile-tab");
   const passwordTab = document.getElementById("password-tab");
   const profileContent = document.getElementById("update-profile");
@@ -109,51 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  const handleCameraFeed = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const video = document.createElement("video");
-      video.srcObject = stream;
-      video.play();
-
-      const modal = document.createElement("div");
-      const canvas = document.createElement("canvas");
-      const captureButton = document.createElement("button");
-
-      modal.style.cssText =
-        "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000;";
-      captureButton.innerText = "Capture";
-
-      modal.appendChild(video);
-      modal.appendChild(captureButton);
-      document.body.appendChild(modal);
-
-      captureButton.addEventListener("click", () => {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        const imageDataURL = canvas.toDataURL("image/jpeg");
-        initializeCropper(imageDataURL);
-
-        stream.getTracks().forEach((track) => track.stop());
-        document.body.removeChild(modal);
-        cropModal.style.display = "flex";
-      });
-
-      modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          stream.getTracks().forEach((track) => track.stop());
-          document.body.removeChild(modal);
-        }
-      });
-    } catch (error) {
-      showNotification("Camera access denied or unavailable", "error");
-      console.error(error);
-    }
-  };
-
   handleHashChange();
 
   profileTab.addEventListener("click", () => {
@@ -185,8 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
   libraryOption.addEventListener("click", () => {
     imageUploadInput.click();
   });
-
-  takePhotoOption.addEventListener("click", handleCameraFeed);
 
   // Handle file input change
   imageUploadInput.addEventListener("change", (event) => {

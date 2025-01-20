@@ -23,14 +23,6 @@
                 <div class="action-menu" id="action-menu">
                     <button id="library-option">
                         <i class="fa-solid fa-images"></i>
-                        Picture Library
-                    </button>
-                    <button id="take-photo-option">
-                        <i class="fa-solid fa-camera"></i>
-                        Take Photo
-                    </button>
-                    <button id="choose-photo-option">
-                        <i class="fa-solid fa-file-image"></i>
                         Choose Photo
                     </button>
                     <button id="delete-photo-option">
@@ -41,10 +33,22 @@
                 </div>
                 <div class="profile-names">
                     <p class="full-name">{{ user.first_name ~ ' ' ~ user.last_name}}</p>
-                    <p class="username"> {{ user.username }} </p>
+                    <p class="username"> {{ user.username if user.username else '' }} </p>
                 </div>
             </div>
             <div class="profile-email-role-container data-item">
+                <div class="profile-role">
+                    <i class="fa-solid fa-user-tag"></i>
+                    {% if user.role == 'admin' %}
+                    <span class="role admin">
+                        Admin
+                    </span>
+                    {% else %}
+                    <span class="role user">
+                        User
+                    </span>
+                    {% endif %}
+                </div>
                 <div class="profile-email">
                     <i class="fa-solid fa-envelope"></i>
                     {{ user.email }}
@@ -69,18 +73,12 @@
                     </span>
                     {% endif %}
                 </div>
-                <div class="profile-role">
-                    <i class="fa-solid fa-user-tag"></i>
-                    {% if user.role == 'admin' %}
-                    <span class="role admin">
-                        Admin
-                    </span>
-                    {% else %}
-                    <span class="role user">
-                        User
-                    </span>
-                    {% endif %}
-                </div>
+                {% if not user.email_verified %}
+                <button type="button" class="verify-email">
+                    Verify Email
+                    <div class="loader"></div>
+                </button>
+                {% endif %}     
             </div>
         </div>
         <div class="profile-container-links">
@@ -100,7 +98,7 @@
                     </div>
                     <div class="info">
                         <label for="username">Username:</label>
-                        <input id="username" type="text" value="{{ user.username }}" autocomplete="name">
+                        <input id="username" type="text" value="{{ user.username if user.username else '' }}" autocomplete="name">
                     </div>
                     <div class="info">
                         <label for="f_name">First Name:</label>
