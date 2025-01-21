@@ -8,9 +8,14 @@ import {
 document.addEventListener("DOMContentLoaded", () => {
   const userType = document.body.getAttribute("data-user-type");
   const navIndex = userType === "admin" ? 4 : 3;
-  setActive(`.nav-item:nth-child(${navIndex})`, `.bottom-nav-item:nth-child(${navIndex})`);
+  setActive(
+    `.nav-item:nth-child(${navIndex})`,
+    `.bottom-nav-item:nth-child(${navIndex})`
+  );
 
   const profileHead = document.querySelector(".profile-head");
+  const verifyEmail = document.querySelector(".verify-email");
+  const verifyMessage = document.querySelector(".verify-message");
   const profileDiv = document.querySelector(".profile-container");
   const biodataDiv = document.querySelector(".biodata-container");
   const cameraIcon = document.querySelector(".camera-icon");
@@ -81,7 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const compressImage = (canvas, callback) => {
     canvas.toBlob(
       (blob) => {
-        const file = new File([blob], "profile_picture.jpg", { type: "image/jpeg" });
+        const file = new File([blob], "profile_picture.jpg", {
+          type: "image/jpeg",
+        });
         callback(file);
       },
       "image/jpeg",
@@ -112,6 +119,63 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   handleHashChange();
+
+  verifyEmail.addEventListener("click", () => {
+    const email = verifyEmail.dataset.userEmail;
+    console.log("Extracted email:", email);
+
+    const loader = verifyEmail.querySelector(".loader");
+    loader.style.display = "inline-block";
+    verifyMessage.style.display = "none";
+
+    fetch("/verify_email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 404) {
+            verifyMessage.innerHTML = `No account associated with 
+          <span style="color: #d9534f;">${email}</span>.`;
+            verifyMessage.style.display = "block";
+          } else if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          verifyMessage.innerHTML = `Verification link has been sent to 
+          <span style="color: #009724;">${email}</span>.`;
+          verifyMessage.style.display = "block";
+          showNotification("Please check your inbox or spam folder", "success");
+        }
+      })
+      .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+        console.error("Error getting verification link:", error);
+      })
+      .finally(() => {
+        resetPasswordButton.disabled = false;
+        loader.style.display = "none";
+      });
+  });
 
   profileTab.addEventListener("click", () => {
     window.location.hash = "#profile-update";

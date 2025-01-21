@@ -74,10 +74,11 @@
                     {% endif %}
                 </div>
                 {% if not user.email_verified %}
-                <button type="button" class="verify-email">
+                <button type="button" class="verify-email" data-user-email="{{ user.email }}">
                     Verify Email
                     <div class="loader"></div>
                 </button>
+                <div class="verify-message"></div>
                 {% endif %}     
             </div>
         </div>
