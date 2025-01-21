@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block styles_content %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset_password_error.css') }}">
+{% endblock styles_content %}
+
+{% block header_content%}
+		<a href="{{ url_for('full_bp.signup') }}" class="button-sign-up">
+			Signup
+		</a>
+		<a href="{{ url_for('full_bp.login') }}" class="button-log-in">
+			Log In
+		</a>
+{% endblock header_content%}
+
+{% block nav_content %}
+				<button class="signup-button">
+					Signup
+				</button>
+				<button class="login-button">
+					Login
+				</button>
+{% endblock nav_content %}
+
+{% block child_content %}
+	<div class="error-container">
+		<div id="error-container">
+			<div class="error-icon">
+				<i class="fa-solid fa-xmark"></i>
+			</div>
+			<h1>{{ message_h1 }}</h1>
+			<p>{{ message_p | safe }}</p>
+			<button id="back-to-login">Back to Login</button>
+		</div>
+	</div>
+{% endblock child_content %}
+
+{% block scripts %}
+	<script type="module" src="{{ url_for('static', filename='js/reset_password_error.js') }}"></script>
+{% endblock scripts %}

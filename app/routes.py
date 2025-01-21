@@ -434,3 +434,222 @@ def logout():
     response = redirect(url_for('full_bp.home'))
     response.set_cookie('session', '', expires=0)
     return response
+
+
+@full_bp.route('/privacy')
+@limiter.limit("20 per minute")
+def privacy_policy():
+    return render_template('privacy.html', title='Privacy Policy')
+
+
+@full_bp.route('/tos')
+@limiter.limit("20 per minute")
+def tos():
+    return render_template('tos.html', title='Terms of Service')
+
+
+@full_bp.route('/verify_email', methods=['POST'])
+@auth_required
+@limiter.limit("5 per hour")
+def get_verification_link(current_user):
+    """Verify email"""
+    try:
+        logger.debug(f"Get email verification link attempt")
+        data = request.get_json() if request.is_json else request.form
+
+        email = unicodedata.normalize(
+                'NFKC', data.get('email', '').strip().lower()
+        )
+
+    except Exception as e:
+        logger.error(f"Error getting email verification link: {e}")
+        return jsonify({
+            "success": False,
+            "message": "Form data not valid"
+        }), 400
+
+    try:
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            logger.error(f"Email '{email}' not found")
+            return jsonify({
+                "success": False,
+                "message": "Email not found"
+            }), 404
+        user_full_name = f'{user.first_name} {user.last_name}'
+        s = Serializer(current_app.config['SECRET_KEY'])
+        token = s.dumps({'user_id': user.id})
+
+        verify_link = url_for('full_bp.verify_email',
+                             token=token, _external=True, _scheme='https')
+        msg = Message('Verify Your Email for Quizzen', recipients=[email])
+        msg.body = f"""
+         Hi {user_full_name},
+
+         Welcome to Quizzen - where we help you unleash your inner genius! 🌟
+         To complete your registration and start exploring the exciting quizzes waiting for you,
+         we need to verify your email address.
+
+         Click the link below to confirm your email:
+
+         {verify_link}
+
+         This step helps us ensure the security of your account and provide the best experience possible.
+
+         If you didn't sign up for Quizzen, please ignore this email.
+
+         Thank you for joining us!
+         Let the quiz journey begin!
+
+         Cheers,
+         The Quizzen Team
+        """
+
+        # READ TEMPLATE
+        with open("app/templates/verification_email.html", "r") as file:
+            template = file.read()
+        msg.html = template.format(reset_link=reset_link, user_full_name=user_full_name)
+        mail.send(msg)
+        logger.info(f"Link sent to mail '{mail}'")
+        return jsonify({
+            "success": True,
+            "message": "Password reset link sent to your email!"
+        }), 200
+    except Exception as e:
+        logger.error(f"Error during email verification: {e}")
+        return jsonify({
+            "success": False,
+            "message": "Failed to send email. Please try again later.",
+            "error": str(e)
+        }), 500
+
+@full_bp.route('/verify_email/<token>', methods=['GET', 'POST'])
+@limiter.limit("10 per hour")
+def verify_email(token):
+    """Verify email with token route"""
+    logger.debug(f"{request.method} - Email verification with token attempt")
+    try:
+        s = Serializer(current_app.config['SECRET_KEY'])
+        data = s.loads(token, max_age=86400)
+    except SignatureExpired:
+        logger.error(f"Token Expired")
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
+            return jsonify({
+                "success": False,
+                "message": "Expired token."
+            }), 400
+        else:
+            return render_template(
+                'verify_email_error.html',
+                title="Error",
+                message_h1="Link Expired",
+                message_p="Your Email verification link has expired. To verify "
+                          "your email, please return to your profile page and"
+                          " click \"<b>Verify Email</b>\""
+                          " to request a new verification link."
+            ), 400
+    except BadSignature:
+        logger.error(f"Invalid Token")
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
+            return jsonify({
+                "success": False,
+                "message": "Invalid token."
+            }), 400
+        else:
+            return render_template(
+                'verify_email_error.html',
+                title="Error",
+                message_h1="Invalid Link",
+                message_p="We're sorry, but the link you clicked is invalid "
+                          "or has already been used. Please return to your profile page and"
+                          " click \"<b>Verify Email</b>\""
+                          " to request a new verification link."
+            ), 400
+
+    try:
+        if UsedToken.query.filter_by(token=token).first():
+            logger.error(f"Token has been used")
+            if (
+                request.accept_mimetypes['application/json'] >=
+                request.accept_mimetypes['text/html']
+            ):
+                return jsonify({
+                    "success": False,
+                    "message": "Token has already been used."
+                }), 400
+            else:
+                return render_template(
+                    'verify_email_error.html',
+                    title="Error",
+                    message_h1="Invalid Link",
+                    message_p="We're sorry, but the link you clicked is "
+                              "invalid or has already been used. "
+                              "Please return to your profile page and"
+                              " click \"<b>Verify Email</b>\""
+                              " to request a new verification link."
+                ), 400
+    except Exception as e:
+        logger.error(f"Error during email verification with token: {e}")
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
+            return jsonify({
+                "success": False,
+                "message": "Failed to check Token. Please try again later.",
+                "error": str(e)
+            }), 500
+        else:
+            return render_template(
+                'verify_email_error.html',
+                title="Error",
+                message_h1="Invalid Link",
+                message_p="We're sorry, but the link you clicked is invalid "
+                          "or has already been used. Please return to your profile page and"
+                          " click \"<b>Verify Email</b>\""
+                          " to request a new verification link."
+            ), 500
+
+    user = User.query.get(data['user_id'])
+    if not user:
+        logger.error(f"User '{user.id}' not found")
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
+            return jsonify({
+                "success": False,
+                "message": "User not found."
+            }), 404
+        else:
+            return render_template(
+                'verify_email_error.html',
+                title="Error",
+                message_h1="Invalid Link",
+                message_p="We're sorry, but the link you clicked is invalid "
+                          "or has already been used. Please return to your profile page and"
+                          " click \"<b>Verify Email</b>\""
+                          " to request a new verification link."
+            ), 404
+
+        user.email_verified = True
+        db.session.add(user)
+
+        used_token = UsedToken(token=token)
+        db.session.add(used_token)
+
+        db.session.commit()
+        logger.info(f"Email verification for '{user.id}' successful")
+        return jsonify({
+            "success": True,
+            "message": "Email successfully verified."
+        }), 200
+
+    return render_template('veriffy_email.html', title="Reset Password")
+

@@ -1,0 +1,80 @@
+{% extends "base_blank.html" %}
+
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/privacy-tos.css') }}">
+{% endblock styles_content %}
+
+{% block child_content %}
+<main class="container">
+    <div class="main-header">
+        <h1>Privacy Policy</h1>
+        <p>Effective Date: January 1, 2025</p>
+    </div>
+    <p>Welcome to Quizzen! Your privacy is our priority. This Privacy Policy explains how we collect, use, store, and
+        protect your information when you interact with Quizzen. By using our platform, you agree to this policy.</p>
+    <section>
+        <h2>1. Purpose</h2>
+        <p>Quizzen is an educational quiz platform designed for students, teachers, and general audiences. We aim to
+            create personalized learning experiences while respecting your privacy.</p>
+    </section>
+
+    <section>
+        <h2>2. Information We Collect</h2>
+        <ul>
+            <li><strong>Account Information:</strong> Name, email, password, role (e.g., student, teacher), and optional
+                profile picture.</li>
+            <li><strong>Device Information:</strong> IP address for logging, security and session management.</li>
+            <li><strong>Cookies:</strong> Used to confirm your session and manage account access.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>3. How We Use Your Information</h2>
+        <p>We use your data to personalize quizzes, securely store data, and manage your account access to
+            Quizzen features.</p>
+    </section>
+
+    <section>
+        <h2>4. Cookies</h2>
+        <p>Cookies help us identify active sessions and ensure secure access to your account. You can manage or disable
+            cookies in your browser settings, though some features may be affected.</p>
+    </section>
+
+    <section>
+        <h2>5. Data Storage and Security</h2>
+        <p>Your data is stored securely with industry-standard encryption protocols, including HTTPS. We also use
+            OAuth for secure sign-ins.</p>
+    </section>
+
+    <section>
+        <h2>6. Children’s Privacy</h2>
+        <p>Quizzen is designed for users of all ages. However, children under 13 must use the platform under parental
+            guidance. Quizzen is not responsible for damages caused by unsupervised use.</p>
+    </section>
+
+    <section>
+        <h2>7. User Rights</h2>
+        <ul>
+            <li>Remove your profile picture at any time.</li>
+            <li>Request full account deletion by contacting us.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>8. No Ads or Data Sharing</h2>
+        <p>We do not show ads or share your data with third parties. Your information stays private.</p>
+    </section>
+
+    <section>
+        <h2>9. Updates to This Privacy Policy</h2>
+        <p>We may update this policy from time to time. Changes will be communicated on our website with an updated
+            effective date.</p>
+    </section>
+
+    <section>
+        <h2>10. Contact Us</h2>
+        <p>If you have any questions about this policy, please email us at <a
+                href="mailto:quizzen-support@emmanueldev247.tech">quizzen-support@emmanueldev247.tech</a>.</p>
+    </section>
+</main>
+{% endblock child_content %}
