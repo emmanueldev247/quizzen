@@ -445,7 +445,7 @@ def api_doc():
 
 @full_bp.route('/verify_email', methods=['POST'])
 @limiter.limit("5 per hour")
-def get_verification_link(current_user):
+def get_verification_link():
     """Verify email"""
     from app.routes_dashboard import auth_required
     @auth_required
