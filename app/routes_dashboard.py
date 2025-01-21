@@ -831,11 +831,14 @@ def profile(current_user):
     else:
         base_template = "base_user_dashboard.html"
 
+    categories = Category.query.order_by(Category.name.asc()).all()
+
     return render_template(
         'profile.html',
         base_template=base_template,
         title='My Profile',
         user=user,
+        categories=categories
     )
 
 
