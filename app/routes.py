@@ -449,7 +449,7 @@ def get_verification_link():
     """Verify email"""
     from app.routes_dashboard import auth_required
     @auth_required
-    def inner_function(current_app):
+    def inner_function(current_user):
         try:
             logger.debug(f"Get email verification link attempt")
             data = request.get_json() if request.is_json else request.form
