@@ -81,7 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const compressImage = (canvas, callback) => {
     canvas.toBlob(
       (blob) => {
-        callback(blob);
+        const file = new File([blob], "profile_picture.jpg", { type: "image/jpeg" });
+        callback(file);
       },
       "image/jpeg",
       0.8
