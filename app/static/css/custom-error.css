@@ -1,3 +1,13 @@
+body {
+    font-family: 'Quattrocento Sans', sans-serif;
+    background: #f4f4f4;
+    color: #333;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
 
 .container {
     margin-top: 60px;
@@ -65,18 +75,18 @@
     .container {
         width: 90%;
     }
-    
+
     .error-code {
         font-size: 6rem;
     }
-    
+
     .description {
         font-size: 1.2rem;
     }
 }
 
 @media (max-width: 530px) {
-    
+
     .container {
         margin-top: 50px;
     }
@@ -91,15 +101,4 @@
     .container {
         margin-top: 70px;
     }
-}
-
-body {
-    font-family: 'Quattrocento Sans', sans-serif;
-    background: #f4f4f4;
-    color: #333;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
 }
