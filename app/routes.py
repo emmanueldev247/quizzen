@@ -649,5 +649,5 @@ def verify_email(token):
             "message": "Email successfully verified."
         }), 200
 
-    return render_template('veriffy_email.html', title="Reset Password")
+    return render_template('verify_email.html', title="Reset Password")
 
