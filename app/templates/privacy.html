@@ -77,7 +77,12 @@
                 href="mailto:quizzen-support@emmanueldev247.tech">quizzen-support@emmanueldev247.tech</a>.</p>
     </section>
 </main>
-<footer>
-    <p>&copy; 2025 Quizzen. All rights reserved.</p>
+<footer class="footer">
+    <p>&copy; 2025 Quizzen. All Rights Reserved.</p>
+    <p>
+        <a href="{{ url_for('full_bp.api_doc') }}" class="footer-link">API Documentation</a> |
+        <a href="{{ url_for('full_bp.privacy_policy') }}" class="footer-link">Privacy Policy</a> |
+        <a href="{{ url_for('full_bp.tos') }}" class="footer-link">Terms of Service</a>
+    </p>
 </footer>
 {% endblock child_content %}

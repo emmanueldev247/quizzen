@@ -184,15 +184,13 @@
 	</section>
 	<button id="backToTop" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
 	<footer class="footer">
-		<div class="container">
-			<p>&copy; 2025 Quizzen. All Rights Reserved.</p>
-			<p>
-				<a href="{{ url_for('full_bp.api_doc') }}" class="footer-link">API Documentation</a> |
-				<a href="{{ url_for('full_bp.privacy_policy') }}" class="footer-link">Privacy Policy</a> |
-				<a href="{{ url_for('full_bp.tos') }}" class="footer-link">Terms of Service</a>
-			</p>
-		</div>
-	</footer>
+    <p>&copy; 2025 Quizzen. All Rights Reserved.</p>
+    <p>
+        <a href="{{ url_for('full_bp.api_doc') }}" class="footer-link">API Documentation</a> |
+        <a href="{{ url_for('full_bp.privacy_policy') }}" class="footer-link">Privacy Policy</a> |
+        <a href="{{ url_for('full_bp.tos') }}" class="footer-link">Terms of Service</a>
+    </p>
+</footer>
 	<script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
