@@ -42,11 +42,13 @@ def create_app(config_name=None):
 
     @app.errorhandler(404)
     def page_not_found(e):
-        return render_template('404.html', requested_url=request.url), 404
+        requested_path = request.path.split('/quizzen', 1)[-1]
+        return render_template('404.html', requested_url=requested_path), 404
 
     @app.errorhandler(405)
     def method_not_allowed(e):
-        return render_template('405.html', method=request.method, requested_url=request.url), 405
+        requested_path = request.path.split('/quizzen', 1)[-1]
+        return render_template('405.html', method=request.method, requested_url=requested_path), 405
 
     @app.errorhandler(500)
     def internal_server_error(e):
