@@ -43,18 +43,6 @@ def rate_limit_exceeded(e):
         "error": "Too many requests, please try again later."
     }), 429
 
-@full_bp.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html', requested_url=request.url), 404
-
-@full_bp.errorhandler(405)
-def method_not_allowed(e):
-    return render_template('405.html', method=request.method, requested_url=request.url), 405
-
-@full_bp.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'), 500
-
 @full_bp.after_request
 def log_response_info(response):
     """Middle ware for after request"""

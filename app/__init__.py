@@ -17,7 +17,7 @@ through environment variables for security.
 """
 
 import os
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_login import LoginManager
 
 from app import routes_dashboard, oauth
@@ -39,6 +39,19 @@ def create_app(config_name=None):
     app.url_map.strict_slashes = False
     app.jinja_env.globals.update(len=len)
     app.jinja_env.filters['timeago'] = timeago_filter
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html', requested_url=request.url), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        return render_template('405.html', method=request.method, requested_url=request.url), 405
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('500.html'), 500
+
 
     config_name = config_name or os.getenv('FLASK_ENV', 'default')
     app.config.from_object(config[config_name])
