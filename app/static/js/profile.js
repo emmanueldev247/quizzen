@@ -128,6 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loader.style.display = "inline-block";
     verifyMessage.style.display = "none";
 
+    verifyEmail.disabled = true;
+
     fetch("/verify_email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -172,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error getting verification link:", error);
       })
       .finally(() => {
-        resetPasswordButton.disabled = false;
+        verifyEmail.disabled = false;
         loader.style.display = "none";
       });
   });
