@@ -637,12 +637,19 @@ def verify_email(token):
             ), 404
 
         user.email_verified = True
+        
+        print("Before save")
+        logger.info(f'user -> {user}')
+        logger.info(f'user -> {user.email_verified}')
         db.session.add(user)
 
         used_token = UsedToken(token=token)
         db.session.add(used_token)
 
         db.session.commit()
+        print("After save")
+        logger.info(f'user -> {user}')
+        logger.info(f'user -> {user.email_verified}')
         logger.info(f"Email verification for '{user.id}' successful")
         return jsonify({
             "success": True,
