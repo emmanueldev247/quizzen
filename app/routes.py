@@ -25,7 +25,7 @@ from itsdangerous import (
 from app.extensions import db, full_bp, mail, limiter
 from app.models import User, UsedToken
 from app.utils.logger import setup_logger
-from app.routes_dashboard import auth_required
+
 
 
 logger = setup_logger()
@@ -449,79 +449,82 @@ def tos():
 
 
 @full_bp.route('/verify_email', methods=['POST'])
-@auth_required
 @limiter.limit("5 per hour")
 def get_verification_link(current_user):
     """Verify email"""
-    try:
-        logger.debug(f"Get email verification link attempt")
-        data = request.get_json() if request.is_json else request.form
+    from app.routes_dashboard import auth_required
+    @auth_required
+    def inner_function(current_app):
+        try:
+            logger.debug(f"Get email verification link attempt")
+            data = request.get_json() if request.is_json else request.form
 
-        email = unicodedata.normalize(
-                'NFKC', data.get('email', '').strip().lower()
-        )
+            email = unicodedata.normalize(
+                    'NFKC', data.get('email', '').strip().lower()
+            )
 
-    except Exception as e:
-        logger.error(f"Error getting email verification link: {e}")
-        return jsonify({
-            "success": False,
-            "message": "Form data not valid"
-        }), 400
-
-    try:
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            logger.error(f"Email '{email}' not found")
+        except Exception as e:
+            logger.error(f"Error getting email verification link: {e}")
             return jsonify({
                 "success": False,
-                "message": "Email not found"
-            }), 404
-        user_full_name = f'{user.first_name} {user.last_name}'
-        s = Serializer(current_app.config['SECRET_KEY'])
-        token = s.dumps({'user_id': user.id})
+                "message": "Form data not valid"
+            }), 400
 
-        verify_link = url_for('full_bp.verify_email',
-                             token=token, _external=True, _scheme='https')
-        msg = Message('Verify Your Email for Quizzen', recipients=[email])
-        msg.body = f"""
-         Hi {user_full_name},
+        try:
+            user = User.query.filter_by(email=email).first()
+            if not user:
+                logger.error(f"Email '{email}' not found")
+                return jsonify({
+                    "success": False,
+                    "message": "Email not found"
+                }), 404
+            user_full_name = f'{user.first_name} {user.last_name}'
+            s = Serializer(current_app.config['SECRET_KEY'])
+            token = s.dumps({'user_id': user.id})
 
-         Welcome to Quizzen - where we help you unleash your inner genius! 🌟
-         To complete your registration and start exploring the exciting quizzes waiting for you,
-         we need to verify your email address.
+            verify_link = url_for('full_bp.verify_email',
+                                token=token, _external=True, _scheme='https')
+            msg = Message('Verify Your Email for Quizzen', recipients=[email])
+            msg.body = f"""
+            Hi {user_full_name},
 
-         Click the link below to confirm your email:
+            Welcome to Quizzen - where we help you unleash your inner genius! 🌟
+            To complete your registration and start exploring the exciting quizzes waiting for you,
+            we need to verify your email address.
 
-         {verify_link}
+            Click the link below to confirm your email:
 
-         This step helps us ensure the security of your account and provide the best experience possible.
+            {verify_link}
 
-         If you didn't sign up for Quizzen, please ignore this email.
+            This step helps us ensure the security of your account and provide the best experience possible.
 
-         Thank you for joining us!
-         Let the quiz journey begin!
+            If you didn't sign up for Quizzen, please ignore this email.
 
-         Cheers,
-         The Quizzen Team
-        """
+            Thank you for joining us!
+            Let the quiz journey begin!
 
-        # READ TEMPLATE
-        with open("app/templates/verification_email.html", "r") as file:
-            template = file.read()
-        msg.html = template.format(reset_link=reset_link, user_full_name=user_full_name)
-        mail.send(msg)
-        logger.info(f"Link sent to mail '{mail}'")
-        return jsonify({
-            "success": True,
-            "message": "Password reset link sent to your email!"
-        }), 200
-    except Exception as e:
-        logger.error(f"Error during email verification: {e}")
-        return jsonify({
-            "success": False,
-            "message": "Failed to send email. Please try again later.",
-            "error": str(e)
-        }), 500
+            Cheers,
+            The Quizzen Team
+            """
+
+            # READ TEMPLATE
+            with open("app/templates/verification_email.html", "r") as file:
+                template = file.read()
+            msg.html = template.format(reset_link=reset_link, user_full_name=user_full_name)
+            mail.send(msg)
+            logger.info(f"Link sent to mail '{mail}'")
+            return jsonify({
+                "success": True,
+                "message": "Password reset link sent to your email!"
+            }), 200
+        except Exception as e:
+            logger.error(f"Error during email verification: {e}")
+            return jsonify({
+                "success": False,
+                "message": "Failed to send email. Please try again later.",
+                "error": str(e)
+            }), 500
+    return inner_function()
 
 @full_bp.route('/verify_email/<token>', methods=['GET', 'POST'])
 @limiter.limit("10 per hour")
