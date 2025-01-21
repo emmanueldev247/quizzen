@@ -651,10 +651,5 @@ def verify_email(token):
     logger.info(f'user -> {user}')
     logger.info(f'user -> {user.email_verified}')
     logger.info(f"Email verification for '{user.id}' successful")
-    return jsonify({
-        "success": True,
-        "message": "Email successfully verified."
-    }), 200
-
-    return render_template('verify_email.html', title="Reset Password")
+    return render_template('verify_email.html', title="Verify Email")
 
