@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     verifyEmail.disabled = true;
 
-    fetch("/verify_email", {
+    fetch("/quizzen/verify_email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
