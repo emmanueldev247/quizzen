@@ -1,0 +1,19 @@
+{% extends "base_blank.html" %}
+
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom-error.css') }}">
+{% endblock styles_content %}
+
+{% block child_content %}
+<div class="container">
+  <div class="error-code">405</div>
+  <div class="icon"><i class="fa-solid fa-ban"></i></div>
+  <div class="description">The method you used is not allowed on this route.</div>
+  <div class="requested-method">Requested Method: {{ method }}</div>
+  <div class="requested-url">Requested URL: {{ requested_url }}</div>
+  <div class="buttons">
+      <a href="javascript:history.back()">Go Back</a>
+      <a href="/quizzen/dashboard">Go Home</a>
+    </div>
+</div>
+{% endblock child_content %}

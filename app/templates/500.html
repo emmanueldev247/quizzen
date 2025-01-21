@@ -1,0 +1,18 @@
+{% extends "base_blank.html" %}
+
+{% block styles_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom-error.css') }}">
+{% endblock styles_content %}
+
+{% block child_content %}
+<div class="container">
+  <div class="error-code">500</div>
+  <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
+  <div class="description">Something broke on our end. We’re working on it!</div>
+  <div class="buttons">
+      <a href="javascript:history.back()">Go Back</a>
+      <a href="/quizzen/dashboard">Go Home</a>
+      <a href="/quizzen/contact">Contact Support</a>
+  </div>
+</div>
+{% endblock child_content %}

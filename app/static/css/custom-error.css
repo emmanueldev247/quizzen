@@ -1,0 +1,93 @@
+.container {
+    margin-top: 60px;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #d40e0e;
+}
+
+.icon {
+    font-size: 4rem;
+    margin-top: -20px;
+}
+
+.icon i {
+    color: #d40e0e;
+}
+
+.description {
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+.requested-url {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.buttons a {
+    text-decoration: none;
+    color: white;
+    background: #6a0dad;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px;
+    display: inline-block;
+    font-size: 1rem;
+    transition: all ease .2s;
+}
+
+.buttons a:hover {
+    background: #a94dd0;
+}
+
+.buttons a:disabled {
+    background: #a94dd0;
+    cursor: not-allowed;
+}
+
+.buttons a:focus {
+    box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
+    background: #a94dd0;
+    outline: 3px solid #a94dd0c5;
+    outline-offset: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .error-code {
+        font-size: 6rem;
+    }
+
+    .description {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 530px) {
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .buttons a {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 200px) {
+
+    .container {
+        margin-top: 70px;
+    }
+}

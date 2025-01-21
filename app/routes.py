@@ -25,6 +25,7 @@ from itsdangerous import (
 from app.extensions import db, full_bp, mail, limiter
 from app.models import User, UsedToken
 from app.utils.logger import setup_logger
+from app.routes_dashboard import auth_required
 
 
 logger = setup_logger()
@@ -42,6 +43,17 @@ def rate_limit_exceeded(e):
         "error": "Too many requests, please try again later."
     }), 429
 
+@full_bp.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', requested_url=request.url), 404
+
+@full_bp.errorhandler(405)
+def method_not_allowed(e):
+    return render_template('405.html', method=request.method, requested_url=request.url), 405
+
+@full_bp.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 @full_bp.after_request
 def log_response_info(response):
@@ -231,6 +243,7 @@ def reset_password():
                 "success": False,
                 "message": "Email not found"
             }), 404
+        user_full_name = f'{user.first_name} {user.last_name}'
         s = Serializer(current_app.config['SECRET_KEY'])
         token = s.dumps({'user_id': user.id})
 
@@ -238,7 +251,7 @@ def reset_password():
                              token=token, _external=True, _scheme='https')
         msg = Message('Password Reset Request', recipients=[email])
         msg.body = f"""
-         Hello,
+         Hello {user_full_name},
 
          We received a request to reset your password for your Quizzen account.
          If you made this request, click the link below to reset your password:
@@ -255,7 +268,7 @@ def reset_password():
         # READ TEMPLATE
         with open("app/templates/password_reset_email.html", "r") as file:
             template = file.read()
-        msg.html = template.format(reset_link=reset_link)
+        msg.html = template.format(reset_link=reset_link, user_full_name=user_full_name)
         mail.send(msg)
         logger.info(f"Link sent to mail '{mail}'")
         return jsonify({
