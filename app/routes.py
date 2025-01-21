@@ -505,7 +505,7 @@ def get_verification_link():
             # READ TEMPLATE
             with open("app/templates/verification_email.html", "r") as file:
                 template = file.read()
-            msg.html = template.format(reset_link=reset_link, user_full_name=user_full_name)
+            msg.html = template.format(verify_link=verify_link, user_full_name=user_full_name)
             mail.send(msg)
             logger.info(f"Link sent to mail '{mail}'")
             return jsonify({
