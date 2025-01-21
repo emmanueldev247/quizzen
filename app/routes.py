@@ -521,7 +521,7 @@ def get_verification_link():
             }), 500
     return inner_function()
 
-@full_bp.route('/verify_email/<token>', methods=['GET', 'POST'])
+@full_bp.route('/verify_email/<token>')
 @limiter.limit("10 per hour")
 def verify_email(token):
     """Verify email with token route"""
@@ -636,25 +636,25 @@ def verify_email(token):
                           " to request a new verification link."
             ), 404
 
-        user.email_verified = True
-        
-        print("Before save")
-        logger.info(f'user -> {user}')
-        logger.info(f'user -> {user.email_verified}')
-        db.session.add(user)
+    user.email_verified = True
+    
+    print("Before save")
+    logger.info(f'user -> {user}')
+    logger.info(f'user -> {user.email_verified}')
+    db.session.add(user)
 
-        used_token = UsedToken(token=token)
-        db.session.add(used_token)
+    used_token = UsedToken(token=token)
+    db.session.add(used_token)
 
-        db.session.commit()
-        print("After save")
-        logger.info(f'user -> {user}')
-        logger.info(f'user -> {user.email_verified}')
-        logger.info(f"Email verification for '{user.id}' successful")
-        return jsonify({
-            "success": True,
-            "message": "Email successfully verified."
-        }), 200
+    db.session.commit()
+    print("After save")
+    logger.info(f'user -> {user}')
+    logger.info(f'user -> {user.email_verified}')
+    logger.info(f"Email verification for '{user.id}' successful")
+    return jsonify({
+        "success": True,
+        "message": "Email successfully verified."
+    }), 200
 
     return render_template('verify_email.html', title="Reset Password")
 
