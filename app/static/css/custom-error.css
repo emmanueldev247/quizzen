@@ -35,9 +35,11 @@ body {
     margin: 10px 0;
 }
 
+.requested-method,
 .requested-url {
     font-size: 1rem;
-    color: #666;
+    font-weight: bold;
+    color: #d40e0e;
     margin-bottom: 20px;
 }
 
