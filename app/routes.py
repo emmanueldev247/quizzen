@@ -436,6 +436,13 @@ def tos():
     return render_template('tos.html', title='Terms of Service')
 
 
+@full_bp.route('/api/v1')
+@limiter.limit("20 per minute")
+def api_doc():
+    return render_template('api-doc.html')
+
+
+
 @full_bp.route('/verify_email', methods=['POST'])
 @limiter.limit("5 per hour")
 def get_verification_link(current_user):

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzen API Documentation</title>
+    <style>
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            padding: 0 50px;
+            color: white;
+            background-color: black;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header .logo a {
+            text-decoration: none;
+        }
+
+        header .logo img {
+            margin-top: 7px;
+            height: 40px;
+        }
+
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            background-color: #e8f5e9;
+            color: black;
+            text-align: center;
+            padding: 20px 10%;
+            margin-top: 60px;
+            border-bottom: #c8ced7 1px solid;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            margin: 0;
+        }
+
+        .container {
+            padding: 20px 10%;
+        }
+
+        section {
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            color: #6a0dad;
+            margin-top: 0;
+        }
+
+        section h3 {
+            color: #333;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #d63384;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-left: 4px solid #6a0dad;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 10px 0;
+        }
+
+        .endpoint {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border: 1px solid #6a0dad;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .endpoint h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+        }
+
+        .endpoint p {
+            margin: 5px 0;
+        }
+
+        .field-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .field-table th,
+        .field-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .field-table th {
+            background-color: #6a0dad;
+            color: white;
+        }
+
+        footer {
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+
+            .header,
+            .container {
+                padding: 20px 5%;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </a>
+        </div>
+    </header>
+    <div class="header">
+        <h1>Quizzen API Documentation</h1>
+        <p>Your guide to integrating with the Quizzen app</p>
+    </div>
+    <div class="container">
+        <section>
+            <h2>Overview</h2>
+            <p>Welcome to the Quizzen API! This API allows users to manage authentication, quizzes, and quiz questions.
+            </p>
+            <p><strong>Base URL:</strong> <code>https://emmanueldev247.tech/quizzen/api/v1</code></p>
+        </section>
+        <section>
+            <h2>1. Authentication</h2>
+            <div class="endpoint">
+                <h3>POST /connect</h3>
+                <p>Authenticates a user and generates a JWT token for subsequent requests.</p>
+                <p><strong>Rate Limit:</strong> 5 requests per minute</p>
+
+                <table class="field-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>email</code></td>
+                            <td>String</td>
+                            <td>The user's email address.</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>password</code></td>
+                            <td>String</td>
+                            <td>The user's password.</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Request Body (JSON):</h4>
+                <pre>
+{
+  "email": "user@example.com",
+  "password": "securepassword123"
+}
+        </pre>
+                <h4>Response (Success):</h4>
+                <pre>
+{
+  "success": true,
+  "access_token": "your_generated_token_here"
+}
+        </pre> <br>
+
+            </div>
+            <div class="endpoint">
+                <h3>POST /disconnect</h3>
+                <p>Logs out a user by blacklisting their JWT token.</p>
+                <p><strong>Rate Limit:</strong> 5 requests per minute</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                <h4>Response (Success):</h4>
+                <pre>
+{
+  "success": true,
+  "message": "Token successfully disconnected"
+}
+        </pre>
+            </div>
+        </section>
+        <section>
+            <h2>2. Quizzes</h2>
+            <div class="endpoint">
+                <h3>POST /quiz</h3>
+                <p>Allows users to create a new quiz.</p>
+                <p><strong>Rate Limit:</strong> 10 requests per minute</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                <table class="field-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>title</code></td>
+                            <td>String</td>
+                            <td>The title of the quiz</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>description</code></td>
+                            <td>String</td>
+                            <td>A short description of the quiz.</td>
+                            <td>Optional</td>
+                        </tr>
+                        <tr>
+                            <td><code>duration</code></td>
+                            <td>Integer</td>
+                            <td>Duration of quiz (in minute)</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>public</code></td>
+                            <td>Boolean</td>
+                            <td>Determines if the quiz is public or private</td>
+                            <td>Optional</td>
+                        </tr>
+                        <tr>
+                            <td><code>category_id</code></td>
+                            <td>Integer</td>
+                            <td>Sets the category of the quiz</td>
+                            <td>Optional</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Request Body (JSON):</h4>
+                <pre>
+{
+  "title": "Science Quiz",
+  "description": "A fun science quiz for all ages",
+  "duration": 30,
+  "public": true
+}
+        </pre>
+                <h4>Response (Success):</h4>
+                <pre>
+{
+  "success": true,
+  "quiz_id": "12345",
+  "message": "Quiz created successfully"
+}
+        </pre>
+            </div>
+            <div class="endpoint">
+                <h3>GET /quiz</h3>
+                <p>Fetches all public quizzes available in the system.</p>
+                <p><strong>Rate Limit:</strong> 20 requests per minute</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                <h4>Response:</h4>
+                <pre>
+[
+  {
+    "id": "12345",
+    "title": "Science Quiz",
+    "description": "A fun science quiz for all ages"
+  },
+  {
+    "id": "67890",
+    "title": "Math Quiz",
+    "description": "Test your math skills!"
+  }
+  ...
+]
+        </pre>
+            </div>
+            <div class="endpoint">
+                <h3>GET /quiz/me</h3>
+                <p>Retrieve quizzes created by the logged-in user</p>
+                <p><strong>Rate Limit:</strong> 20 requests per minute</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                <h4>Response:</h4>
+                <pre>
+[
+  {
+    "id": "12345",
+    "title": "Science Quiz",
+    "description": "A fun science quiz for all ages"
+  },
+  {
+    "id": "67890",
+    "title": "Math Quiz",
+    "description": "Test your math skills!"
+  }
+  ...
+]
+        </pre>
+            </div>
+            <div class="endpoint">
+                <h3>GET /quiz/&lt;quiz_id&gt;</h3>
+                <p>Retrieve a specific quiz, including its paginated questions</p>
+                <p><strong>Rate Limit:</strong> 20 requests per minute</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                <h4>Response:</h4>
+                <pre>
+[
+  {
+    "id": "12345",
+    "title": "Science Quiz",
+    "description": "A fun science quiz for all ages",
+    "questions": [
+        {
+            "id": "456",
+            "question_type": "multiple_choice",
+            "question_text": "What is an API?",
+            "points": 1,
+            "is_multiple_response": false,
+            "answer_choices": [
+                {
+                    "id": "789",
+                    "text": "API is ...",
+                    "is_correct": true
+                },
+                ...
+            ]
+        },
+        ...
+    ]
+  }
+]
+</pre>
+        </section>
+        <section>
+            <h2>3. Questions</h2>
+            <div class="endpoint">
+                <h3>POST /question</h3>
+                <p>Creates a new question and associates it with a quiz.</p>
+                <h4>Request Header:</h4>
+                <pre>
+Authorization: Bearer your_token_here
+                </pre>
+                
+                <h4>Request Body (JSON):</h4>
+                <pre>
+{
+  "quiz_id": "12345",
+  "question_text": "What is the capital of France?",
+  "answer_choices": [ 
+        {
+            "text": "Paris",
+            "is_correct": true
+        },
+        {
+            "text": "London",
+            "is_correct": false
+        },
+        {
+            "text": "Madrid",
+            "is_correct": false
+        }
+    ]
+}
+        </pre>
+                <h4>Response (Success):</h4>
+                <pre>
+{
+  "success": true,
+  "message": "Question added successfully"
+}
+        </pre>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 Quizzen. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
