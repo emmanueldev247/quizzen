@@ -938,7 +938,7 @@ def uploaded_file(filename):
 def update_profile(current_user):
     try:
         data = request.json
-        
+
         current_user.username = data.get("username", current_user.username)
         current_user.first_name = data.get("first_name", current_user.first_name)
         current_user.last_name = data.get("last_name", current_user.last_name)
@@ -964,10 +964,10 @@ def update_profile(current_user):
 def change_password(current_user):
     try:
         data = request.json
-        
+
         current_password = data.get("current_password")
         new_password = data.get("new_password")
-        
+
         if current_user.has_password:
             logger.info(f"Changing password for user {current_user.id}")
             if current_user.check_password(current_password):
@@ -980,7 +980,7 @@ def change_password(current_user):
                     "success": True,
                     "message": "Password changed successfully"
                 }), 200
-            
+
             return jsonify({
                 "success": False,
                 "message": "Invalid Credentials"
@@ -1029,7 +1029,7 @@ def check_username():
             "success": False,
             "message": "Server error",
         }), 500
-        
+
 
 
 # Form validation
@@ -1047,16 +1047,11 @@ def contact():
         if request.method == 'GET':
             return render_template('index.html', scroll_to_contact=True)
 
-        sender_email = os.getenv('MAIL_DEFAULT_SENDER')
-        sender_password = os.getenv('MAIL_PASSWORD')
-        receiver_email = os.getenv('RECEIVER_EMAIL')
-
-        if not (sender_email and sender_password and receiver_email):
-            raise ValueError("Email credentials are not set in environment variables")
         form = ContactForm()
 
         if request.method == 'POST':
             form = ContactForm(request.form)
+            scroll = True
             if form.validate():
                 name = form.name.data
                 email = form.email.data
@@ -1065,6 +1060,7 @@ def contact():
 
                 success, error_message = send_email(subject, message, name, email)
                 if success:
+                    scroll = False
                     flash(('Your message has been sent successfully.', 'success'))
                 else:
                     flash((f'Failed to send email: {error_message}', 'error'))
@@ -1072,11 +1068,11 @@ def contact():
                 for field, errors in form.errors.items():
                     for error in errors:
                         flash((f"Error in {field}: {error}", 'error'))
-        return render_template('index.html', scroll_to_contact=True)
+        return render_template('index.html', scroll_to_contact=scroll)
     except Exception as e:
         logger.error(f"Email not delivered {str(e)}")
         flash((f'Failed to send email: {e}', 'error'))
-        return render_template('index.html', scroll_to_contact=True)        
+        return render_template('index.html', scroll_to_contact=True)
 
 def send_email(subject, message, user_name, user_email):
     """
@@ -1094,6 +1090,12 @@ def send_email(subject, message, user_name, user_email):
 
     smtp_server = 'us2.smtp.mailhostbox.com'
     port = 587
+    sender_email = os.getenv('MAIL_DEFAULT_SENDER')
+    sender_password = os.getenv('MAIL_PASSWORD')
+    receiver_email = os.getenv('RECEIVER_EMAIL')
+
+    if not (sender_email and sender_password and receiver_email):
+        raise ValueError("Email credentials are not set in environment variables")
 
     email_content = f"Subject: {subject}\n\nFrom: {user_name} <{user_email}>\n\nMessage: {message}"
 
