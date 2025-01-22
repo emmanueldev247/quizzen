@@ -968,7 +968,7 @@ def change_password(current_user):
             logger.info(f"Changing password for user {current_user.id}")
             if current_user.check_password(current_password):
                 current_user.set_password(new_password)
-                db.session.add(new_password)
+                db.session.add(current_user)
                 db.session.commit()
 
                 logger.info(f"Password for user {current_user.id} changed successfully")
