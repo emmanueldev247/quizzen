@@ -24,6 +24,8 @@ import humanize
 import os
 import re
 import random
+import requests
+import smtplib
 import ulid
 from flask import (
     current_app, flash, jsonify,
@@ -33,6 +35,7 @@ from flask import (
 from flask_limiter.errors import RateLimitExceeded
 from functools import wraps
 from werkzeug.utils import secure_filename
+from wtforms import Form, StringField, TextAreaField, validators
 
 from app.extensions import db, full_bp, limiter
 from app.models import (
@@ -1028,20 +1031,6 @@ def check_username():
         }), 500
         
 
-import requests
-import smtplib
-from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
-from whitenoise import WhiteNoise
-from wtforms import Form, StringField, TextAreaField, validators
-
-
-sender_email = os.getenv('MAIL_DEFAULT_SENDER')
-sender_password = os.getenv('MAIL_PASSWORD')
-receiver_email = os.getenv('RECEIVER_EMAIL', 'mail@emmydee@gmail.com')
-
-if not (sender_email and sender_password and receiver_email):
-    raise ValueError("Email credentials are not set in environment variables")
-
 
 # Form validation
 class ContactForm(Form):
@@ -1050,31 +1039,44 @@ class ContactForm(Form):
     subject = StringField('Subject', [validators.Length(min=1, max=100), validators.DataRequired()])
     message = TextAreaField('Message', [validators.Length(min=1), validators.DataRequired()])
 
-# app.wsgi_app = WhiteNoise(app.wsgi_app)
 
 @full_bp.route("/contact", methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 def contact():
-    form = ContactForm()
+    try:
+        if request.method == 'GET':
+            return render_template('index.html', scroll_to_contact=True)
 
-    if request.method == 'POST':
-        form = ContactForm(request.form)
-        if form.validate():
-            name = form.name.data
-            email = form.email.data
-            subject = form.subject.data
-            message = form.message.data
+        sender_email = os.getenv('MAIL_DEFAULT_SENDER')
+        sender_password = os.getenv('MAIL_PASSWORD')
+        receiver_email = os.getenv('RECEIVER_EMAIL', 'mail@emmydee@gmail.com')
 
-            success, error_message = send_email(subject, message, name, email)
-            if success:
-                flash(('Your message has been sent successfully.', 'success'))
+        if not (sender_email and sender_password and receiver_email):
+            raise ValueError("Email credentials are not set in environment variables")
+        form = ContactForm()
+
+        if request.method == 'POST':
+            form = ContactForm(request.form)
+            if form.validate():
+                name = form.name.data
+                email = form.email.data
+                subject = form.subject.data
+                message = form.message.data
+
+                success, error_message = send_email(subject, message, name, email)
+                if success:
+                    flash(('Your message has been sent successfully.', 'success'))
+                else:
+                    flash((f'Failed to send email: {error_message}', 'error'))
             else:
-                flash((f'Failed to send email: {error_message}', 'error'))
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash((f"Error in {field}: {error}", 'error'))
-    return render_template('index.html', scroll_to_contact=True)
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        flash((f"Error in {field}: {error}", 'error'))
+        return render_template('index.html', scroll_to_contact=True)
+    except Exception as e:
+        logger.error(f"Email not delivered {str(e)}")
+        flash((f'Failed to send email: {e}', 'error'))
+        return render_template('index.html', scroll_to_contact=True)        
 
 def send_email(subject, message, user_name, user_email):
     """
