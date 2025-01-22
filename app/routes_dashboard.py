@@ -861,13 +861,9 @@ def upload_profile_picture(current_user):
             })
 
         if file:
-            print(f'Filename: {file.filename}')
             original_filename = secure_filename(file.filename)
-            print(f'Original Filename: {original_filename}')
             file_extension = os.path.splitext(original_filename)[1]
-            print(f'Extension: {file_extension}')
             unique_filename = f"{str(ulid.new()).lower()}{file_extension}"
-            print(f'Unique FN: {unique_filename}')
 
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
             file.save(file_path)
@@ -903,10 +899,6 @@ def upload_profile_picture(current_user):
 def delete_profile_picture(current_user):
     try:
         if current_user.profile_picture:
-            try:
-                print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], "01jj07jnym0mf6mpvp8sgspwh5")}")
-            except:
-                print("ERROR!!!!!!!!!!!")
             image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], os.path.basename(current_user.profile_picture))
             if os.path.exists(image_path):
                 os.remove(image_path)
@@ -933,5 +925,72 @@ def delete_profile_picture(current_user):
 @full_bp.route('/uploads/<filename>')
 @limiter.limit("30 per minute")
 def uploaded_file(filename):
-    print(f"Dir: {send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)}")
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+
+
+@full_bp.route("/update-profile", methods=["POST"])
+@auth_required
+@limiter.limit("10 per minute")
+def update_profile(current_user):
+    try:
+        data = request.json
+        
+        current_user["username"] = data.get("username", current_user["username"])
+        current_user["first_name"] = data.get("first_name", current_user["first_name"])
+        current_user["last_name"] = data.get("last_name", current_user["last_name"])
+
+        db.session.add(current_user)
+        db.session.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Profile updated successfully!"
+        }), 200
+    except Exception as e:
+        logger.error(f"Error updating profile: {str(e)}")
+        return jsonify({
+            "success": False,
+            "message": "Server error",
+        }), 500
+
+
+@full_bp.route("/change-password", methods=["POST"])
+@auth_required
+@limiter.limit("10 per minute")
+def change_password(current_user):
+    try:
+        data = request.json
+        
+        current_password = data.get("current_password")
+        new_password = data.get("new_password")
+        
+        if current_user.has_password:
+            logger.info(f"Changing password for user {current_user.id}")
+            if current_user.check_password(current_password):
+                current_user.set_password(new_password)
+                db.session.add(new_password)
+                db.session.commit()
+
+                logger.info(f"Password for user {current_user.id} changed successfully")
+                return jsonify({
+                    "success": True,
+                    "message": "Password changed successfully"
+                }), 200
+            
+            return jsonify({
+                "success": False,
+                "message": "Invalid Credentials"
+            }), 401
+        else:
+            logger.warning(f"User with email {email} is an OAuth user")
+            return jsonify({
+                "success": False,
+                "message": "Please use OAuth to log in."
+            }), 400
+
+    except Exception as e:
+        logger.error(f"Error during password change: {e}")
+        return jsonify({
+            "success": False,
+            "message": "Server error",
+        }), 500
