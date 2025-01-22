@@ -79,7 +79,7 @@
                     <div class="loader"></div>
                 </button>
                 <div class="verify-message"></div>
-                {% endif %}     
+                {% endif %}
             </div>
         </div>
         <div class="profile-container-links">
@@ -94,7 +94,7 @@
                 <div class="bio-data-form">
                     <div class="info">
                         <label for="email">Email:</label>
-                        <input id="email" type="text" value="mailemmydee@gmail.com" readonly
+                        <input id="email" type="text" value="{{ user.email }}" readonly
                             title="You cannot change your email address" autocomplete="email"
                             placeholder="Email address" required>
                     </div>
@@ -102,24 +102,25 @@
                         <label for="username">Username:</label>
                         <div class="username-prefix">
                             <span class="input-prefix">@</span>
-                            <input id="username" type="text" value="AdminUser" autocomplete="name"
-                                placeholder="Username" required>
+                            <input id="username" type="text" value="{{ user.username if user.username else '' }}"
+                                autocomplete="name" placeholder="Username" required>
                         </div>
                         <div class="username-errors"></div>
                     </div>
                     <div class="info">
                         <label for="f_name">First Name:</label>
-                        <input id="f_name" type="text" value="John" placeholder="First Name" required>
+                        <input id="f_name" type="text" value="{{ user.first_name }}" placeholder="First Name" required>
                     </div>
                     <div class="info">
                         <label for="l_name">Last Name:</label>
-                        <input id="l_name" type="text" value="Doe" placeholder="Last Name" required>
+                        <input id="l_name" type="text" value="{{ user.last_name }}" placeholder="Last Name" required>
                     </div>
                     <button type="submit" class="save-btn">
                         Update Profile
                         <div class="loader"></div>
                     </button>
                 </div>
+            </form>
         </div>
 
         <div id="change-password" class="content hidden">

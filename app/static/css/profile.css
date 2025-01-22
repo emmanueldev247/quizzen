@@ -325,7 +325,7 @@ main h2 {
 }
 
 .username-errors {
-    border: red 2px solid;
+    display: none;
 }
 
 .username-errors ul {
