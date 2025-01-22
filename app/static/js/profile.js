@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => {
           if (!response.ok) {
             if (response.status === 404) {
-              verifyMessage.innerHTML = `No account associated with 
+              verifyMessage.innerHTML = `No account associated with
             <span style="color: #d9534f;">${email}</span>.`;
               verifyMessage.style.display = "block";
             } else if (response.status === 429) {
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then((data) => {
           if (data.success) {
-            verifyMessage.innerHTML = `Verification link has been sent to 
+            verifyMessage.innerHTML = `Verification link has been sent to
             <span style="color: #009724;">${email}</span>.`;
             verifyMessage.style.display = "block";
             showNotification(
@@ -330,11 +330,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!username) {
-      username = null;
-      return;
-    }
-
     const formData = {
       username,
       first_name,
@@ -418,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    
+
     if (!passwordStrengthRegex.test(new_password)) {
       event.preventDefault();
       passwordError.textContent =
@@ -426,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
       passwordError.style.display = "block";
       return;
     }
-    
+
     if (!confirmPassword) {
       event.preventDefault();
       cPasswordError.textContent = "Please confirm your password";
