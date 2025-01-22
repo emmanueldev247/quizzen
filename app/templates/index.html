@@ -189,8 +189,17 @@
 					};
 					</script>
 				{% endif %}
-				{% with messages = get_flashed_messages() %}
+				{% with messages = get_flashed_messages(with_categories=true) %}
 				{% if messages %}
+				<script type="module">
+					import { showNotification } from '/quizzen/assets/js/utils.js';
+					document.addEventListener('DOMContentLoaded', () => {
+						const flashMessages = JSON.parse('{{ messages | tojson | safe }}');
+						flashMessages.forEach(([category, message]) => {
+							showNotification(message, category);
+						});
+					});
+				</script>	
 				{% for message, message_type in messages %}
 				<div class="flash-message {% if message_type == 'success' %}success{% elif message_type == 'error' %}error{% endif %}">
 					{{ message }}

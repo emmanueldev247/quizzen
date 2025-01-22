@@ -1049,7 +1049,7 @@ def contact():
 
         sender_email = os.getenv('MAIL_DEFAULT_SENDER')
         sender_password = os.getenv('MAIL_PASSWORD')
-        receiver_email = os.getenv('RECEIVER_EMAIL', 'mail@emmydee@gmail.com')
+        receiver_email = os.getenv('RECEIVER_EMAIL')
 
         if not (sender_email and sender_password and receiver_email):
             raise ValueError("Email credentials are not set in environment variables")
