@@ -403,6 +403,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const passwordStrengthRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\])[A-Za-z\d !@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\]{8,}$/;
 
+    passwordError.style.display = cPasswordError.style.display = "none";
+
     if (!current_password) {
       showNotification("Please enter your current password", "error");
       event.preventDefault();
@@ -438,7 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    passwordError.style.display = cPasswordError.style.display = "none";
     submitBtn.disabled = true;
     const loader = submitBtn.querySelector(".loader");
     loader.style.display = "inline-block";
