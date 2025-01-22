@@ -1010,7 +1010,7 @@ def check_username():
             suggestions = []
             while len(suggestions) < 3:
                 random_suffix = random.randint(1, 9999)
-                suggestion = f"{username}{random_suffix}"
+                suggestion = f"{username}-{random_suffix}"
                 if not User.query.filter_by(username=suggestion).first():
                     suggestions.append(suggestion)
             return jsonify({

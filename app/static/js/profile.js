@@ -506,16 +506,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!username) {
       isValid = true;
+      submitBtn.disabled = false;
       return;
     }
 
     if (username === currentUsername) {
       isValid = true;
+      submitBtn.disabled = false;
       return;
     }
-    
+
     submitBtn.disabled = true;
     isValid = false;
+    console.log(`Checking availability of ${username}`)
     fetch(`/quizzen/check-username?username=${encodeURIComponent(username)}`)
       .then((response) => {
         if (!response.ok) {
