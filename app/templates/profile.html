@@ -33,7 +33,7 @@
                 </div>
                 <div class="profile-names">
                     <p class="full-name">{{ user.first_name ~ ' ' ~ user.last_name}}</p>
-                    <p class="username"> {{ user.username if user.username else '' }} </p>
+                    <p class="username"> {{'@' ~ user.username if user.username else '' }} </p>
                 </div>
             </div>
             <div class="profile-email-role-container data-item">
