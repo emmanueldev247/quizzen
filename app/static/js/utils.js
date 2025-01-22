@@ -32,10 +32,11 @@ export function hideElements(...elements) {
 
 // Function to toggle password visibility
 export function togglePasswordVisibility(
+  toggleSelector,
   passwordSelector,
   confirmPasswordSelector = null
 ) {
-  document.querySelectorAll(".toggle-password").forEach((icon) => {
+  document.querySelectorAll(toggleSelector).forEach((icon) => {
     icon.addEventListener("click", function () {
       const passwordField = document.querySelector(passwordSelector);
       const confirmPasswordField = confirmPasswordSelector

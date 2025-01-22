@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showElements(signupForm, socialSignup, loginLink);
   }, 200);
 
-  togglePasswordVisibility("#password", "#c_password");
+  togglePasswordVisibility(".toggle-password", "#password", "#c_password");
 
   document
     .querySelector(".login-button")

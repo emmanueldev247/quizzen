@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showLoginForm();
   }, 200);
 
-  togglePasswordVisibility("#password");
+  togglePasswordVisibility(".toggle-password", "#password");
 
   document
     .querySelector(".signup-button")
