@@ -412,31 +412,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!new_password) {
+      event.preventDefault();
       passwordError.textContent = "Please enter your new password";
       passwordError.style.display = "block";
-      event.preventDefault();
       return;
     }
 
+    
+    if (!passwordStrengthRegex.test(new_password)) {
+      event.preventDefault();
+      passwordError.textContent =
+      "Password must be at least 8 characters long and include letters, numbers, and a special character";
+      passwordError.style.display = "block";
+      return;
+    }
+    
     if (!confirmPassword) {
+      event.preventDefault();
       cPasswordError.textContent = "Please confirm your password";
       cPasswordError.style.display = "block";
-      event.preventDefault();
       return;
     }
-
-    if (!passwordStrengthRegex.test(new_password)) {
-      passwordError.textContent =
-        "Password must be at least 8 characters long and include letters, numbers, and a special character";
-      passwordError.style.display = "block";
-      event.preventDefault();
-      return;
-    }
-
     if (new_password !== confirmPassword) {
+      event.preventDefault();
       cPasswordError.textContent = "Passwords do not match!";
       cPasswordError.style.display = "block";
-      event.preventDefault();
       return;
     }
 
