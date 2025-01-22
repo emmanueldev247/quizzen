@@ -333,7 +333,8 @@ main h2 {
     margin-left: 10px;
 }
 
-.save-btn,
+.save-btn-profile,
+.save-btn-password,
 .verify-email {
     background: #6a0dad;
     color: #fff;
@@ -346,7 +347,8 @@ main h2 {
     transition: all ease .2s;
 }
 
-.save-btn:hover,
+.save-btn-profile:hover,
+.save-btn-password:hover,
 .verify-email:hover {
     background: #a94dd0;
 }
@@ -357,13 +359,15 @@ main h2 {
     align-self: center;
 }
 
-.save-btn:disabled,
+.save-btn-profile:disabled,
+.save-btn-password:disabled,
 .verify-email:disabled {
     background: #a94dd0;
     cursor: not-allowed;
 }
 
-.save-btn:focus,
+.save-btn-profile:focus,
+.save-btn-password:focus,
 .verify-email:focus {
     box-shadow: 0 0 8px 2px rgba(106, 13, 173, 0.396);
     outline: none;
