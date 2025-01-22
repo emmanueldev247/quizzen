@@ -34,7 +34,7 @@
 			<a href="/quizzen/signup" class="signup-btn">Create Account</a>
 		</nav>
 	</header>
-
+	<div id="notification" class="notification" aria-live="polite"></div>
 	<section class="hero">
 		<div class="container">
 			<h2>Unleash Your Inner Genius</h2>
@@ -187,15 +187,16 @@
 							targetElement.scrollIntoView({ behavior: "smooth" });
 						}
 					};
+					// [["Failed to send email: name \u0027sender_email\u0027 is not defined", "error"]
 					</script>
 				{% endif %}
-				{% with messages = get_flashed_messages(with_categories=true) %}
+				{% with messages = get_flashed_messages() %}
 				{% if messages %}
 				<script type="module">
 					import { showNotification } from '/quizzen/assets/js/utils.js';
 					document.addEventListener('DOMContentLoaded', () => {
 						const flashMessages = JSON.parse('{{ messages | tojson | safe }}');
-						flashMessages.forEach(([category, message]) => {
+						flashMessages.forEach(([message, category]) => {
 							showNotification(message, category);
 						});
 					});
