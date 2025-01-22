@@ -370,6 +370,29 @@ main h2 {
     background: #a94dd0;
 }
 
+.password-field {
+    position: relative;
+}
+
+.password-field .toggle-password,
+.password-field .toggle-password2 {
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #6d6d6d;
+}
+
+.error-message {
+    font-family: 'Josefin sans', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: red;
+    margin-bottom: 15px;
+    margin-top: -.9rem;
+    display: none;
+}
+
 .crop-modal {
     display: none;
 }
