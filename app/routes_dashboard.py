@@ -1027,3 +1027,81 @@ def check_username():
             "message": "Server error",
         }), 500
         
+
+import requests
+import smtplib
+from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
+from whitenoise import WhiteNoise
+from wtforms import Form, StringField, TextAreaField, validators
+
+
+sender_email = os.getenv('MAIL_DEFAULT_SENDER')
+sender_password = os.getenv('MAIL_PASSWORD')
+receiver_email = os.getenv('RECEIVER_EMAIL', 'mail@emmydee@gmail.com')
+
+if not (sender_email and sender_password and receiver_email):
+    raise ValueError("Email credentials are not set in environment variables")
+
+
+# Form validation
+class ContactForm(Form):
+    name = StringField('Name', [validators.Length(min=1, max=50), validators.DataRequired()])
+    email = StringField('Email', [validators.Email(), validators.Length(min=3, max=50), validators.DataRequired()])
+    subject = StringField('Subject', [validators.Length(min=1, max=100), validators.DataRequired()])
+    message = TextAreaField('Message', [validators.Length(min=1), validators.DataRequired()])
+
+# app.wsgi_app = WhiteNoise(app.wsgi_app)
+
+@full_bp.route("/contact", methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
+def contact():
+    form = ContactForm()
+
+    if request.method == 'POST':
+        form = ContactForm(request.form)
+        if form.validate():
+            name = form.name.data
+            email = form.email.data
+            subject = form.subject.data
+            message = form.message.data
+
+            success, error_message = send_email(subject, message, name, email)
+            if success:
+                flash(('Your message has been sent successfully.', 'success'))
+            else:
+                flash((f'Failed to send email: {error_message}', 'error'))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash((f"Error in {field}: {error}", 'error'))
+    return render_template('index.html', scroll_to_contact=True)
+
+def send_email(subject, message, user_name, user_email):
+    """
+    Sends an email using SMTP protocol with error handling.
+
+    Args:
+        subject (str): The subject of the email.
+        message (str): The body content of the email.
+        user_name (str): The user's name captured from the form.
+        user_email (str): The user's email address captured from the form.
+
+    Returns:
+        bool: True if email sent successfully, False otherwise.
+    """
+
+    smtp_server = 'us2.smtp.mailhostbox.com'
+    port = 587
+
+    email_content = f"Subject: {subject}\n\nFrom: {user_name} <{user_email}>\n\nMessage: {message}"
+
+    try:
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, receiver_email, email_content.encode('utf-8'))
+            logger.info("Email delivered")
+        return True, None
+    except Exception as e:
+        logger.error(f"Email not delivered {str(e)}")
+        return False, str(e)
