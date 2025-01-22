@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordContent = document.getElementById("change-password");
   const updateProfileForm = document.getElementById("update-profile-form");
   const changePasswordForm = document.getElementById("change-password-form");
+  const usernameInput = document.getElementById("username");
+  const suggestionsDiv = document.querySelector(".username-errors");
 
   let cropper;
 
@@ -486,6 +488,58 @@ document.addEventListener("DOMContentLoaded", () => {
       .finally(() => {
         submitBtn.disabled = false;
         loader.style.display = "none";
+      });
+  });
+
+  usernameInput.addEventListener("blur", () => {
+    const submitBtn = document.querySelector(".save-btn-profile");
+    const currentUsername = usernameInput.getAttribute("data-user-name");
+    const username = usernameInput.value.trim();
+
+    suggestionsDiv.style.display = "none";
+
+    if (!username) return;
+    if (username === currentUsername) return;
+
+    submitBtn.disabled = true;
+    fetch(`/check-username?username=${encodeURIComponent(username)}`)
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else {
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          suggestionsDiv.innerHTML = `<p style="color: green;">Username (${username}) is available!</p>`;
+          suggestionsDiv.style.display = "block";
+          submitBtn.disabled = false;
+        } else {
+          suggestionsDiv.innerHTML = `
+          <p style="color: red;">Username (${username}) is taken. Try these suggestions:</p>
+          <ul>
+            ${data.suggestions.map((name) => `<li>${name}</li>`).join("")}
+          </ul>
+        `;
+        }
+      })
+      .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
       });
   });
 });

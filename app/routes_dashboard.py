@@ -23,6 +23,7 @@
 import humanize
 import os
 import re
+import random
 import ulid
 from flask import (
     current_app, flash, jsonify,
@@ -994,3 +995,36 @@ def change_password(current_user):
             "success": False,
             "message": "Server error",
         }), 500
+
+
+
+@app.route("/check-username")
+@limiter.limit("10 per minute")
+def check_username():
+    try:
+        username = request.args.get("username", "").strip()
+        if not username:
+            return jsonify({"message": "Username is required"}), 400
+
+        if User.query.filter_by(username=username).first():
+            logger.error(f"Username '{username}' already exists")
+            suggestions = []
+            while len(suggestions) < 3:
+                random_suffix = random.randint(1, 9999)
+                suggestion = f"{username}{random_suffix}"
+                if not User.query.filter_by(username=suggestion).first():
+                    suggestions.append(suggestion)
+            return jsonify({
+                "success": False,
+                "suggestions": suggestions
+            }), 200
+
+        return jsonify({"success": True}), 200
+
+    except Exception as e:
+        logger.error(f"Error during check_username: {e}")
+        return jsonify({
+            "success": False,
+            "message": "Server error",
+        }), 500
+        
