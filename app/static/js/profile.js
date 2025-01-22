@@ -314,11 +314,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const submitBtn = document.querySelector(".save-btn-profile");
 
-    const formData = {
-      username: document.getElementById("username").value,
-      first_name: document.getElementById("f_name").value,
-      last_name: document.getElementById("l_name").value,
-    };
+    const username = document.getElementById("username").value;
+    const first_name = document.getElementById("f_name").value;
+    const last_name = document.getElementById("l_name").value;
 
     if (!first_name) {
       showNotification("Please enter your first name", "error");
@@ -336,6 +334,14 @@ document.addEventListener("DOMContentLoaded", () => {
       username = null;
       return;
     }
+
+    const formData = {
+      username,
+      first_name,
+      last_name,
+    };
+
+    console.log(formData);
 
     submitBtn.disabled = true;
     const loader = submitBtn.querySelector(".loader");
