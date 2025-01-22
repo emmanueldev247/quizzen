@@ -997,8 +997,7 @@ def change_password(current_user):
         }), 500
 
 
-
-@app.route("/check-username")
+@full_bp.route("/check-username")
 @limiter.limit("10 per minute")
 def check_username():
     try:
