@@ -93,7 +93,6 @@ header .logo img {
 /* Hero Section */
 .hero {
     background: linear-gradient(to right, #4d1d61, #5a2012);
-    /* background: #6a0dad; */
     color: #fff;
     text-align: center;
     padding: 100px 20px 50px;
@@ -105,7 +104,7 @@ header .logo img {
 }
 
 .hero p {
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .hero a {
@@ -145,7 +144,6 @@ header .logo img {
 }
 
 .about ul {
-    text-align: center;
     list-style: inside;
     display: flex;
     justify-content: center;
@@ -155,7 +153,6 @@ header .logo img {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-content: flex-start;
     align-items: flex-start;
     width: max-content;
 }
@@ -546,7 +543,7 @@ header .logo img {
     }
 
     .hero p {
-        font-size: 16px;
+        font-size: 1.5rem;
     }
 
     .quiz-card {
@@ -608,7 +605,7 @@ header .logo img {
     }
 
     .hero h2 {
-        font-size: 28px;
+        font-size: 2.4rem;
     }
 
     .hero p {
@@ -643,7 +640,7 @@ header .logo img {
     }
 
     .contact-form {
-        min-width: 90%;
+        min-width: 100%;
         padding: 15px 30px;
     }
 
@@ -687,35 +684,63 @@ header .logo img {
         margin: 0;
     }
 
+    div.quiz-card {
+        padding: 20px 10px;
+    }
+
     #backToTop {
         width: 30px;
         height: 30px;
         font-size: 16px;
+        bottom: 40px;
+        right: 20px;
     }
 }
 
 @media only screen and (max-width: 479px) {
 
+    .about,
+    .quizzes {
+        font-size: 1rem;
+        padding: 30px 5px;
+    }
+
+    .about h2,
+    .quizzes h2 {
+        font-size: 1.5rem;
+        margin: 5px;
+    }
+
+    .team-container {
+        padding: 1rem;
+    }
+
+    .team-container h2 {
+        font-size: 1.5rem;
+        margin: 15px 5px;
+    }
+
+    .hero {
+        padding: 20px 10px;
+    }
+
     .hero h2 {
-        font-size: 24px;
+        font-size: 2rem;
     }
 
     .hero p {
-        font-size: 12px;
+        font-size: 1.1rem;
+        line-height: 2.5;
     }
 
     .hero a {
         padding: 0.5rem 1rem;
-        font-size: 12px;
-    }
-
-    .about,
-    .quizzes {
-        padding: 5px 2px;
+        margin-top: 10px;
+        font-size: 14px;
     }
 
     .quiz-card {
-        margin: 0 0 5px;
+        margin: 10px 0;
     }
 
     .quiz-card h3 {
@@ -728,7 +753,7 @@ header .logo img {
 
     .contact-form {
         max-width: 100%;
-        padding: 10px 20px;
+        padding: 20px;
         border-radius: 0;
     }
 
@@ -742,7 +767,7 @@ header .logo img {
     }
 
     .footer p {
-        font-size: 10px;
+        font-size: 14px;
     }
 }
 
