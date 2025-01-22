@@ -518,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     submitBtn.disabled = true;
     isValid = false;
-    console.log(`Checking availability of ${username}`)
+    console.log(`Checking availability of ${username}`);
     fetch(`/quizzen/check-username?username=${encodeURIComponent(username)}`)
       .then((response) => {
         if (!response.ok) {
@@ -549,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ${data.suggestions.map((name) => `<li>${name}</li>`).join("")}
           </ul>
         `;
+          suggestionsDiv.style.display = "block";
         }
       })
       .catch((error) => {
