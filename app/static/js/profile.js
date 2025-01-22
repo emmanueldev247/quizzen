@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (verifyEmail) {
     verifyEmail.addEventListener("click", () => {
       const email = verifyEmail.dataset.userEmail;
-      console.log("Extracted email:", email);
 
       const loader = verifyEmail.querySelector(".loader");
       loader.style.display = "inline-block";
@@ -335,9 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
       first_name,
       last_name,
     };
-
-    console.log(formData);
-
+  
     submitBtn.disabled = true;
     const loader = submitBtn.querySelector(".loader");
     loader.style.display = "inline-block";
