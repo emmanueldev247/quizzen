@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
       first_name,
       last_name,
     };
-  
+
     submitBtn.disabled = true;
     const loader = submitBtn.querySelector(".loader");
     loader.style.display = "inline-block";
@@ -365,6 +365,12 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         if (data.success) {
+          const usernameP = document.querySelector(".username");
+          if (username) {
+            usernameP.textContent = `@${username}`;
+          } else {
+            usernameP.textContent = "";
+          }
           showNotification("Profile updated successfully!", "success");
         }
       })
@@ -410,11 +416,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     if (!passwordStrengthRegex.test(new_password)) {
       event.preventDefault();
       passwordError.textContent =
-      "Password must be at least 8 characters long and include letters, numbers, and a special character";
+        "Password must be at least 8 characters long and include letters, numbers, and a special character";
       passwordError.style.display = "block";
       return;
     }
@@ -445,7 +450,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => {
         if (!response.ok) {
           if (response.status === 400) {
-            showNotification("This account uses OAuth to authenticate", "error");
+            showNotification(
+              "This account uses OAuth to authenticate",
+              "error"
+            );
           } else if (response.status === 401) {
             showNotification("Incorrect current password", "error");
           } else if (response.status === 429) {
