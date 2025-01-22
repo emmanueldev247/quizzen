@@ -482,6 +482,9 @@ header .logo img {
     padding: 20px 0;
 }
 
+footer p {
+    font-size: 1rem;
+}
 
 .footer-link {
     color: #f39c12;
@@ -767,7 +770,7 @@ header .logo img {
     }
 
     .footer p {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
