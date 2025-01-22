@@ -1,8 +1,9 @@
 import {
-  setActive,
-  showNotification,
-  showElements,
   hideElements,
+  setActive,
+  showElements,
+  showNotification,
+  togglePasswordVisibility,
 } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -32,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordTab = document.getElementById("password-tab");
   const profileContent = document.getElementById("update-profile");
   const passwordContent = document.getElementById("change-password");
+  const updateProfileForm = document.getElementById("update-profile-form");
+  const changePasswordForm = document.getElementById("change-password-form");
 
   let cropper;
 
@@ -43,6 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showElements(elements[i]);
     }, delays[i]);
   }
+
+  togglePasswordVisibility(".toggle-password", "#current-password");
+  togglePasswordVisibility(
+    ".toggle-password2",
+    "#new-password",
+    "#c-new-password"
+  );
 
   function activateTab(tab, content) {
     hideElements(biodataDiv);
@@ -290,6 +300,178 @@ document.addEventListener("DOMContentLoaded", () => {
                           `;
           loader.style.display = "none";
         }, 2000);
+      });
+  });
+
+  // Handle update profile
+  updateProfileForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const submitBtn = document.querySelector(".save-btn-profile");
+
+    const formData = {
+      username: document.getElementById("username").value,
+      first_name: document.getElementById("f_name").value,
+      last_name: document.getElementById("l_name").value,
+    };
+
+    if (!first_name) {
+      showNotification("Please enter your first name", "error");
+      event.preventDefault();
+      return;
+    }
+
+    if (!last_name) {
+      showNotification("Please enter your last name", "error");
+      event.preventDefault();
+      return;
+    }
+
+    if (!username) {
+      username = null;
+      return;
+    }
+
+    submitBtn.disabled = true;
+    const loader = submitBtn.querySelector(".loader");
+    loader.style.display = "inline-block";
+
+    fetch("/quizzen/update-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            showNotification("incomplete form submitted", "error");
+          } else if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else {
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          showNotification("Profile updated successfully!", "success");
+        }
+      })
+      .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        loader.style.display = "none";
+      });
+  });
+
+  // Change Password Form
+  changePasswordForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const submitBtn = document.querySelector(".save-btn-password");
+    const current_password = document.getElementById("current-password").value;
+    const new_password = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("c-new-password").value;
+    const passwordError = document.getElementById("password-error");
+    const cPasswordError = document.getElementById("c_password-error");
+
+    const passwordStrengthRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\])[A-Za-z\d !@#$%^&*()_\-+={}[\]|:;"'<>,.?/~`\\]{8,}$/;
+
+    if (!current_password) {
+      showNotification("Please enter your current password", "error");
+      event.preventDefault();
+      return;
+    }
+
+    if (!new_password) {
+      passwordError.textContent = "Please enter your new password";
+      passwordError.style.display = "block";
+      event.preventDefault();
+      return;
+    }
+
+    if (!confirmPassword) {
+      cPasswordError.textContent = "Please confirm your password";
+      cPasswordError.style.display = "block";
+      event.preventDefault();
+      return;
+    }
+
+    if (!passwordStrengthRegex.test(new_password)) {
+      passwordError.textContent =
+        "Password must be at least 8 characters long and include letters, numbers, and a special character";
+      passwordError.style.display = "block";
+      event.preventDefault();
+      return;
+    }
+
+    if (new_password !== confirmPassword) {
+      cPasswordError.textContent = "Passwords do not match!";
+      cPasswordError.style.display = "block";
+      event.preventDefault();
+      return;
+    }
+
+    passwordError.style.display = cPasswordError.style.display = "none";
+    submitBtn.disabled = true;
+    const loader = submitBtn.querySelector(".loader");
+    loader.style.display = "inline-block";
+    const formData = { current_password, new_password };
+
+    fetch("/quizzen/change-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            showNotification("Incorrect current password", "error");
+          } else if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else {
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          showNotification("Password changed successfully!", "success");
+        }
+      })
+      .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        loader.style.display = "none";
       });
   });
 });

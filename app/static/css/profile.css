@@ -306,6 +306,33 @@ main h2 {
     color: #999;
 }
 
+.username-prefix {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.input-prefix {
+    position: absolute;
+    left: 10px;
+    color: #666;
+    font-size: 16px;
+}
+
+.info input#username {
+    padding-left: 30px;
+}
+
+.username-errors {
+    border: red 2px solid;
+}
+
+.username-errors ul {
+    list-style: square inside;
+    margin-left: 10px;
+}
+
 .save-btn,
 .verify-email {
     background: #6a0dad;

@@ -94,45 +94,54 @@
                 <div class="bio-data-form">
                     <div class="info">
                         <label for="email">Email:</label>
-                        <input id="email" type="text" value="{{ user.email }}" readonly
-                            title="You cannot change your email address" autocomplete="email">
+                        <input id="email" type="text" value="mailemmydee@gmail.com" readonly
+                            title="You cannot change your email address" autocomplete="email"
+                            placeholder="Email address" required>
                     </div>
                     <div class="info">
                         <label for="username">Username:</label>
-                        <input id="username" type="text" value="{{ user.username if user.username else '' }}" autocomplete="name">
+                        <div class="username-prefix">
+                            <span class="input-prefix">@</span>
+                            <input id="username" type="text" value="AdminUser" autocomplete="name"
+                                placeholder="Username" required>
+                        </div>
+                        <div class="username-errors"></div>
                     </div>
                     <div class="info">
                         <label for="f_name">First Name:</label>
-                        <input id="f_name" type="text" value="{{ user.first_name }}">
+                        <input id="f_name" type="text" value="John" placeholder="First Name" required>
                     </div>
                     <div class="info">
                         <label for="l_name">Last Name:</label>
-                        <input id="l_name" type="text" value="{{ user.last_name }}">
+                        <input id="l_name" type="text" value="Doe" placeholder="Last Name" required>
                     </div>
                     <button type="submit" class="save-btn">
                         Update Profile
                         <div class="loader"></div>
                     </button>
                 </div>
-            </form>
         </div>
 
         <div id="change-password" class="content hidden">
             <h3>Change Password</h3>
             <form id="change-password-form">
                 <div class="bio-data-form">
-                    <div class="info">
+                    <div class="info password-field">
                         <label for="current-password">Your Current Password:</label>
-                        <input id="current-password" type="password">
+                        <input id="current-password" type="password" required placeholder="Current Password">
+                        <i class="fa-solid fa-eye toggle-password" data-toggle="password" title="Show password"></i>
                     </div>
-                    <div class="info">
+                    <div class="info password-field">
                         <label for="new-password">Create a new password:</label>
-                        <input id="new-password" type="password">
+                        <input id="new-password" type="password" required placeholder="New Password">
+                        <i class="fa-solid fa-eye toggle-password2" data-toggle="password" title="Show password"></i>
                     </div>
+                    <div id="password-error" class="error-message" aria-live="polite">Password Error</div>
                     <div class="info">
                         <label for="c-new-password">Confirm your new password</label>
-                        <input id="c-new-password" type="password">
+                        <input id="c-new-password" type="password" required placeholder="Confirm New Password">
                     </div>
+                    <div id="c_password-error" class="error-message" aria-live="polite">Error</div>
                     <button type="submit" class="save-btn">
                         Change Password
                         <div class="loader"></div>
