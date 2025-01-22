@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameInput = document.getElementById("username");
   const suggestionsDiv = document.querySelector(".username-errors");
 
+  let isValid = true;
   let cropper;
 
   const elements = [profileHead, profileDiv, biodataDiv];
@@ -313,6 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProfileForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
+    if (!isValid) {
+      event.preventDefault();
+      showNotification("Check username", "error");
+      return;
+    }
+
     const submitBtn = document.querySelector(".save-btn-profile");
 
     const username = document.getElementById("username").value;
@@ -495,14 +502,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.querySelector(".save-btn-profile");
     const currentUsername = usernameInput.getAttribute("data-user-name");
     const username = usernameInput.value.trim();
-
     suggestionsDiv.style.display = "none";
 
-    if (!username) return;
-    if (username === currentUsername) return;
+    if (!username) {
+      isValid = true;
+      return;
+    }
 
+    if (username === currentUsername) {
+      isValid = true;
+      return;
+    }
+    
     submitBtn.disabled = true;
-    fetch(`/check-username?username=${encodeURIComponent(username)}`)
+    isValid = false;
+    fetch(`/quizzen/check-username?username=${encodeURIComponent(username)}`)
       .then((response) => {
         if (!response.ok) {
           if (response.status === 429) {
