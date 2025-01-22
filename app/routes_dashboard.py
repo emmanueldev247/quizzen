@@ -935,9 +935,9 @@ def update_profile(current_user):
     try:
         data = request.json
         
-        current_user.username = data.get("username", current_user["username"])
-        current_user.first_name = data.get("first_name", current_user["first_name"])
-        current_user.last_name = data.get("last_name", current_user["last_name"])
+        current_user.username = data.get("username", current_user.username)
+        current_user.first_name = data.get("first_name", current_user.first_name)
+        current_user.last_name = data.get("last_name", current_user.last_name)
 
         db.session.add(current_user)
         db.session.commit()
