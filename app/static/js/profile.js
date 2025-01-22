@@ -445,6 +445,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => {
         if (!response.ok) {
           if (response.status === 400) {
+            showNotification("This account uses OAuth to authenticate", "error");
+          } else if (response.status === 401) {
             showNotification("Incorrect current password", "error");
           } else if (response.status === 429) {
             showNotification(
