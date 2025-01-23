@@ -5,6 +5,7 @@
 
 {% block main_content %}
 <main>
+    {% if quizzes %}
     {% for quiz in quizzes %}
    <div class="quiz-card" data-quiz-id="{{ quiz.id }}">
         {% if quiz.public %}
@@ -54,6 +55,9 @@
         </div>
     </div>
     {% endfor %}
+    {% else %}
+        {% include 'no-quiz-admin.html' %}
+    {% endif %}
     
     <div class="confirmation-bubble" id="confirmationBubble" display="none">
         <i class="fas fa-trash"></i><br>
