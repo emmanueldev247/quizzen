@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
               );
             throw new Error(`HTTP error! status: ${response.status}`);
           } else {
-            showNotification("Question deleted successfully!", "success");
+            showNotification("Question deleted successfully!", "  ");
 
             // Remove question from DOM
             const questionCard = document
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (isPublish) {
             showNotification(
               "Quiz published successfully",
-              "error"
+              "success"
             );
             publishButton.innerHTML = `
             <i class="fas fa-eye-slash unpublish-quiz" data-quiz-id="${quizId}"></i> Unpublish
@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } else if (isUnpublish) {
             showNotification(
               "Quiz unpublished successfully",
-              "error"
+              "success"
             );
             publishButton.innerHTML = `
             <i class="fas fa-check-circle publish-quiz" data-quiz-id="${quizId}"></i> Publish
