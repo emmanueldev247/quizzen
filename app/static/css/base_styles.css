@@ -14,7 +14,6 @@
 }
 
 .loader {
-    /* border: 2px solid #6a0dad; */
     border-top: 2px solid #f3f3f3;
     border-radius: 50%;
     width: 10px;
@@ -60,10 +59,47 @@
     color: white;
 }
 
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #f39d12c8;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.4s ease;
+}
 
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-@media (max-width: 768px) {
+#backToTop:hover {
+    transform: scale(1.1);
+}
+
+@media only screen and (max-width: 768px) {
     .notification {
         width: 70%;
+    }
+}
+
+@media only screen and (max-width: 530px) {
+
+    #backToTop {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        bottom: 40px;
+        right: 20px;
     }
 }

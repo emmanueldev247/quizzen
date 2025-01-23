@@ -35,7 +35,8 @@
         {% endblock main_content %}
     </main>
 
-
+    <button id="backToTop" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
+    <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
     {% block scripts %}
     {% endblock scripts %}

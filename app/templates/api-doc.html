@@ -144,6 +144,33 @@
             width: 100%;
         }
 
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #f39d12c8;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.4s ease;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:hover {
+            transform: scale(1.1);
+        }
 
         /* Footer */
         .footer {
@@ -164,8 +191,7 @@
             text-decoration: underline;
         }
 
-
-        @media (max-width: 768px) {
+        @media only screen and (max-width: 768px) {
 
             .header,
             .container {
@@ -174,6 +200,17 @@
 
             .header h1 {
                 font-size: 2em;
+            }
+        }
+
+        @media only screen and (max-width: 530px) {
+
+            #backToTop {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                bottom: 40px;
+                right: 20px;
             }
         }
 
@@ -474,6 +511,7 @@ Authorization: Bearer your_token_here
             </div>
         </section>
     </div>
+    <button id="backToTop" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
     <footer class="footer">
         <p>&copy; 2025 Quizzen. All Rights Reserved.</p>
         <p>
@@ -482,6 +520,7 @@ Authorization: Bearer your_token_here
             <a href="{{ url_for('full_bp.tos') }}" class="footer-link">Terms of Service</a>
         </p>
     </footer>
+    <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>
