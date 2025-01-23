@@ -184,7 +184,7 @@ header .logo img {
     flex-wrap: wrap;
 }
 
-.quiz-card {
+.index-quiz-card {
     flex: 1;
     background: #fff;
     border: 1px solid #ddd;
@@ -197,7 +197,7 @@ header .logo img {
     transition: all .3s ease;
 }
 
-.quiz-card:hover {
+.index-quiz-card:hover {
     transform: scale(1.1);
 }
 
@@ -217,7 +217,7 @@ header .logo img {
     box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.3);
 }
 
-.quiz-card:hover .fade-overlay {
+.index-quiz-card:hover .fade-overlay {
     opacity: 1;
 }
 
@@ -636,15 +636,15 @@ footer p {
         font-size: 1.5rem;
     }
 
-    .quiz-card {
+    .index-quiz-card {
         margin: 10px;
     }
 
-    .quiz-card h3 {
+    .index-quiz-card h3 {
         font-size: 18px;
     }
 
-    .quiz-card p {
+    .index-quiz-card p {
         font-size: 14px;
     }
 
@@ -711,7 +711,7 @@ footer p {
         align-items: center;
     }
 
-    .quiz-card {
+    .index-quiz-card {
         width: 90%;
         margin-bottom: 20px;
     }
@@ -774,7 +774,7 @@ footer p {
         margin: 0;
     }
 
-    div.quiz-card {
+    div.index-quiz-card {
         padding: 20px 10px;
     }
 
@@ -832,15 +832,15 @@ footer p {
         font-size: 14px;
     }
 
-    .quiz-card {
+    .index-quiz-card {
         margin: 10px 0;
     }
 
-    .quiz-card h3 {
+    .index-quiz-card h3 {
         font-size: 16px;
     }
 
-    .quiz-card p {
+    .index-quiz-card p {
         font-size: 12px;
     }
 
