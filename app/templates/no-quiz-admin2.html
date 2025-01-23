@@ -1,0 +1,17 @@
+<div class="empty-container">
+    <div class="icon">
+        <i class="fa-solid fa-paper-plane"></i>
+    </div>
+    <h1>No Quizzes Available Yet</h1>
+    <p>
+        It seems there aren’t any quizzes to take right now.<br>
+        Don’t worry, new quizzes are on their way! <br>
+        When admins like you create quizzes and publish them, they'll magically appear right here. <br>
+        Check back soon to discover fresh challenges or publish your already created quiz.
+    </p>
+    {% if user.quizzes %}
+    <a href="/quizzen/admin/library" class="btn">View Your Created Quiz</a>
+    {% else %}
+    <a href="#" class="btn create-button">Create Your First Quiz</a>
+    {% endif %}
+</div>

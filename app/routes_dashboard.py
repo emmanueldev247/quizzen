@@ -108,8 +108,31 @@ def user_dashboard(current_user):
     """User dashboard"""
     if current_user.role == 'admin':
         return redirect(url_for('full_bp.admin_dashboard'))
-    return render_template('user_dashboard.html', user=current_user)
 
+    history = QuizHistory.query.filter_by(user_id=user.id).all()
+    query = Quiz.query.filter_by(public=True)
+    quizzes = query.order_by(Quiz.created_at.desc()).all()
+
+    leaderboard = Leaderboard.query.order_by(
+        Leaderboard.score.desc()
+    ).limit(10).all()
+    notifications = Notification.query.filter_by(
+        user_id=user.id
+    ).order_by(
+        Notification.date_sent.desc()
+    ).all()
+    categories = Category.query.order_by(Category.name.asc()).all()
+
+    return render_template(
+        'user_dashboard.html',
+        title='Dashboard',
+        user=user,
+        quizzes=quizzes,
+        history=history,
+        categories=categories,
+        leaderboard=leaderboard,
+        notifications=notifications
+    )
 
 @full_bp.route('/admin/dashboard')
 @auth_required
@@ -126,7 +149,10 @@ def admin_dashboard(current_user):
     if not user:
         return redirect(url_for('full_bp.login'))
 
-    quizzes = QuizHistory.query.filter_by(user_id=user.id).all()
+    history = QuizHistory.query.filter_by(user_id=user.id).all()
+    query = Quiz.query.filter_by(public=True)
+    quizzes = query.order_by(Quiz.created_at.desc()).all()
+
     leaderboard = Leaderboard.query.order_by(
         Leaderboard.score.desc()
     ).limit(10).all()
@@ -142,6 +168,7 @@ def admin_dashboard(current_user):
         title='Dashboard',
         user=user,
         quizzes=quizzes,
+        history=history,
         categories=categories,
         leaderboard=leaderboard,
         notifications=notifications
