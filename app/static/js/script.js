@@ -29,6 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
       submitButton.disabled = true;
       const loader = submitButton.querySelector(".loader");
       loader.style.display = "inline-block";
+
+      setTimeout(() => {
+        submitButton.disabled = false;
+        loader.style.display = "none";
+      }, 2000)
     })
   }
 
