@@ -24,3 +24,45 @@ ul {
 ul li {
     margin-bottom: 5px;
 }
+
+.welcome-heading {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    width: fit-content;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin: 20px auto;
+    line-height: 1.2;
+}
+
+
+@media (max-width: 1200px) {
+    .welcome-heading {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .welcome-heading {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-heading {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .welcome-heading {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .welcome-heading {
+        font-size: 1.5rem;
+    }
+}
