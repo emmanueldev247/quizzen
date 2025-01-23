@@ -9,15 +9,49 @@
         <section id="dashboard">
             <div class="section">
                 {% if quizzes %}
-                <h2>Available Quizzes</h2>
-                <ul>
+                <div class="quiz-container">
                     {% for quiz in quizzes %}
-                    <li>
-                        <strong>{{ quiz.title }}</strong> - Score: {{ quiz.max_score }}
-                        <a class="create-button" href="{{ url_for('full_bp.get_quiz', quiz_id=quiz.id) }}">View Details</a>
-                    </li>
+                    <div class="quiz-card" data-quiz-id="{{ quiz.id }}">        
+                        <h2 class="quiz-title">{{ quiz.title }}</h2>
+                        <p class="quiz-description">
+                            {{ quiz.description }}
+                        </p>
+                        <div class="quiz-details">
+                            <div class="detail-item question-count">
+                                <i class="fas fa-list"></i>
+                                {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{% endif %}
+                            </div>
+                            <div class="detail-item question-duration">
+                                <i class="fas fa-clock"></i>
+                                {{ quiz.duration }} {% if quiz.duration > 1 %}Minutes{% else %}Minute{% endif %}
+                            </div>
+                            <div class="detail-item quiz-category">
+                                <i class="fas fa-tag"></i>
+                                {{ quiz.related_category.name if quiz.related_category else None }}
+                            </div>
+                        </div>
+                        <div class="quiz-meta">
+                            <div class="author">
+                                {% if quiz.user.profile_picture %}
+                                <img src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
+                                {% endif %}
+                                <!-- <i class="fas fa-user"></i> -->
+                                <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
+                            </div>
+                            <span class="dot"></span>
+                            <div class="time-created">{{ quiz.created_at|timeago }}</div>
+                        </div>
+                        <div class="quiz-actions">
+                            <button type="button" class="btn take-btn" title="Take Quiz">
+                                <i class="fas fa-play"></i>
+                                Take Quiz
+                            </button>
+                        </div>
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
                 {% else %}
                 {% include 'no-quiz-admin2.html' %}
                 {% endif %}
