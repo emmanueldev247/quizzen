@@ -109,7 +109,7 @@ def user_dashboard(current_user):
     if current_user.role == 'admin':
         return redirect(url_for('full_bp.admin_dashboard'))
 
-    history = QuizHistory.query.filter_by(user_id=user.id).all()
+    history = QuizHistory.query.filter_by(user_id=current_user.id).all()
     query = Quiz.query.filter_by(public=True)
     quizzes = query.order_by(Quiz.created_at.desc()).all()
 
@@ -117,7 +117,7 @@ def user_dashboard(current_user):
         Leaderboard.score.desc()
     ).limit(10).all()
     notifications = Notification.query.filter_by(
-        user_id=user.id
+        user_id=current_user.id
     ).order_by(
         Notification.date_sent.desc()
     ).all()
@@ -126,7 +126,7 @@ def user_dashboard(current_user):
     return render_template(
         'user_dashboard.html',
         title='Dashboard',
-        user=user,
+        user=current_user,
         quizzes=quizzes,
         history=history,
         categories=categories,
@@ -145,11 +145,7 @@ def admin_dashboard(current_user):
     if current_user.role != 'admin':
         return redirect(url_for('full_bp.user_dashboard'))
 
-    user = User.query.get(current_user.id)
-    if not user:
-        return redirect(url_for('full_bp.login'))
-
-    history = QuizHistory.query.filter_by(user_id=user.id).all()
+    history = QuizHistory.query.filter_by(user_id=current_user.id).all()
     query = Quiz.query.filter_by(public=True)
     quizzes = query.order_by(Quiz.created_at.desc()).all()
 
@@ -157,7 +153,7 @@ def admin_dashboard(current_user):
         Leaderboard.score.desc()
     ).limit(10).all()
     notifications = Notification.query.filter_by(
-        user_id=user.id
+        user_id=current_user.id
     ).order_by(
         Notification.date_sent.desc()
     ).all()
@@ -166,7 +162,7 @@ def admin_dashboard(current_user):
     return render_template(
         'admin_dashboard.html',
         title='Dashboard',
-        user=user,
+        user=current_user,
         quizzes=quizzes,
         history=history,
         categories=categories,
