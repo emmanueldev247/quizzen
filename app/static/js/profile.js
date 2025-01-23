@@ -542,6 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           suggestionsDiv.innerHTML = `<p style="color: green;">Username (${username}) is available!</p>`;
           suggestionsDiv.style.display = "block";
+          isValid = true;
           submitBtn.disabled = false;
         } else {
           suggestionsDiv.innerHTML = `
