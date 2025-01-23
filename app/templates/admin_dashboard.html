@@ -29,9 +29,9 @@
             <div class="quiz-meta">
                 <div class="author">
                     {% if quiz.user.profile_picture %}
-                    <img src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
+                    <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
                     {% else %}
-                    <img src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
+                    <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
                     {% endif %}
                     <!-- <i class="fas fa-user"></i> -->
                     <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
