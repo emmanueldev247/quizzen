@@ -21,4 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "/quizzen/signup";
     });
   });
+
+  const submitButton = document.querySelector(".submit-contact");
+ 
+  if (submitButton) {
+    submitButton.addEventListener("click", () => {
+      submitButton.disabled = true;
+      const loader = submitButton.querySelector(".loader");
+      loader.style.display = "inline-block";
+    })
+  }
+
 });

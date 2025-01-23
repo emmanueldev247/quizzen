@@ -177,7 +177,10 @@
 					<input id="sender_email" autocomplete="on" type="email" name="email" placeholder="Email" required>
 					<input id="sender_subject" type="text" name="subject" placeholder="Subject" required>
 					<textarea id="sender_message" name="message" placeholder="Message" required></textarea>
-					<button type="submit">Send Message</button>
+					<button type="submit" class="submit-contact">
+						Send Message
+						<div class="loader"></div>
+					</button>
 				</form>
 				{% if scroll_to_contact %}
 					<script>
