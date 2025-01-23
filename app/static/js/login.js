@@ -48,10 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
       () => (window.location.href = "/quizzen/signup")
     );
 
-  googleLogin.addEventListener(
-    "click",
-    () => (window.location.href = "/quizzen/auth/google")
-  );
+  googleLogin.addEventListener("click", () => {
+    googleLogin.disabled = true;
+    const loader = googleLogin.querySelector(".loader");
+    loader.style.display = "inline-block";
+    window.location.href = "/quizzen/auth/google";
+    setTimeout(() => {
+      googleLogin.disabled = false;
+      loader.style.display = "none";
+    }, 2000);
+  });
 
   // Event listeners for toggling views
   forgotPasswordLink.addEventListener("click", function () {
