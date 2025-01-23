@@ -215,12 +215,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           // Update the UI to reflect action
           if (isPublish) {
+            showNotification(
+              "Quiz published successfully",
+              "error"
+            );
             publishButton.innerHTML = `
             <i class="fas fa-eye-slash unpublish-quiz" data-quiz-id="${quizId}"></i> Unpublish
+            <div class="loader"></div>
             `;
           } else if (isUnpublish) {
+            showNotification(
+              "Quiz unpublished successfully",
+              "error"
+            );
             publishButton.innerHTML = `
             <i class="fas fa-check-circle publish-quiz" data-quiz-id="${quizId}"></i> Publish
+            <div class="loader"></div>
             `;
           }
         } else {
