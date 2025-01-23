@@ -186,8 +186,7 @@
     					if (targetElement) {
 							targetElement.scrollIntoView({ behavior: "smooth" });
 						}
-					};
-					// [["Failed to send email: name \u0027sender_email\u0027 is not defined", "error"]
+					};	
 					</script>
 				{% endif %}
 				{% with messages = get_flashed_messages() %}
@@ -200,14 +199,7 @@
 							showNotification(message, category);
 						});
 					});
-				</script>	
-				{% for message, message_type in messages %}
-				<!-- <div class="flash-message {% if message_type == 'success' %}success{% elif message_type == 'error' %}error{% endif %}">
-					{{ message }}
-				</div>
-				{% endfor %}
-				{% endif %}
-				{% endwith %} -->
+				</script>
 			</div>
 		</div>
 	</section>
