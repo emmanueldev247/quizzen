@@ -23,16 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const contactForm = document.querySelector(".contact-us-form-class");
-  contactForm.addEventListener("submit", () => {
-    const submitButton = document.querySelector(".submit-contact");
+  if (contactForm) {
+    contactForm.addEventListener("submit", () => {
+      const submitButton = document.querySelector(".submit-contact");
 
-    submitButton.disabled = true;
-    const loader = submitButton.querySelector(".loader");
-    loader.style.display = "inline-block";
+      submitButton.disabled = true;
+      const loader = submitButton.querySelector(".loader");
+      loader.style.display = "inline-block";
 
-    setTimeout(() => {
-      submitButton.disabled = false;
-      loader.style.display = "none";
-    }, 2000);
-  });
+      setTimeout(() => {
+        submitButton.disabled = false;
+        loader.style.display = "none";
+      }, 2000);
+    });
+  }
 });
