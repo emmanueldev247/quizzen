@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   googleLogin.addEventListener("click", () => {
     googleLogin.disabled = true;
-    const loader = googleLogin.querySelector(".loader");
+    const loader = googleLogin.querySelector(".loader-auth");
     loader.style.display = "inline-block";
     window.location.href = "/quizzen/auth/google";
     setTimeout(() => {

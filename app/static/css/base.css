@@ -14,8 +14,18 @@
 }
 
 .loader {
-    /* border: 2px solid #6a0dad; */
     border-top: 2px solid #f3f3f3;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+.loader-auth {
+    background-color: #ffffff;
+    border-top: 2px solid #6a0dad;
     border-radius: 50%;
     width: 10px;
     height: 10px;
