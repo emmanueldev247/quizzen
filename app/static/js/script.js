@@ -22,19 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const submitButton = document.querySelector(".submit-contact");
- 
-  if (submitButton) {
-    submitButton.addEventListener("click", () => {
-      submitButton.disabled = true;
-      const loader = submitButton.querySelector(".loader");
-      loader.style.display = "inline-block";
+  const contactForm = document.querySelector(".contact-us-form-class");
+  contactForm.addEventListener("submit", () => {
+    const submitButton = document.querySelector(".submit-contact");
 
-      setTimeout(() => {
-        submitButton.disabled = false;
-        loader.style.display = "none";
-      }, 2000)
-    })
-  }
+    if (submitButton) {
+      submitButton.addEventListener("click", () => {
+        submitButton.disabled = true;
+        const loader = submitButton.querySelector(".loader");
+        loader.style.display = "inline-block";
 
+        setTimeout(() => {
+          submitButton.disabled = false;
+          loader.style.display = "none";
+        }, 2000);
+      });
+    }
+  });
 });
