@@ -8,8 +8,8 @@
         <h1>Welcome, {{ '@' ~ user.username if user.username else user.lastname ~ ' ' ~ user.firstname }}</h1>
         <section id="dashboard">
             <div class="section">
-                <h2>Available Quizzes</h2>
                 {% if quizzes %}
+                <h2>Available Quizzes</h2>
                 <ul>
                     {% for quiz in quizzes %}
                     <li>
@@ -23,8 +23,8 @@
                 {% endif %}
             </div>
             <div class="section">
-                <h2>Leaderboard</h2>
                 {% if leaderboard %}
+                <h2>Leaderboard</h2>
                 <ul>
                     {% for entry in leaderboard %}
                     <li>{{ entry.username }} - {{ entry.score }}</li>
@@ -35,8 +35,8 @@
                 {% endif %}
             </div>
             <div class="section">
-                <h2>Notifications</h2>
                 {% if notifications %}
+                <h2>Notifications</h2>
                 <ul>
                     {% for notification in notifications %}
                     <li>{{ notification.content }} - {{ notification.date_posted }}</li>
@@ -47,8 +47,8 @@
                 {% endif %}
             </div>
             <div class="section">
-                <h2>Quiz History</h2>
                 {% if history %}
+                <h2>Quiz History</h2>
                 <ul>
                     {% for quiz in quizzes %}
                     <li>
