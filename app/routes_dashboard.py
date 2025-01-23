@@ -948,7 +948,7 @@ def delete_profile_picture(current_user):
             'message': 'No image to delete'
         })
 
-
+@full_bp.route('/admin/uploads/<filename>')
 @full_bp.route('/uploads/<filename>')
 @limiter.limit("30 per minute")
 def uploaded_file(filename):
