@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupLink = document.getElementById("signup-link");
   const forgotPasswordLink = document.getElementById("forgot-password");
   const backToLoginLink = document.getElementById("back-to-login");
-  const googleLogin = document.querySelector(".google-login");
+  const googleLogin = document.querySelector(".google-btn");
   const resetPasswordElements = Array.from(
     resetPasswordForm.querySelectorAll("h2, p, input, button, a")
   );

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const socialSignup = document.getElementById("social-signup");
   const loginLink = document.getElementById("login-link");
-  const googleSignup = document.querySelector(".google-signup");
+  const googleSignup = document.querySelector(".google-btn");
 
   function scrollToBottom() {
     const signupFormSub = document.querySelector(".signup-form-sub");
