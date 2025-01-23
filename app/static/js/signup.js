@@ -27,10 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelector(".login-button")
     .addEventListener("click", () => (window.location.href = "/quizzen/login"));
 
-  googleSignup.addEventListener(
-    "click",
-    () => (window.location.href = "/quizzen/auth/google")
-  );
+  googleSignup.addEventListener("click", () => {
+    googleSignup.disabled = true;
+    const loader = googleSignup.querySelector(".loader-auth");
+    loader.style.display = "inline-block";
+    window.location.href = "/quizzen/auth/google";
+    setTimeout(() => {
+      googleSignup.disabled = false;
+      loader.style.display = "none";
+    }, 5000);
+  });
 
   // Role icon select
   document.querySelectorAll(".role-option").forEach((option) => {
@@ -168,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
     const loader = submitBtn.querySelector(".loader");
     loader.style.display = "inline-block";
-    
 
     const formData = new FormData(this);
 
