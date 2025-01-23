@@ -162,6 +162,7 @@ form {
     border: 2px solid #ddd;
     border-radius: 50px;
     padding: 5px 20px;
+    width: 160px;
     /* display: flex; */
     /* justify-content: center; */
     /* align-items: center; */
@@ -172,6 +173,7 @@ form {
 .google-btn:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .google-btn:disabled {
     background-color: #ffffff;
 }
