@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             usernameP.textContent = "";
           }
-          usernameInput.setAttribute("data-user-name") = username;
+          usernameInput.setAttribute("data-user-name", username);
           showNotification("Profile updated successfully!", "success");
         }
       })
