@@ -450,6 +450,51 @@ header .enter-code:hover {
     transform: scale(1.1);
 }
 
+.empty-container {
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    width: 100%
+}
+
+.empty-container .icon {
+    font-size: 80px;
+    color: #6a0dadcb;
+    margin-bottom: 20px;
+}
+
+.empty-container h1 {
+    font-size: 36px;
+    color: #333;
+    margin: 0 0 10px;
+}
+
+.empty-container p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0 0 20px;
+}
+
+.empty-container .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.empty-container .btn:hover {
+    background-color: #9b59b6;
+}
+
+
 /* Mobile Styles */
 @media only screen and (max-width: 768px) {
     .notification {
@@ -503,6 +548,23 @@ header .enter-code:hover {
     .modal {
         width: 70%;
     }
+
+    .empty-container .icon {
+        font-size: 60px;
+    }
+
+    .empty-container h1 {
+        font-size: 30px;
+    }
+
+    .empty-container p {
+        font-size: 16px;
+    }
+
+    .empty-container .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }
 
 @media only screen and (max-height: 600px) {
@@ -547,8 +609,33 @@ header .enter-code:hover {
     .modal {
         width: 100%;
     }
+
+    .empty-container .icon {
+        font-size: 50px;
+    }
+
+    .empty-container h1 {
+        font-size: 28px;
+    }
+
+    .empty-container p {
+        font-size: 14px;
+    }
+
+    .empty-container .btn {
+        padding: 10px;
+    }
 }
 
+@media only screen and (max-width: 479px) {
+    .empty-container .icon {
+        font-size: 40px;
+    }
+
+    .empty-container h1 {
+        font-size: 24px;
+    }
+}
 
 @media only screen and (max-height: 450px) {
     .sidebar {

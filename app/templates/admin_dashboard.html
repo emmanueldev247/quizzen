@@ -5,10 +5,11 @@
 
 {% block main_content %}
     <div class="dashboard-container" id="dashboard-container">
-        <h1>Welcome, {{ user.username if user.username else user.lastname ~ ' ' ~ user.firstname }}</h1>
+        <h1>Welcome, {{ '@' ~ user.username if user.username else user.lastname ~ ' ' ~ user.firstname }}</h1>
         <section id="dashboard">
             <div class="section">
                 <h2>Your Quizzes</h2>
+                {% if user.quizzes %}
                 <ul>
                     {% for quiz in user.quizzes %}
                     <li>
@@ -17,26 +18,38 @@
                     </li>
                     {% endfor %}
                 </ul>
+                {% else %}
+                    {% include 'no-quiz-admin.html' %}
+                {% endif %}
                 <a href="{{ url_for('full_bp.create_quiz') }}" class="button create-button">Create New Quiz</a>
             </div>
             <div class="section">
                 <h2>Leaderboard</h2>
+                {% if leaderboard %}
                 <ul>
                     {% for entry in leaderboard %}
                     <li>{{ entry.username }} - {{ entry.score }}</li>
                     {% endfor %}
                 </ul>
+                {% else %}
+                    {% include 'no-leader.html' %}
+                {% endif %}
             </div>
             <div class="section">
                 <h2>Notifications</h2>
+                {% if notifications %}
                 <ul>
                     {% for notification in notifications %}
                     <li>{{ notification.content }} - {{ notification.date_posted }}</li>
                     {% endfor %}
                 </ul>
+                {% else %}
+                    {% include 'no-notif.html' %}
+                {% endif %}
             </div>
             <div class="section">
                 <h2>Quiz History</h2>
+                {% if history %}
                 <ul>
                     {% for quiz in quizzes %}
                     <li>
@@ -45,6 +58,9 @@
                     </li>
                     {% endfor %}
                 </ul>
+                {% else %}
+                    {% include 'no-history.html' %}
+                {% endif %}
             </div>
         </section>
     </div>
