@@ -1,0 +1,104 @@
+# Redirect HTTP to HTTPS
+server {
+	server_name emmanueldev247.tech www.emmanueldev247.tech;
+	listen 80;
+
+	if ($host = www.emmanueldev247.tech) {
+		return 301 https://emmanueldev247.tech$request_uri;
+	} # managed by Certbot
+
+
+	if ($host = emmanueldev247.tech) {
+		return 301 https://emmanueldev247.tech$request_uri;
+	} # managed by Certbot
+
+
+	return 404; # managed by Certbot
+}
+
+# HTTPS server configuration
+server {
+
+	server_name emmanueldev247.tech www.emmanueldev247.tech;
+
+	listen 443 ssl; # managed by Certbot
+	ssl_certificate /etc/letsencrypt/live/emmanueldev247.tech/fullchain.pem; # managed by Certbot
+	ssl_certificate_key /etc/letsencrypt/live/emmanueldev247.tech/privkey.pem; # managed by Certbot
+	include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+	root /var/www/html;
+	#root /home/ubuntu/imed/dist;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	add_header X-Served-By web-aws;
+
+	location /currencymate/static {
+		alias /home/ubuntu/CurrencyMate/Portfolio-Project---CurrencyMate/static;
+	}
+
+	location /currencymate {
+		rewrite ^/currencymate$ /currencymate/ permanent;
+	}
+
+	location /currencymate/ {
+		proxy_pass http://127.0.0.1:8000/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_buffering off;
+	}
+
+
+
+	location /imedcare/static {
+		alias /home/ubuntu/iMedCare/static;
+	}
+
+	location /imedcare {
+		rewrite ^/imedcare$ /imedcare/ permanent;
+	}
+
+	location /imedcare/ {
+		proxy_pass http://127.0.0.1:5000/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_buffering off;
+	}
+
+	location /quizzen/static/ {
+        	alias /home/ubuntu/quizzen/app/static/;
+    	}
+
+	location /quizzen/ {
+        	proxy_pass http://127.0.0.1:5000/quizzen/;
+        	proxy_set_header Host $host;
+        	proxy_set_header X-Real-IP $remote_addr;
+        	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        	proxy_buffering off;
+    	}
+
+	error_page 404 /404.html;
+
+	location = /404.html {
+		internal;
+	}
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+
+#server {
+#	listen 80 default_server;
+#	listen [::]:80 default_server;
+#
+#	server_name emmanueldev247.tech www.emmanueldev247.tech;
+#
+#	return 301 https://$host$request_uri;
+#}
+
+
+
