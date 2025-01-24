@@ -18,9 +18,9 @@ from flask import (
     session, url_for
 )
 from flask_limiter.errors import RateLimitExceeded
+from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
-from pip._vendor import cachecontrol
 from functools import wraps
 from oauthlib.oauth2.rfc6749.errors import (
     MismatchingStateError,
@@ -125,8 +125,7 @@ def callback():
 
         credentials = flow.credentials
         request_session = requests.session()
-        cached_session = cachecontrol.CacheControl(request_session)
-        token_request = google.auth.transport.requests.Request(session=cached_session)
+        token_request = google.auth.transport.requests.Request(session=request_session)
 
         user_info = id_token.verify_oauth2_token(
             id_token=credentials._id_token,
