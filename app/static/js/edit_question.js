@@ -491,7 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
       button.innerHTML = `<i class="fas fa-save"></i> Saving
                             <div class="loader"></div>
                         `;
-      button.querySelector.style.display = "inline-block";
+      button.style.display = "inline-block";
     });
 
     fetch(window.location.href, {
