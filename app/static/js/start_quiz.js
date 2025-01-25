@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     answers: answers,
   };
 
-  fetch(`/quiz/${quizId}/submit`, {
+  fetch(`quizzen/quiz/${quizId}/submit`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -245,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Error submitting quiz:', error);
       alert('There was an error submitting the quiz.');
     });
-    alert("Quiz submitted. Check the console for your answers!");
   };
 
   // Navigation Logic

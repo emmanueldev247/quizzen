@@ -686,7 +686,7 @@ def submit_quiz(current_user, quiz_id):
     """
     logger.info(f"Submitting quiz attempt")
     data = request.json
-    user_id = data.get('user_id')
+    consol e.log("submitted:        ", data)
     answers = data.get('answers')
 
     quiz = Quiz.query.filter_by(id=quiz_id).first()
@@ -719,16 +719,14 @@ def submit_quiz(current_user, quiz_id):
         except ValueError as e:
             continue  # Skip invalid questions or answers
 
-    # Save quiz history
-    quiz_history = QuizHistory(user_id=user_id, quiz_id=quiz_id, score=total_score)
+    quiz_history = QuizHistory(user_id=current_user.id, quiz_id=quiz_id, score=total_score)
     db.session.add(quiz_history)
 
-    # Update leaderboard
-    leaderboard_entry = Leaderboard.query.filter_by(user_id=user_id, quiz_id=quiz_id).first()
+    leaderboard_entry = Leaderboard.query.filter_by(user_id=current_user.id, quiz_id=quiz_id).first()
     if leaderboard_entry:
         leaderboard_entry.score = max(leaderboard_entry.score, total_score)  # Update with max score
     else:
-        leaderboard_entry = Leaderboard(user_id=user_id, quiz_id=quiz_id, score=total_score, rank=0)
+        leaderboard_entry = Leaderboard(user_id=current_user.id, quiz_id=quiz_id, score=total_score, rank=0)
         db.session.add(leaderboard_entry)
 
     db.session.commit()
