@@ -574,7 +574,6 @@ def take_quiz(current_user, quiz_id):
     """
     Start a quiz: Fetch quiz details and initialize user session for the quiz.
     """
-    import json
     from sqlalchemy.orm import joinedload
     logger.info(f"Stating quiz attempt")
     #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
@@ -584,6 +583,17 @@ def take_quiz(current_user, quiz_id):
     if not quiz:
         return abort(404)
 
+    questions = [
+        {
+            "id": q.id,
+            "question_text": q.question_text,
+            "question_type": q.question_type,
+            "is_multiple_response": q.is_multiple_response,
+            "points": q.points,
+            "answer_choices": [{"id": ac.id, "text": ac.text} for ac in q.answer_choices]
+        }
+        for q in quiz.questions
+    ]
 
     # Pass the quiz data to the template
     return render_template('start_quiz.html', 
