@@ -187,14 +187,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initial Load// Start button click event
   startButton.addEventListener("click", async () => {
-    startContainer.classList.add("hidden");
-    quizContainer.classList.remove("hidden");
-
     await fetchQuizData(quizId);
     if (quizData.length === 0) {
       alert("Failed to load quiz data.");
       return;
     }
+    startContainer.classList.add("hidden");
+    quizContainer.classList.remove("hidden");
     loadQuestion(currentQuestionIndex);
     startTimer(quizTime);
     updateQuestionIndexPanel();
