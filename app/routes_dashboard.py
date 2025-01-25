@@ -28,6 +28,7 @@ import requests
 import smtplib
 import ulid
 from flask import (
+    abort,
     current_app, flash, jsonify,
     redirect, render_template, request,
     send_from_directory, session, url_for
@@ -523,6 +524,205 @@ def unpublish_quiz(current_user, quiz_id):
             "success": False,
             "error": "An error occured"
         }), 500
+
+
+@full_bp.route('/quiz/<quiz_id>/start')
+@auth_required
+@limiter.limit("20 per minute")
+def get_quiz(current_user, quiz_id):
+    """
+    Start a quiz: Fetch quiz details and initialize user session for the quiz.
+    """
+    from sqlalchemy.orm import joinedload
+    logger.info(f"Stating quiz attempt")
+    #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
+    quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \
+                     .filter_by(id=quiz_id, public=True).first()
+
+    if not quiz:
+        return jsonify({
+            "success": False,
+            "message": "Quiz not found or not public"
+        }), 404
+
+     # Prepare quiz data
+    questions = [
+        {
+            "id": q.id,
+            "question_text": q.question_text,
+            "question_type": q.question_type,
+            "is_multiple_response": q.is_multiple_response,
+            "points": q.points,
+            "answer_choices": [{"id": ac.id, "text": ac.text} for ac in q.answer_choices]
+        }
+        for q in quiz.questions
+    ]
+
+    return jsonify({
+        "quiz_id": quiz.id,
+        "title": quiz.title,
+        "description": quiz.description,
+        "duration": quiz.duration,
+        "questions": questions
+    }), 200
+
+
+@full_bp.route('/take/quiz/<quiz_id>/')
+@auth_required
+@limiter.limit("20 per minute")
+def take_quiz(current_user, quiz_id):
+    """
+    Start a quiz: Fetch quiz details and initialize user session for the quiz.
+    """
+    from sqlalchemy.orm import joinedload
+    logger.info(f"Stating quiz attempt")
+    #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
+    quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \
+                     .filter_by(id=quiz_id, public=True).first()
+
+
+    # Pass the quiz data to the template
+    return render_template('start_quiz.html', 
+        quiz_id=quiz.id, 
+        title=quiz.title, 
+        description=quiz.description, 
+        duration=quiz.duration, 
+    )
+
+
+def evaluate_answer(question_id, quiz_id, user_answers):
+    """
+    Evaluates the user's answer(s) against the correct answer(s) in the database.
+
+    Args:
+        question_id (str): The ID of the question being answered.
+        quiz_id (str): The ID of the quiz the question belongs to.
+        user_answers (list): List of user-selected answers or the user-provided answer (for short answer).
+
+    Returns:
+        int: Points awarded for the correct answer, or 0 if incorrect.
+    """
+    # Fetch the question and validate its existence
+    question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
+    if not question:
+        raise ValueError(f"Question with ID {question_id} and Quiz ID {quiz_id} not found.")
+
+    # Fetch all answer choices related to the question
+    answer_choices = AnswerChoice.query.filter_by(question_id=question_id).all()
+    if not answer_choices:
+        raise ValueError(f"No answer choices found for Question ID {question_id}.")
+
+    # Validate the user's answer based on the question type
+    if question.question_type == 'multiple_choice':
+        return evaluate_multiple_choice(question, answer_choices, user_answers)
+
+    elif question.question_type == 'short_answer':
+        return evaluate_short_answer(question, answer_choices, user_answers)
+
+    else:
+        raise ValueError(f"Unsupported question type: {question.question_type}")
+
+
+def evaluate_multiple_choice(question, answer_choices, user_answers):
+    """
+    Evaluates answers for multiple-choice questions.
+
+    Args:
+        question (Question): The question being evaluated.
+        answer_choices (list): List of AnswerChoice objects.
+        user_answers (list): User's selected answers.
+
+    Returns:
+        int: Points awarded for the correct answer(s), or 0 if incorrect.
+    """
+    if question.is_multiple_response:
+        # For multiple response, check if the user's answers match all correct answers
+        correct_answers = {choice.text for choice in answer_choices if choice.is_correct}
+        user_answers_set = set(user_answers)
+        return question.points if user_answers_set == correct_answers else 0
+    else:
+        # For single-response multiple choice, validate against a single correct answer
+        correct_answer = next((choice.text for choice in answer_choices if choice.is_correct), None)
+        return question.points if correct_answer and user_answers == [correct_answer] else 0
+
+
+def evaluate_short_answer(question, answer_choices, user_answers):
+    """
+    Evaluates answers for short-answer questions.
+
+    Args:
+        answer_choices (list): List of AnswerChoice objects.
+        user_answers (list): User's provided answer (assumes single-answer input).
+
+    Returns:
+        int: Points awarded for the correct answer, or 0 if incorrect.
+    """
+    # Fetch all valid answers for short answer (case-insensitive match)
+    correct_answers = {choice.text.lower() for choice in answer_choices if choice.is_correct}
+    user_answer = user_answers[0].strip().lower()  # Assuming only one answer for short answer type
+    return question.points if user_answer in correct_answers else 0
+
+@full_bp.route('/quiz/<quiz_id>/submit', methods=['POST'])
+@auth_required
+@limiter.limit("20 per minute")
+def submit_quiz(current_user, quiz_id):
+    """
+    Submit the user's quiz answers and calculate their score.
+    """
+    logger.info(f"Submitting quiz attempt")
+    data = request.json
+    user_id = data.get('user_id')
+    answers = data.get('answers')
+
+    quiz = Quiz.query.filter_by(id=quiz_id).first()
+    if not quiz:
+        return jsonify({"error": "Quiz not found"}), 404
+
+    total_score = 0
+    max_score = 0
+     # Iterate through the user's answers
+    for answer in answers:
+        question_id = answer.get('question_id')
+        user_answers = answer.get('user_answer')  # User's answers (list)
+
+        # Skip if question ID or user's answer is invalid
+        if not question_id or not user_answers:
+            continue
+
+        # Fetch the question
+        question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
+        if not question:
+            continue  # Skip invalid question IDs
+
+        # Calculate maximum possible score
+        max_score += question.points
+
+        # Evaluate the user's answer using the custom function
+        try:
+            points = evaluate_answer(question_id, quiz_id, user_answers)
+            total_score += points
+        except ValueError as e:
+            continue  # Skip invalid questions or answers
+
+    # Save quiz history
+    quiz_history = QuizHistory(user_id=user_id, quiz_id=quiz_id, score=total_score)
+    db.session.add(quiz_history)
+
+    # Update leaderboard
+    leaderboard_entry = Leaderboard.query.filter_by(user_id=user_id, quiz_id=quiz_id).first()
+    if leaderboard_entry:
+        leaderboard_entry.score = max(leaderboard_entry.score, total_score)  # Update with max score
+    else:
+        leaderboard_entry = Leaderboard(user_id=user_id, quiz_id=quiz_id, score=total_score, rank=0)
+        db.session.add(leaderboard_entry)
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Quiz submitted",
+        "score": total_score,
+        "max_score": max_score
+    }), 200
 
 
 @full_bp.route('/quiz/<quiz_id>/question/new')
@@ -1132,3 +1332,4 @@ def send_email(subject, message, user_name, user_email):
     except Exception as e:
         logger.error(f"Email not delivered {str(e)}")
         return False, str(e)
+

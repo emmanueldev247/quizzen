@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title> {{ title }} | Quizzen</title>
+    {% else %}
+    <title>Quizzen</title>
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+
+    <!-- ****************Icons library************** -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ****************local CSS************** -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/start_quiz.css') }}">
+    {% block styles_content %}
+    {% endblock styles_content %}
+    <script>
+        const quizData = JSON.parse('{{ questions_json|safe }}');
+    </script>
+</head>  
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </a>
+        </div>
+    </header>
+    <div id="start-container">
+        <h1 class="quiz-title">{{ title }}</h1>
+        <button id="start-quiz-btn" class="btn">Start Quiz</button>
+    </div>
+    <div class="content hidden quiz-container">
+        <div id="timer">Time Left: 00:00</div>
+        <div class="header">
+            <h1 class="quiz-title">{{ title }}</h1>
+        </div>
+        <div class="container">
+            <!-- Question Box -->
+            <div id="question-box">
+                <textarea class="question" id="question" name="question" placeholder="Question appears here" readonly>
+                </textarea>
+            </div>
+            <div class="options-container" id="options-container">
+            </div>
+            <!-- Navigation and Submit -->
+            <div class="footer">
+                <button id="prev-btn" class="btn">Previous</button>
+                <button id="next-btn" class="btn">Next</button>
+                <button id="submit-btn" class="btn">Submit</button>
+            </div>
+        </div>
+        <h4 class="question-list">Questions</h4>
+        <div id="question-index"></div>
+    </div>
+
+    <script src="start_quiz.js"></script>
+</body>
+
+</html>
