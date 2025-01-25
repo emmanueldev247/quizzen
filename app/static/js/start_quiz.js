@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
         if (quizStarted) {
-          showTimeupModal();
+          const modal = document.getElementById("timeup-quiz-overlay");
+          modal.style.display = "flex";
         }
         submitQuiz();
       }
@@ -208,11 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelButton.addEventListener("click", () => {
       modal.style.display = "none";
     });
-  };
-
-  const showTimeupModal = () => {
-    const modal = document.getElementById("timeup-quiz-overlay");
-    modal.style.display = "block";
   };
 
   // Submit Quiz
