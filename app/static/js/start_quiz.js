@@ -165,6 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateUnansweredQuestions = () => {
+    console.log(`Quiz data: ${quizData}`);
+    console.log(`uSER ANSWERS: ${userAnswers}`);
+
     unansweredQuestions = quizData
       .filter((question) => {
         const answer = userAnswers[question.id];
@@ -174,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const handleSubmitButtonClick = () => {
+    updateUnansweredQuestions()
     if (unansweredQuestions.length > 0) {
       const firstUnansweredQuestionId = unansweredQuestions[0];
       const firstUnansweredQuestionIndex = quizData.findIndex(
