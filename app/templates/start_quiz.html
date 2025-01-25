@@ -30,7 +30,7 @@
     </header>
     <div class="content">
         <div id="start-container">
-            <div class="quiz-card" data-quiz-id="{{ quiz.id }}">        
+            <div class="quiz-card" data-quiz-id="{{ quiz.id }}">
                 <h2 class="quiz-title">{{ quiz.title }}</h2>
                 <p class="quiz-description">
                     {{ quiz.description }}
@@ -38,7 +38,8 @@
                 <div class="quiz-details">
                     <div class="detail-item question-count">
                         <i class="fas fa-list"></i>
-                        {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{% endif %}
+                        {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{%
+                        endif %}
                     </div>
                     <div class="detail-item question-duration">
                         <i class="fas fa-clock"></i>
@@ -54,7 +55,8 @@
                         {% if quiz.user.profile_picture %}
                         <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
                         {% else %}
-                        <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
+                        <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}"
+                            alt="Default Profile">
                         {% endif %}
                         <!-- <i class="fas fa-user"></i> -->
                         <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
@@ -92,6 +94,14 @@
             </div>
             <h4 class="question-list">Questions</h4>
             <div id="question-index"></div>
+            <div id="unanswered-modal" class="modal">
+                <div class="modal-content">
+                    <h2>Some questions are unanswered!</h2>
+                    <p>Do you still want to submit the quiz?</p>
+                    <button class="modal-button" id="submit-quiz-btn">Yes, Submit</button>
+                    <button class="modal-button" id="cancel-submit-btn">No, Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
     <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>

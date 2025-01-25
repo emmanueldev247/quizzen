@@ -10,14 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const startContainer = document.getElementById("start-container");
   const startButton = document.getElementById("start-quiz-btn");
 
-  let duration = 0;
-  let timer;
-  let quizTime;
   let timerInterval;
+  let quizTime;
   let currentQuestionIndex = 0;
   let userAnswers = {};
+  let unansweredQuestions = [];
   let quizData = [];
-  let quizTitle = "";
 
   const fetchQuizData = async (quizId) => {
     try {
@@ -29,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(data);
       quizData = data.questions;
       quizTime = data.duration * 60;
-      quizTitle = data.title;
       console.log("Quiz data fetched successfully:", quizData);
     } catch (error) {
       console.error("Error fetching quiz data:", error);
@@ -101,13 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
         optionText.value = choice.text;
         optionText.readOnly = true;
 
-        // Add click event to the option box
         optionBox.addEventListener("click", () => {
           input.checked = !input.checked;
           input.dispatchEvent(new Event("change"));
         });
 
-        // Stop the click event on the input to prevent double toggling
         input.addEventListener("click", (event) => event.stopPropagation());
 
         optionBox.appendChild(input);
@@ -137,8 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       optionsContainer.appendChild(shortAnswerContainer);
     }
-
+    
     updateNavigationButtons();
+    updateUnansweredQuestions();
   };
 
   const updateNavigationButtons = () => {
@@ -146,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     nextButton.disabled = currentQuestionIndex === quizData.length - 1;
   };
 
-  // Update Question Index Panel
   const updateQuestionIndexPanel = () => {
     questionIndexPanel.innerHTML = "";
     quizData.forEach((_, index) => {
@@ -154,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
       button.textContent = index + 1;
       button.className = "question-index-button";
 
-      // Highlight answered questions
       if (userAnswers[quizData[index].id]) {
         button.classList.add("answered");
       } else {
@@ -168,6 +162,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
       questionIndexPanel.appendChild(button);
     });
+  };
+
+  const updateUnansweredQuestions = () => {
+    unansweredQuestions = quizData
+      .filter((question) => {
+        const answer = userAnswers[question.id];
+        return !answer || (Array.isArray(answer) && answer.length === 0);
+      })
+      .map((question) => question.id);
+  };
+
+  const handleSubmitButtonClick = () => {
+    if (unansweredQuestions.length > 0) {
+      const firstUnansweredQuestionId = unansweredQuestions[0];
+      const firstUnansweredQuestionIndex = quizData.findIndex(
+        (question) => question.id === firstUnansweredQuestionId
+      );
+
+      if (firstUnansweredQuestionIndex !== -1) {
+        currentQuestionIndex = firstUnansweredQuestionIndex;
+        loadQuestion(currentQuestionIndex);
+      }
+      showUnansweredModal();
+    } else {
+      submitQuiz();
+    }
+  };
+
+  const showUnansweredModal = () => {
+    const modal = document.getElementById("unanswered-modal");
+    modal.style.display = "block";
+
+    const confirmButton = document.getElementById("submit-quiz-btn");
+    confirmButton.addEventListener("click", () => {
+      modal.style.display = "none";
+      submitQuiz();
+    });
+
+    const cancelButton = document.getElementById("cancel-submit-btn");
+    cancelButton.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  };
+
+  // Submit Quiz
+  const submitQuiz = () => {
+    clearInterval(timerInterval);
+    console.log("Quiz Submitted!", userAnswers);
+    alert("Quiz submitted. Check the console for your answers!");
   };
 
   // Navigation Logic
@@ -185,18 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  submitButton.addEventListener("click", () => {
-    submitQuiz();
-  });
+  submitButton.addEventListener("click", handleSubmitButtonClick);
 
-  // Submit Quiz
-  const submitQuiz = () => {
-    clearInterval(timerInterval);
-    console.log("Quiz Submitted!", userAnswers);
-    alert("Quiz submitted. Check the console for your answers!");
-  };
-
-  // Initial Load// Start button click event
   startButton.addEventListener("click", async () => {
     await fetchQuizData(quizId);
     if (quizData.length === 0) {
@@ -204,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     loadQuestion(currentQuestionIndex);
+    updateUnansweredQuestions();
     updateQuestionIndexPanel();
     startTimer(quizTime);
     startContainer.classList.add("hidden");
