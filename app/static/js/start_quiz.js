@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const quizContainer = document.getElementById("quiz-container");
   const timerElement = document.getElementById("timer");
-  const questionBox = document.getElementById("question-box");
   const questionIndexPanel = document.getElementById("question-index");
   const previousButton = document.getElementById("prev-btn");
   const nextButton = document.getElementById("next-btn");
