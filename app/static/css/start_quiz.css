@@ -608,7 +608,7 @@ div.hidden {
 .quiz-card {
     background: #ffffff;
     width: 45%;
-    /* width: 100%; */
+    width: 100%;
     border-radius: 8px;
     padding: 1rem 1.5rem;
     position: relative;
@@ -625,8 +625,6 @@ div.hidden {
 
 .quiz-title {
     font-size: 1.5rem;
-    margin-bottom: 10px;
-    /* margin: 0; */
     color: #333333;
 }
 
@@ -690,32 +688,4 @@ div.hidden {
 .quiz-actions {
     display: flex;
     gap: 10px;
-}
-
-.btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.9rem;
-    transition: background 0.2s ease-in-out;
-}
-
-.take-btn {
-    background: #4caf50;
-    color: #ffffff;
-}
-
-.take-btn:hover {
-    background: #43a047;
-}
-
-.view-btn {
-    background: #007bff;
-    color: #ffffff;
-}
-
-.view-btn:hover {
-    background: #0056b3;
 }
