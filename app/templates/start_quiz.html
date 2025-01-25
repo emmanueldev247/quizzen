@@ -23,7 +23,8 @@
     <script>
         const quizData = JSON.parse('{{ questions_json|safe }}');
     </script>
-</head>  
+</head>
+
 <body>
     <header>
         <div class="logo">
@@ -32,32 +33,35 @@
             </a>
         </div>
     </header>
-    <div id="start-container">
-        <h1 class="quiz-title">{{ title }}</h1>
-        <button id="start-quiz-btn" class="btn">Start Quiz</button>
-    </div>
-    <div class="content hidden" id="quiz-container" data-quiz-id="{{ quiz_id }}">
-        <div id="timer">Time Left: 00:00</div>
-        <div class="header">
+    <div class="content" data-quiz-id="{{ quiz_id }}">
+        <div id="start-container">
             <h1 class="quiz-title">{{ title }}</h1>
+            <button id="start-quiz-btn" class="btn">Start Quiz</button>
         </div>
-        <div class="container">
-            <!-- Question Box -->
-            <div id="question-box">
-                <textarea class="question" id="question" name="question" placeholder="Question appears here" readonly>
+        <div class="hidden" id="quiz-container">
+            <div id="timer">Time Left: 00:00</div>
+            <div class="header">
+                <h1 class="quiz-title">{{ title }}</h1>
+            </div>
+            <div class="container">
+                <!-- Question Box -->
+                <div id="question-box">
+                    <textarea class="question" id="question" name="question" placeholder="Question appears here"
+                        readonly>
                 </textarea>
+                </div>
+                <div class="options-container" id="options-container">
+                </div>
+                <!-- Navigation and Submit -->
+                <div class="footer">
+                    <button id="prev-btn" class="btn">Previous</button>
+                    <button id="next-btn" class="btn">Next</button>
+                    <button id="submit-btn" class="btn">Submit</button>
+                </div>
             </div>
-            <div class="options-container" id="options-container">
-            </div>
-            <!-- Navigation and Submit -->
-            <div class="footer">
-                <button id="prev-btn" class="btn">Previous</button>
-                <button id="next-btn" class="btn">Next</button>
-                <button id="submit-btn" class="btn">Submit</button>
-            </div>
+            <h4 class="question-list">Questions</h4>
+            <div id="question-index"></div>
         </div>
-        <h4 class="question-list">Questions</h4>
-        <div id="question-index"></div>
     </div>
     <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>
 </body>
