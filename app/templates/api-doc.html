@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quizzen API Documentation</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         header {
             position: fixed;
@@ -231,15 +231,17 @@
 
 <body>
     <header>
-       {% if user_authenticated %}
+        <div class="logo">
+            {% if user_authenticated %}
             <a href="{{ url_for('full_bp.user_dashboard') }}" class="logo-text">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
             </a>
-			{% else %}
-			<a href="{{ url_for('full_bp.home') }}" class="logo-text">
+            {% else %}
+            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
             </a>
-			{% endif %}
+            {% endif %}
+        </div>
     </header>
     <div class="header">
         <h1>Quizzen API Documentation</h1>

@@ -22,17 +22,19 @@
 
 <body>
     <header>
-        {% if user_authenticated %}
+        <div class="logo">
+            {% if user_authenticated %}
             <a href="{{ url_for('full_bp.user_dashboard') }}" class="logo-text">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
             </a>
-			{% else %}
-			<a href="{{ url_for('full_bp.home') }}" class="logo-text">
+            {% else %}
+            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
             </a>
-			{% endif %}
+            {% endif %}
+        </div>
     </header>
-     <!-- Overlay -->
+    <!-- Overlay -->
     <div class="timeup-overlay" id="timeup-quiz-overlay" style="display: none">
         <div class="message-container">
             <div class="message">Time is up!!!</div>

@@ -29,15 +29,17 @@
 		<button class="hamburger">
 			<i class="fas fa-bars"></i>
 		</button>
-		{% if user_authenticated %}
-            <a href="{{ url_for('full_bp.user_dashboard') }}" class="logo-text">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
-            </a>
+		<div class="logo">
+			{% if user_authenticated %}
+			<a href="{{ url_for('full_bp.user_dashboard') }}" class="logo-text">
+				<img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+			</a>
 			{% else %}
 			<a href="{{ url_for('full_bp.home') }}" class="logo-text">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
-            </a>
-		{% endif %}
+				<img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+			</a>
+			{% endif %}
+		</div>
 		<div class="header-right">
 			{% block header_content%}
 			{% endblock header_content%}
