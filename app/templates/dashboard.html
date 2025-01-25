@@ -1,6 +1,6 @@
 {% extends base_template %}
 {% block styles_content %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
 {% endblock styles_content %}
 
 {% block main_content %}
@@ -97,10 +97,4 @@
 </div>
 {% endblock main_content %}
 
-{% block scripts %}
-{% if user.role == 'admin' %}
-<script type="module" src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
-{% else %}
-<script  type="module" src="{{ url_for('static', filename='js/user_dashboard.js') }}"></script>
-{% endif %}
-{% endblock scripts %}
+<script  type="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>

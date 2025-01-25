@@ -1,7 +1,11 @@
 import { setActive } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  setActive(".nav-item:nth-child(2)", ".bottom-nav-item:nth-child(1)");
+  
+  const userType = document.body.getAttribute("data-user-type");
+  if (userType === "admin")
+    setActive(".nav-item:nth-child(2)", ".bottom-nav-item:nth-child(1)");
+  else setActive(".nav-item:nth-child(1)", ".bottom-nav-item:nth-child(1)");
 
   const takeQuizButtons = document.querySelectorAll(".take-btn");
 
