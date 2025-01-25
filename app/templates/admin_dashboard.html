@@ -84,7 +84,6 @@
                     {% for quiz in quizzes %}
                     <li>
                         <strong>{{ quiz.title }}</strong> - Score: {{ quiz.score }} / {{ quiz.max_score }}
-                        <!-- <a href="{{ url_for('view_quiz_history', quiz_history_id=quiz.id) }}">View Details</a> -->
                     </li>
                     {% endfor %}
                 </ul>
