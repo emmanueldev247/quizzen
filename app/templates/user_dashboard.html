@@ -52,8 +52,7 @@
                 <ul>
                     {% for quiz in quizzes %}
                     <li>
-                        <strong>{{ quiz.quiz.title }}</strong> - Score: {{ quiz.score }} / {{ quiz.quiz.max_score }}
-                        <!-- <a href="{{ url_for('view_quiz_history', quiz_history_id=quiz.id) }}">View Details</a> -->
+                        <strong>{{ quiz.title }}</strong> - Score: {{ quiz.score }} / {{ quiz.max_score }}
                     </li>
                     {% endfor %}
                 </ul>
