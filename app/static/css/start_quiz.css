@@ -212,9 +212,15 @@ textarea.question {
     resize: none;
     outline: none;
     text-align: center;
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
+textarea.question::-webkit-scrollbar {
+    display: none;
+}
 
 textarea::placeholder {
     color: #ccc;
