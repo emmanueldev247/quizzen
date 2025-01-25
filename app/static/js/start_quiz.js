@@ -39,11 +39,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTimer(quizTime) {
     let timeRemaining = quizTime;
     timerInterval = setInterval(() => {
-      const minutes = Math.floor(timeRemaining / 60);
+      const days = Math.floor(timeRemaining / (24 * 60 * 60));
+      const hours = Math.floor((timeRemaining % (24 * 60 * 60)) / 3600);
+      const minutes = Math.floor((timeRemaining % 3600) / 60);
       const seconds = timeRemaining % 60;
-      timerElement.textContent = `Time Left: ${String(minutes).padStart(2, "0")}:${String(
+
+      let timeText = `${String(minutes).padStart(2, "0")}m ${String(
         seconds
-      ).padStart(2, "0")}`;
+      ).padStart(2, "0")}s`;
+
+      if (hours > 0) {
+        timeText = `${String(hours).padStart(2, "0")}h ` + timeText;
+      }
+
+      if (days > 0) {
+        timeText = `${String(days).padStart(2, "0")}d ` + timeText;
+      }
+      timerElement.textContent = `Time Left: ${timeText}`;
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
         submitQuiz();
