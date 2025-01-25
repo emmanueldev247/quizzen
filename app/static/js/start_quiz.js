@@ -230,31 +230,31 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const baseurl = "https://emmanueldev247.tech/";
-    fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.score !== undefined) {
-          alert(
-            `Quiz submitted! Your score: ${data.score} / ${data.max_score}`
-          );
-        } else {
-          alert(`Error: ${data.error}`);
-        }
-      })
-      .catch((error) => {
-        console.error("Error submitting quiz:", error);
-        alert("There was an error submitting the quiz.");
-      })
-      .finally(() => {
-        submitButton.disabled = false;
-        loader.style.display = "none";
-      });
+    // fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(payload),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     if (data.score !== undefined) {
+    //       alert(
+    //         `Quiz submitted! Your score: ${data.score} / ${data.max_score}`
+    //       );
+    //     } else {
+    //       alert(`Error: ${data.error}`);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error submitting quiz:", error);
+    //     alert("There was an error submitting the quiz.");
+    //   })
+    //   .finally(() => {
+    //     submitButton.disabled = false;
+    //     loader.style.display = "none";
+    //   });
   };
 
   // Navigation Logic
