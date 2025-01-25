@@ -213,7 +213,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Submit Quiz
   const submitQuiz = () => {
     clearInterval(timerInterval);
-    
+    submitButton.disabled = true;
+    const loader = submitButton.querySelector(".loader");
+    loader.style.display = "inline-block";
+
     console.log("Quiz Submitted!", userAnswers);
     const answers = Object.keys(userAnswers).map((questionId) => {
       return {
@@ -222,30 +225,36 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
 
-  const payload = {
-    answers: answers,
-  };
+    const payload = {
+      answers: answers,
+    };
 
-  const baseurl = "https://emmanueldev247.tech/"
-  fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(response => response.json())
-    .then(data => {
-      if (data.score !== undefined) {
-        alert(`Quiz submitted! Your score: ${data.score} / ${data.max_score}`);
-      } else {
-        alert(`Error: ${data.error}`);
-      }
+    const baseurl = "https://emmanueldev247.tech/";
+    fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     })
-    .catch(error => {
-      console.error('Error submitting quiz:', error);
-      alert('There was an error submitting the quiz.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.score !== undefined) {
+          alert(
+            `Quiz submitted! Your score: ${data.score} / ${data.max_score}`
+          );
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting quiz:", error);
+        alert("There was an error submitting the quiz.");
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+        loader.style.display = "none";
+      });
   };
 
   // Navigation Logic
@@ -273,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
       startButton.disabled = false;
       loader.style.display = "none";
     }, 5000);
-    
+
     await fetchQuizData(quizId);
     if (quizData.length === 0) {
       alert("Failed to load quiz data.");

@@ -413,6 +413,11 @@ textarea::placeholder {
     background-color: #c82333;
 }
 
+#submit-btn:hover {
+    background-color: #5e1118;
+    cursor: not-allowed;
+}
+
 .footer {
     display: flex;
     justify-content: space-between;
