@@ -687,33 +687,31 @@ def submit_quiz(current_user, quiz_id):
     logger.info(f"Submitting quiz attempt")
     data = request.json
     print("submitted:        ", data)
-    answers = data.get('answers')
+    answers = data.get('answers', [])
 
     quiz = Quiz.query.filter_by(id=quiz_id).first()
     if not quiz:
         return jsonify({"error": "Quiz not found"}), 404
 
     total_score = 0
-     # Iterate through the user's answers
     for answer in answers:
         question_id = answer.get('question_id')
-        user_answers = answer.get('user_answer')  # User's answers (list)
+        user_answers = answer.get('user_answer')
 
-        # Skip if question ID or user's answer is invalid
-        if not question_id or not user_answers:
+        if not question_id or user_answers is None:
             continue
 
-        # Fetch the question
+
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
         if not question:
-            continue  # Skip invalid question IDs
+            continue 
 
-        # Evaluate the user's answer using the custom function
         try:
             points = evaluate_answer(question_id, quiz_id, user_answers)
             total_score += points
         except ValueError as e:
-            continue  # Skip invalid questions or answers
+            continue
+        
 
     quiz_history = QuizHistory(user_id=current_user.id, quiz_id=quiz_id, score=total_score)
     db.session.add(quiz_history)

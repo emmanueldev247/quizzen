@@ -50,25 +50,28 @@
                         {{ quiz.related_category.name if quiz.related_category else None }}
                     </div>
                 </div>
-                <div class="quiz-meta">
-                    <div class="author">
-                        {% if quiz.user.profile_picture %}
-                        <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
-                        {% else %}
-                        <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}"
-                            alt="Default Profile">
-                        {% endif %}
-                        <!-- <i class="fas fa-user"></i> -->
-                        <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
+                <div class="meta">
+                    <div class="quiz-meta">
+                        <div class="author">
+                            {% if quiz.user.profile_picture %}
+                            <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
+                            {% else %}
+                            <img class="author-profile"
+                                src="{{ url_for('static', filename='images/default_image.jpg') }}"
+                                alt="Default Profile">
+                            {% endif %}
+                            <!-- <i class="fas fa-user"></i> -->
+                            <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
+                        </div>
+                        <span class="dot"></span>
+                        <div class="time-created">{{ quiz.created_at|timeago }}</div>
                     </div>
-                    <span class="dot"></span>
-                    <div class="time-created">{{ quiz.created_at|timeago }}</div>
                 </div>
                 <div class="quiz-actions">
                     <button type="button" title="Start Quiz" id="start-quiz-btn" class="btn">
                         <i class="fas fa-play">
                         </i>Start Quiz
-                        
+
                     </button>
                 </div>
             </div>
