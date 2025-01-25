@@ -275,33 +275,33 @@ document.addEventListener("DOMContentLoaded", () => {
           } = data;
           if (score / max_score >= 0.5) {
             // Show success result
-            const successBoxes = document.querySelectorAll("successScore");
+            const successBoxes = document.querySelectorAll(".successScore");
             successBoxes.forEach((box) => (box.textContent = score));
-            const maxBoxes = document.querySelectorAll("successMaxScore");
+            const maxBoxes = document.querySelectorAll(".successMaxScore");
             maxBoxes.forEach((box) => (box.textContent = max_score));
-            const totalQuestions = document.querySelectorAll("successTotal");
+            const totalQuestions = document.querySelectorAll(".successTotal");
             totalQuestions.forEach(
               (box) => (box.textContent = total_questions)
             );
-            const successCorrect = document.querySelectorAll("successCorrect");
+            const successCorrect = document.querySelectorAll(".successCorrect");
             successCorrect.forEach((box) => (box.textContent = correct_count));
-            const successWrong = document.querySelectorAll("successWrong");
+            const successWrong = document.querySelectorAll(".successWrong");
             successWrong.forEach((box) => (box.textContent = wrong_count));
 
             document.getElementById("successResult").style.display = "block";
           } else {
             // Failure: Handle failure result display
-            const failureBoxes = document.querySelectorAll("failureScore");
+            const failureBoxes = document.querySelectorAll(".failureScore");
             failureBoxes.forEach((box) => (box.textContent = score));
-            const maxBoxes = document.querySelectorAll("failureMaxScore");
+            const maxBoxes = document.querySelectorAll(".failureMaxScore");
             maxBoxes.forEach((box) => (box.textContent = max_score));
-            const totalQuestions = document.querySelectorAll("failureTotal");
+            const totalQuestions = document.querySelectorAll(".failureTotal");
             totalQuestions.forEach(
               (box) => (box.textContent = total_questions)
             );
-            const failureCorrect = document.querySelectorAll("failureCorrect");
+            const failureCorrect = document.querySelectorAll(".failureCorrect");
             failureCorrect.forEach((box) => (box.textContent = correct_count));
-            const failureWrong = document.querySelectorAll("failureWrong");
+            const failureWrong = document.querySelectorAll(".failureWrong");
             failureWrong.forEach((box) => (box.textContent = wrong_count));
 
             document.getElementById("failureResult").style.display = "block";
