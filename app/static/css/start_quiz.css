@@ -85,6 +85,7 @@ header .logo img {
 #start-quiz-btn {
     padding: 0.8rem 1rem;
     width: max-content;
+    gap: 10px;
 }
 
 #quiz-container {
@@ -474,6 +475,8 @@ textarea::placeholder {
 .meta {
     display: flex;
     align-items: center;
+    justify-content: center;
+    color: #222;
 }
 
 .quiz-meta {
