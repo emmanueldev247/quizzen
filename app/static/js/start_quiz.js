@@ -191,10 +191,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Failed to load quiz data.");
       return;
     }
+    loadQuestion(currentQuestionIndex);
+    updateQuestionIndexPanel();
+    startTimer(quizTime);
     startContainer.classList.add("hidden");
     quizContainer.classList.remove("hidden");
-    loadQuestion(currentQuestionIndex);
-    startTimer(quizTime);
-    updateQuestionIndexPanel();
   });
 });

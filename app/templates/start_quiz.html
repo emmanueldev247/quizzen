@@ -20,9 +20,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/start_quiz.css') }}">
     {% block styles_content %}
     {% endblock styles_content %}
-    <script>
-        const quizData = JSON.parse('{{ questions_json|safe }}');
-    </script>
 </head>
 
 <body>
