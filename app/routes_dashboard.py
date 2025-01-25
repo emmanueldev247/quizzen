@@ -686,7 +686,7 @@ def submit_quiz(current_user, quiz_id):
     """
     logger.info(f"Submitting quiz attempt")
     data = request.json
-    consol e.log("submitted:        ", data)
+    print("submitted:        ", data)
     answers = data.get('answers')
 
     quiz = Quiz.query.filter_by(id=quiz_id).first()

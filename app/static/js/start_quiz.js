@@ -226,7 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
     answers: answers,
   };
 
-  fetch(`quizzen/quiz/${quizId}/submit`, {
+  baseurl = "https://emmanueldev247.tech/"
+  fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
