@@ -137,7 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateNavigationButtons = () => {
-    submitButton.disabled = false;
     previousButton.disabled = currentQuestionIndex === 0;
     nextButton.disabled = currentQuestionIndex === quizData.length - 1;
   };
