@@ -617,17 +617,14 @@ def evaluate_answer(question_id, quiz_id, user_answers):
     Returns:
         int: Points awarded for the correct answer, or 0 if incorrect.
     """
-    # Fetch the question and validate its existence
     question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
     if not question:
         raise ValueError(f"Question with ID {question_id} and Quiz ID {quiz_id} not found.")
 
-    # Fetch all answer choices related to the question
     answer_choices = AnswerChoice.query.filter_by(question_id=question_id).all()
     if not answer_choices:
         raise ValueError(f"No answer choices found for Question ID {question_id}.")
 
-    # Validate the user's answer based on the question type
     if question.question_type == 'multiple_choice':
         return evaluate_multiple_choice(question, answer_choices, user_answers)
 
@@ -651,13 +648,13 @@ def evaluate_multiple_choice(question, answer_choices, user_answers):
         int: Points awarded for the correct answer(s), or 0 if incorrect.
     """
     if question.is_multiple_response:
-        # For multiple response, check if the user's answers match all correct answers
         correct_answers = {choice.text for choice in answer_choices if choice.is_correct}
         user_answers_set = set(user_answers)
+        logger.info(f"Answer is {correct_answers}, user chose {user_answers_set}")
         return question.points if user_answers_set == correct_answers else 0
     else:
-        # For single-response multiple choice, validate against a single correct answer
         correct_answer = next((choice.text for choice in answer_choices if choice.is_correct), None)
+        logger.info(f"Answer is {correct_answers}, user chose {user_answers}")
         return question.points if correct_answer and user_answers == [correct_answer] else 0
 
 
@@ -672,9 +669,9 @@ def evaluate_short_answer(question, answer_choices, user_answers):
     Returns:
         int: Points awarded for the correct answer, or 0 if incorrect.
     """
-    # Fetch all valid answers for short answer (case-insensitive match)
     correct_answers = {choice.text.lower() for choice in answer_choices if choice.is_correct}
-    user_answer = user_answers[0].strip().lower()  # Assuming only one answer for short answer type
+    user_answer = user_answers[0].strip().lower()
+    logger.info(f"Answer is {correct_answers}, user chose {user_answers}")
     return question.points if user_answer in correct_answers else 0
 
 @full_bp.route('/quiz/<quiz_id>/submit', methods=['POST'])
@@ -708,6 +705,7 @@ def submit_quiz(current_user, quiz_id):
 
         try:
             points = evaluate_answer(question_id, quiz_id, user_answers)
+            logger.info(f"Scored {points}, out of {question.points}")
             total_score += points
         except ValueError as e:
             continue
