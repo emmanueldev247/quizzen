@@ -61,8 +61,12 @@ header .logo img {
     justify-content: center;
 }
 
-.start-container {
-    margin: 20px 0;
+#start-container {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #start-quiz-btn {
@@ -360,6 +364,7 @@ textarea::placeholder {
     justify-content: center;
     font-weight: bold;
     transition: all .2s ease;
+    gap: 5px;
 }
 
 .btn:hover {
@@ -536,6 +541,7 @@ textarea::placeholder {
         padding: 0.7rem .8rem;
         width: 100%;
     }
+
     .footer {
         margin-top: 10px;
         flex-direction: column;
@@ -602,8 +608,6 @@ textarea::placeholder {
 div.hidden {
     display: none;
 }
-
-
 
 .quiz-card {
     background: #ffffff;
