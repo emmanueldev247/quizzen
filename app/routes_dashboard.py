@@ -575,6 +575,7 @@ def take_quiz(current_user, quiz_id):
     Start a quiz: Fetch quiz details and initialize user session for the quiz.
     """
     from sqlalchemy.orm import joinedload
+    import json
     logger.info(f"Stating quiz attempt")
     #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
     quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \
