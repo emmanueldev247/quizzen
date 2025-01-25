@@ -409,11 +409,6 @@ textarea::placeholder {
     color: #6a0dad;
 }
 
-
-div.hidden {
-    display: none;
-}
-
 .quiz-card {
     background: #ffffff;
     width: 45%;
@@ -425,11 +420,6 @@ div.hidden {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
-}
-
-.quiz-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .quiz-title {
@@ -710,4 +700,9 @@ div.hidden {
     .option-box input[type="text"]::placeholder {
         font-size: 25px;
     }
+}
+
+
+div.hidden {
+    display: none;
 }
