@@ -15,31 +15,37 @@
     <!-- ****************local CSS************** -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/start_quiz.css') }}">
     <style>
-        /* Overlay Styles */
-        .overlay {
+            /* Overlay Styles */
+            .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            /* Semi-transparent black */
+            background-color: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            color: white;
-            font-size: 24px;
+        }
+
+        .overlay .message-container {
+            background-color: white;
+            padding: 30px;
             text-align: center;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .overlay .message {
             margin-bottom: 20px;
+            font-size: 24px;
+            color: black;
         }
 
         .overlay .home-btn {
             padding: 10px 20px;
-            background-color: #5b4eeb;
+            background-color: #6a0dad;
             color: white;
             border: none;
             cursor: pointer;
@@ -48,7 +54,7 @@
         }
 
         .overlay .home-btn:hover {
-            background-color: #4a3ae6;
+            background-color: #a94dd0;
         }
     </style>
 </head>
@@ -63,8 +69,8 @@
     </header>
     <!-- Overlay -->
     <div class="overlay" id="quiz-overlay">
-        <div>
-            <div class="message">Quiz not existing or has been removed</div>
+        <div class="message-container">
+            <div class="message">Quiz does not exist or has been removed by an administrator</div>
             <button class="home-btn" onclick="window.location.href='/quizzen';">Go Home</button>
         </div>
     </div>
