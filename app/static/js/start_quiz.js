@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userAnswers = {};
   let unansweredQuestions = [];
   let quizData = [];
+  let isModalOpen = false;
 
   const fetchQuizData = async (quizId) => {
     try {
@@ -193,21 +194,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const showUnansweredModal = () => {
     const modal = document.getElementById("unanswered-modal");
     modal.style.display = "block";
+    isModalOpen = true;
 
     const confirmButton = document.getElementById("submit-quiz-btn");
     confirmButton.addEventListener("click", () => {
       modal.style.display = "none";
+      isModalOpen = false; 
       submitQuiz();
     });
 
     const cancelButton = document.getElementById("cancel-submit-btn");
     cancelButton.addEventListener("click", () => {
       modal.style.display = "none";
+      isModalOpen = false; 
     });
 
     const body = document.querySelector("body");
     const closeModalOnClickOutside = (event) => {
-      if (!modal.contains(event.target)) {
+      if (isModalOpen && !modal.contains(event.target)) {
         modal.style.display = "none";
         body.removeEventListener("click", closeModalOnClickOutside);
       }
