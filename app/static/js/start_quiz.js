@@ -88,10 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
         input.addEventListener("change", () => {
           if (question.is_multiple_response) {
             userAnswers[question.id] = input.checked
-              ? [...(userAnswers[question.id] || []), choice.id]
-              : userAnswers[question.id]?.filter((id) => id !== choice.id);
+              ? [...(userAnswers[question.id] || []), choice.text]
+              : userAnswers[question.id]?.filter((id) => id !== choice.text);
           } else {
-            userAnswers[question.id] = [choice.id];
+            userAnswers[question.id] = [choice.text];
           }
           updateQuestionIndexPanel();
         });
