@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let timerInterval;
   let quizTime;
+  let quizStarted = false;
   let currentQuestionIndex = 0;
   let userAnswers = {};
   let unansweredQuestions = [];
@@ -54,7 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
       timerElement.textContent = `Time Left: ${timeText}`;
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
-        showTimeupModal();
+        if (quizStarted) {
+          showTimeupModal();
+        }
         submitQuiz();
       }
       timeRemaining--;
@@ -294,6 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUnansweredQuestions();
     updateQuestionIndexPanel();
     startTimer(quizTime);
+    quizStarted = true;
     startContainer.classList.add("hidden");
     quizContainer.classList.remove("hidden");
   });
