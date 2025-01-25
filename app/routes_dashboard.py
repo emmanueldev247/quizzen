@@ -107,8 +107,13 @@ def handle_rate_limit_exceeded(e):
 @auth_required
 def user_dashboard(current_user):
     """User dashboard"""
-    if current_user.role == 'admin':
-        return redirect(url_for('full_bp.admin_dashboard'))
+    
+    if current_user.role == "admin":
+        base_template = "base_admin_dashboard.html"
+        no_quiz = "no-quiz-admin2.html"
+    else:
+        base_template = "base_user_dashboard.html"
+        no_quiz = "no-quiz-user.html"
     
     history = QuizHistory.query.filter_by(user_id=current_user.id).all()
     query = Quiz.query.filter_by(public=True)
@@ -125,8 +130,10 @@ def user_dashboard(current_user):
     categories = Category.query.order_by(Category.name.asc()).all()
 
     return render_template(
-        'user_dashboard.html',
+        'dashboard.html',
         title='Dashboard',
+        base_template=base_template,
+        no_quiz=no_quiz,
         user=current_user,
         quizzes=quizzes,
         history=history,
@@ -143,6 +150,8 @@ def user_dashboard(current_user):
 def admin_dashboard(current_user):
     """Admin-specific dashboard"""
     logger.debug(f"{request.method} - Dashboard")
+
+    return redirect(url_for('full_bp.user_dashboard'))
 
     if current_user.role != 'admin':
         return redirect(url_for('full_bp.user_dashboard'))
@@ -1078,9 +1087,6 @@ def admin_library(current_user):
 def profile(current_user):
     """Profile for all users"""
     logger.debug(f"{request.method} - Profile")
-    user = User.query.get(current_user.id)
-    if not user:
-        return redirect(url_for('full_bp.login'))
 
     if current_user.role == "admin":
         base_template = "base_admin_dashboard.html"
@@ -1094,7 +1100,7 @@ def profile(current_user):
         'profile.html',
         base_template=base_template,
         title='My Profile',
-        user=user,
+        user=current_user,
         categories=categories,
         user_authenticated = 'user_id' in session
     )
