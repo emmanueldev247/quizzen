@@ -63,11 +63,15 @@
 
 <body>
     <header>
-        <div class="logo">
-            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
+        {% if user_authenticated %}
+            <a href="{{ url_for('full_bp.dashboard') }}" class="logo-text">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
             </a>
-        </div>
+			{% else %}
+			<a href="{{ url_for('full_bp.home') }}" class="logo-text">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </a>
+			{% endif %}
     </header>
     <!-- Overlay -->
     <div class="overlay" id="quiz-overlay">

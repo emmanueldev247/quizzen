@@ -109,7 +109,7 @@ def user_dashboard(current_user):
     """User dashboard"""
     if current_user.role == 'admin':
         return redirect(url_for('full_bp.admin_dashboard'))
-
+    
     history = QuizHistory.query.filter_by(user_id=current_user.id).all()
     query = Quiz.query.filter_by(public=True)
     quizzes = query.order_by(Quiz.created_at.desc()).all()
@@ -132,7 +132,8 @@ def user_dashboard(current_user):
         history=history,
         categories=categories,
         leaderboard=leaderboard,
-        notifications=notifications
+        notifications=notifications,
+        user_authenticated = 'user_id' in session
     )
 
 @full_bp.route('/admin/dashboard')
@@ -168,7 +169,8 @@ def admin_dashboard(current_user):
         history=history,
         categories=categories,
         leaderboard=leaderboard,
-        notifications=notifications
+        notifications=notifications,
+        user_authenticated = 'user_id' in session
     )
 
 
@@ -271,9 +273,12 @@ def get_quiz(current_user, quiz_id):
     if quiz.created_by != current_user.id:
         # Test
         return redirect(url_for('full_bp.user_dashboard'))
-    return render_template('edit_quiz.html',
-                           quiz=quiz,
-                           title=f"Quiz: {quiz.title}")
+    return render_template(
+        'edit_quiz.html',
+        quiz=quiz,
+        title=f"Quiz: {quiz.title}",
+        user_authenticated = 'user_id' in session
+    )
 
 
 @full_bp.route('/quiz/<quiz_id>', methods=['POST'])
@@ -579,7 +584,10 @@ def take_quiz(current_user, quiz_id):
                      .filter_by(id=quiz_id, public=True).first()
 
     if not quiz:
-        return render_template('start_quiz_404.html'), 404
+        return render_template(
+            'start_quiz_404.html',
+            user_authenticated = 'user_id' in session
+        ), 404
 
     questions = [
         {
@@ -602,6 +610,7 @@ def take_quiz(current_user, quiz_id):
         quiz=quiz,
         questions_json=json.dumps(questions),
         questions=questions,
+        user_authenticated = 'user_id' in session
     )
 
 
@@ -804,10 +813,18 @@ def get_question(current_user, quiz_id, question_id):
                 #     "success": False,
                 #     "message": "Question not found"
                 # }), 404
-            return render_template('edit_question.html', quiz=quiz)
+            return render_template(
+                'edit_question.html',
+                quiz=quiz,
+                user_authenticated = 'user_id' in session
+            )
 
-        return render_template('edit_question.html',
-                               quiz=quiz, question=question)
+        return render_template(
+            'edit_question.html',
+            quiz=quiz,
+            question=question,
+            user_authenticated = 'user_id' in session
+        )
 
     except Exception as e:
         db.session.rollback()
@@ -1043,7 +1060,8 @@ def admin_library(current_user):
         title='My Library',
         user=user,
         quizzes=quizzes,
-        categories=categories
+        categories=categories,
+        user_authenticated = 'user_id' in session
     )
 
 
@@ -1070,7 +1088,8 @@ def profile(current_user):
         base_template=base_template,
         title='My Profile',
         user=user,
-        categories=categories
+        categories=categories,
+        user_authenticated = 'user_id' in session
     )
 
 
@@ -1273,7 +1292,11 @@ class ContactForm(Form):
 def contact():
     try:
         if request.method == 'GET':
-            return render_template('index.html', scroll_to_contact=True)
+            return render_template(
+                'index.html',
+                scroll_to_contact=True,
+                user_authenticated = 'user_id' in session
+            )
 
         form = ContactForm()
 
@@ -1296,11 +1319,19 @@ def contact():
                 for field, errors in form.errors.items():
                     for error in errors:
                         flash((f"Error in {field}: {error}", 'error'))
-        return render_template('index.html', scroll_to_contact=scroll)
+        return render_template(
+            'index.html',
+            scroll_to_contact=scroll,
+            user_authenticated = 'user_id' in session
+        )
     except Exception as e:
         logger.error(f"Email not delivered {str(e)}")
         flash((f'Failed to send email: {e}', 'error'))
-        return render_template('index.html', scroll_to_contact=True)
+        return render_template(
+            'index.html',
+            scroll_to_contact=True,
+            user_authenticated = 'user_id' in session
+        )
 
 def send_email(subject, message, user_name, user_email):
     """
