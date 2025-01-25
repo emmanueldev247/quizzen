@@ -61,10 +61,20 @@ header .logo img {
     justify-content: center;
 }
 
+.start-container {
+    margin: 20px 0;
+}
+
+#start-quiz-btn {
+    padding: 0.8rem 1rem;
+    width: max-content;
+}
+
 h1.quiz-title {
     color: #6a0dad;
     font-size: 2rem;
     margin: 0;
+    text-align: center;
 }
 
 #timer {
@@ -349,6 +359,7 @@ textarea::placeholder {
     align-content: center;
     justify-content: center;
     font-weight: bold;
+    transition: all .2s ease;
 }
 
 .btn:hover {

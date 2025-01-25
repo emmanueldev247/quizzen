@@ -602,6 +602,7 @@ def take_quiz(current_user, quiz_id):
         title=quiz.title, 
         description=quiz.description, 
         duration=quiz.duration, 
+        quiz=quiz,
         questions_json=json.dumps(questions),
         questions=questions,
     )

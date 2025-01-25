@@ -36,6 +36,52 @@
     <div class="content">
         <div id="start-container">
             <h1 class="quiz-title">{{ title }}</h1>
+            <p id="quiz-description">{{ description }}</p>
+            <!-- <p id="quiz-description">{{ description if description != "No description provided" }}</p> -->
+            
+            <div class="quiz-card" data-quiz-id="{{ quiz.id }}">        
+                <h2 class="quiz-title">{{ quiz.title }}</h2>
+                <p class="quiz-description">
+                    {{ quiz.description }}
+                </p>
+                <div class="quiz-details">
+                    <div class="detail-item question-count">
+                        <i class="fas fa-list"></i>
+                        {{ quiz.questions|length }} {% if quiz.questions|length > 1 %}Questions{% else %}Question{% endif %}
+                    </div>
+                    <div class="detail-item question-duration">
+                        <i class="fas fa-clock"></i>
+                        {{ quiz.duration }} {% if quiz.duration > 1 %}Minutes{% else %}Minute{% endif %}
+                    </div>
+                    <div class="detail-item quiz-category">
+                        <i class="fas fa-tag"></i>
+                        {{ quiz.related_category.name if quiz.related_category else None }}
+                    </div>
+                </div>
+                <div class="quiz-meta">
+                    <div class="author">
+                        {% if quiz.user.profile_picture %}
+                        <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
+                        {% else %}
+                        <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
+                        {% endif %}
+                        <!-- <i class="fas fa-user"></i> -->
+                        <span class="ellipsis">{{ quiz.user.first_name ~ " " ~ quiz.user.last_name }}</span>
+                    </div>
+                    <span class="dot"></span>
+                    <div class="time-created">{{ quiz.created_at|timeago }}</div>
+                </div>
+                <div class="quiz-actions">
+                    <button type="button" class="btn take-btn" title="Take Quiz">
+                        <i class="fas fa-play"></i>
+                        Take Quiz
+                    </button>
+                </div>
+            </div>
+            
+            
+            
+            
             <button id="start-quiz-btn" class="btn">Start Quiz</button>
         </div>
         <div class="hidden" id="quiz-container" data-quiz-id="{{ quiz_id }}">
