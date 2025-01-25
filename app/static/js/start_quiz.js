@@ -165,15 +165,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateUnansweredQuestions = () => {
-    console.log("Quiz data:", quizData); // Logs the array of quiz objects
-    console.log("USER ANSWERS:", userAnswers); // Logs the user answers object
-
     unansweredQuestions = quizData
       .filter((question) => {
         const answer = userAnswers[question.id];
         return !answer || (Array.isArray(answer) && answer.length === 0);
       })
       .map((question) => question.id);
+    console.log("Quiz data:", quizData);
+    console.log("USER ANSWERS:", userAnswers);
+    console.log("Unanswered questions", unansweredQuestions);
   };
 
   const handleSubmitButtonClick = () => {
