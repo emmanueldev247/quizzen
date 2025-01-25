@@ -208,16 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.style.display = "none";
       isModalOpen = false; 
     });
-
-    const body = document.querySelector("body");
-    const closeModalOnClickOutside = (event) => {
-      if (isModalOpen && !modal.contains(event.target)) {
-        modal.style.display = "none";
-        body.removeEventListener("click", closeModalOnClickOutside);
-      }
-    };
-
-    body.addEventListener("click", closeModalOnClickOutside);
   };
 
   // Submit Quiz
