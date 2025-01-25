@@ -154,6 +154,10 @@ ul li {
 .take-btn {
     background: #6a0dad;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .take-btn:hover {
@@ -166,11 +170,12 @@ ul li {
     background: #460575;
     scale: 1;
 }
- 
+
 @media (max-width: 1200px) {
     .welcome-heading {
         font-size: 3rem;
     }
+
     .quiz-card {
         width: 90%;
     }
@@ -184,11 +189,12 @@ ul li {
 
 @media (max-width: 768px) {
 
-    body, 
+    body,
     .main-content {
         padding-left: 5px;
         padding-right: 5px;
     }
+
     .welcome-heading {
         font-size: 2rem;
     }
