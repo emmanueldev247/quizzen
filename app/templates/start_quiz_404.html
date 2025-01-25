@@ -15,8 +15,8 @@
     <!-- ****************local CSS************** -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/start_quiz.css') }}">
     <style>
-            /* Overlay Styles */
-            .overlay {
+        /* Overlay Styles */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -34,6 +34,7 @@
             padding: 30px;
             text-align: center;
             border-radius: 10px;
+            max-width: 500px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
 
@@ -41,6 +42,7 @@
             margin-bottom: 20px;
             font-size: 24px;
             color: black;
+            line-height: 1.5;
         }
 
         .overlay .home-btn {
@@ -71,7 +73,7 @@
     <div class="overlay" id="quiz-overlay">
         <div class="message-container">
             <div class="message">Quiz does not exist or has been removed by an administrator</div>
-            <button class="home-btn" onclick="window.location.href='/quizzen';">Go Home</button>
+            <button class="home-btn" onclick="window.location.href='/quizzen/dashboard';">Go Home</button>
         </div>
     </div>
 
