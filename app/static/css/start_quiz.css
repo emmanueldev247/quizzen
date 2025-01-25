@@ -599,6 +599,51 @@ div#start-container.hidden {
     background-color: #f0f0f0;
 }
 
+
+.timeup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.timeup-overlay .message-container {
+    background-color: white;
+    color: rgb(97, 10, 10);
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    max-width: 500px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.timeup-overlay .message {
+    margin-bottom: 20px;
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+.timeup-overlay .home-btn {
+    padding: 10px 20px;
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.timeup-overlay .home-btn:hover {
+    background-color: #a94dd0;
+}
+
 @media (max-width: 920px) {
     .option-box {
         flex: 1 1 calc(50% - 10px);
