@@ -96,5 +96,6 @@
     </section>
 </div>
 {% endblock main_content %}
-
-<script  type="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock scripts %}
