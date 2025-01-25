@@ -580,6 +580,9 @@ def take_quiz(current_user, quiz_id):
     quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \
                      .filter_by(id=quiz_id, public=True).first()
 
+    if not quiz:
+        return abort(404)
+
 
     # Pass the quiz data to the template
     return render_template('start_quiz.html', 
