@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const minutes = Math.floor((timeRemaining % 3600) / 60);
       const seconds = timeRemaining % 60;
 
-      let timeText = `${String(minutes).padStart(2, "0")}m ${String(
+      let timeText = `${String(minutes).padStart(2, "0")}:${String(
         seconds
-      ).padStart(2, "0")}s`;
+      ).padStart(2, "0")}`;
 
       if (hours > 0) {
-        timeText = `${String(hours).padStart(2, "0")}h ` + timeText;
+        timeText = `${String(hours).padStart(2, "0")}:` + timeText;
       }
 
       if (days > 0) {

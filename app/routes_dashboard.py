@@ -582,7 +582,7 @@ def take_quiz(current_user, quiz_id):
                      .filter_by(id=quiz_id, public=True).first()
 
     if not quiz:
-        return abort(404)
+        return render_template('start_quiz_404.html'), 404
 
     questions = [
         {

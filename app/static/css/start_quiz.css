@@ -592,7 +592,7 @@ div#start-container.hidden {
 
     #timer {
         position: relative;
-        align-self: center;
+        text-align: center;
         margin-top: 10px;
         top: unset;
         right: unset;
