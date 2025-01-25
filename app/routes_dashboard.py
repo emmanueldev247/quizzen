@@ -529,7 +529,7 @@ def unpublish_quiz(current_user, quiz_id):
 @full_bp.route('/quiz/<quiz_id>/start')
 @auth_required
 @limiter.limit("20 per minute")
-def get_quiz(current_user, quiz_id):
+def start_quiz(current_user, quiz_id):
     """
     Start a quiz: Fetch quiz details and initialize user session for the quiz.
     """
