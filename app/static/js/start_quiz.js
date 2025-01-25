@@ -199,21 +199,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmButton = document.getElementById("submit-quiz-btn");
     confirmButton.addEventListener("click", () => {
       modal.style.display = "none";
-      isModalOpen = false; 
+      isModalOpen = false;
       submitQuiz();
     });
 
     const cancelButton = document.getElementById("cancel-submit-btn");
     cancelButton.addEventListener("click", () => {
       modal.style.display = "none";
-      isModalOpen = false; 
+      isModalOpen = false;
     });
   };
 
   // Submit Quiz
   const submitQuiz = () => {
     clearInterval(timerInterval);
+    
     console.log("Quiz Submitted!", userAnswers);
+    const answers = Object.keys(userAnswers).map((questionId) => {
+      return {
+        question_id: questionId,
+        user_answer: userAnswers[questionId], // User's answers (array)
+      };
+    });
+
+  const payload = {
+    answers: answers,
+  };
+
+  fetch(`/quiz/${quizId}/submit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(response => response.json())
+    .then(data => {
+      if (data.score !== undefined) {
+        alert(`Quiz submitted! Your score: ${data.score} / ${data.max_score}`);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error submitting quiz:', error);
+      alert('There was an error submitting the quiz.');
+    });
     alert("Quiz submitted. Check the console for your answers!");
   };
 
