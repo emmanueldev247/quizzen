@@ -654,7 +654,7 @@ def evaluate_multiple_choice(question, answer_choices, user_answers):
         return question.points if user_answers_set == correct_answers else 0
     else:
         correct_answer = next((choice.text for choice in answer_choices if choice.is_correct), None)
-        logger.info(f"Answer is {correct_answers}, user chose {user_answers}")
+        logger.info(f"Answer is {correct_answer}, user chose {user_answers}")
         return question.points if correct_answer and user_answers == [correct_answer] else 0
 
 
