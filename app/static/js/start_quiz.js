@@ -1,3 +1,4 @@
+import { showNotification } from "./utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const quizContainer = document.getElementById("quiz-container");
@@ -211,6 +212,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const loadStylesheet = (url) => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = url;
+    document.head.appendChild(link);
+  };
+
   // Submit Quiz
   const submitQuiz = () => {
     clearInterval(timerInterval);
@@ -222,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const answers = Object.keys(userAnswers).map((questionId) => {
       return {
         question_id: questionId,
-        user_answer: userAnswers[questionId], // User's answers (array)
+        user_answer: userAnswers[questionId],
       };
     });
 
@@ -238,19 +247,49 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       body: JSON.stringify(payload),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+          showNotification("An error occured", "error");
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.score !== undefined) {
-          alert(
-            `Quiz submitted! Your score: ${data.score} / ${data.max_score}`
-          );
+          const { score, max_score } = data;
+          if (score / max_score >= 0.5) {
+            // Show success result
+            document.getElementById("successScore").textContent = score;
+            document.getElementById("successMaxScore").textContent = max_score;
+            document.getElementById("successResult").style.display = "block";
+          } else {
+            // Failure: Handle failure result display
+            document.getElementById("failureScore").textContent = score;
+            document.getElementById("failureMaxScore").textContent = max_score;
+            document.getElementById("failureDetails").textContent = score;
+            document.getElementById("failureMaxDetails").textContent =
+              max_score;
+            document.getElementById("failureInvalidQuestions").textContent =
+              invalid_questions;
+
+            document.getElementById("failureResult").style.display = "block";
+          }
+          loadStylesheet("/quizzen/assets/css/quiz-result.css"); // Load failure stylesheet
+
+          const modal = document.getElementById("unanswered-modal");
+          const modal2 = document.getElementById("timeup-quiz-overlay");
+          modal.style.display = modal2.style.display = "none";
+          quizContainer.style.display = "none";
+          startContainer.classList.add("hidden");
+          quizContainer.classList.remove("hidden");
         } else {
+          // Error in the response data
           alert(`Error: ${data.error}`);
         }
       })
       .catch((error) => {
         console.error("Error submitting quiz:", error);
-        alert("There was an error submitting the quiz.");
+        alert("There was an error submitting the quiz. Please try again.");
       })
       .finally(() => {
         submitButton.disabled = false;

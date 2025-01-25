@@ -126,7 +126,46 @@
             </div>
         </div>
     </div>
+    <!-- Success Div -->
+    <div id="successResult" style="display: none;" class="result-container success">
+        <div class="emoji">🎉</div>
+        <div class="hero">Congratulations!</div>
+        <p>You scored <strong id="successScore">0</strong> out of <strong id="successMaxScore">0</strong>.</p>
+        <div class="message">
+            <p>Well done! You're improving every day! 🌟</p>
+        </div>
+        <div class="actions">
+            <button class="button" onclick="retakeQuiz()">Try Again</button>
+            <button class="button secondary" onclick="goHome()">Home</button>
+        </div>
+    </div>
+
+    <!-- Failure Div -->
+    <div id="failureResult" style="display: none;" class="result-container failure">
+        <div class="emoji">😔</div>
+        <div class="hero">Don't Worry!</div>
+        <p>You scored <strong id="failureScore">0</strong> out of <strong id="failureMaxScore">0</strong>.</p>
+        <div class="message">
+            <p>Keep practicing, and you'll get it next time! 💪</p>
+        </div>
+        <div class="score-breakdown">
+            <p>Total Score: <strong id="failureDetails">0</strong></p>
+            <p>Max Score: <strong id="failureMaxDetails">0</strong></p>
+        </div>
+        <div class="actions">
+            <button class="button" onclick="retakeQuiz()">Try Again</button>
+            <button class="button secondary" onclick="reviewQuestions()">Review Questions</button>
+            <button class="button secondary" onclick="goHome()">Home</button>
+        </div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="quizContainer">
+        <!-- Your existing quiz content here -->
+        <button class="button" id="submitButton">Submit Quiz</button>
+    </div>
     <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
 </body>
 
 </html>
