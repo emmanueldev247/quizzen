@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       optionsContainer.appendChild(shortAnswerContainer);
     }
-    
+
     updateNavigationButtons();
     updateUnansweredQuestions();
   };
@@ -165,8 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateUnansweredQuestions = () => {
-    console.log(`Quiz data: ${quizData}`);
-    console.log(`uSER ANSWERS: ${userAnswers}`);
+    console.log("Quiz data:", quizData); // Logs the array of quiz objects
+    console.log("USER ANSWERS:", userAnswers); // Logs the user answers object
 
     unansweredQuestions = quizData
       .filter((question) => {
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const handleSubmitButtonClick = () => {
-    updateUnansweredQuestions()
+    updateUnansweredQuestions();
     if (unansweredQuestions.length > 0) {
       const firstUnansweredQuestionId = unansweredQuestions[0];
       const firstUnansweredQuestionIndex = quizData.findIndex(
