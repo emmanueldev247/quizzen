@@ -423,7 +423,7 @@ textarea::placeholder {
     background-color: #c82333;
 }
 
-#submit-btn:hover {
+#submit-btn:disabled {
     background-color: #5e1118;
     cursor: not-allowed;
 }
