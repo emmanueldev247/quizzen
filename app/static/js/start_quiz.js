@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const previousButton = document.getElementById("prev-btn");
   const nextButton = document.getElementById("next-btn");
   const submitButton = document.getElementById("submit-btn");
-  const quizId = window.location.pathname.split("/")[-1];
+  const quizId = quizContainer.getAttribute("data-quiz-id");
   const startContainer = document.getElementById("start-container");
   const startButton = document.getElementById("start-quiz-btn");
 
