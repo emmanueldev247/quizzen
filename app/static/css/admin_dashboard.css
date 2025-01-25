@@ -138,6 +138,7 @@ ul li {
 .quiz-actions {
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .btn {
@@ -165,10 +166,13 @@ ul li {
     background: #460575;
     scale: 1;
 }
-
+ 
 @media (max-width: 1200px) {
     .welcome-heading {
         font-size: 3rem;
+    }
+    .quiz-card {
+        width: 90%;
     }
 }
 
@@ -179,12 +183,18 @@ ul li {
 }
 
 @media (max-width: 768px) {
+
+    body, 
+    .main-content {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
     .welcome-heading {
         font-size: 2rem;
     }
 
     .quiz-card {
-        width: 90%;
+        width: 100%;
         padding: 15px;
     }
 
@@ -258,7 +268,6 @@ ul li {
         display: none;
     }
 }
-
 
 /* Large Screens: For devices above 1200px */
 @media (min-width: 1200px) {
