@@ -48,6 +48,13 @@ h4 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.signup-container::-webkit-scrollbar {
+    display: none;
 }
 
 .signup-form,
@@ -80,6 +87,13 @@ h4 {
     max-height: 50vh;
     overflow: hidden;
     overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.signup-form-sub::-webkit-scrollbar {
+    display: none;
 }
 
 .signup-form-sub input {

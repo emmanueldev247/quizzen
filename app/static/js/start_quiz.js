@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(`Failed to fetch quiz data: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log(data);
       quizData = data.questions;
       quizTime = data.duration * 60;
       console.log("Quiz data fetched successfully:", quizData);
@@ -171,9 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return !answer || (Array.isArray(answer) && answer.length === 0);
       })
       .map((question) => question.id);
-    console.log("Quiz data:", quizData);
-    console.log("USER ANSWERS:", userAnswers);
-    console.log("Unanswered questions", unansweredQuestions);
   };
 
   const handleSubmitButtonClick = () => {
