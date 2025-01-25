@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   goBack.addEventListener("click", () => {
-    window.location.href = "/quizzen/admin/library";
+    window.location.href = "/quizzen/library";
   });
 
   publishButton.addEventListener("click", function () {

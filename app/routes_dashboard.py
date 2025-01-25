@@ -143,46 +143,6 @@ def user_dashboard(current_user):
         user_authenticated = 'user_id' in session
     )
 
-@full_bp.route('/admin/dashboard')
-@auth_required
-@admin_check
-@limiter.limit("30 per minute")
-def admin_dashboard(current_user):
-    """Admin-specific dashboard"""
-    logger.debug(f"{request.method} - Dashboard")
-
-    return redirect(url_for('full_bp.user_dashboard'))
-
-    if current_user.role != 'admin':
-        return redirect(url_for('full_bp.user_dashboard'))
-
-    history = QuizHistory.query.filter_by(user_id=current_user.id).all()
-    query = Quiz.query.filter_by(public=True)
-    quizzes = query.order_by(Quiz.created_at.desc()).all()
-
-    leaderboard = Leaderboard.query.order_by(
-        Leaderboard.score.desc()
-    ).limit(10).all()
-    notifications = Notification.query.filter_by(
-        user_id=current_user.id
-    ).order_by(
-        Notification.date_sent.desc()
-    ).all()
-    categories = Category.query.order_by(Category.name.asc()).all()
-
-    return render_template(
-        'admin_dashboard.html',
-        title='Dashboard',
-        user=current_user,
-        quizzes=quizzes,
-        history=history,
-        categories=categories,
-        leaderboard=leaderboard,
-        notifications=notifications,
-        user_authenticated = 'user_id' in session
-    )
-
-
 @full_bp.route('/quiz/new', methods=['POST'])
 @auth_required
 @admin_check
@@ -1056,7 +1016,7 @@ def delete_question(current_user, quiz_id, question_id):
         }), 500
 
 
-@full_bp.route('/admin/library')
+@full_bp.route('/library')
 @auth_required
 @admin_check
 @limiter.limit("30 per minute")
