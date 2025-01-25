@@ -371,8 +371,6 @@ textarea::placeholder {
     background: #520b6c;
 }
 
-
-
 #prev-btn {
     background-color: #007bff;
 }
@@ -487,6 +485,11 @@ textarea::placeholder {
 .quiz-actions {
     display: flex;
     gap: 10px;
+}
+
+div#quiz-container.hidden,
+div#start-container.hidden {
+    display: none;
 }
 
 @media (max-width: 920px) {
@@ -700,9 +703,4 @@ textarea::placeholder {
     .option-box input[type="text"]::placeholder {
         font-size: 25px;
     }
-}
-
-
-div.hidden {
-    display: none;
 }
