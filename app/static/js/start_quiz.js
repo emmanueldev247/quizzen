@@ -204,6 +204,16 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelButton.addEventListener("click", () => {
       modal.style.display = "none";
     });
+
+    const body = document.querySelector("body");
+    const closeModalOnClickOutside = (event) => {
+      if (!modal.contains(event.target)) {
+        modal.style.display = "none";
+        body.removeEventListener("click", closeModalOnClickOutside);
+      }
+    };
+
+    body.addEventListener("click", closeModalOnClickOutside);
   };
 
   // Submit Quiz
