@@ -590,6 +590,8 @@ def take_quiz(current_user, quiz_id):
         title=quiz.title, 
         description=quiz.description, 
         duration=quiz.duration, 
+        questions_json=json.dumps(questions),
+        questions=questions,
     )
 
 
