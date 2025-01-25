@@ -694,7 +694,6 @@ def submit_quiz(current_user, quiz_id):
         return jsonify({"error": "Quiz not found"}), 404
 
     total_score = 0
-    max_score = 0
      # Iterate through the user's answers
     for answer in answers:
         question_id = answer.get('question_id')
@@ -708,9 +707,6 @@ def submit_quiz(current_user, quiz_id):
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
         if not question:
             continue  # Skip invalid question IDs
-
-        # Calculate maximum possible score
-        max_score += question.points
 
         # Evaluate the user's answer using the custom function
         try:
@@ -734,7 +730,7 @@ def submit_quiz(current_user, quiz_id):
     return jsonify({
         "message": "Quiz submitted",
         "score": total_score,
-        "max_score": max_score
+        "max_score": quiz.max_score
     }), 200
 
 
