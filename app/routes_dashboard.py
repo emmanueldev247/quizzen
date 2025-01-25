@@ -692,7 +692,6 @@ def submit_quiz(current_user, quiz_id):
     """
     logger.info(f"Submitting quiz attempt")
     data = request.json
-    print("submitted:        ", data)
     answers = data.get('answers', [])
 
     quiz = Quiz.query.filter_by(id=quiz_id).first()
@@ -700,6 +699,8 @@ def submit_quiz(current_user, quiz_id):
         return jsonify({"error": "Quiz not found"}), 404
 
     total_score = 0
+    correct_count = 0
+    wrong_count = 0
     for answer in answers:
         question_id = answer.get('question_id')
         user_answers = answer.get('user_answer')
@@ -707,13 +708,16 @@ def submit_quiz(current_user, quiz_id):
         if not question_id or user_answers is None:
             continue
 
-
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
         if not question:
             continue 
 
         try:
             points = evaluate_answer(question_id, quiz_id, user_answers)
+            if points == question.points:
+                correct_count += 1
+            else:
+                wrong_count += 1
             logger.info(f"Scored {points}, out of {question.points}")
             total_score += points
         except ValueError as e:
@@ -735,7 +739,10 @@ def submit_quiz(current_user, quiz_id):
     return jsonify({
         "message": "Quiz submitted",
         "score": total_score,
-        "max_score": quiz.max_score
+        "max_score": quiz.max_score,
+        "total_questions": len(quiz.questions),
+        "correct_count": correct_count,
+        "wrong_count": wrong_count
     }), 200
 
 

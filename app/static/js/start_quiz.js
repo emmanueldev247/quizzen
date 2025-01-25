@@ -1,4 +1,5 @@
 import { showNotification } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const quizContainer = document.getElementById("quiz-container");
@@ -249,47 +250,88 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => {
         if (!response.ok) {
+          if (response.status === 429) {
+            showNotification(
+              "You have made too many requests in a short period. Please try again later",
+              "error"
+            );
+          } else
+            showNotification(
+              "Something went wrong. Please try again later",
+              "error"
+            );
           throw new Error(`HTTP error! Status: ${response.status}`);
-          showNotification("An error occured", "error");
         }
         return response.json();
       })
       .then((data) => {
         if (data.score !== undefined) {
-          const { score, max_score } = data;
+          const {
+            score,
+            max_score,
+            total_questions,
+            correct_count,
+            wrong_count,
+          } = data;
           if (score / max_score >= 0.5) {
             // Show success result
-            document.getElementById("successScore").textContent = score;
-            document.getElementById("successMaxScore").textContent = max_score;
+            const successBoxes = document.querySelectorAll("successScore");
+            successBoxes.forEach((box) => (box.textContent = score));
+            const maxBoxes = document.querySelectorAll("successMaxScore");
+            maxBoxes.forEach((box) => (box.textContent = max_score));
+            const totalQuestions = document.querySelectorAll("successTotal");
+            totalQuestions.forEach(
+              (box) => (box.textContent = total_questions)
+            );
+            const successCorrect = document.querySelectorAll("successCorrect");
+            successCorrect.forEach((box) => (box.textContent = correct_count));
+            const successWrong = document.querySelectorAll("successWrong");
+            successWrong.forEach((box) => (box.textContent = wrong_count));
+
             document.getElementById("successResult").style.display = "block";
           } else {
             // Failure: Handle failure result display
-            document.getElementById("failureScore").textContent = score;
-            document.getElementById("failureMaxScore").textContent = max_score;
-            document.getElementById("failureDetails").textContent = score;
-            document.getElementById("failureMaxDetails").textContent =
-              max_score;
-            document.getElementById("failureInvalidQuestions").textContent =
-              invalid_questions;
+            const failureBoxes = document.querySelectorAll("failureScore");
+            failureBoxes.forEach((box) => (box.textContent = score));
+            const maxBoxes = document.querySelectorAll("failureMaxScore");
+            maxBoxes.forEach((box) => (box.textContent = max_score));
+            const totalQuestions = document.querySelectorAll("failureTotal");
+            totalQuestions.forEach(
+              (box) => (box.textContent = total_questions)
+            );
+            const failureCorrect = document.querySelectorAll("failureCorrect");
+            failureCorrect.forEach((box) => (box.textContent = correct_count));
+            const failureWrong = document.querySelectorAll("failureWrong");
+            failureWrong.forEach((box) => (box.textContent = wrong_count));
 
             document.getElementById("failureResult").style.display = "block";
           }
-          loadStylesheet("/quizzen/assets/css/quiz-result.css"); // Load failure stylesheet
+          loadStylesheet("/quizzen/assets/css/quiz-result.css");
 
-          const modal = document.getElementById("unanswered-modal");
-          const modal2 = document.getElementById("timeup-quiz-overlay");
-          modal.style.display = modal2.style.display = "none";
+          const modalUnanswered = document.getElementById("unanswered-modal");
+          const modalTimeup = document.getElementById("timeup-quiz-overlay");
+          modalUnanswered.style.display = modalTimeup.style.display = "none";
           quizContainer.style.display = "none";
           startContainer.classList.add("hidden");
-          quizContainer.classList.remove("hidden");
+          quizContainer.classList.add("hidden");
+          modalUnanswered.classList.add("hidden");
+          modalTimeup.classList.add("hidden");
         } else {
-          // Error in the response data
-          alert(`Error: ${data.error}`);
+          showNotification(`Error: ${data.error}`, "error");
         }
       })
       .catch((error) => {
+        if (error.message === "Failed to fetch")
+          showNotification(
+            "Network error. Please check your connection",
+            "error"
+          );
+        else
+          showNotification(
+            "There was an error submitting the quiz. Please try again",
+            "error"
+          );
         console.error("Error submitting quiz:", error);
-        alert("There was an error submitting the quiz. Please try again.");
       })
       .finally(() => {
         submitButton.disabled = false;
@@ -297,7 +339,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  // Navigation Logic
   previousButton.addEventListener("click", () => {
     if (currentQuestionIndex > 0) {
       currentQuestionIndex--;

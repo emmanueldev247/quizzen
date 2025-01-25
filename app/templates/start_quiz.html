@@ -34,6 +34,7 @@
             {% endif %}
         </div>
     </header>
+    <div id="notification" class="notification" aria-live="polite"></div>
     <!-- Overlay -->
     <div class="timeup-overlay" id="timeup-quiz-overlay" style="display: none">
         <div class="message-container">
@@ -41,7 +42,6 @@
             <p>We are submitting your attempt, please wait...</p>
         </div>
     </div>
-
     <div class="content">
         <div id="start-container">
             <div class="quiz-card" data-quiz-id="{{ quiz.id }}">
@@ -130,9 +130,16 @@
     <div id="successResult" style="display: none;" class="result-container success">
         <div class="emoji">🎉</div>
         <div class="hero">Congratulations!</div>
-        <p>You scored <strong id="successScore">0</strong> out of <strong id="successMaxScore">0</strong>.</p>
+        <p>You scored <strong class="successScore"></strong> out of <strong class="successMaxScore"></strong>.</p>
+        <p>Score: <span class="successScore"></span> / <span class="successMaxScore"></span></p>
         <div class="message">
             <p>Well done! You're improving every day! 🌟</p>
+        </div>
+        <div class="score-breakdown">
+            <p>Total Questions: <span class="successTotal"></span></p>
+            <p>Correct Answers: <span class="successCorrect"></span></p>
+            <p>Wrong Answers: <span class="successWrong"></span></p>
+            <p>Score: <strong class="successScore"></strong></p>
         </div>
         <div class="actions">
             <button class="button" onclick="retakeQuiz()">Try Again</button>
@@ -143,26 +150,23 @@
     <!-- Failure Div -->
     <div id="failureResult" style="display: none;" class="result-container failure">
         <div class="emoji">😔</div>
-        <div class="hero">Don't Worry!</div>
-        <p>You scored <strong id="failureScore">0</strong> out of <strong id="failureMaxScore">0</strong>.</p>
+        <div class="hero">Better Luck Next Time!</div>
+        <p>You scored <strong class="failureScore"></strong> out of <strong class="failureMaxScore"></strong>.</p>
+        <p>Score: <span class="failureScore"></span> / <span class="failureMaxScore"></span></p>
         <div class="message">
             <p>Keep practicing, and you'll get it next time! 💪</p>
         </div>
         <div class="score-breakdown">
-            <p>Total Score: <strong id="failureDetails">0</strong></p>
-            <p>Max Score: <strong id="failureMaxDetails">0</strong></p>
+            <p>Total Questions: <span class="failureTotal"></span></p>
+            <p>Correct Answers: <span class="failureCorrect"></span></p>
+            <p>Wrong Answers: <span class="failureWrong"></span></p>
+            <p>Score: <strong class="failureScore"></strong></p>
         </div>
         <div class="actions">
             <button class="button" onclick="retakeQuiz()">Try Again</button>
             <button class="button secondary" onclick="reviewQuestions()">Review Questions</button>
             <button class="button secondary" onclick="goHome()">Home</button>
         </div>
-    </div>
-
-    <!-- Quiz Container -->
-    <div id="quizContainer">
-        <!-- Your existing quiz content here -->
-        <button class="button" id="submitButton">Submit Quiz</button>
     </div>
     <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
