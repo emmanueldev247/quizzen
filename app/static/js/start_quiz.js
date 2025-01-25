@@ -266,6 +266,14 @@ document.addEventListener("DOMContentLoaded", () => {
   submitButton.addEventListener("click", handleSubmitButtonClick);
 
   startButton.addEventListener("click", async () => {
+    startButton.disabled = true;
+    const loader = startButton.querySelector(".loader");
+    loader.style.display = "inline-block";
+    setTimeout(() => {
+      startButton.disabled = false;
+      loader.style.display = "none";
+    }, 5000);
+    
     await fetchQuizData(quizId);
     if (quizData.length === 0) {
       alert("Failed to load quiz data.");

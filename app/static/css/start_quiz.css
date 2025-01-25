@@ -15,6 +15,16 @@ body {
     color: #333;
 }
 
+.loader {
+    border-top: 2px solid #f3f3f3;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -504,6 +514,27 @@ textarea::placeholder {
 .quiz-actions {
     display: flex;
     gap: 10px;
+    justify-content: center;
+}
+
+#start-quiz-btn {
+    background: #6a0dad;
+    color: #ffffff;
+}
+
+#start-quiz-btn:hover {
+    background: #a94dd0;
+    scale: 1.05;
+}
+
+#start-quiz-btn:active {
+    background: #460575;
+    scale: 1;
+}
+
+#start-quiz-btn:disabled {
+    background: #1f0c27;
+    cursor: not-allowed;
 }
 
 div#quiz-container.hidden,
