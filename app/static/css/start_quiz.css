@@ -3,6 +3,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Titillium+Web:ital,wght@0,400;1,600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -373,13 +383,13 @@ textarea::placeholder {
     background: #6a0dad;
     color: white;
     border: none;
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem .7rem;
     border-radius: 4px;
     cursor: pointer;
     width: 100px;
     display: flex;
-    align-content: center;
     justify-content: center;
+    align-items: center;
     font-weight: bold;
     transition: all .2s ease;
     gap: 5px;
