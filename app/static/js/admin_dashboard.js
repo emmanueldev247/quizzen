@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const quizCard = this.closest(".quiz-card");
       const quizId = quizCard.getAttribute("data-quiz-id");
 
-      // window.location.href = `/quizzen/take/quiz/${quizId}`;
+      window.location.href = `/quizzen/take/quiz/${quizId}`;
     });
   });
 });

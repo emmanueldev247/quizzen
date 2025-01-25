@@ -165,10 +165,14 @@ ul li {
     scale: 1.05;
 }
 
-
 .take-btn:active {
     background: #460575;
     scale: 1;
+}
+
+.take-btn:disabled {
+    background: #1f0c27;
+    cursor: not-allowed;
 }
 
 @media (max-width: 1200px) {
