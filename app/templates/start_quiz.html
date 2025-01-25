@@ -33,12 +33,12 @@
             </a>
         </div>
     </header>
-    <div class="content" data-quiz-id="{{ quiz_id }}">
+    <div class="content">
         <div id="start-container">
             <h1 class="quiz-title">{{ title }}</h1>
             <button id="start-quiz-btn" class="btn">Start Quiz</button>
         </div>
-        <div class="hidden" id="quiz-container">
+        <div class="hidden" id="quiz-container" data-quiz-id="{{ quiz_id }}">
             <div id="timer">Time Left: 00:00</div>
             <div class="header">
                 <h1 class="quiz-title">{{ title }}</h1>
