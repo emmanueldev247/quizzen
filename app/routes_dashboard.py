@@ -559,9 +559,6 @@ def start_quiz(current_user, quiz_id):
     ]
 
     return jsonify({
-        "quiz_id": quiz.id,
-        "title": quiz.title,
-        "description": quiz.description,
         "duration": quiz.duration,
         "questions": questions
     }), 200
