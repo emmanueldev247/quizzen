@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerInterval = setInterval(() => {
       const minutes = Math.floor(timeRemaining / 60);
       const seconds = timeRemaining % 60;
-      timerElement.textContent = `${String(minutes).padStart(2, "0")}:${String(
+      timerElement.textContent = `Time Left: ${String(minutes).padStart(2, "0")}:${String(
         seconds
       ).padStart(2, "0")}`;
       if (timeRemaining <= 0) {
