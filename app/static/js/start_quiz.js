@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchQuizData = async (quizId) => {
     try {
-      const response = await fetch(`/quiz/${quizId}/start`);
+      const response = await fetch(`/quizzen/quiz/${quizId}/start`);
       if (!response.ok) {
         throw new Error(`Failed to fetch quiz data: ${response.statusText}`);
       }
