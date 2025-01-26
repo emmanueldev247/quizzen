@@ -714,8 +714,8 @@ def submit_quiz(current_user, quiz_id):
     pass_threshold = 0.5 
     passed = (total_score / quiz.max_score) >= pass_threshold
 
-     s = Serializer(current_app.config['SECRET_KEY'])
-     data = {
+    s = Serializer(current_app.config['SECRET_KEY'])
+    data = {
         "score": total_score,
         "max_score": quiz.max_score,
         "total_questions": len(quiz.questions),
