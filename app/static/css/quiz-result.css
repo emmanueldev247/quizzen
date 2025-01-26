@@ -189,6 +189,7 @@ header .logo img {
 }
 
 .button:disabled {
+  scale: 1;
   background: #1f0c27;
   cursor: not-allowed;
 }
