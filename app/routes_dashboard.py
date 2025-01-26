@@ -1319,8 +1319,8 @@ def change_password(current_user):
             }), 401
         else:
             current_user.set_password(new_password)
-                db.session.add(current_user)
-                db.session.commit()
+            db.session.add(current_user)
+            db.session.commit()
             logger.warning(f"User with email {current_user.email} is an OAuth user")
             return jsonify({
                 "success": "True",
