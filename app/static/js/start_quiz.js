@@ -266,7 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
       })
       .catch((error) => {
         if (error.message === "Failed to fetch")

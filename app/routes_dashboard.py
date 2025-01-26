@@ -673,14 +673,11 @@ def submit_quiz(current_user, quiz_id):
 
     total_score = 0
     correct_count = 0
-    wrong_count = 0
     for answer in answers:
         question_id = answer.get('question_id')
         user_answers = answer.get('user_answer')
 
         if not question_id or user_answers is None:
-            if user_answers is None:
-                wrong_count += 1
             continue
 
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
@@ -691,8 +688,6 @@ def submit_quiz(current_user, quiz_id):
             points = evaluate_answer(question_id, quiz_id, user_answers)
             if points == question.points:
                 correct_count += 1
-            else:
-                wrong_count += 1
             logger.info(f"Scored {points}, out of {question.points}")
             total_score += points
         except ValueError as e:
@@ -720,7 +715,7 @@ def submit_quiz(current_user, quiz_id):
         "max_score": quiz.max_score,
         "total_questions": len(quiz.questions),
         "correct_count": correct_count,
-        "wrong_count": wrong_count,
+        "wrong_count": len(quiz.questions) - correct_count,
         "passed": passed
     }
     result_token = s.dumps(data)
