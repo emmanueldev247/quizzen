@@ -673,7 +673,7 @@ def evaluate_short_answer(question, answer_choices, user_answers):
     """
     correct_answers = {choice.text.lower() for choice in answer_choices if choice.is_correct}
     user_answer = user_answers[0].strip().lower()
-    logger.info(f"Answer is {correct_answers}, user chose {user_answers}")
+    logger.info(f"Answer is {correct_answers}, user chose {user_answer}")
     return question.points if user_answer in correct_answers else 0
 
 @full_bp.route('/quiz/<quiz_id>/submit', methods=['POST'])
