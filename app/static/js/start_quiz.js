@@ -263,15 +263,13 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const contentType = response.headers.get("Content-Type") || "";
-        if (contentType.includes("application/json")) {
+        console.log(contentType);
+        if (contentType.includes("text/html")) {
+          // Redirect to the URL if it’s an HTML response
+          window.location.href = response.url; // Redirects the user to the result page
+        } else if (contentType.includes("application/json")) {
+          // Handle JSON response if applicable
           return response.json();
-        } else if (contentType.includes("text/html")) {
-          return response.text().then((html) => {
-            document.open();
-            document.write(html);
-            document.close();
-            throw new Error("Redirected to result page"); // Optional to stop further processing
-          });
         } else {
           throw new Error("Unexpected content type");
         }
