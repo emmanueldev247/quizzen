@@ -56,7 +56,7 @@
 <div class="dashboard-container" id="dashboard-container">
     <section id="dashboard">
         <div class="section">
-            {% if leaderboard %}
+            {% if leaderboardfake %}
             <h2>Leaderboard</h2>
             <ul>
                 {% for entry in leaderboard %}
@@ -68,7 +68,7 @@
             {% endif %}
         </div>
         <div class="section">
-            {% if notifications %}
+            {% if notificationsfake %}
             <h2>Notifications</h2>
             <ul>
                 {% for notification in notifications %}
@@ -80,7 +80,7 @@
             {% endif %}
         </div>
         <div class="section">
-            {% if history %}
+            {% if historyfake %}
             <h2>Quiz History</h2>
             <ul>
                 {% for quiz in quizzes %}
