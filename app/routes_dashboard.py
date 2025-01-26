@@ -724,7 +724,7 @@ def submit_quiz(current_user, quiz_id):
         "passed": passed
     }
     result_token = s.dumps(data)
-    return redirect(url_for('full_bp.show_quiz_result', quiz_id=quiz_id, token=secure_token))
+    return redirect(url_for('full_bp.show_quiz_result', quiz_id=quiz_id, result_token=result_token))
 
     # _external=True, _scheme='https'
     # return redirect(url_for(
@@ -765,7 +765,7 @@ def show_quiz_result(current_user, quiz_id):
     """
     Display the results page for the quiz.
     """
-    token = request.args.get('token')
+    token = request.args.get('result_token')
     if not token:
         return abort(404)
     
