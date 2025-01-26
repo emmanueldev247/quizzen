@@ -708,12 +708,12 @@ def submit_quiz(current_user, quiz_id):
     db.session.commit()
 
     pass_threshold = 0.5 
-    passed = (total_score / max_score) >= pass_threshold
+    passed = (total_score / quiz.max_score) >= pass_threshold
 
     return render_template(
         "quiz_result.html",
         score=total_score,
-        max_score=max_score,
+        max_score=quiz.max_score,
         total_questions=total_questions,
         correct_count=correct_count,
         wrong_count=wrong_count,
