@@ -43,7 +43,9 @@
 		<div class="header-right">
 			{% block header_content%}
 			{% endblock header_content%}
+			{% if user_authenticated %}
 			<button class="enter-code">Enter Code</button>
+			{% endif %}
 		</div>
 	</header>
 	<!-- Sidebar (Flyout Menu for Mobile) -->
@@ -51,7 +53,6 @@
 		{% block nav_content %}
 		{% endblock nav_content %}
 		{% if user_authenticated %}
-		user_authenticated
 		<button class="enter-code">Enter Code</button>
 		{% endif %}
 	</div>
