@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: answers,
     };
 
-    const baseurl = "https://emmanueldev247.tech/";
+    const baseurl = "https://emmanueldev247.publicvm.com/";
     fetch(`${baseurl}quizzen/quiz/${quizId}/submit`, {
       method: "POST",
       headers: {
