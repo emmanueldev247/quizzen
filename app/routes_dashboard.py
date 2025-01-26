@@ -675,6 +675,8 @@ def submit_quiz(current_user, quiz_id):
         user_answers = answer.get('user_answer')
 
         if not question_id or user_answers is None:
+            if user_answers is None:
+                wrong_count += 1
             continue
 
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
@@ -705,14 +707,28 @@ def submit_quiz(current_user, quiz_id):
 
     db.session.commit()
 
-    return jsonify({
-        "message": "Quiz submitted",
-        "score": total_score,
-        "max_score": quiz.max_score,
-        "total_questions": len(quiz.questions),
-        "correct_count": correct_count,
-        "wrong_count": wrong_count
-    }), 200
+    pass_threshold = 0.5 
+    passed = (total_score / max_score) >= pass_threshold
+
+     return render_template(
+        "quiz_result.html",
+        score=total_score,
+        max_score=max_score,
+        total_questions=total_questions,
+        correct_count=correct_count,
+        wrong_count=wrong_count,
+        passed=passed,
+        quiz_title=quiz.title,
+        user_authenticated = 'user_id' in session
+    )
+    # return jsonify({
+    #     "message": "Quiz submitted",
+    #     "score": total_score,
+    #     "max_score": quiz.max_score,
+    #     "total_questions": len(quiz.questions),
+    #     "correct_count": correct_count,
+    #     "wrong_count": wrong_count
+    # }), 200
 
 
 @full_bp.route('/quiz/<quiz_id>/question/new')

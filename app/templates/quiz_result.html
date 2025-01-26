@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result | Quizzen</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
+
+    <!-- ****************Icons library************** -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ****************local CSS************** -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/quiz-result.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            {% if user_authenticated %}
+            <a href="{{ url_for('full_bp.user_dashboard') }}" class="logo-text">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </a>
+            {% else %}
+            <a href="{{ url_for('full_bp.home') }}" class="logo-text">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </a>
+            {% endif %}
+        </div>
+    </header>
+    <div id="notification" class="notification" aria-live="polite"></div>
+
+    {% if passed %}
+    <!-- Success Div -->
+    <div id="successResult" class="result-container success">
+        <div class="emoji">🎉</div>
+        <div class="hero">Congratulations!</div>
+        <p>You scored <strong>{{ score }}</strong> out of <strong>{{ max_score }}</strong>.</p>
+        <p>Score: {{ score }}</span> / <span>{{ max_score }}</span></p>
+        <div class="message">
+            <p>Well done! You're improving every day! 🌟</p>
+        </div>
+        <div class="score-breakdown">
+            <p>Total Questions: <span>{{ total_questions }}</span></p>
+            <p>Correct Answers: <span>{{ correct_count }}</span></p>
+            <p>Wrong Answers: <span>{{ wrong_count }}</span></p>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="actions">
+            <button class="button" onclick="retakeQuiz()">Try Again</button>
+            <button class="button" onclick="goHome()">Home</button>
+        </div>
+    </div>
+    {% else %}
+    <!-- Failure Div -->
+    <div id="failureResult" class="result-container failure">
+        <div class="emoji">😔</div>
+        <div class="hero">Better Luck Next Time!</div>
+        <p>You scored <strong>{{ score }}</strong> out of <strong>{{ max_score }}</strong>.</p>
+        <p>Score: <span>{{ score }}</span> / <span>{{ max_score }}</span></p>
+        <div class="message">
+            <p>Keep practicing, and you'll get it next time! 💪</p>
+        </div>
+        <div class="score-breakdown">
+            <p>Total Questions: <span>{{ total_questions }}</span></p>
+            <p>Correct Answers: <span>{{ correct_count }}</span></p>
+            <p>Wrong Answers: <span class="failureWrong"></span></p>
+            <p>Score: <strong></strong></p>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="actions">
+            <button class="button" onclick="retakeQuiz()">Try Again</button>
+            <button class="button" onclick="goHome()">Home</button>
+        </div>
+    </div>
+    {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const score = parseInt("{{ score }}");
+            const maxScore = parseInt("{{ max_score }}");
+
+            const progressBar = document.getElementById("progressBar");
+
+            // Calculate progress percentage
+            const progressPercentage = (score / maxScore) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+
+            if (progressPercentage >= 75) {
+                progressBar.style.backgroundColor = "#4caf50";
+            } else if (progressPercentage >= 50) {
+                progressBar.style.backgroundColor = "#ffc107";
+            } else {
+                progressBar.style.backgroundColor = "#f44336";
+            }
+        });
+    </script>
+    <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
+</body>
+
+</html>
