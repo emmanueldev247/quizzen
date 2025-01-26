@@ -50,7 +50,9 @@
 	<div id="flyout-nav" class="sidebar">
 		{% block nav_content %}
 		{% endblock nav_content %}
+		{% if user_authenticated %}
 		<button class="enter-code">Enter Code</button>
+		{% endif %}
 	</div>
 	<div id="notification" class="notification" aria-live="polite"></div>
 	{% block child_content %}
