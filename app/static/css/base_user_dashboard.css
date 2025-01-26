@@ -384,6 +384,104 @@ header .enter-code:hover {
     background-color: #9b59b6;
 }
 
+.enter-code-btn {
+    background: #6a0dad;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enter-code-btn:hover {
+    background-color: #5a4ae3;
+}
+
+
+/* Modal Styling */
+.enter-code-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.enter-code-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 300px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 50px;
+    cursor: pointer;
+    color: #fff;
+}
+
+
+#modalMessage {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #6a0dad;
+}
+
+.error-code {
+    color: #ff0000;
+}
+
+.quiz-code-input {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.quiz-code-input.error {
+    background-color: #ffdddd;
+    border-color: #ff0000;
+}
+
+
+.enter-code-submit-btn {
+    background: #6a0dad;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.enter-code-submit-btn:hover {
+    background: #a94dd0;
+    scale: 1.05;
+}
+
+.enter-code-submit-btn:active {
+    background: #460575;
+    scale: 1;
+}
+
+.enter-code-submit-btn:disabled {
+    background: #1f0c27;
+    cursor: not-allowed;
+}
+
 /* Mobile Styles */
 @media only screen and (max-width: 768px) {
     .notification {

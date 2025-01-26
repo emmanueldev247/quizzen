@@ -21,6 +21,7 @@
 """
 
 import humanize
+import json
 import os
 import re
 import random
@@ -39,6 +40,7 @@ from itsdangerous import (
     BadSignature, SignatureExpired,
     URLSafeTimedSerializer as Serializer
 )
+from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
 from wtforms import Form, StringField, TextAreaField, validators
 
@@ -504,6 +506,27 @@ def unpublish_quiz(current_user, quiz_id):
         }), 500
 
 
+@full_bp.route('/api/quiz/<quiz_code>', methods=['GET'])
+@auth_required
+@limiter.limit("20 per minute")
+def check_quiz(current_user, quiz_code):
+    """
+    Check if the quiz exists and is public, and return the quiz id if valid.
+    """
+    quiz = Quiz.query.filter_by(id=quiz_code, public=True).first()
+
+    if not quiz:
+        return jsonify({
+            "success": False,
+            "message": "Quiz not found"
+        }), 404
+
+    return jsonify({
+        "success: True,
+        "quiz_id": quiz.id
+    })
+
+
 @full_bp.route('/quiz/<quiz_id>/start')
 @auth_required
 @limiter.limit("20 per minute")
@@ -511,7 +534,6 @@ def start_quiz(current_user, quiz_id):
     """
     Start a quiz: Fetch quiz details and initialize user session for the quiz.
     """
-    from sqlalchemy.orm import joinedload
     logger.info(f"Stating quiz attempt")
     #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
     quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \
@@ -549,8 +571,6 @@ def take_quiz(current_user, quiz_id):
     """
     Start a quiz: Fetch quiz details and initialize user session for the quiz.
     """
-    from sqlalchemy.orm import joinedload
-    import json
     logger.info(f"Stating quiz attempt")
     #quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
     quiz = Quiz.query.options(joinedload(Quiz.questions).joinedload(Question.answer_choices)) \

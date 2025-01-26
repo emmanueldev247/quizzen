@@ -57,6 +57,19 @@
 		{% endif %}
 	</div>
 	<div id="notification" class="notification" aria-live="polite"></div>
+	<div id="enter-code-modal" class="enter-code-modal">
+        <div class="enter-code-modal-content">
+            <span id="closeBtn" class="close-btn">&times;</span>
+            <h2 id="modalMessage">Enter Quiz Code</h2>
+            <p class="error-code" id="error-code">
+            </p>
+            <input type="text" id="quizCode" class="quiz-code-input" placeholder="Enter your quiz code">
+            <button id="enterCodeSubmitBtn" class="enter-code-submit-btn">
+              Submit
+              <div class="loader"></div>
+            </button>
+        </div>
+    </div>
 	{% block child_content %}
 	{% endblock child_content %}
 	<button id="backToTop" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
