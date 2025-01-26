@@ -262,7 +262,19 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        const contentType = response.headers.get("Content-Type") || "";
+        if (contentType.includes("application/json")) {
+          return response.json();
+        } else if (contentType.includes("text/html")) {
+          return response.text().then((html) => {
+            document.open();
+            document.write(html);
+            document.close();
+            throw new Error("Redirected to result page"); // Optional to stop further processing
+          });
+        } else {
+          throw new Error("Unexpected content type");
+        }
       })
       .then((data) => {
         if (data.score !== undefined) {
@@ -274,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
             wrong_count,
           } = data;
           if (score / max_score >= 0.5) {
-            // Show success result
             const successBoxes = document.querySelectorAll(".successScore");
             successBoxes.forEach((box) => (box.textContent = score));
             const maxBoxes = document.querySelectorAll(".successMaxScore");
