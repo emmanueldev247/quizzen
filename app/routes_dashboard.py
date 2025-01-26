@@ -35,6 +35,10 @@ from flask import (
 )
 from flask_limiter.errors import RateLimitExceeded
 from functools import wraps
+from itsdangerous import (
+    BadSignature, SignatureExpired,
+    URLSafeTimedSerializer as Serializer
+)
 from werkzeug.utils import secure_filename
 from wtforms import Form, StringField, TextAreaField, validators
 
@@ -710,17 +714,40 @@ def submit_quiz(current_user, quiz_id):
     pass_threshold = 0.5 
     passed = (total_score / quiz.max_score) >= pass_threshold
 
-    return render_template(
-        "quiz_result.html",
-        score=total_score,
-        max_score=quiz.max_score,
-        total_questions=len(quiz.questions),
-        correct_count=correct_count,
-        wrong_count=wrong_count,
-        passed=passed,
-        quiz_title=quiz.title,
-        user_authenticated = 'user_id' in session
-    )
+     s = Serializer(current_app.config['SECRET_KEY'])
+     data = {
+        "score": total_score,
+        "max_score": quiz.max_score,
+        "total_questions": len(quiz.questions),
+        "correct_count": correct_count,
+        "wrong_count": wrong_count,
+        "passed": passed
+    }
+    result_token = s.dumps(data)
+    return redirect(url_for('full_bp.show_quiz_result', quiz_id=quiz_id, token=secure_token))
+
+    # _external=True, _scheme='https'
+    # return redirect(url_for(
+    #     'full_bp.show_quiz_result',
+    #     quiz_id=quiz_id,
+    #     score=total_score,
+    #     max_score=quiz.max_score,
+    #     total_questions=len(quiz.questions),
+    #     correct_count=correct_count,
+    #     wrong_count=wrong_count,
+    #     passed=passed
+    # ))
+    # return render_template(
+    #     "quiz_result.html",
+    #     score=total_score,
+    #     max_score=quiz.max_score,
+    #     total_questions=len(quiz.questions),
+    #     correct_count=correct_count,
+    #     wrong_count=wrong_count,
+    #     passed=passed,
+    #     quiz_title=quiz.title,
+    #     user_authenticated = 'user_id' in session
+    # )
     # return jsonify({
     #     "message": "Quiz submitted",
     #     "score": total_score,
@@ -730,6 +757,59 @@ def submit_quiz(current_user, quiz_id):
     #     "wrong_count": wrong_count
     # }), 200
 
+
+@full_bp.route('/quiz/<quiz_id>/result', methods=['GET'])
+@auth_required
+@limiter.limit("20 per minute")
+def show_quiz_result(current_user, quiz_id):
+    """
+    Display the results page for the quiz.
+    """
+    token = request.args.get('token')
+    if not token:
+        return abort(404)
+    
+    quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
+    if not quiz:
+        return abort(404)
+
+    try:
+        s = Serializer(current_app.config['SECRET_KEY'])
+        data = s.loads(token)
+    except Exception as e:
+        logger.error(f"Token Expired")
+        if (
+            request.accept_mimetypes['application/json'] >=
+            request.accept_mimetypes['text/html']
+        ):
+            return jsonify({
+                "success": False,
+                "message": "Expired token."
+            }), 400
+        else:
+            return abort(404)
+    return render_template(
+        "quiz_result.html",
+        score=data["score"],
+        max_score=data["max_score"],
+        total_questions=data["total_questions"],
+        correct_count=data["correct_count"],
+        wrong_count=data["wrong_count"],
+        passed=data["passed"],
+        quiz_title=quiz.title,
+        user_authenticated='user_id' in session
+    )
+    # return render_template(
+    #     "quiz_result.html",
+    #     score=score,
+    #     max_score=max_score,
+    #     total_questions=total_questions,
+    #     correct_count=correct_count,
+    #     wrong_count=wrong_count,
+    #     passed=passed,
+    #     quiz_title=quiz.title,
+    #     user_authenticated='user_id' in session
+    # )
 
 @full_bp.route('/quiz/<quiz_id>/question/new')
 @auth_required

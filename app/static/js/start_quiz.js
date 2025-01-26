@@ -249,7 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify(payload),
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.redirected) {
+          console.log(response.url);
+          window.location.href = response.url;
+        } else if (!response.ok) {
           if (response.status === 429) {
             showNotification(
               "You have made too many requests in a short period. Please try again later",
@@ -264,11 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const contentType = response.headers.get("Content-Type") || "";
         console.log(contentType);
+        console.log(response.url);
         if (contentType.includes("text/html")) {
-          // Redirect to the URL if it’s an HTML response
-          window.location.href = response.url; // Redirects the user to the result page
+          window.location.href = response.url; 
         } else if (contentType.includes("application/json")) {
-          // Handle JSON response if applicable
           return response.json();
         } else {
           throw new Error("Unexpected content type");
