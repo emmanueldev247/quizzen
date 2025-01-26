@@ -95,6 +95,7 @@ header .header-right {
     display: flex;
     align-items: center;
     gap: 30px;
+    margin-right: 20px;
 }
 
 header .profile,
@@ -337,6 +338,10 @@ header .header-right a.button-sign-up:hover {
 }
 
 @media only screen and (max-width: 530px) {
+    header .header-right {
+        margin-right: 10px;
+    }
+    
     header .enter-code {
         display: none;
     }
@@ -359,6 +364,12 @@ header .header-right a.button-sign-up:hover {
     }
 }
 
+@media only screen and (max-width: 300px) {
+    header .header-right {
+        display: none;
+    }
+}
+
 @media only screen and (max-height: 450px) {
     .sidebar {
         gap: 2px;
@@ -372,12 +383,6 @@ header .header-right a.button-sign-up:hover {
         padding: 10px 15px;
         display: flex;
         gap: .9rem;
-    }
-}
-
-@media only screen and (max-width: 300px) {
-    header .header-right {
-        display: none;
     }
 }
 
