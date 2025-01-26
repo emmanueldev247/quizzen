@@ -522,7 +522,7 @@ def check_quiz(current_user, quiz_code):
         }), 404
 
     return jsonify({
-        "success: True,
+        "success": True,
         "quiz_id": quiz.id
     })
 
