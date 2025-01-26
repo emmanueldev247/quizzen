@@ -101,13 +101,21 @@ header .logo img {
     margin-top: 25px;
     flex-grow: 1;
     background-color: #f4f4f4;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;
     justify-content: space-around;
     position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+    display: none;
 }
 
 .header {
@@ -236,9 +244,16 @@ h1.quiz-title {
     justify-self: center;
     align-items: stretch;
     align-content: center;
-    overflow: hidden;
-    overflow-y: auto;
     height: calc(100vh - 100px);
+    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 textarea.question {
