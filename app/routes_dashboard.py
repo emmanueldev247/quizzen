@@ -714,7 +714,7 @@ def submit_quiz(current_user, quiz_id):
         "quiz_result.html",
         score=total_score,
         max_score=quiz.max_score,
-        total_questions=total_questions,
+        total_questions=len(quiz.questions),
         correct_count=correct_count,
         wrong_count=wrong_count,
         passed=passed,
