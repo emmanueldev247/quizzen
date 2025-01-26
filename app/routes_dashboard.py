@@ -710,7 +710,7 @@ def submit_quiz(current_user, quiz_id):
     pass_threshold = 0.5 
     passed = (total_score / max_score) >= pass_threshold
 
-     return render_template(
+    return render_template(
         "quiz_result.html",
         score=total_score,
         max_score=max_score,
