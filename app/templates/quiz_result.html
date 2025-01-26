@@ -34,51 +34,62 @@
 
     {% if passed %}
     <!-- Success Div -->
-    <div id="successResult" class="result-container success">
+    <div id="successResult" class="result-container success" data-quiz-id="{{ quiz_id }}">
         <div class="emoji">🎉</div>
         <div class="hero">Congratulations!</div>
         <p>You scored <strong>{{ score }}</strong> out of <strong>{{ max_score }}</strong>.</p>
-        <p>Score: {{ score }}</span> / <span>{{ max_score }}</span></p>
+        <strong><p>Score: {{ score }} / {{ max_score }}</p></strong>
         <div class="message">
             <p>Well done! You're improving every day! 🌟</p>
         </div>
         <div class="score-breakdown">
-            <p>Quiz: <strong>{{ quiz_title }}</strong></p>
-            <p>Total Questions: <span>{{ total_questions }}</span></p>
-            <p>Correct Answers: <span>{{ correct_count }}</span></p>
-            <p>Wrong Answers: <span>{{ wrong_count }}</span></p>
+            <p>Quiz: {{ quiz_title }}</p>
+            <p>Total Questions: {{ total_questions }}</p>
+            <p>Correct Answers: {{ correct_count }}</p>
+            <p>Wrong Answers: {{ wrong_count }}</p>
         </div>
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
         <div class="actions">
-            <button class="button" onclick="retakeQuiz()">Try Again</button>
-            <button class="button" onclick="goHome()">Home</button>
+            <button class="button" id="retakeQuiz">
+                Try Again
+                <div class="loader"></div>
+            </button>
+            <button class="button" id="goHome">
+                Home
+                <div class="loader"></div>
+            </button>
         </div>
     </div>
     {% else %}
     <!-- Failure Div -->
-    <div id="failureResult" class="result-container failure">
+    <div id="failureResult" class="result-container failure" data-quiz-id="{{ quiz_id }}">
         <div class="emoji">😔</div>
         <div class="hero">Better Luck Next Time!</div>
         <p>You scored <strong>{{ score }}</strong> out of <strong>{{ max_score }}</strong>.</p>
-        <p>Score: <span>{{ score }}</span> / <span>{{ max_score }}</span></p>
+        <strong><p>Score: {{ score }} / {{ max_score }}</p></strong>
         <div class="message">
             <p>Keep practicing, and you'll get it next time! 💪</p>
         </div>
         <div class="score-breakdown">
-            <p>Quiz: <strong>{{ quiz_title }}</strong></p>
-            <p>Total Questions: <span>{{ total_questions }}</span></p>
-            <p>Correct Answers: <span>{{ correct_count }}</span></p>
-            <p>Wrong Answers: <span class="failureWrong"></span></p>
-            <p>Score: <strong></strong></p>
+            <p>Quiz: {{ quiz_title }}</p>
+            <p>Total Questions: {{ total_questions }}</p>
+            <p>Correct Answers: {{ correct_count }}</p>
+            <p>Wrong Answers: {{ wrong_count }}</p>
         </div>
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
         <div class="actions">
-            <button class="button" onclick="retakeQuiz()">Try Again</button>
-            <button class="button" onclick="goHome()">Home</button>
+            <button class="button" id="retakeQuiz">
+                Try Again
+                <div class="loader"></div>
+            </button>
+            <button class="button" id="goHome">
+                Home
+                <div class="loader"></div>
+            </button>
         </div>
     </div>
     {% endif %}
@@ -102,7 +113,7 @@
             }
         });
     </script>
-    <script type="module" src="{{ url_for('static', filename='js/start_quiz.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/result.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
 </body>
 

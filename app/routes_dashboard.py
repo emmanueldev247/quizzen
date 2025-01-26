@@ -796,6 +796,7 @@ def show_quiz_result(current_user, quiz_id):
         correct_count=data["correct_count"],
         wrong_count=data["wrong_count"],
         passed=data["passed"],
+        quiz_id = quiz.id,
         quiz_title=quiz.title,
         user_authenticated='user_id' in session
     )
