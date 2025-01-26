@@ -1318,10 +1318,13 @@ def change_password(current_user):
                 "message": "Invalid Credentials"
             }), 401
         else:
-            logger.warning(f"User with email {email} is an OAuth user")
+            current_user.set_password(new_password)
+                db.session.add(current_user)
+                db.session.commit()
+            logger.warning(f"User with email {current_user.email} is an OAuth user")
             return jsonify({
-                "success": False,
-                "message": "Please use OAuth to log in."
+                "success": "True",
+                "message": "Successful"
             }), 400
 
     except Exception as e:
