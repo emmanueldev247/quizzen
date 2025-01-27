@@ -1209,7 +1209,7 @@ def upload_profile_picture(current_user):
                 if os.path.exists(old_image):
                     os.remove(old_image)
 
-            current_user.profile_picture = f"uploads/{unique_filename}"
+            current_user.profile_picture = f"/quizzen/uploads/{unique_filename}"
             db.session.commit()
 
             return jsonify({
