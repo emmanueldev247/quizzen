@@ -113,14 +113,14 @@ def handle_rate_limit_exceeded(e):
 @auth_required
 def user_dashboard(current_user):
     """User dashboard"""
-    
+
     if current_user.role == "admin":
         base_template = "base_admin_dashboard.html"
         no_quiz = "no-quiz-admin2.html"
     else:
         base_template = "base_user_dashboard.html"
         no_quiz = "no-quiz-user.html"
-    
+
     history = QuizHistory.query.filter_by(user_id=current_user.id).all()
     query = Quiz.query.filter_by(public=True)
     quizzes = query.order_by(Quiz.created_at.desc()).all()
@@ -595,11 +595,11 @@ def take_quiz(current_user, quiz_id):
     ]
 
     # Pass the quiz data to the template
-    return render_template('start_quiz.html', 
-        quiz_id=quiz.id, 
-        title=quiz.title, 
-        description=quiz.description, 
-        duration=quiz.duration, 
+    return render_template('start_quiz.html',
+        quiz_id=quiz.id,
+        title=quiz.title,
+        description=quiz.description,
+        duration=quiz.duration,
         quiz=quiz,
         questions_json=json.dumps(questions),
         questions=questions,
@@ -702,7 +702,7 @@ def submit_quiz(current_user, quiz_id):
 
         question = Question.query.filter_by(id=question_id, quiz_id=quiz_id).first()
         if not question:
-            continue 
+            continue
 
         try:
             points = evaluate_answer(question_id, quiz_id, user_answers)
@@ -712,7 +712,7 @@ def submit_quiz(current_user, quiz_id):
             total_score += points
         except ValueError as e:
             continue
-        
+
 
     quiz_history = QuizHistory(user_id=current_user.id, quiz_id=quiz_id, score=total_score)
     db.session.add(quiz_history)
@@ -726,7 +726,7 @@ def submit_quiz(current_user, quiz_id):
 
     db.session.commit()
 
-    pass_threshold = 0.5 
+    pass_threshold = 0.5
     passed = (total_score / quiz.max_score) >= pass_threshold
 
     s = Serializer(current_app.config['SECRET_KEY'])
@@ -783,7 +783,7 @@ def show_quiz_result(current_user, quiz_id):
     token = request.args.get('result_token')
     if not token:
         return abort(404)
-    
+
     quiz = Quiz.query.filter_by(id=quiz_id, public=True).first()
     if not quiz:
         return abort(404)
@@ -1435,8 +1435,8 @@ def send_email(subject, message, user_name, user_email):
         bool: True if email sent successfully, False otherwise.
     """
 
-    smtp_server = 'us2.smtp.mailhostbox.com'
-    port = 587
+    smtp_server = os.getenv('MAIL_SERVER', "out.dnsexit.com")
+    port = int(os.getenv('MAIL_PORT', 587))
     sender_email = os.getenv('MAIL_DEFAULT_SENDER')
     sender_password = os.getenv('MAIL_PASSWORD')
     receiver_email = os.getenv('RECEIVER_EMAIL')
