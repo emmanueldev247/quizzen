@@ -3,7 +3,7 @@
 Quizzen is an Interactive Quiz Application designed to make learning engaging and fun. With features like customizable quizzes, secure user authentication, and real-time quiz tracking, Quizzen caters to students, teachers, and anyone looking to expand their knowledge interactively.
 
 Quizzen is live at
-![Quizzen](https://emmanueldev247.publicvm.com/quizzen)
+[Quizzen](https://emmanueldev247.publicvm.com/quizzen)
 
 ## Table of Contents
 
