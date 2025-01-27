@@ -30,7 +30,7 @@
             <div class="quiz-meta">
                 <div class="author">
                     {% if quiz.user.profile_picture %}
-                    <img class="author-profile" src="/quizzen/{{ quiz.user.profile_picture }}" alt="Profile Picture">
+                    <img class="author-profile" src="{{ quiz.user.profile_picture }}" alt="Profile Picture">
                     {% else %}
                     <img class="author-profile" src="{{ url_for('static', filename='images/default_image.jpg') }}"
                         alt="Default Profile">

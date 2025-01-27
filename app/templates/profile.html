@@ -13,7 +13,7 @@
             <div class="profile-pic-name-container data-item">
                 <div class="profile-pic">
                     {% if user.profile_picture %}
-                    <img src="/quizzen/{{ user.profile_picture }}" alt="Profile Picture">
+                    <img src="{{ user.profile_picture }}" alt="Profile Picture">
                     {% else %}
                     <img src="{{ url_for('static', filename='images/default_image.jpg') }}" alt="Default Profile">
                     {% endif %}
