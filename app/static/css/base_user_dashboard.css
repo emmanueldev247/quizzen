@@ -73,7 +73,6 @@ header .hamburger {
     transition: left 0.3s ease;
 }
 
-
 header .logo a {
     text-decoration: none;
 }
@@ -86,19 +85,13 @@ header .logo img {
 header .header-right {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 10px;
+    margin-right: 10px;
 }
 
 header .profile,
 header .enter-code {
-    display: block;
-}
-
-
-header .profile-icon {
-    font-size: 1.5rem;
-    color: white;
-    cursor: pointer;
+    display: flex;
 }
 
 header .enter-code {
@@ -114,6 +107,64 @@ header .enter-code {
 
 header .enter-code:hover {
     background-color: #555;
+}
+
+header .profile-icon {
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+
+.profile-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #ccc;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    margin-left: -5px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 170px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.dropdown-menu a:hover {
+    color: #6a0dad;
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu a i {
+    margin-right: 5px;
+}
+
+.profile-icon .hidden {
+    display: none;
 }
 
 /* Notification styles */
@@ -255,13 +306,19 @@ header .enter-code:hover {
 .main-content {
     margin-left: 200px;
     margin-top: 40px;
-    padding: 20px;
+    padding: 20px 0;
     height: calc(100vh - 60px);
     width: 100%;
-    overflow-y: auto;
     background-color: #f3f3f3;
     box-sizing: border-box;
-    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
 }
 
 

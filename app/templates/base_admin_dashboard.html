@@ -36,8 +36,27 @@
         </div>
         <div class="header-right">
             <button class="enter-code">Enter Code</button>
-            <div class="profile profile-icon">
-                <i class="fas fa-user-circle"></i>
+            <div class="profile profile-icon" id="profile-menu">
+                {% if user.profile_picture %}
+                <img id="profile-picture" class="profile-pic" src="{{ user.profile_picture }}" alt="Profile Picture">
+                {% else %}
+                <img id="profile-picture" class="profile-pic" src="{{ url_for('static', filename='images/default_image.jpg') }}"
+                    alt="Default Profile">
+                {% endif %}
+                <div class="dropdown-menu hidden" id="dropdown-menu">
+                    <a href="{{ url_for('full_bp.profile') }}">
+                        <i class="fas fa-user-circle icon"></i>
+                        My Profile
+                    </a>
+                    <a href="{{ url_for('full_bp.profile') }}#change-password">
+                        <i class="fa-solid fa-lock"></i>
+                        Change Password
+                    </a>
+                    <a href="{{ url_for('full_bp.logout') }}">
+                        <i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i>
+                        Log Out
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -66,7 +85,7 @@
             <span>API Doc</span>
         </a>
         <a href="{{ url_for('full_bp.logout') }}" class="nav-item">
-            <i class="fas fa-sign-out-alt icon"></i>
+            <i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i>
             <span>Logout</span>
         </a>
         <button class="enter-code">Enter Code</button>
