@@ -1,3 +1,5 @@
+import { showNotification } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const backToTopBtn = document.getElementById("backToTop");
 
@@ -97,10 +99,21 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch(`${baseUrl}/api/quiz/${quizCode}`)
         .then((response) => {
           if (!response.ok) {
-            showNotification(
-              "Invalid quiz code. Please check and try again",
-              "error"
-            );
+            if (response.status === 429) {
+              showNotification(
+                "You have made too many requests in a short period. Please try again later",
+                "error"
+              );
+            } else if (response.status === 404) {
+              showNotification(
+                "Invalid quiz code. Please check and try again",
+                "error"
+              );
+            } else
+              showNotification(
+                "Something went wrong. Please try again later",
+                "error"
+              );
             throw new Error("Invalid quiz code. Please check and try again.");
           }
           return response.json();
