@@ -18,6 +18,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const dropdownMenu = document.getElementById("dropdown-menu");
+  const profileMenu = document.getElementById("profile-menu");
+  profileMenu.addEventListener("click", function (event) {
+    dropdownMenu.classList.toggle("hidden");
+    event.stopPropagation();
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!profileMenu.contains(event.target)) {
+      dropdownMenu.classList.add("hidden");
+    }
+  });
+
   document.querySelectorAll(".index-quiz-card").forEach((card) => {
     card.addEventListener("click", () => {
       window.location.href = "/quizzen/signup";

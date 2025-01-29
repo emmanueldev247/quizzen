@@ -38,9 +38,9 @@
             <button class="enter-code">Enter Code</button>
             <div class="profile profile-icon" id="profile-menu">
                 {% if user.profile_picture %}
-                <img id="profile-picture" class="profile-pic" src="{{ user.profile_picture }}" alt="Profile Picture">
+                <img id="profile-picture" class="profile-pic-header" src="{{ user.profile_picture }}" alt="Profile Picture">
                 {% else %}
-                <img id="profile-picture" class="profile-pic" src="{{ url_for('static', filename='images/default_image.jpg') }}"
+                <img id="profile-picture" class="profile-pic-header" src="{{ url_for('static', filename='images/default_image.jpg') }}"
                     alt="Default Profile">
                 {% endif %}
                 <div class="dropdown-menu hidden" id="dropdown-menu">
