@@ -508,7 +508,7 @@ def unpublish_quiz(current_user, quiz_id):
 
 @full_bp.route('/api/quiz/<quiz_code>', methods=['GET'])
 @auth_required
-@limiter.limit("20 per minute")
+@limiter.limit("10 per minute")
 def check_quiz(current_user, quiz_code):
     """
     Check if the quiz exists and is public, and return the quiz id if valid.

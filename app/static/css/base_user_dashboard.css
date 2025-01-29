@@ -468,7 +468,7 @@ header .profile-icon {
     background-color: rgba(0, 0, 0, 0.97);
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 1000;
 }
 
 .enter-code-modal-content {
